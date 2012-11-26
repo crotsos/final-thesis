@@ -1,3 +1,5 @@
+*.texshop
+*.sw?
 *.DS_Store
 *.acn
 *.acr
