@@ -1,0 +1,66 @@
+%%% Thesis Introduction --------------------------------------------------
+\chapter{Introduction}
+\ifpdf
+    \graphicspath{{Introduction/IntroductionFigs/PNG/}{Introduction/IntroductionFigs/PDF/}{Introduction/IntroductionFigs/}}
+\else
+    \graphicspath{{Introduction/IntroductionFigs/EPS/}{Introduction/IntroductionFigs/}}
+\fi
+
+In this thesis I am planning to support the following position:
+
+\begin{quotation}
+In the recent years, the Internet has met an incredible development in terms of
+infrastructure as well as connectivity. This development has been driven by two
+main causes: the significant reduction of the cost of network-enabled device and
+the subsequent widespread adoption from users and
+the wider utilization from companies of the Internet as a medium to interconnect and
+expand their market. Although significant, Internet development has been highly
+asymetric. The capacity of the core of the Internet has increased
+exponentially over the recent years and routing has become stable. 
+As a result, the network bottleneck has moved to the edges of the Internet, a
+point where link upgrades have a significantly higher aggregate cost and access 
+technologies have seen little innovation.
+In this work, I argue that edge networks performance is further reduce due to
+a great extend to the way many internet scale protocols are deployed.
+Further, I believe that in order to handle more efficiently
+resources in the edges, functionality of network devices should be customized to
+the needs of the specific environment and network processing should be developed
+over newer abstractions, that match the flow primitives of the specific
+environment. In this work I focus in the case of home networking and I present
+a number of novel network designs that leverage the ability to control and use
+home networks.
+\end{quotation}
+
+In the introduction I think it is important to mention the following points:
+% I am planning to present 2 main points:
+\begin{itemize}
+\item The core of the Internet is highly optimized and can perform really
+well the task of packet forwarding end-to-end. Although the programmability
+of the core is restricted due to the low cost principle and the high
+multiplexing of network connections. On the other hand, edge
+networks exhibit lower connection multiplexing which make programmability 
+to be handle using restricted resources. Further, in the edges we are able 
+to integrate in the
+packet processing process useful input from the users. There a number of
+measurement studies that present this differentiation both for the ADSL/cable
+(Netanalyzer, bufferbloat, ADSL measurement studies) world, as well as 3g 
+(e.g. 3gtest).
+\item The concept of network programmability is not a new concept. It has already
+been discussed in different forms (e.g. ATM controllers/switchlets, active networks) 
+which though never manage to get deployed in the real world. I need to discuss
+for the most significant cases, why these mechanisms failed to meet their
+requirements and why the SDN approach solves some of their problems. 
+\item An additional problem that I should discuss in this chapter is the
+different abstractions perceived by network applications and service
+providers. This difference in abstractions result in a significant loss of
+information that could potentially be used by both sides in order to optimize
+network utilisation.
+
+\end{itemize}
+%%% ----------------------------------------------------------------------
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../thesis"
+%%% End: 

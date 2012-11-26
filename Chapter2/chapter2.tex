@@ -1,0 +1,1438 @@
+% \pagebreak[4]
+% \hspace*{1cm}
+% \pagebreak[4]
+% \hspace*{1cm}
+% \pagebreak[4]
+
+
+
+\chapter{Evolving Home network control}
+\ifpdf
+    \graphicspath{{Chapter2/Chapter2Figs/PNG/}{Chapter2/Chapter2Figs/PDF/}{Chapter2/Chapter2Figs/}}
+\else
+    \graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}}
+\fi
+\section{Introduction}
+\label{s:intro}
+
+Consumer broadband Internet access is a critical component of the
+digital revolution in domestic settings: for example, Finland has made
+broadband access a legal right for all its
+citizens.\footnote{\url{http://www.bbc.co.uk/news/10461048}} A growing
+number of services are now provided over the Internet, including
+government, entertainment, communications, retail and health.  The
+growth of IP enabled devices over the last decade also means many
+households are now exploring the use of in-home wired and wireless
+networking, not only to allow multiple computers to share an Internet
+connection but also to enable local media sharing, gaming, and other
+applications.  Despite the growth in Internet use and the explosion of
+interest in home networking, the opacity of networking technologies
+means that they remain extraordinarily difficult for people to install,
+manage, and use in their homes.
+
+              %% Current approaches are opaque to end-users making it
+%% difficult for them to understand and control their networks.
+
+In this paper we explore issues surrounding \emph{home networks}:
+highly heterogeneous edge networks, typically Internet-connected via a
+single broadband link, where non-expert network operators provide a
+wide range of services to a small set of users.  While we focus on
+home networks in this paper, we note that many environments,
+e.g.,~small offices, coffee shops, hotels, exhibit similar 
+characteristics and thus may benefit from similar approaches.  Within
+the Homework Project\footnote{\url{http://www.homenetworks.ac.uk/}} we
+have developed a range of mechanisms that exploit the physical and
+social nature of the home to provide capabilities likely to be
+infeasible in more traditional settings, e.g.,~backbone and enterprise
+networks. 
+
+In this paper we present three distinct contributions: 
+\begin{itemize}
+\item We elaborate on the nature of the problems and opportunities
+      inherent to home networks~(\S\ref{s:elephant});
+\item We describe our home router and how its flow-based approach
+      enables it to help improve the user
+      experience~(\S\ref{s:router}); and
+\item We present and evaluate protocol modifications that place the
+      homeowner in more direct control of their
+      network~(\S\ref{s:protocols}).
+\end{itemize}
+
+%\mort{explicitly note we do not present user study but tech/infra dev
+%     deriving from ethno - user study is following in other papers}
+
+Finally, we present related work~(\S\ref{s:related}) and
+conclude~(\S\ref{s:concl}).  Note that throughout this paper we refer
+to the individual managing the home network as the homeowner without
+loss of generality; clearly any suitably permitted member of the
+household, owner or not, may be able to exercise control based on
+specifics of the local context. 
+
+\section{The Elephant in the Room}
+\label{s:elephant}
+
+{\it ``The technical know-how required to set up a network and run
+music or video across cables or wi-fi, is `the elephant in the room
+that no-one wants to talk about.'\,''}\,\footnote{\url{http://news.bbc.co.uk/1/hi/technology/6949607.stm}}
+
+Many empirical studies in recent years have explored the clear
+mismatch between current networking technology and the needs of the
+domestic setting,  in both  the
+UK~\cite{tolmie07:_makin,rodden07:_disap_comput,rodden04:_domes,rodden04:_between,crabtree03:_findin_place_ubicom_home}
+and the
+US~\cite{shehan07:_home_networ_hci,grinter05:_work_make_home_networ_work,sung07:_my_roomb_rambo,chetty07:_how_smart_homes_learn,shehanpoole08:_desig_inter_home_networ_maint_tools}.
+These studies present a weight of evidence that problems with home
+networking are not amenable to solution via a `thin veneer' of user
+interface technology layered atop the existing architecture.  Rather,
+they are
+\emph{structural}, emerging from the mismatch between the stable
+`end-to-end' nature of the Internet and the highly dynamic and
+evolving nature of domestic environments.  
+
+\subsection{Home Networks: Evolution?}
+\label{s:evolution}
+
+Home networks use the same protocols, architectures, and tools
+developed for the Internet since the 1970s.  Inherent to the
+Internet's `end-to-end' architecture is the notion that the core is
+simple and stable, providing only a semantically neutral transport
+service.  Its core protocols were designed for a certain context of
+\emph{use} (assuming relatively trustworthy endpoints), made
+assumptions about \emph{users} (skilled network and systems
+administrators both using connected hosts and running the network
+core), and tried to accomplish a set of \emph{goals}
+(e.g.,~scalability to millions of nodes) that simply do not apply in a
+home network. 
+
+In fact, the home network is quite different in nature to both core
+and enterprise networks.  Existing
+studies~\cite{tolmie07:_makin,shehan07:_home_networ_hci,shehanpoole08:_desig_inter_home_networ_maint_tools}
+suggest domestic networks tend to be relatively small in size with
+between 5 and 20 devices connected at a time.  The infrastructure is
+predominately cooperatively self-managed by residents who are seldom
+expert in networking technology and, as this is not a professional
+activity, rarely motivated to become expert.  A wide range of devices
+connect to the home network, including desktop PCs, games consoles,
+and a variety of mobile devices ranging from smartphones to digital
+cameras.  Not only do these devices vary in capability, they are often
+owned and controlled by different household members.  
+
+To illustrate the situation we are addressing, consider the following
+two example scenarios, drawn from  situations that emerged from our
+fieldwork to date, reported in more detail elsewhere~\cite{wmust2011}: 
+ 
+\textbf{Negotiating acceptable use}.
+{\it William and Mary have a spare room which they let to a lodger,
+Roberto.  They are not heavy network users and so, although they have
+a wireless network installed, they pay only for the lowest tier of
+service and they allow Roberto to make use of it.  The lowest tier of
+service comes under an acceptable use policy that applies a monthly
+bandwidth cap.  Since Roberto arrived from Chile they have 
+exceeded their monthly cap on several occasions, causing them some
+inconvenience.  They presume it is Roberto's network use causing this,
+but are unsure and do not want to cause offence by accusing him
+without evidence.}
+
+\textbf{Welcome visitors, unwelcome laptops}.  
+{\it Steve visits his friends Mike and Elisabeth for the weekend and
+brings his laptop and smartphone.  Mike has installed several wireless
+access points throughout his home and has secured the network using
+MAC address filtering in addition to WPA2.  To access the network,
+Steve must not only enter the WPA2 passphrase, but must also obtain
+the MAC addresses of his devices for Mike to enter on each wireless
+access point.  Steve apologizes for the trouble this would cause and,
+rather than be a problem to his hosts, suggests he reads his email at
+a local cafe.} 
+
+In such ways, simple domestic activities have deep implications for
+infrastructures that generate prohibitive technical overheads.  In the
+first scenario, the problem is simply that the network's behaviour is
+opaque and difficult for normal users to inspect; in the second, the
+problems arise from the need to control access to the network and the
+technology details exposed by current mechanisms for doing so.  
+
+Home networks enable provision of a wide range of services, e.g.,~file
+stores, printers, shared Internet access, music distribution.  The
+broad range of supported activities, often blending work and leisure,
+make network use very fluid.  In turn, this makes it very hard to
+express explicitly \emph{a priori} policies governing access control
+or resource management~\cite{tolmie07:_makin}.  Indeed, fluidity of
+use is such that access control and policy may not even be consistent,
+as network management is contingent on the household's immediate needs
+and routines.
+
+\subsection{Home Networks: Revolution!}
+\label{s:revolution}
+
+Simply creating a user interface layer for the existing network
+infrastructure will only reify existing problems.  Rather, we need to
+investigate creation of new network architectures reflecting the
+socio-technical nature of the home by taking into account both human
+and technical considerations.  For example, we may need to explore
+architectures that sacrifice scalability in favor of installability,
+evolvability, and maintainability.  
+
+To this end we exploit local
+characteristics of the home: devices are often collocated, are owned
+by family and friends who physically bring them into the home, and
+both devices and infrastructure are physically accessible.
+Essentially, the home's physical setting provides a significant source
+of heuristics we can understand, and offers a set of well understood
+practises that might be exploited in managing the infrastructure.  
+
+We
+exploit human understandings of the local network and the home to
+guide management of the supporting
+infrastructure~\cite{crabtree03:_findin_place_ubicom_home} by focusing
+on the home router not only as the boundary point in an edge network
+but as a physical device which can be exploited as a point of
+management for the domestic infrastructure.  Within our router, we
+focus on flow management for three reasons: 
+\begin{itemize}
+    \item we do not require
+scalability to the same degree as the core network; 
+    \item doing so
+allows us to monitor traffic in a way that is more meaningful for
+users; and 
+\item we can apply per-flow queueing mechanisms to control
+bandwidth consumption, commonly requested by users. 
+\end{itemize}
+%% \mort{distinction is now being pushed as: large-scale networks focus
+%%      on packets not flows for scalability (plus other things of
+%%      core/enterprise nets); we go for flows and explore impact of this
+%%      decision} 
+
+%% \mort{focusing on flows lets us (a) monitor traffic in a way that's
+%%      (somewhat) meaningful for users (but cf.  wmust); (b) control
+%%      traffic using a range of standard mechanisms such as per-flow
+%%      queueing/qos} 
+
+\section{Reinventing the Home Router}
+\label{s:router}
+ 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\columnwidth]{architecture}
+\caption{\label{f:architecture}Home router architecture.  Open vSwitch
+        (\emph{ovs*}) and NOX manage the wireless interface.  Three
+        NOX modules provide a web services control API, a DHCP server
+        with custom address allocation and lease management, and a DNS
+        interceptor, all logging to the Homework Database (\emph{hwdb})
+        (\S\ref{s:protocols}). 
+%% Finally, a udev script logs an
+%% event to the Homework Database on USB stick insertion; a
+%% subscribing process detects this and invokes the control API
+%% appropriately (§5).} 
+}\vspace{-1.5em}
+\end{figure}
+
+Our home router is based on Linux 2.6 running on a micro-PC
+platform.\footnote{Currently an Atom 1.6GHz eeePC 1000H netbook with
+  2GB of RAM running Ubuntu 10.04.} Wireless access point
+functionality is provided by the \emph{hostapd} package.  The software
+infrastructure on which we implement our home router, as shown in
+Figure~\ref{f:architecture}, consists of the Open vSwitch OpenFlow
+implementation, a NOX controller exporting a web service interface to
+control custom modules that monitor and manage DHCP and DNS traffic,
+plus the Homework
+Database~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag}
+providing an integrated network monitoring facility. The proposed
+setup is similar to the standard ISP-provided home router.
+ 
+%% \mort{static ip addresses?  still expect explicit configuration on
+%%      router to enable connectivity- outside dhcp range; no big deal}
+
+%% \mort{router runs hostapd, provides wireless ap with wpa2}
+
+%% \mort{believed that some wireless cards may not permit access to all
+%%      bridged packets- can we find a cite/link for this?} 
+                                                                     
+%% To allow us to explore how best to exploit the nature of the domestic
+%% setting we need an infrastructure that can present information about
+%% the nature of the activities on the network to users, and offers
+%% capabilities to enable residents to control the network.  We have
+%% built a home router based around Linux 2.6 on a micro-PC 
+%% platform.\footnote{Currently an Atom 1.6GHz eeePC 1000H netbook with
+%% 2GB of RAM running Ubuntu 10.04.} The software infrastructure on which
+%% we implement our home router consists of a NOX controller using a set of custom modules
+%% to control traffic and export a rich RPC API,
+%% the Open vSwitch OpenFlow implementation, plus the Homework Database
+%% providing an integrated network monitoring facility.\footnote{All our
+%% code is publicly available; URL redacted for review.} Our home router
+%% is implemented as an OpenFlow-enabled application, depicted in
+%% Figure~\ref{f:architecture}.
+
+% This gives us a setup very similar to a standard operator-provided
+% home router where a single box acts as wireless access point,
+% multiplexes a wired connection for upstream connectivity to the ISP,
+% and may provide a small number of other wired interfaces. 
+  We next describe the main software components upon which our
+router relies.  Using this infrastructure, we provide a number of
+novel user interfaces, one of which we describe briefly below; details
+of the others are available
+elsewhere~\cite{mortier11:_suppor_novel_home_networ_manag}.  Note that
+a key aspect of our approach is to avoid requiring installation of
+additional software on client devices: doing so is infeasible in a
+home context where so many different types of device remain in use
+over extended periods of time.
+
+%% The router provides a platform to explore how the
+%% infrastructure might change to provide better information to household
+%% inhabitants, giving them greater understanding and control of their
+%% home networks.  Before describing the details of our home router we
+%% briefly present an overview of how these are presented to and
+%% exploited by end-users.
+
+\subsection{OpenFlow, Open vSwitch \& NOX}
+\label{s:openflow}
+
+%% \mort{focus on flows makes openflow a natural control mechanism; plus
+%%  it provides via ovs and NOX an efficient, straightforward and
+%%  powerful programming api} 
+ 
+OpenFlow is a switching standard~\cite{mckeown:_openf} providing an
+open protocol for distributed control of the forwarding tables contained
+within Ethernet switches in a network.  An OpenFlow \emph{switch} has
+three parts: a \emph{datapath}, a \emph{secure channel} connecting to
+a controller, and the \emph{OpenFlow} \emph{protocol} the controller
+uses to talk to the switch.  
+
+Each datapath applies actions to flows
+arising on a physical interface, where \emph{flow} is defined as a
+tuple of the primary packet header fields plus the physical port on
+which the flow is visible.  Flow definition allows wildcarding
+of fields and specifically permits netmasks for IP addresses.  Each
+flow can have a number of primitive actions applied; actions defined
+in the protocol permit full control over forwarding as well as
+modification of all fields of the flow tuple.  The net effect is that
+applications can manage and control traffic according to their own
+definition of a network flow.  Flow entries are installed by the
+controller when the switch notifies the controller of arrival of  a
+packet from a new flow.
+
+We provide OpenFlow support using Open
+vSwitch,\footnote{\url{http://openvswitch.org/}} OpenFlow-enabled
+switching software that replaces the in-kernel Linux bridging
+functionality able to operate as a standard Ethernet switch as well as
+providing full support for the OpenFlow protocol.  We use
+the NOX\footnote{\url{http://noxrepo.org/}} controller as
+it provides a programmable platform abstracting OpenFlow interaction
+to events with associated callbacks, exporting APIs for C++ and
+Python.
+
+%% Currently, a set of libraries and applications
+%% are implemented over the platform and exercise enriched control over
+%% the network \haris{Maye provide some references to related work?}.
+
+% The switching functionality is split between
+% user and kernel space, for enhanced performance. In kernel space the
+% Open vSwitch module stores a subset of exact match flows of the flow
+% table, which is used as a flow cache, and implements all packet action
+% primitives. The control plane of the switch is implemented on
+% \emph{ovs-vswitchd}, a user space daemon. The daemon implements basic
+% switch functionality, but is also able to communicate with OpenFlow
+% controllers. Furthermore,  the daemon stores the complete Flow table of the
+% switch as well as datapath configurations and translate them to
+% appropriate data structures for the kernel module.
+
+\begin{table}
+\footnotesize
+\begin{tabular}{p{0.35\columnwidth}p{0.55\columnwidth}} 
+\textbf{Method} & \textbf{Function} \\
+\url{permit/<eaddr>} & Permit access by specified client\\
+\url{deny/<eaddr>} & Deny access by specified client\\
+\url{status/[eaddr]} & Retrieve currently permitted clients, or status of specified client \\
+\url{dhcp-status/} & Retrieve current MAC--IP mappings\\
+\url{whitelist/<eaddr>} & Accept associations from client\\
+\url{blacklist/<eaddr>} & Deny association to client\\
+\url{blacklist-status/} & Retrieve currently blacklisted clients\\
+\url{permit-dns/<e>/<d>} & Permit access to domain \texttt{d} by client \texttt{e}\\
+\url{deny-dns/<e>/<d>} & Deny access to domain \texttt{d} by client \texttt{e}\\
+\end{tabular}
+\caption{\label{t:api}Web service API; prefix all methods
+        \texttt{https://.../ws.v1/}.  $<$\,$X$\,$>$ and $[X]$ denote
+        required and optional parameters.} 
+\vspace{-2.5em}
+\end{table}
+
+Our router provides flow-level control and management of traffic via a
+single OpenFlow datapath managing the wireless interface of the
+platform.\footnote{Without loss of generality, our home route has only
+a single wired interface so the only home-facing interface is its
+wireless interface; other home-facing interfaces would also become
+part of the OpenFlow datapath.}  We provide NOX modules that implement
+a custom DHCP server, control forwarding, control wireless association
+via filtering, and intercept DNS lookups.  Control of these modules is
+provided via a simple web service (Table~\ref{t:api}).
+% within NOX whose interface is described in Table~\ref{t:api}.  
+Traffic destined for the upstream connection is forwarded by the
+datapath for local processing via the kernel bridge, with Linux's
+\emph{iptables} IP Masquerading rules providing standard NAT
+functionality.\footnote{While NAT functionality could be implemented
+  within NOX, it seemed neither interesting nor necessary to do so.}
+
+%% Without loss of generality, the device we describe in this paper has
+%% only a single wired interface so the only home facing interface is its
+%% wireless interface, and this is the physical interface managed by the
+%% OpenFlow datapath.
+
+\subsection{The Homework Database}
+\label{s:hwdb}
+ 
+%% \mort{reduce this- it's reported elsewhere: it's a streaming database,
+%%  collecting ip layer supporting rpc interaction, and defaults to providing
+%%  a Flows table among others; provides the basic measurement
+%%  facility accessed by the many uis via rpc}
+ 
+In addition to Open vSwitch and NOX we make use of the Homework
+Database, \emph{hwdb}, an active, ephemeral stream
+database~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag}.
+The ephemeral component consists of a fixed-size memory buffer into
+which arriving tuples (events) are stored and linked into tables.  The
+memory buffer is treated in a circular fashion, storing the most
+recently received events inserted by applications measuring some
+aspect of the system.  The primary ordering of events is time of
+occurrence.  
+
+The database is queried via a variant of
+CQL~\cite{arasu05:_cql} able to express both temporal and relational
+operations on data, allowing applications such as our user
+interfaces to periodically query the ephemeral component for either 
+raw events or information derived from them. 
+%%  This information is then
+%% used directly to provide user interfaces, e.g.,~\S\ref{s:guest-board},
+%% or stored in a persistent time-series database for use in subsequent
+%% analyses, e.g.,~\S\ref{s:XXX}.  
+Applications need not be collocated on the router as \emph{hwdb}
+provides a lightweight, UDP-based RPC system that supports
+one-outstanding-packet semantics for each connection, fragmentation
+and reassembly of large buffers, optimization of ACKs for rapid
+request/response exchanges, and maintains liveness for
+long-running exchanges.  Monitoring applications request events since
+a timestamp or during an interval defined by two timestamps.
+\emph{hwdb} is active as applications may register interest in
+\emph{future} behaviour patterns, triggering notification when such a
+pattern is detected by the database.  The work described in this paper
+makes use of three tables: \emph{Flows}, accounting traffic to each
+5-tuple flow; \emph{Links}, monitoring link-layer performance; and
+\emph{Leases}, recording mappings assigned via DHCP.
+
+%% By default, there are three tables, Flows, Links, and Leases.  Table
+%% Flows stores the number of packets and bytes as observed (inserted) by
+%% an application that accumulates these counts for each 5-tuple flow per
+%% measurement interval (currently set to 1s in our deployments).  In a
+%% similar manner, table Links stores the average RSSI, the number of
+%% packets, the number of bytes, and the number of retransmissions
+%% observed for each wireless device identified by its MAC
+%% address.  Finally, table Leases stores any actions taken by the DHCP
+%% server (e.g., granting or revoking a lease) with the mappings between
+%% allocated IP addresses and host MAC addresses and names.  
+
+%% \mort{fix link para}
+
+%% We next describe details, implementation and evaluation of the two
+%% strategies by which we exploit the home network context.  First we
+%% consider the ways in which people may be more directly involved in
+%% infrastructure protocols.
+
+
+\subsection{The Guest Board}
+\label{s:guest-board}
+
+% \mort{explicitly tie to ethno story} 
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{control}
+\caption{\label{f:guest-board}The \emph{Guest Board} control panel,
+        showing an HTC device requesting connectivity.}
+\vspace{-1em}
+\end{figure}
+
+This interface exploits people's everyday understanding of control
+panels in their homes, e.g.,~heating or alarm panels, to provide users
+with a central point of awareness and control for the network.  The
+interface runs on a dedicated touch screen in the home and we exploit
+this physical arrangement to provide a focal point for inhabitants to
+view current network status and to manage the network.  It provides a
+real time display of the current status of the network
+(Figure~\ref{f:guest-board}), showing devices in different zones based
+on the state of their connectivity.  The display dynamically maps key
+network characteristics of devices to features of their corresponding
+labels.  Mappings in the current display are: 
+
+\begin{itemize}
+\vspace{-0.5em}
+\item Wireless signal strength is mapped to device label transparency.
+      %so devices supplying weak signals fade into the background.
+\item Device bandwidth use is proportional to its label size.
+% ,
+%       e.g.,~Tom's Laptop in Figure~\ref{f:guest-board} is currently
+%       the dominant bandwidth user. 
+\item Wireless Ethernet retransmissions show as red highlights on the
+      device's label. % , indicating devices currently
+      % experiencing wireless reliability problems. 
+\end{itemize}
+
+Devices in range appear on the screen in real-time, initially in the leftmost
+panel indicating they are within range of the home router but not
+connected.  The central panel in the control displays machines actively
+seeking to associate to the access point:
+%% This zone exploits the underlying
+%% strategy of placing people in the protocol discussed
+%% in~\S\ref{s:protocol}.  
+when devices unknown to the network issue DHCP
+requests, the router's DHCP server informs the guest board and a
+corresponding label appears in this portion of the display.  If a user
+wishes to give permission for the machine to join the network they
+drag the label to the right panel; to deny access, they
+drag the label to the left panel.
+
+The guest board provides both a central control point and, by drawing
+directly upon network information collected within our router, a
+network-centric view of the infrastructure.  While this example
+describes a central control point in the home, the interface is
+implemented in HTML/CSS/Javascript allowing it to be displayed on a
+range of devices, currently under trial with users.  The router's
+measurement and control APIs described above are also being used to
+build a wide range of other interfaces for use via smartphones, web
+browsers, and custom display hardware.
+
+%% \mort{...it is just one of several interfaces we have built that use
+%%  the features of our home router, ranging from network artefacts
+%%  to phyiscally mediated access via usb key tokens; see uist2011
+%%  paper insub for details}
+
+%% \mort{fix this link para}
+
+%% In the following sections we outline the architecture of the
+%% router before we present the details of how we exploit our two key
+%% strategies of putting people in the protocol and exploiting physical
+%% approaches to control.  
+
+\section{Putting People in the Protocol}
+\label{s:protocols}
+
+%\mort{note that this is tied to social convention of home visiting,
+%     network part of the home not separate to it, etc}
+We use our home router to enable \emph{ad hoc} control of network
+policy by non-expert users via interfaces such as the Guest Board
+(Figure~\ref{f:guest-board}).  This sort of control mechanism is a
+natural fit to the local negotiation over network access and
+use that takes place in most home contexts.  While we believe that
+this approach may be applicable to other protocols, e.g.,~NFS/SMB,
+LPD, in this section we demonstrate this approach via our
+implementation of a custom DHCP server and selective filters for
+wireless association and DNS that enable management of device
+connectivity on a per-device basis. 
+
+Specifically, we describe and evaluate how our router manages IP address
+allocation via DHCP, two protocol-specific (EAPOL and DNS)
+interventions it makes to provide finer-grained control over network
+use, and its forwarding path.  We consider three primary axes: 
+\emph{heterogeneity} (does it still support a sufficiently rich mix of
+devices); \emph{performance} (what is the impact on forwarding latency
+and throughput of our design and implementation decisions); and
+\emph{scalability} (how many devices and flows can our router handle).
+In general we find that our home router has ample capacity to support
+observed traffic mixes, and shows every indication of being
+able to scale beyond the home context to other situations, e.g., small
+offices, hotels. 
+
+%% \mort{add mention of control over DNS}
+
+%% \mort{DNS plus flow-based control means creation of more complex
+%%  per-device (server) ``zoning'' becomes trivial } 
+
+%% \mort{ipv6, upnp, bonjour, mdns, netbios}
+
+%% In the home, network access and use tend to be locally negotiated
+%% between inhabitants.  Consequently, policies tend to be more \emph{ad
+%% hoc} and less amenable to being written down explicitly when compared
+%% with enterprise and backbone networks.  Although humans are already in
+%% the network management loop in these larger networks, the size and
+%% nature of enterprise and backbone networks means that such engagement
+%% is by expert network managers and tends to describe aggregate
+%% behaviours, e.g.,~configuration of ``all Exchange servers'' or ``all
+%% desktop machines for the kernel development team.'' Home networks tend
+%% not to be managed by professional network administrators, but by users
+%% with little understanding of the technologies involved.  This makes it
+%% difficult for them to feel in control of their networks, which often
+%% appear to act opaquely, implementing decisions about network access
+%% that they find difficult to understand. 
+
+%% As we have illustrated in the example of the guest board the local
+%% context of the home makes it possible to directly involve individuals
+%% in the decision making process on a fine-grained timescale to promote
+%% local control of the network by the inhabitants of the home.  
+
+
+%% We next describe and evaluate the three non-standard aspects of the
+%% protocol implementations within our router: how it manages IP address
+%% allocation via DHCP, its forwarding path, and two protocol-specific
+%% (EAPOL and DNS) interventions it makes to deal with devices that
+%% attempt to subvert its control and to provide finer-grained control
+%% over network use.
+
+%% We evaluate the feasibility of our home router considering three
+%% primary axes: heterogeneity (does it still support a sufficiently rich
+%% mix of devices); performance (what is the impact on forwarding latency
+%% and throughput of our design and implementation decisions); and
+%% scalability (how many devices and flows can our router handle).  In
+%% general we find that our home router has ample capacity to support
+%% commonly observed traffic mixes, and shows every indication of being
+%% able to scale beyond the home context to other situations, e.g., small
+%% offices.
+
+%% XXX
+
+\subsection{Address Management}
+\label{s:addresses}
+
+% Upon connection to the network, the client broadcasts
+% a DHCPDISCOVER to obtain the address of an available DHCP server,
+% which responds with a DHCPOFFER containing an IP address, a subnet
+% mask and a gateway address, among other things.  The client selects a
+% server and broadcasts a DHCPREQUEST so other servers know they have
+% not been selected.  Finally, the selected server commits the
+% configuration that it offered the client, and DHCPACKs the client to
+% ensure the client has the correct configuration.  If the selected
+% server wishes to rescind its offer, it sends a DHCPNAK to the client;
+% if the client receives no response, it eventually times out.  In both
+% cases the client then restarts the process.
+DHCP~\cite{rfc:2131} is a protocol that enables automatic host network
+configuration. It is based on a four way broadcast handshake that
+allows hosts to discover and negotiate with a server their
+connectivity parameters.  As part of our design we extend the
+functionality of the protocol to achieve two goals.  First, we enable
+the homeowner to control which devices are permitted to connect to the
+home network by interjecting in the protocol exchange on a
+case-by-case basis.  We achieve this by manipulating the lease expiry
+time, allocating only a short lease (30s) until the
+homeowner has permitted the device to connect via a suitable user
+interface.  The short leases ensure that clients will keep retrying
+until a decision is made; once a device is permitted to connect, we
+allocate a standard duration lease (1 hour).
+
+Second, we ensure that all network traffic is visible to the home
+router and thus can be managed through the various user interfaces
+built against it.  We do so by allocating each device to its own /30
+IP subnet, forcing inter-device traffic to be IP routed via our home
+router.  This requirement arises because wireless Ethernet is a
+broadcast medium so clients will ARP for destinations on the same IP
+subnet enabling direct communication at the link-layer.  In such
+situations, the router becomes a link-layer device that simply
+schedules the medium and manages link-layer security -- some wireless
+interfaces do not even make switched Ethernet frames available to the
+operating system. %  The result is that traffic between devices in the
+% home, such as music distribution and file stores, becomes invisible to
+% the home router.  By allocating addresses from distinct subnets, all
+% traffic between clients must be transmitted to the gateway address,
+% ensuring all traffic remains visible to our home router. 
+Our custom DHCP server allocates /30 subnet to each host from
+10.2.*.*/16 with standard address allocation within the /30
+(i.e.,~considering the host part of the subnet, 00 maps to the
+network, 11 maps to subnet broadcast, 01 maps to the gateway and 10
+maps to the client's interface itself). Thus, each local device needs
+to route traffic to any other local device thought the router, making
+traffic visible in the IP layer.
+%% We deal with the case of
+%% misbehaving/malicious clients attempting to subvert our address
+%% allocations in~\S\ref{s:association}. 
+% \mort{point to lack of perf implications?  or just pull to here?}
+%
+% The DHCPOFFER generated by our home router in response to a previously
+% unknown client allocates a /30 subnet from 10.2.*.*/16 with standard
+% address allocation within the /30 (i.e.,~considering the two least
+% significant bits of the subnet, 00 maps to the network, 11 maps to
+% subnet directed broadcast, 01 maps to the gateway and 10 maps to the
+% client's interface itself).  This allocation pattern ensures that all
+% traffic for locally connected devices is sent via the router, since
+% all devices are on distinct, non-overlapping IP subnets.  This would
+% not be the case if addresses were allocated to clients from the same
+% subnet, e.g.,~clients were all simply allocated addresses directly
+% from 10.*.*.*/8.
+
+We measured the performance of our DHCP implementation and found that,
+as expected, per-request service latency scales linearly with the
+number of simultaneous requests.  Testing in a fairly extreme
+scenario, simultaneous arrival of 10 people each with 10 devices,  gives
+a median per-host service time of 0.7s.
+
+\subsection{Per-Protocol Intervention}
+\label{s:association}
+
+Our current platform intervenes in two specific protocols providing
+greater control over access to the wireless network itself, and to
+Internet services more generally. 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\columnwidth]{eapol}
+\caption{\label{f:association}802.11i handshake, part of the
+        association process.  Note that MIC (Message Integrity Code)
+        is an alternate term for MAC, used in such contexts to avoid
+        confusion with Media Access Control.}
+\vspace{-1.5em}
+\end{figure}
+ 
+%% \mort{also intercept DNS- figures from previous section show that this
+%%      will introduce negligible extra latency} 
+
+Our home router supports wireless Ethernet security via 802.11i with
+EAP-WPA2, depicted in Figure~\ref{f:association}, using
+\emph{hostapd}.  In short, the client (\emph{supplicant}) and our
+router (\emph{authenticator}) negotiate two keys derived from the
+shared master key via a four-way handshake, through the EAPOL
+protocol.  The \emph{Pairwise Transient Key} (PTK) is used to secure
+and authenticate communication between the client and the router; the
+\emph{Group Transient Key} (GTK) is used by the router to
+broadcast/multicast traffic to all associated clients, and by the
+clients to decrypt that traffic.  All non-broadcast communication
+between clients must therefore pass via the router at the link-layer
+(for decryption with the source's PTK and re-encryption with the
+destination's PTK), although the IP routing layers are oblivious to
+this if the two clients are on the same IP subnet.\footnote{The
+  802.11i specification defines a general procedure whereby two
+  clients negotiate a key for mutual communication
+  (\emph{Station-to-station Transient Key}, STK).  However, the only
+  use of this procedure in the specification is in \emph{Direct Link
+    Setup} (DLS) used in supporting 802.11e, quality-of-service.  This
+  can easily be blocked by the access point, and in fact is not
+  implemented in the \emph{hostapd} code we use, so we do not consider
+  it further.
+  %\mort{emphasise this bit?  also wifidirect - embedding of
+  %  ``soft'' ap inside wifi device - completely orthogonal?}i
+  }
+
+Periodically, a timeout event at the access point initiates rekeying
+of the PTK, visible to clients only as a momentary drop in performance
+rather than the interface itself going down.  We use this to apply
+blacklisting of clients deemed malicious, such as a client that
+attempts to communicate directly (at the link-layer) with another,
+i.e.,~attempting to avoid their traffic being visible to our home
+router.  We wait until the rekeying process begins and then decline to
+install the appropriate rule to allow it to complete for the client in
+question.  This denies the client access even to link-layer
+connectivity, as they will simply revert to performing the four-way
+handshake required to obtain the PTK.  This gives rise to a clear
+trade-off between security and performance: the shorter the rekeying
+interval, the quicker we can evict a malicious client but the greater
+the performance impact on compliant clients.  
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\columnwidth]{rekeying}
+\caption{\label{f:rekeying}Affect on TCP throughput from
+        rekeying every 30s for Linux 2.6.35 using a Broadcom card with
+        the \emph{athk9} module; and Windows 7 using a proprietary
+        Intel driver and card.} 
+\vspace{-1.5em}
+\end{figure}
+
+%% deliberately out of place
+\begin{figure*}
+\centering
+\includegraphics[width=0.95\columnwidth]{switching-delay}
+\hspace{\columnsep}
+\includegraphics[width=0.95\columnwidth]{throughput}
+\caption{\label{f:performance}Switching performance of Open vSwitch
+        component of our home router showing increasing per-packet
+        latency (LHS) and decreasing packet throughput (RHS) with the
+        number of flows.  The inset graph extends the $x$-axis from
+        10,000 to 500,000.} 
+\vspace{-1em}
+\end{figure*}
+
+To quantify the impact of 802.11i rekeying, we observed throughput
+over several rekeying intervals.  Figure~\ref{f:rekeying} shows the
+impact of setting the rekeying interval to 30s: rekeying causes a
+periodic dip in throughput as the wireless Ethernet transparently
+buffers packets during rekeying before transmitting them as if nothing
+had happened.  This shows the trade-off between performance and
+responsiveness of this approach
+% : to be highly responsive in detection
+% of misbehaving clients imposes a small performance degradation.  
+As a compromise, when a device is blacklisted, all of its traffic and
+subsequent rekeying exchanges are blocked.
+%Thus the misbehaving device is prevented from sending or
+%directly receiving any traffic before rekeying takes place, 
+The device will be able to receive only
+broadcast traffic in the interim due, to the use of the GTK for such
+frames, until the AP initiate the negotiation of a new key.  
+% This allows us to pick a relatively long rekey interval (5
+% minutes) while still being able to respond quickly to misbehaving
+% devices.
+
+We also intercept DNS to give fine-grained control over access to
+Internet services and websites.  DNS requests are intercepted and
+dropped if the requesting device is not permitted to access that
+domain.  Any traffic the router encounters that is not already
+permitted by an explicit OpenFlow flow entry has a reverse lookup
+performed on its destination address.  If the resulting name is from a
+domain that the source device is not permitted to access, then a rule
+will be installed to drop related traffic.  Performance is quite
+acceptable, as indicated by latency results in
+Figure~\ref{f:performance}: the extra latency overhead introduced by
+our router is negligible compared to the inherent latency of a lookup
+to a remote name server.  Extending this fine-grained control requires
+more accurate identification of traffic to application, particularly
+for more complex network uses such as BitTorrent and Skype, and is a
+problem we are investigating in ongoing work.
+
+\subsection{Forwarding}
+\label{s:forwarding}
+ 
+% After it starts, NOX receives an event notifying it of a
+% new datapath, managing interface \emph{wlan0} in our case.  This causes
+% installation of initial 
+Our router consists of a single Open VSwitch that manages interface
+\emph{wlan0}.  Open VSwitch is initialised with a set of flows that push
+DHCP/BOOTP and IGMP traffic to the controller for processing.
+% is forwarded to the controller (NOX) for processing, as well as a
+% default packet handler for all traffic not otherwise matched.
+Open VSwitch by default will also forward to the controller traffic not
+matched by any other installed flow, which is handled as follows:
+
+\textbf{Non-IP traffic}.  The controller acts as a proxy ARP server,
+responding to ARP requests from clients.  Misbehaving devices are
+blacklisted via a rule that drops their EAPOL~\cite{rfc:3748} traffic
+thus preventing session keys negotiation.
+% implementing the WPA security association with
+% the access point, so dropping it, prevents association.  
+Finally, other non-IP traffic has source and destination MAC addresses
+verified to ensure both are currently permitted.  If so, the packet is
+forwarded up the stack if destined for the router, or to the
+destination otherwise.  In either case, a suitable OpenFlow rule with
+a 30s idle timeout is also installed to shortcut future matching
+traffic.
+
+\textbf{Unicast IP traffic}.  First, a unicast packet is dropped if it
+does not pass all the following tests: 
+\begin{itemize}
+    \item its source MAC address is
+permitted; 
+    \item its source IP address is in 10.2.x.y/16; and
+    \item its source IP address matches that allocated by DHCP.  For
+valid traffic destined to the Internet, a flow is inserted that forwards
+packets upstream via the bridge and IP masquerading.  
+\end{itemize}
+% Unicast IP
+% traffic that passes but is destined outside the home network has a
+% rule installed to forward it upstream via the bridge and IP
+% masquerading.
+For local traffic 
+%is to remain within the home network and
+a flow is installed to route traffic as an
+%% Ethernet switch
+IP router, i.e.~rewriting source and destination MAC
+addresses appropriately. 
+% to those of the datapath and the destination device
+% appropriately.
+% \mort{bollocks! ethernet switches don't rewrite like
+% that.  doh.}  
+All these rules are installed with 30s idle timeouts,
+ensuring that they are garbage collected if the flow goes idle for
+over 30s.
+
+\textbf{Broadcast and multicast IP traffic}.  Due to our address
+allocation policy, broadcast and multicast IP traffic requires special
+attention.  Clients send such traffic with the Ethernet broadcast
+bit\footnote{I.e.,~the most significant bit of the destination
+  address} set, normally causing the hardware to encrypt with the GTK
+rather than the PTK so all associated devices can receive and decrypt
+those frames directly.  In our case, if the destination IP address is
+all-hosts broadcast, i.e.,~255.255.255.255, the receiver will process
+the packet as normal.  Similarly, if the destination IP address is an
+IP multicast address, i.e.,~drawn from 224.*.*.*/4, any host
+subscribed to that multicast group will receive and process the packet
+as normal. Finally, for local subnet broadcast the router will
+rebroadcast the packet, rewriting the destination IP address to
+255.255.255.255. This action is required because the network
+stack of the hosts filters broadcast packets from different IP subnets.
+% However, the remaining case, subnet directed broadcast,
+% must be treated specially.  If the destination IP is drawn from the
+% appropriate 10.2.*.*/30 and has the two least significant bits set,
+% each host's wireless interface will receive the packet but their IP stacks
+% will discard it as they are not on that subnet.  The home
+% router will also receive it and must then duplicate and retransmit it,
+% rewriting the destination address to the broadcast address for every
+% allocated IP subnet, ensuring it is received by all connected hosts. 
+
+To assess switching performance, we examine both latency and packet
+throughput as we increase the number of flows, $N$, from 1--500,000.
+Each test runs for two minutes, generating packets at line rate from a
+single source to $N$ destinations each in its own 10.2.*.*/30 subnet.
+As these are stress tests we use large packets (500B) for the latency
+tests and minimal packets (70B)
+% \footnote{The 30B extra overhead is due
+% to \emph{pktgen}~\cite{olsson05:_linux_packet_gener}, the traffic
+% generation tool used.} 
+for the throughput tests, selecting
+destinations at random on a per-packet basis.  Results are presented
+as the median of 5 independent runs with error bars giving the min and
+max values. 
+
+Figure~\ref{f:performance} shows median per-packet switching delay and
+per-flow packet throughput using either exact-match rules or a single
+wildcard rule per host.  Performance is quite acceptable with a
+maximum switching delay of 560$\mu$s and minimum throughput of 40,000
+packets/second; initial deployment data suggests a working maximum of
+3000 installed flows which would give around 160,000 packets/second
+throughput (small packets) and 500$\mu$s switching delay (large
+packets).  Figure~\ref{f:stack-throughput} shows that the Linux
+networking stack is quite capable of handling the unusual address
+allocation pattern resulting from the allocation of each
+wireless-connected device to a distinct subnet which requires the
+router's wireless interface to support an IP address per connected
+device. 
+
+\subsection{Discussion}
+
+Our evaluation shows that Open vSwitch can handle orders of magnitude
+more rules than required by any reasonable home deployment.  Nonetheless,
+to protect against possible denial-of-service attacks on the flow
+tables, whether intentional, accidental or malicious, our home router
+monitors the number of per-flow rules introduced for each host.  If
+this exceeds a high threshold then the host has its per-flow rules
+replaced with a single per-host rule, while the router simultaneously
+invokes user interfaces to inform the homeowner of the device's odd
+behaviour. 
+
+The final aspect to our evaluation is compatibility: given that our
+router exercises protocols in somewhat unorthodox ways, how compatible
+is it with standard devices and other protocols?  We consider
+compatibility along three separate dimensions: range of existing
+client devices; deployed protocols that rely on broadcast/multicast
+behaviours; and support for IPv6. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{stack-throughput}
+\caption{\label{f:stack-throughput}Switching performance of Linux
+        network stack under our address allocation policy. Throughput
+        (left axis) shows a small linear decrease while switching
+        delay (right axis) remains approximately constant as the
+        number of addresses allocated to the interface increases.} 
+\vspace{-1em}
+\end{figure}
+
+\paragraph{Devices}
+Although we exercise DHCP, DNS and EAPOL in unorthodox ways to control
+network access, behaviour follows the standards once a device is
+permitted access.  To verify that our home router is indeed suitable
+for use in the home, we tested against a range of commercial wireless
+devices running a selection of operating systems. 
+
+\begin{table*}
+\centering\footnotesize
+\begin{tabular}{lp{0.33\textwidth}p{0.42\textwidth}}
+\bf Device 
+& \bf Denied 
+& \bf Blacklisted\\
+
+Android 2.x 
+& Reports pages unavailable due to DNS.  
+& Retries several times before backing off to the 3g data network.\\
+
+iTouch/iPhone
+& Reports server not responding after delay based on configured DNS
+ resolver timeout.  
+& Requests new wireless password after 1--2 minutes.\\
+
+OSX 10.6 
+& Reports page not found based on configured DNS resolver timeout.  
+& Requests new wireless password after 1--2 minutes.\\
+
+Microsoft Windows XP 
+& Silently fails due to DNS failure.  
+& Silently disconnects from network after 4--5 minutes.\\
+
+Microsoft Windows 7 
+& Warns of partial connectivity.  
+& Silently disconnects from network after 4--5 minutes.\\
+
+Logitech Squeezebox 
+& Reports unable to connect; allows server selection once permitted.
+& Flashes connection icon every minute as it attempts and fails to
+ reconnect.  \\ 
+
+Nintendo Wii 
+& Reports unable to reach server during ``test'' phase of connection.
+& Reports a network problem within 30s.\\
+
+Nokia Symbian OS 
+& Reports ``can't access gateway'' on web access.  
+& Reports disconnected on first web access.\\
+\end{tabular}
+\caption{\label{t:devices}Observed interactions between devices and
+        our home router when attempting to access the network.} 
+\vspace{-3.5em}
+\end{table*}
+
+Table~\ref{t:devices} shows the observed behaviour of a number of
+common home-networked devices: in short, all devices operated as
+expected once permitted access.  DNS interception was not explicitly
+tested since, as an inherently unreliable protocol, all networking stacks must
+handle the case that a lookup fails anyway.  Most devices behaved acceptably
+when denied access via DHCP or EAPOL, although some user interface
+improvements could be made if the device were aware of the
+registration process.  The social context of the home network means no
+problem was serious: in practice the user requesting access would be
+able to interact with the homeowner, enabling social negotiation to
+override any user interface confusion. 
+
+%% We initially investigated using different subnet allocations with
+%% short (30s) lease times to more easily distinguish hosts that are
+%% trying to connect but are waiting for the homeowner to permit them
+%% access.  Unfortunately, due to a variety of issues with common client
+%% DHCP implementations, e.g., Android not correctly obeying lease
+%% times,\footnote{\url{http://www.net.princeton.edu/android/android-stops-renewing-lease-keeps-using-IP-address-11236.html}} 
+%% this broke device interfaces sufficiently that doing so would only
+%% increase user confusion.
+
+\paragraph{Broadcast protocols}
+A widely deployed set of protocols relying on broadcast and multicast
+behaviours are those for `zero conf' functionality.  The most
+popular are Apple's \emph{Bonjour} protocol; \emph{Avahi}, a Linux
+variant of Bonjour; Microsoft's \emph{SSDP} protocol, now adopted by
+the UPnP forum; and Microsoft's \emph{NetBIOS}.  
+
+Bonjour and Avahi both rely on periodic transmission of multicast DNS
+replies advertising device capabilities via TXT records.  SSDP is
+similar, but built around multicast HTTP requests and responses.  We
+tested Bonjour specifically by setting up a Linux server using a
+Bonjour-enabled daemon to share files.  We observed no
+problems with any clients discovering and accessing the server, so we
+conclude that Bonjour, Avahi and SSDP would all function as expected. 
+
+NetBIOS is somewhat different, using periodic network broadcasts to
+disseminate hosts' capabilities.  In doing so we observed a known
+deficiency of NetBIOS: it cannot propagate information for a given
+workgroup between different
+subnets.\footnote{\url{http://technet.microsoft.com/en-gb/library/bb726989.aspx}}
+However this was easy to overcome: simply install a WINS server on the
+router and advertise it via DHCP to all hosts.
+%\mort{although ugly,
+%this would work at little cost and the other benefits seem
+%significant. no extra attack surface because can configure nox/ovs/firewall to
+%deny access to it from outside the home network}
+
+%% the other hand, NetBIOS protocol implementations have problems to
+%% discover devices under different subnets.  This we found that is a
+%% deficiency of the protocol
+%% 
+%% since it is unable to propagate informations for a specific workgroup
+%% between different subnets. In order to overcome this problem, we setup
+%% a wins server on the router and advertise it throught the dhcp
+%% protocol to all hosts, solving the problem of resource discovery using
+%% NetBIOS \haris{included as a comment the exact lines that explain why
+%%   NetBIOS fails from MS knowledge base}.
+
+% "A workgroup that spans an IPv4 router creates two separate
+% workgroups. With workgroups, there is no mechanism to propagate the
+% list of servers collected by the Master Browse Server on one subnet
+% to the Master Browse Server on another subnet. Master Browse Servers
+% for workgroups do not register a special NetBIOS name with WINS that
+% may be used by workgroup Master Browse Servers or by browse
+% clients. There are no special Lmhosts entries that are used to
+% forward unicast workgroup browse list information between Master
+% Browse Servers."
+
+In general, it may seem that our address allocation policy introduces
+link-layer overhead by forcing all packets to be transmitted twice in
+sending them via the router.  However this is not the case: due to use
+of 802.11i, unicast IP traffic between two local hosts must
+\emph{already} be sent via the access point.  As the source encrypts
+its frames with its PTK, the access point must decrypt and re-encrypt
+these frames with the destination's PTK in order that the destination
+can receive them.  Multicast and all-hosts broadcast IP traffic is
+sent using the GTK, so can be received directly by all local hosts.
+Only directed broadcast IP traffic incurs overhead which though is a
+small proportion of the total traffic; data from a limited initial
+deployment (about one month in two homes) suggests that broadcast and
+multicast traffic combined accounts for less that 0.1\% (packets and
+bytes) in both homes.
+% \mort{cite?}
+%, concurring with other larger (albeit
+%non-domestic) datasets.
+% we have already discussed this previsouly
+% : although other
+% clients receive it at the link-layer, the address allocation policy
+% means they will discard it, leaving it to the home router to replicate
+% and retransmit all such traffic.  We do not consider this significant
+% as data from a limited initial deployment (about one month in two
+% homes) suggests that a very small amount of traffic is affected:
+% broadcast and multicast traffic combined accounts for less that 0.1\%
+% (packets and bytes) in both homes, concurring with other larger
+% (albeit non-domestic) datasets.\mort{cite?}
+
+\paragraph{IPv6 support}
+IPv6 support is once more receiving attention due to recent exhaustion
+of the IPv4 address space.  Although our current implementation does
+not support IPv6 due to limitations in the current Open vSwitch and
+NOX releases,\footnote{OpenFlow aims to provide support in its 1.2
+release of the protocol; NOX currently has no support for IPv6; and
+Open vSwitch only supports IPv6 as an application specific extension.}
+we briefly discuss how IPv6 would be supported on our platform.  While
+these limitations prevent a full working implementation in our
+platform, we have verified that behaviour of both DHCPv6 and the required
+ICMPv6 messages was as expected, so we do not believe there are
+any inherent problems in the approaches we describe below.
+
+Addition of IPv6 support affects the network layer only, requiring
+consideration of routing, translation between network and link layers,
+and address allocatiocn.  Deployment of IPv6 has minimal impact on
+routing, limited to the need to support 128~bit addresses and removal,
+in many cases, of the need to perform NAT.
+% \footnote{Some operators may still prefer to use NAT as
+% part of a legacy of address management and operations.}  
+Similarly, supporting translation to lower layer addresses equates to
+supporting ICMPv6 Neighbour Solicitation messages which perform
+equivalent function to ARP.
+
+%% During recent years a handful of ISPs started to provide IPv6
+%% connectivity to clients and, since the exhaustion of IPv4 addresses
+%% space, many more ISPs anounced their intetion to run production dual
+%% stack networks. In order to address this trend as part of our design
+%% we consider also an IPv6 scenario.  
+%%                                     The addition of IPv6 support in
+%% our design affects only the network layer of the protocol stack and
+%% thus requires from us to reconsider three functionalities: routing, address
+%% allocation and address translation to link layer. For the routing
+%% process, the deployment of the IPv6 protocol has minimal impact to the
+%% design (change of the length of the address) and in fact it reduces
+%% complexity as it removes the nececity for NAT.
+
+Address allocation is slightly more complex but still straightforward.
+IPv6 provides two address allocation mechanisms: \emph{stateless} and
+\emph{stateful}.  The first allows a host to negotiate directly with
+the router using ICMPv6 Router Solicitation and Advertisement packets
+to obtain network details, IP netmask and MAC address.  Unfortunately
+this process requires that the router advertises a 64 bit netmask, of
+which current plans allocate only one per household, with the result that
+all hosts would end up on the same subnet.  The second builds on
+DHCPv6 where addresses are allocated from a central entity and may
+have arbitrary prefix length.  This would enable our router to
+function in much the same manner as currently, although it would
+need to support the ICMPv6 Router Advertisement message in order that
+hosts could discover it as the router. 
+
+%% For the address allocation functionality, the introduction of the IPv6
+%% protocol requires to change the functionality of the DHCP server. IPv6
+%% provides 2 methods of address allocation in networks. The first
+%% mechanism, called stateless address alocation, allows to a host to
+%% self negotiate with the router, using ICMPv6 Router solicitation and
+%% advertisment packets, the detail of the network and generate its IP
+%% address using the subnet netmask and its MAC address.  Unfortunately,
+%% this setup requires from the router to advertise a 64 bit long
+%% netmask, resulting in all hosts being under the same network as,
+%% according to current deployment plans, each ISP client is entitled to
+%% a /64 prefix. The second mechanism, called stateful address
+%% allocation, is build around the DHCPv6 protocol and is pretty similar
+%% to the current DHCP mechanism implemented as part of our design. The
+%% addresses are allocated from a central entity and can have arbitrary
+%% prefix length. Additionally, since the DHCPv6 protocol doesn't aim to
+%% configure routing for hosts, the router in required to implement
+%% support for Router Advertsment message in order to allow hosts to
+%% discover the router of the network.
+
+%% Finally, in order to translate IPv6 addresses to lower layer
+%% addresses, we need to enable on the router the ability to reply to
+%% ICMPv6 Neighbour Solicitation message, similarly as in the case of ARP
+%% packets.
+
+%% Unfortunately, the platform that we are using in order to support our
+%% design does not support currently IPv6 protocol. Openflow aims to
+%% provide support in its 1.2 release of the protocol, while NOX has no
+%% support for the protocol and OpenVSwitch provides support only as an
+%% application specific extension.  
+
+%% While the implementation limitations noted above prevent a full
+%% working implementation, we tested the basic functionality required by
+%% our approach as follows.  
+
+%% In order to test the functionality of
+%% our approach, we setted up a simple hardcoded version of our
+%% design. Specifically, we receive an IPv6 /64 prefix for our lab
+%% network administrators routed to an appropriately configured computer
+%% that acted as our router. The machine run the default DHCPv6 server
+%% shipped with Ubuntu Natty, configured to allocate addresses from a
+%% /120 subnet. Additionally on the router we run the radvd daemon to
+%% reply appropriately to ICMPv6 messages. Over this setup we use various
+%% IPv6 enabled devices to connect to the internet. From our experiment
+%% we verified that Windows and Apple OS had no problem to get valid IP
+%% from the DHCP server and connect to IPv6 enabled-servers in the
+%% Internet. For the linux OS there was a problem with the default DHCP
+%% client of the distro, which we discover later that was a reported
+%% bug. Eventually, after building the dhcp client from a newer version of
+%% the source code, we achieved address allocation and connectivity.  
+
+\section{Related Work}
+\label{s:related}
+ 
+Many authors have argued that home networks should be treated
+differently to other IP-based networks.  For example, Calvert
+\etal.~\cite{calvert07:_movin_towar_middl} make a case against
+application of the end-to-end principle in home networking.  They
+argue that there are a number of key aspects peculiar to the home
+environment that the standard Internet protocols do not address.  They
+derive a series of requirements for a home network architecture, and a
+design providing functions to fulfil these requirements.  Many of the
+points they make, e.g., their ``smart middle'' design, resonate with
+our argument, and indeed, we believe our home router meets the
+requirements and provides the functions they describe.
+
+%% \mort{no need to spend so much on interfaces- a sweeping ``but they
+%%  don't go deep enough to be interesting'' should be enough}
+Both before and after the general architectural arguments made above,
+a number of authors have proposed novel user interfaces to aid the
+homeowner in managing their network.
+GesturePen~\cite{swindells02:_that} uses line-of-sight radio
+interaction with purpose-built receiver tags to control network
+access; Network-in-a-Box~\cite{balfanz04:_networ}, where infrared port
+alignment provides a physical metaphor for access, plugging in to
+security mechanisms such as EAP-TLS and RADIUS.  They also describe an
+interesting ``phone home'' service via the Windows Remote Access and
+IPSec policy mechanisms that enables remote clients to connect back to
+appear as if inside the home network.
+
+ICEBox~\cite{yang07:_icebox} again concentrates on the problem of
+enabling the homeowner to correctly configure new devices when they
+are brought onto the network using a control panel approach similar to
+our Guest Board.  They note that a future version might well subsume
+the home router.  Eden~\cite{yang10:_eden}, by several of the same
+authors, follows this up by replacing the home router.  Their
+implementation allows per-flow traffic control, but the paper lacks
+technical details.
+%   makes use of the standard Linux \emph{tc} and
+% \emph{iptables} facilities to allow the homeowner to exercise per-flow
+% traffic control; they do not discuss technical specifics in any
+% detail.
+
+All these approaches primarily address the interaction design problem,
+focusing on user interface solutions to the problems of managing a
+home network.  Most rely upon specialized hardware or software
+installation on client devices.  In contrast, our home router does not
+require client modification as its protocol modifications are fully
+backward compatible with existing stacks.  It thus supports a very
+wide range of devices while making possible greater control of
+connectivity.
+
+%% \mort{probably need to leave following refs in}
+
+% Addressing the problems of troubleshooting,
+% Netprints~\cite{aggarwal09:_netpr} is a system for cooperative
+% diagnosis of home network misconfigurations.  They take a black-box
+% approach in that they do not predefine specific models, and they focus
+% on application specific problems rather than the home network as a
+% whole.  Client software scrapes labeled configuration information from
+% devices, and computed feature vectors describing the more dynamic
+% aspects of the system (e.g., observed traffic).  These data are
+% collected in a central server and fed into a decision tree based
+% learning system to perform subsequent diagnoses given observed data.,
+% Kandula \etal.~\cite{kandula09:_detail} also proposed a system for
+% diagnosis of problems, aimed specifically at small enterprise
+% networks.
+
+Several authors have proposed solutions to the specific problem of
+lack of visibility into what the network and connected devices are
+doing.  In this context, HostView~\cite{joumblatt10:_hostv} uses a
+client daemon to log when users experience network problems.
+% also relies on client
+% software but focuses more simply on generating labeled data by
+% enabling the user to notify the system when some user-perceived
+% problem occurred.  
+Calvert \etal.~\cite{calvert10:_instr_home_networ}
+present requirements for a general purpose ``always on'' local logging
+service, building a simple example using \emph{tcpdump} running on a
+NOXBox,\footnote{\url{http://www.noxrepo.org/manual/noxbox.html}}
+dumping traffic into flat files.  Both focus on network monitoring as
+a tool for troubleshooting.  Finally, in presenting the Homework
+Database, Sventek
+\etal.~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag}
+describe it as a component in their home network information plane.
+Their system uses a general-purpose policy engine to exercise control
+over the network by configuration of the router derived from the
+interaction of monitored data and policy.
+
+We claim that, in general, these monitoring systems do
+not take into account the specific challenges and opportunities
+inherent in the home network context.  Our home router goes further in
+exploiting the home context via specific modifications to the normal
+behaviour of key protocols, as well as implementing a novel network
+control interface.
+
+This class of argument, that the generic Internet protocols are not
+appropriate in a particular environment, has previously been made in
+the enterprise network space.  Approaches such as
+Anemone~\cite{cooke06:_reclaim}, Ethane~\cite{casado07:_ethan} and
+Network Exception Handlers~\cite{karagiannis08:_networ} have all
+proposed systems that address the general problem of enterprise
+network management in different ways.  They all make the argument that
+enterprise networks are basically different to the traditional
+Internet, presenting different problems and permitting different
+solutions.  This resonates strongly with our claims that home networks
+should be treated differently, and in some ways with our approach of
+providing more intelligent centralised control.  It should be noted
+however, that these enterprise network solutions are no more
+applicable to home networks than traditional Internet approaches were
+applicable in the enterprise!
+
+Finally, looking back to 1984 and some of the original discussions of
+IP subnetting, Mogul~\cite{rfc:917} and Postel~\cite{rfc:925}
+discussed using subnetting to hide site LAN interconnection from
+networks outside the site.  They introduce techniques
+such as ARP-based subnetting, ARP bridging, and extension of ARP
+itself.  ARP bridging in particular is very similar in practice to the
+approach we take, although we assign a subnet
+per-host rather than per-LAN, and we manage address allocation and
+connectivity using protocols unavailable at the time.
+
+%% \mort{add intserv, maybe diffserv refs - note different domain and
+%%  scale} 
+
+\section{Conclusions}
+\label{s:concl}
+ 
+This paper has drawn upon previous user studies to reflect on the
+distinctive nature of home networks and the implications for domestic
+network infrastructures.  Two particular user needs that arose from
+these studies were for richer visibility into and greater control over
+the home wireless network, as part of the everyday management of the
+home by inhabitants.  We  considered how to exploit the
+nature of the home network to shape how it is presented and opened to
+user control.  
+
+Simply put, the home is different to standard networking environments,
+and many of the presumptions made in such networks do not hold.
+Specifically, home networks are smaller in size, the equipment is
+physically accessible and access is often shared among inhabitants,
+and the policies involved are flexible and often dynamically
+negotiated.  Exploiting this understanding allows us to move away from
+traditional views of network infrastructure, which must be tolerant of
+scale, physically distributed, and impose their policies on users. 
+
+We use the Open vSwitch and NOX platforms to provide flow-based
+management of the home network.  As part of this flow-based
+management, we exploit the social conventions in the home to manage
+introduction of devices  to the network, and their subsequent access
+to each other and Internet hosted services.  This required
+modification of three standard protocols, DHCP, EAPOL and DNS, albeit
+in their behaviour only \emph{not} their wire formats, due to the need to
+retain compatibility with legacy deployed stacks.
+                                                         
+%%                                                          platofrm
+                          
+%% We draw upon these characteristics of the network and the social
+%% conventions of the home to develop two distinct mechanisms,
+%% implemented using the NOX and Open vSwitch platforms as part of a
+%% redevelopment of the home router.  The first exploits the social
+%% conventions of visiting to manage the introduction of machines to the
+%% network.  This is reflected in a modification to the DHCP protocol to
+%% put people explicitly inside the protocol, allowing the homeowner to
+%% be prompted for advice and information.  The second exploits the home's
+%% physical arrangement to develop a physical approach to access control
+%% based on commodity USB storage keys.  
+
+Our exploration suggests that, just as with other edge networks,
+existing presumptions could usefully be re-examined to see if they
+still apply in this context.  \emph{Do we wish to maintain net
+  neutrality in the home?} Inhabitants do not appear to see network
+traffic as equal, often desiring imbalance in performance received by
+different forms of traffic.  \emph{Must the end-to-end argument
+  apply?} Householders understand and exploit the physical nature of
+their home and use trust boundaries to manage access; we have
+exploited these resources to explicitly manage the network.
+\emph{Should communication infrastructures remain separate from the
+  devices that use them?} In the home setting this separation proves
+problematic as people, ranging from the home tinkerer to the DIY
+expert, wish to interact directly with the network as they do with
+other parts of their homes' physical infrastructures.  Our exploration
+suggests use of a range of displays and devices existing not as
+clients exploiting the infrastructure but as extensions of the
+infrastructure making it more available and controllable.
+
+Inability to understand and control network infrastructure has made it
+difficult for people to understand and live with it in their homes.  We
+have developed a home router that both captures information about
+people's use of the network and provides a point of interaction to
+control the network.  Our initial developments have explored the extent
+to which residents may be involved in some of the protocols
+controlling the network; other protocols suitable for modification are
+under consideration.  We are currently involved in the deployment and
+study of use of our home router to better understand relevant user needs and
+how we might more systematically exploit the data we are
+collecting.  We are also exploring how to use this data in other areas
+such as security and power management.  
+
+\section{User-Driven Resource Management at Home}
+
+\section{Architecture}
+\subsection{Helping thy neighbour: Enabling ISP - User collaboration}
+
+\section{Personalised user traffic models}
+\subsection{Bayesian Data Modeling and continuous training}
+\subsection{Evaluation}
+\section{Evaluation}
+
+% \section{First Paragraph}
+% And now I begin my first chapter here ...
+% 
+% Here is an equation\footnote{the notation is explained in the nomenclature section :-)}:
+% \begin{eqnarray}
+% CIF: \hspace*{5mm}F_0^j(a) &=& \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(z)}{z - a} dz
+% \end{eqnarray}
+% \nomenclature[zcif]{$CIF$}{Cauchy's Integral Formula}                                % first letter Z is for Acronyms 
+% \nomenclature[aF]{$F$}{complex function}                                                   % first letter A is for Roman symbols
+% \nomenclature[gp]{$\pi$}{ $\simeq 3.14\ldots$}                                             % first letter G is for Greek Symbols
+% \nomenclature[gi]{$\iota$}{unit imaginary number $\sqrt{-1}$}                      % first letter G is for Greek Symbols
+% \nomenclature[gg]{$\gamma$}{a simply closed curve on a complex plane}  % first letter G is for Greek Symbols
+% \nomenclature[xi]{$\oint_\gamma$}{integration around a curve $\gamma$} % first letter X is for Other Symbols
+% \nomenclature[rj]{$j$}{superscript index}                                                       % first letter R is for superscripts
+% \nomenclature[s0]{$0$}{subscript index}                                                        % first letter S is for subscripts
+% 
+% \section{Second Paragraph}
+% and here I write more ...\cite{texbook}
+% 
+% \subsection{sub first paragraph}
+% ... and some more ...
+% 
+% Now I would like to cite the following: \cite{latex} and \cite{texbook}
+% and \cite{Rud73}.
+% 
+% I would also like to include a picture ...
+% 
+% \begin{figure}[!htbp]
+%   \begin{center}
+%     \leavevmode
+%     \ifpdf
+%       \includegraphics[height=6in]{aflow}
+%     \else
+%       \includegraphics[bb = 92 86 545 742, height=6in]{aflow}
+%     \fi
+%     \caption{Airfoil Picture}
+%     \label{FigAir}
+%   \end{center}
+% \end{figure}
+% 
+% % above code has been macro-fied in Classes/MacroFile.tex file
+% %\InsertFig{\IncludeGraphicsH{aflow}{6in}{92 86 545 742}}{Airfoil Picture}{FigAir}
+% 
+% So as we have now labelled it we can reference it, like so (\ref{FigAir}) and it
+% is on Page \pageref{FigAir}. And as we can see, it is a very nice picture and we
+% can talk about it all we want and when we are tired we can move on to the next
+% chapter ...
+% 
+% I would also like to add an extra bookmark in acroread like so ...
+% \ifpdf
+%   \pdfbookmark[2]{bookmark text is here}{And this is what I want bookmarked}
+% \fi
+
+% ------------------------------------------------------------------------
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../thesis"
+%%% End: 
