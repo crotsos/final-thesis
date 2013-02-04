@@ -12,10 +12,6 @@
 \usepackage{alltt}
 
 
-\newcommand{\etal}{\emph{et al}}
-\newcommand{\oflops}{OFLOPS}
-\def\etal{{\it et al.}}
-
 \ifpdf
     \pdfinfo { /Title  (Flexible Software Defined Network)
                /Creator (TeX)
@@ -28,7 +24,6 @@
     \pdfcatalog { /PageMode (/UseOutlines)
                   /OpenAction (fitbh)  }
 \fi
-
 \title{Flexible Software Defined Network}
 
 \ifpdf
@@ -58,6 +53,7 @@
 
 % Put all the style files you want in the directory StyleFiles and usepackage like this:
 \usepackage{StyleFiles/watermark}
+\include{Macros/cmd}
 
 % Comment out the next line to get single spacing
 \onehalfspacing
@@ -96,13 +92,18 @@
 \printnomenclature  %% Print the nomenclature
 \addcontentsline{toc}{chapter}{Nomenclature}
 
+\newpage
+\listoftodos
+\newpage
+
+
 \mainmatter % book mode only
-% \include{Introduction/introduction}
-% \include{Background/background}
-% \include{Chapter1/chapter1}
-% \include{Chapter2/chapter2}
-% \include{Chapter3/chapter3}
-% \include{Conclusions/conclusions}
+\include{Introduction/introduction}
+\include{Background/background}
+\include{Chapter1/chapter1}
+\include{Chapter2/chapter2}
+\include{Chapter3/chapter3}
+\include{Conclusions/conclusions}
 
 \backmatter % book mode only
 \appendix
@@ -114,6 +115,6 @@
 %\bibliographystyle{Classes/jmb}
 %\bibliographystyle{Classes/jmb} % bibliography style
 \renewcommand{\bibname}{References} % changes default name Bibliography to References
-\bibliography{References/references} % References file
+\bibliography{References/references,References/rfc} % References file
 
 \end{document}

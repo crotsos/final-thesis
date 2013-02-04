@@ -173,13 +173,13 @@ TEXFILES=$(wildcard *.tex)
 
 	@if [ -f .rerun ]; then \
 		rm .rerun; \
-		$(LATEX) $*; \
+		$(LATEX) $* >> /dev/null; \
 	else \
 		$(MAKE) $*.aux; \
 	fi
 
 # While references et al. are changed: recompile.
-	@while ( grep Rerun $*.log > /dev/null ); do \
+	@while ( grep "Rerun to" $*.log > /dev/null ); do \
 		$(LATEX) $*; \
 	done
 
@@ -237,7 +237,7 @@ view:
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(DVIPS) -o $*.ps $<
 
-%.pdf: %.tex
+%.pdf: %.tex Abstract/abstract.tex Introduction/introduction.tex
 	$(PDFLATEX) $<
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(BIBTEX) $*
