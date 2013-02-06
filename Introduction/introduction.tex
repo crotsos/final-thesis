@@ -108,12 +108,50 @@ relating to the content of this thesis.
 
 \subsubsection*{Conputer network evolution}
 
+\begin{figure}[ht]
+\centering
+\subfigure[global mobile traffic trend]{
+    \includegraphics[width=0.45\textwidth]{mobile}
+    \label{fig:internet}
+}
+\subfigure[global Internet traffic trend]{
+    \includegraphics[width=0.45\textwidth]{internet}
+    \label{fig:mobile}
+}
+\caption{Cisco Visual Network Index reports on global network
+  traffic per application. Subfigure~\ref{fig:internet} provides details on the global Internet
+  traffic trends, while Subfigure~\ref{fig:mobile} focuses on Mobile Internet
+  traffic.}
+\label{fig:internet_applications}
+\end{figure}
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ | l | c c c c | }
+  \hline
+  Application  & rate & latency & jitter  & \# connections \\
+  \hline
+  web          & 0    & 0       & 0      & 0\\
+  video        & 0    & 0       & 0      & 0\\
+  p2p          & 0    & 0       & 0      & 0\\
+  voip         & 0    & 0       & 0      & 0\\
+  game         & 0    & 0       & 0      & 0\\
+  \hline
+\end{tabular}
+\end{center}
+\caption{Network performance requirement for a set of popular traffic classes.}
+\label{tbl:application_requirement}
+\end{table}
+
+
+
 % a historical prespective on computer networks 
 One of the ideas that formed the subjective condition of the digital revolution
 of our era, was the concept of computer networking. The initial goal of this
 concept was to develop a new communication architecture that would allow
 continuous communication over a redundant network, even when a significant
-number of vertex was destroyed.  The main building block of computer network is
+number of vertex was destroyed.  The main building block of computer networks is
 the idea of packet-switched networks~\cite{Licklider1963}.  This idea gave birth
 to the pioneer of today's Internet, the {\it ARPANET}~\cite{Mills:1987tt},
 allowing for the first time in computing history communication between multiple
@@ -151,11 +189,56 @@ over the Internet abstraction.
 
 % why computer become important for the global economy too? 
 In parallel with the development of the personal computer paradigm, computer
-network are widely deployed in order to reduce functional costs for businesses.
-Currently the Internet produces 4,3\% of the global GDP. Computer Networking an
-and the Internet, provide the middleware to interconnect modern multinational businesses 
+network are widely adopted as an integral asset for industry.
+Currently the Internet produces 4,3\% of the global GDP. Computer Networking
+and the Internet, provide the middleware to interconnect modern multinational
+businesses. In the business domain computer network have become popular and
+important for two main reasons: computer networks provide a cheap and fast
+medium communication medium to interconnect the business logic, and the provide
+a global medium to provide content to users. The adaptation of computer network
+has further augmented through the utilisation of the cloud as a medium to
+offload infrastructures to 3rd party cloud providers, reducing to a great extend
+the cost of running services in house.\todo{add a reference to the value of the
+cloud industry.} 
 
-% How computer network applications look like? 
+% How computer application mix looks in the wire? 
+This wide adaptation of computer networks has introduce a number of new use cases and
+applications for computer networks. Such applications introduce new assumptions over the
+network abstraction. Further the popularity of network applications has a high churn over
+the years, making longterm resource allocation through networking planning difficult.  In order to exhibit this trend,
+we plot in Figure~\ref{fig:internet_apllications} the global prediction on traffic volumes
+per applications for five years. We use data from cisco visualization index white
+papers~\cite{Mobile:2012vd,Cisco:2012wu}. In histogram we can see that network traffic is
+expected to increase an order of magnitude for the mobile environment, while the global
+Internet traffic is expected to increase four times. In parallel, this volume increase is
+uneven between traffic classes. File sharing services are expected to reduce their share
+of the total volume, replaced by web and video delivery services. 
+
+% what about the application requirements 
+The problem of resource allocation is further augmented by the diverse nature of network
+applications. In order to describe better the impact of these traffic changes, we list in
+Table~\ref{tbl:application_requirement}, some key properties and requirements for each
+traffic class. We can see in the list that applications in general have pretty diverse
+properties and their requirements are difficult to fulfil during congestion. 
+
+% How does the network look like on the edge. 
+High diversity is also observed on the connection medium of the computer
+networks. Currently, ethernet is currently the predominant link layer protocol
+in the Internet. This dominance didn't occur since the beginning of computer
+network. The main philosophy of the OSI protocol, and in respect of the TCP/IP
+protocol, was the bstraction of the link layer details in order to hide the
+running war between the different technologies (ATM, Token Ring). In the 80's
+the low cost difference of Ethernet establish it as the leader of the market
+ever since. As a result, this monoculture in the link layer, lead to the
+standarization of the protocol as the de-facto link layer protocol. Since then,
+although the Ethernet abstraction is global, the link layer technologies are
+diverse, Introducing a number of different mediums in the Ethernet abstraction.
+Currently Ethernet is exposed over coper and optical links, as well as
+off-licence radio frequencies and mobile networks. Although the Ethernet
+abstraction is persistent among all these mediums, the properties of the link
+are diverse and difficult to keep the performance abstraction consistent.
+
+In respect, the Internet is a highly heterogeneous 
 
 
 \subsubsection{Computer network ossification}
