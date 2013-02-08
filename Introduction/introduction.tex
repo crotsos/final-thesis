@@ -61,8 +61,6 @@ relating to the content of this thesis.
     set of popular traffic classes.} \label{tbl:application_requirement}
 \end{table}
 
-
-
 % a historical prespective on computer networks 
 One of the ideas that formed the subjective condition of the digital revolution
 of our era, was the concept of computer networking. The initial goal of this
@@ -75,37 +73,40 @@ allowing for the first time in computing history communication between multiple
 computers over a mess network. The initial set of applications that were
 standardised where : e-mail~\cite{RFC0561}, ftp~\cite{RFC0354} and
 voice~\cite{RFC0741}. This initial implementation was later replaced by the
-NSFNET in the 80's, which finally devolved in today's Internet. Additionally,
-the first transition to the NSFNET gave birth to the currently default protocol
-suite of TCP/IP~\cite{Clark:1988}, which has seen minimum changes on its
-semantics and format since then.
+NSFNET in the 80's, which finally devolved in today's Internet.
+As part of this transition, the research community developed also the standards
+for the TCP/IP protocol suite~\cite{Clark:1988}, the default protocol to provide
+connectivity for the Internet.
 
 % why computer networking is successful from the user perspective
 Since the time of the ARPANET, computer networks have seen a significant
 elevation on their role in the social apparatus of our world due to a number of
 reasons. One of the most important trends, that boost their role, was the
 radical reduction in cost, size and capabilities of network-enabled personal
-computers, following Moore's Law model. In addition, the programmable nature of
+computers, following Moore's Law model. The low cost factor of personal
+computers along with the programmable nature of
 the computer CPU, makes it an elegant platform to develop applications that
 introduce seamlessly new functionalities. Nowadays, programmable CPUs are
-integrated in a number of multipurpose devices, like mobile phones, display
-devices etc, while personal computers, with their ability to transform in size,
-introduce new personal computers concepts, such as laptops, tablets and other.
+integrated in a number of multi-purpose devices such as mobile phones, display
+devices etc, while the ability of personal computers to transform in size,
+introduces new computing concepts, such as laptops, tablets and other.
 As a result, the paradigm of one computer per household of the 90's rapidly
 shifted to the paradigm of multiple devices per user, replacing a number of
 everyday single-purpose devices~\cite{Dholakia:2006vn}.  On one hand, this
 augmentation in computational devices requires new modes of communication that
 allow devices to share consistently state, driving a significant development in
 computer network technologies. A number of network-enabled applications are
-developed to address these requirements, while new network concepts are
+developed to address these requirements, while new network paradigms are
 introduced like home networks and hotspots. Existing computer network
 technologies make this work easy, as they only require a minimal implementation
 of a protocol and a peer with a forwarding entity in order to establish
 connectivity with any other device. On the other hand, the elevated role
 of computer networks and the introduction of the cloud computing paradigm,
-introduce a number of internet-wide services with a global scope. These new
-applications introduce a number of new assumptions on performance and
-connectivity over the Internet abstraction.  The important role of computer
+introduce a number of internet-wide services with a global scope. 
+% These new
+% applications introduce a number of new assumptions on performance and
+% connectivity over the Internet abstraction.  
+The important role of computer
 networks can be further reflected in the government level debate to proclaim
 Internet connectivity as a fundamental human right~\cite{klang2005human}.
 
@@ -115,8 +116,8 @@ network are widely adopted as an integral asset for industry.  Currently the
 Internet produces 4,3\% of the global GDP. Computer Networking and the Internet,
 provide the middleware to interconnect modern multinational businesses. In the
 business domain computer network have become popular and important for two main
-reasons: computer networks provide a cheap and fast medium communication medium
-to interconnect the business logic, and the provide a global medium to provide
+reasons: computer networks provide a cheap and fast communication medium
+to interconnect the business logic, and distribute
 content to users. The adaptation of computer network has further augmented
 through the utilisation of the cloud as a medium to offload infrastructures to
 3rd party cloud providers, reducing to a great extend the cost of running
@@ -130,10 +131,10 @@ The abstraction principle is based to a great extend on the OSI
 model~\ref{Day:1983vy}, which tries to separate network functionality into a
 number of layers and define the interface provided by each layer. A side effect
 of this design is that application developers don't have access on the
-properties of the underlying environment and it's properties.  The OSI model or
+properties of the underlying path.  The OSI model or
 the TCP/IP implementations provide semantics for the interfaces but they don't
 provide any guarantees on the performance properties.  Applications on the other
-hand have performance requirement which they try to 'enforce' in the deployed
+hand, have performance requirement which they try to 'enforce' in the deployed
 environment. As a result, resource allocation in a network becomes difficult due
 to the diverse nature of network applications. In order to exemplify the problem, 
 we list in Table~\ref{tbl:application_requirement} a number of key traffic properties 
@@ -157,24 +158,24 @@ their share of the total volume, replaced by web and video delivery services.
 High diversity is also observed on the properties of available mediums for
 computer networks. The properties of links is defined in the data link and
 physical layer of the OSI model. Currently, Ethernet is the predominant link
-layer protocol in the Internet. In the 80s the low cost difference of Ethernet
+layer protocol in the Internet. In the 80s the low cost property of Ethernet
 implementations establish it as the leader of the market ever since.  The
 protocol has developed standards to run over coper and optical mediums, as well
 as off-licence radio frequencies, satellite and mobile networks. Although the
 Ethernet abstraction is persistent among all these mediums, it hides a lot of
 the performance limitations of the link (e.g. packet loss, hop-by-hop ARQ etc.).
 Because of this diversity in links, the performance of a computer network can be
-variables. An example of this property is the Internet. Internet exhibits a 3
+variable. An example of this property is the Internet. Internet exhibits a 3
 layer hierarchy of ASes, which allows it to scale and provide short-length paths
 between any 2 nodes.  Tier 1 and 2 ISPs provide forwarding in an homogeneous and
 fast manner. Such ISP's are in charge of a relatively small number of network
-points and thus are able to upgrade network infrastructure with control costs,
-which can be offloaded to clients through SLA agreements. For Tier-3 ISPs things
+points and thus are able to upgrade network infrastructure with relatively low costs,
+which can further be offloaded to clients through SLA agreements. For Tier-3 ISPs things
 are a lot different. This class of ISPs covers a wide range of services. Also
-because this is the last hop to end user, such networks tend to be large and
-spread over large geographic distances. For these network, connectivity
-properties are variable, users SLAs have minimum guarantees, performance can be
-highly dependent on link sharing ratio and link performance is highly variant
+because this is the last hop to end users, such networks tend to be large and
+spread over large geographic distances. For this type of networks, connectivity
+properties are variable, users SLA have minimum guarantees, performance can be
+highly dependent on link sharing ratio and can be highly variant
 due to the heterogeneity of medium types. Additionally, the cost to upgrade such
 networks is high, while strong market competition makes difficult to offload
 costs directly to users. A number of measurement studies have
@@ -190,11 +191,11 @@ described these differences~\cite{Huang:2010wb,Dischinger:2007bg}.
 % technologies. 
 Although computer networks are highly important for society the adaptability of
 network technologies to user requirement has not been equal over the years. This
-mismatch is ascribed to a number of reasons. 
+mismatch can be ascribed to a number of reasons. 
 
 % network design were developed in an environment that had different properties
 Current network technologies were developed a number of years ago in order to
-develop standardized and generic mechanisms for intercommunication among
+develop standardized and generic mechanisms to interconnect
 research institutes. Although DARPA funded the idea of computer networks in
 order to develop new resilient communication mechanisms, the early adopters of
 the technologies were universities and research facilities. As a result,
@@ -205,13 +206,13 @@ has been the default standard of the Internet.  During the first period of the
 NSFNET, a number of competitive suites were developed which addressed in their
 specification the problem of extensibility~\todo{find references for OSI TP*
   protocol and ATM UNI}.  Unfortunately, the increased design complexity made it
-difficult to develop highly performance implementations, and they were soon
-dropped by the network community. The TCP/IP protocol suite provided a fair
+difficult to develop high performance implementations, and they soon
+were declared obsolete by the network community. The TCP/IP protocol suite provided a fair
 split between simplicity and extensibility at that time.
 
-Nontheless, in the recent years the TCP/IP abstraction has show its limitations, as
-a number of fundamental assumptions has changed. Some of the core limitations of
-the protocol can be described in the following points:
+Nontheless, in the recent years the limitations of TCP/IP abstraction have
+become apparent, as a number of fundamental assumptions has changed. Some of the
+core limitations of the protocol can be described in the following points:
 
 % Why current abstraction is not sufficient to fulfil network requirements. 
 % Some assumption are invalid, while other assumption have been dropped by
@@ -220,35 +221,34 @@ the protocol can be described in the following points:
 % evolution limitations 
 % Some concrete examples of how computer networks are insufficient 
 \subparagraph*{Elevated Role of Security}: 
-The initial attempt to implement computer networks, tried to develop
-architecture that would have minimum requirements for a new node to participate
-in the network, in order to make networks more open and allow wider adoption of
-the technology. Also the networks were used by research institutes, which wanted
-to provide open access. At that point also the capabilities of computer hardware
-was limited and network connectivity was already consuming a significant portion
-of the resources of a node. As a result, the initial security requirements from
-computer network technologies were minimal. In the recent years, due to the
-vital role of computer networks for business, the requirements for security have
-been elevated. A McAfee report from 2009 reports that the cost of cybersecurity
-is calculated to approximately six hundred million
+An important architectural goal for the design of computer network was the
+minimization of functional requirements from joining hosts, allowing wide
+adoption of the technology and open accessibility.  When the idea of computer
+networks was first developed, the capabilities of computer hardware were limited
+and network connectivity should not consuming a significant portion of the
+computational resources of a node. As a result, the initial security
+requirements from computer network technologies were minimal. In the recent
+years, due to the vital role of computer networks in industry, security
+requirements expanded. A McAfee report from 2009 reports that the cost of
+cybersecurity is calculated to approximately six hundred million
 dollars~\cite{Acherman:2009wf}. The threat model lurcking over the Internet is
 wide and contains a number of threats, from Information interception to
-denial-of-service. Such costs can be reduced to a great extend if
-the security was inherent to network protocols, and span from the lowest levels
-of the network abstraction. Attempts to address such problem have been proposed
-in the protocol community, e.g. IPSEC~\cite{RFC2401}, but the deployment as the
-moment is not possible as an evolutionary extension.
+denial-of-service attacks. Such costs can be reduced to a great extend if the security
+was inherent to network protocols, span from the lowest levels of the
+network abstraction and spread across the network. Attempts to address such
+problem have been proposed in the protocol community, e.g. IPSEC~\cite{RFC2401},
+but the deployment at the moment is not straighforward.
 
 \subparagraph*{Network Addressing}: When the IP protocol was firstly deployed in
 the Internet, the size of the network was sufficiently small. Addressing was
-assigned based on a 32-bit integer space splited in classes in order to permit
-aggregation on the forwarding entities. Within 10 years, the initial assumption
-over the size of classes was reestablished through the classless Inter-domain
+assigned based on a 32-bit integer space, split in byte aligned classes in order to permit
+aggregation at the forwarding entities. Within 10 years, the initial assumption
+over the size of classes was re-established through the classless Inter-domain
 routing (CIDR), in order to allow better utilisation of the IP space. Within 15
-years  though the initial assumption over the size of the address space was also 
-reestablished, as IP addresses were not sufficient to cover the needs of hosts.
+years  though the initial assumption over the size of the address space prooved
+also shortviewed, as IP addresses were not sufficient to cover the needs of hosts.
 A number of layer violations, like NATs, were widely used within the subsequent
-years in order to support connectivity of the increasing number of end-hosts. In
+years in order to provide connectivity to the increasing number of end-hosts. In
 order to address this problem within the design of the network protocol, a
 revised version of IP has been proposed~\cite{RFC2460} since 1998, but its
 deployment is slow, as the size of the current Internet makes it extremely
@@ -258,29 +258,48 @@ difficult to replace IPv4 without significant connectivity problems and costs.
 a best-effort forwarding mechanism. This design decision was chosen in order to
 enforce the end-to-end principle of the Internet~\cite{end2endIP} and avoid
 state in the intermediate nodes of the network. Such an approach covered 
-sufficiently the requirements of the initial network-wide applications. As the
-network application requirements evolved over the years, they became more
-demanding. Unfortunately, Internet currently has no mechanism to address these
-requirement. The main approach that has been followed over the years to address
-this issue through sufficient network provision~\cite{TeiSha02}. This approach
-though becomes inefficient, as with regard to current network speeds the impact
-of queueing delays or packet drop is significant to the performance of streams.
-In literature a number of approaches has been described in multiple layers of
-the network~\cite{RFC5562, RFC2475, RFC3135}. Unfortunately, such approach are
+sufficiently the requirements of the networked applications of the time. As new
+network application became available over the years, more strict performance
+requirements were introduced. Unfortunately, Internet currently has no mechanism 
+to address these requirement network-wide. Network engineers have tackled this
+problem through adequate resource provision~\cite{TeiSha02}. This approach
+though becomes inefficient as network rates increase. In a 40gbps link the impact
+of queueing delays or packet drop becomes significant to the performance of streams.
+In related literature, a number of approaches has been proposed to address this
+problem in multiple layers of
+the network stack~\cite{RFC5562, RFC2475, RFC3135}. Unfortunately, such
+approaches are
 difficult to deploy across large networks, as they require significant upgrade
-in network technologies, introducing a significant cost. 
+in network elements, introducing a significant cost. 
 
-\subparagraph*{Bidirectional connectivity}: An important effect of mechanisms
+\subparagraph*{Bidirectional connectivity}: A side-effect of mechanisms
 addressing the previous two problem is the collapse of a fundamental assumption
 of computer network design, the ability of two connected nodes to communicate. A
-node which is behind a traffic inspecting middlebox is not guaranteed the
-ability to receive incoming connections from any node and thus not being able to
-be fully interactive. This problem has a direct consequence for users to resolve
+node which is behind a traffic inspecting middlebox is not guaranteed 
+to receive incoming connections from any node and thus is not
+fully interactive. This problem has a direct consequence for users to resolve
 to 3rd party services in order to establish connectivity, changing as a result
 the communication mechanism. 
 
 % discussion on ossification. Why evolution on protocol is difficult?
-
+A number of problems that we experience with current network functionality can
+be traced back to the assumptions of the protocols. A number of clean slate
+approach have been proposed over the years, that address a number of these
+problems. The process though to deploy a new protocol is not straightforward.
+Computer networks currently suffer from an effect that is term as \{it 'protocol
+  ossification'\} in the research community. The protocol hierarchy in the
+internet currently looks like an hourglass. We currently have a multitude of
+protocol in the application and link layer, but we only have IP in the network
+layer and TCP and UDP in the transport layer. The specifications of these
+protocol define a number of mechanisms that allow protocol designers to develop
+extensions.  Unfortunately, these mechanisms are not guaranteed to be supported
+across the network, as their support is not critical for functionality and thus
+can be sacrifices in favour of performance. As a result, the capabilities to
+evolve protocol in a manner that is compatible with the current Internet
+infrastructure is impossible. In~\cite{Bauer:2011ws} authors report that 80\% of
+popular services doesn't support ECN and 0,6\% of destination may drop ECN
+traffic, while in~\cite{Honda:2011ci} authors report a large scale inability of
+the Internet to cope with TCP traffic that carries unknown option fields. 
 
 % wrap-up - Things are tricky. 
 
