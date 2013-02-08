@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>cr409 Thesis stats</title>
+  <link href="https://raw.github.com/flot/flot/master/examples/examples.css" rel="stylesheet" type="text/css">
+  <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+  <script language="javascript" type="text/javascript" src="https://raw.github.com/flot/flot/master/jquery.js"></script>
+  <script language="javascript" type="text/javascript" src="https://raw.github.com/flot/flot/master/jquery.flot.js"></script>
+  <script language="javascript" type="text/javascript" src="https://raw.github.com/flot/flot/master/jquery.flot.time.js"></script>
+  <script language="javascript" type="text/javascript" src="https://raw.github.com/mbostock/d3/master/d3.min.js"></script>
+  <script language="javascript" type="text/javascript" src="https://raw.github.com/jasondavies/d3-cloud/master/d3.layout.cloud.js"></script>
+  <script type="text/javascript">
+
+  $(function() {
+
+    // This will parse a delimited string into an array of
+    // arrays. The default delimiter is the comma, but this
+    // can be overriden in the second argument.
+    function CSVToArray( strData, strDelimiter ){
+      // Check to see if the delimiter is defined. If not,
+      // then default to comma.
+      strDelimiter = (strDelimiter || ",");
+      // Create a regular expression to parse the CSV values.
+      var objPattern = new RegExp(
+        (
+          // Delimiters.
+          "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+          // Quoted fields.
+          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+          // Standard fields.
+          "([^\"\\" + strDelimiter + "\\r\\n]*))"
+        ),
+        "gi"
+        );
+      // Create an array to hold our data. Give the array
+      // a default empty first row.
+      var arrData = [[]];
+      // Create an array to hold our individual pattern
+      // matching groups.
+      var arrMatches = null;
+      // Keep looping over the regular expression matches
+      // until we can no longer find a match.
+      while (arrMatches = objPattern.exec( strData )){
+        // Get the delimiter that was found.
+        var strMatchedDelimiter = arrMatches[ 1 ];
+        // Check to see if the given delimiter has a length
+        // (is not the start of string) and if it matches
+        // field delimiter. If id does not, then we know
+        // that this delimiter is a row delimiter.
+        if (
+          strMatchedDelimiter.length &&
+          (strMatchedDelimiter != strDelimiter)
+          ){
+          // Since we have reached a new row of data,
+          // add an empty row to our data array.
+          arrData.push( [] );
+        }
+        // Now that we have our delimiter out of the way,
+        // let's check to see which kind of value we
+        // captured (quoted or unquoted).
+        if (arrMatches[ 2 ]){
+          // We found a quoted value. When we capture
+          // this value, unescape any double quotes.
+          var strMatchedValue = arrMatches[ 2 ].replace(
+            new RegExp( "\"\"", "g" ),
+            "\""
+            );
+        } else {
+          // We found a non-quoted value.
+          var strMatchedValue = arrMatches[ 3 ];
+        }
+        // Now that we have our value string, let's add
+        // it to the data array.
+        arrData[ arrData.length - 1 ].push( strMatchedValue );
+      }
+
+      // Return the parsed data.
+      return( arrData );
+    }
+
+    var fill = d3.scale.category20();
+
+    function plot_cloud (series) {
+        data = CSVToArray(series, " ");
+        result = [];
+        for(i=0; i<(data.length-1); i++) 
+        result.push({
+          text:data[i][0], 
+          size:data[i][1],
+        });
+
+  d3.layout.cloud().size([300, 300])
+      .words(result)
+      .rotate(function() { return ~~(Math.random() * 2) * 90; })
+      .font("Impact")
+      .fontSize(function(d) { return d.size; })
+      .on("end", draw)
+      .start();
+
+  function draw(words) {
+    d3.select("#word-count").append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+      .append("g")
+        .attr("transform", "translate(150,150)")
+      .selectAll("text")
+        .data(words)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  } 
+    }
+
+      function onDataReceived(series) {
+        // Extract the first coordinate pair; jQuery has parsed it, so
+        // the data is now just an ordinary JavaScript object
+        data = CSVToArray(series, " ");
+        d1 = [];
+        for(i=0; i<(data.length-1); i++) 
+          d1.push([(data[i][0] * 1000), data[i][1]]);
+
+        $.plot("#placeholder", [ d1 ], {
+          xaxis: { mode: "time",
+          label:"word count",
+        /*  dropboxminTickSize: [1, "day"] */
+          }});
+     }
+
+      $.ajax({
+        url: "https://dl-web.dropbox.com/s/1k1qysp7i1vmfyk/word_cloud.log",
+        type: "GET",
+        dataType: "text",
+        success: plot_cloud
+      });
+       $.ajax({
+        url: "https://dl-web.dropbox.com/s/6pqs8mtjdb4bdxp/stats.log",
+        type: "GET",
+        dataType: "text",
+        success: onDataReceived
+      });
+    
+    $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+  });
+
+  </script>
+</head>
+<body>
+
+  <div id="header">
+    <h2>Counting words for thesis from <a
+        href="http://github.com/crotsos/final-thesis">here</a></h2>
+  </div>
+
+  <div id="content">
+
+    <div class="demo-container">
+      <div id="placeholder" class="placeholder" style="height:480px"></div>
+    </div>
+    <br/>
+    <div style="width:100%;height:100%;text-align:center">
+      <div>And a word cloud to see what is important!</div>
+      <center><div id="word-count"></div></center>
+    </div>
+   </div>
+</body>
+</html>

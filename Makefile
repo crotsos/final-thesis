@@ -311,3 +311,12 @@ cleanpspdf : clean
 
 clobber : cleanpspdf
 	@rm -f *~
+
+count: 
+	perl texcount.pl *.tex */*.tex
+
+# sed 's/.*/^&\ /' filter.txt > filter-regexp.txt
+log :
+	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.log
+	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.log
+
