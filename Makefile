@@ -294,7 +294,7 @@ latexhelp:
 	@echo "  latexclean    Remove all generated files"
 
 clean latexclean::
-	@rm -f *.log *.aux *.dvi *.bbl *.blg *.ilg *.toc *.lof *.lot *.idx *.ind *.out *.brf *.html *.btmp *.itmp *.rerun *.glo *.gls *.nlo *.nls
+	@rm -f *.log *.aux *.dvi *.bbl *.blg *.ilg *.toc *.lof *.lot *.idx *.ind *.out *.brf *.btmp *.itmp *.rerun *.glo *.gls *.nlo *.nls
 	@epsfiles=`find * -maxdepth 0  -name "*.eps" `; \
 	if [ -n "$$epsfiles" ]; then \
 		for i in *.eps; do \
@@ -317,6 +317,6 @@ count:
 
 # sed 's/.*/^&\ /' filter.txt > filter-regexp.txt
 log :
-	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.log
-	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.log
+	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.data
+	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.data
 
