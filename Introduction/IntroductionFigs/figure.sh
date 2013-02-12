@@ -1,7 +1,6 @@
 #!/usr/bin/env bash 
 
-echo exporting type $type
-
+echo plotting Introduction
 gnuplot << EOF
 
 set key on
