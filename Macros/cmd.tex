@@ -15,3 +15,34 @@
   % print text
   \emph{\color{red}{#1}}
     }
+
+\newcommand{\unik}{unikernel}
+\newcommand{\Unik}{Unikernel}
+\newcommand{\mirage}{Mirage}
+\newcommand{\Mirage}{Mirage}
+\newcommand{\mirageurl}{\emph{http://openmirage.org}}
+
+\usepackage{listings,color}
+ 
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+ 
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+ 
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\color{darkblue}\bfseries,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}

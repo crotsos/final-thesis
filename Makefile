@@ -237,7 +237,7 @@ view:
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(DVIPS) -o $*.ps $<
 
-%.pdf: %.tex Abstract/abstract.tex Introduction/introduction.tex
+%.pdf: %.tex Abstract/abstract.tex Introduction/introduction.tex Chapter1/chapter1.tex
 	$(PDFLATEX) $<
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(BIBTEX) $*

@@ -5,20 +5,41 @@
     \graphicspath{{Chapter1/Chapter1Figs/EPS/}{Chapter1/Chapter1Figs/}}
 \fi
 
-This chapter contains the results of an exhaustive study over the capabilities
-of existing SDN technologies and architectures. The work focuses on the
-functionality of version 1.0 of the \of protocol as this is the sole
-standardised instantiation of the SDN paradigm and version 1.0 is the current
-standard that is provided by hardware switch firmware. In this work, \of
-functionality is modular, thus the work can over 
-other future protocol specification.  For this work, we have developed two frameworks:
-\oflops and \sdnsim. \oflops is a high precision \of switch micro-benchmark
-platform. Using the platform, we develop a set of elementary testing scenario in
-order to understand the performance limitation of existing \of switch implementations.
-\sdnsim is a macro-benchmark platform for \of architectures. The platform
-extends the Unikernel abstraction in order to support large scale network
-simulation and emulation, with the same code base. In this chapter I present in
-Section~\ref{sec:oflops-intro} an introduction on the \oflops platform, 
+This chapter contains the results of an exhaustive characterisation study of
+existing SDN technologies. We are trying to understand the capabilities of the
+SDN paradigm as well as the limitation incurred by current implementation
+efforts. The work focuses on the functionality of version 1.0 of the \of
+protocol. This is the sole standardised instantiation of the SDN paradigm and
+version 1.0 is the current standard available in hardware switches.
+\of functionality is modular, thus the experiments can be
+reproducible over other future SDN protocol specifications.  For this work, we have
+developed two frameworks: \oflops and \sdnsim. \oflops is a high precision \of
+switch micro-benchmark platform. Using the platform, we develop a set of
+elementary testing scenario in order to understand the performance limitation of
+existing \of switch implementations.  \sdnsim is a macro-benchmark platform for
+\of architectures. The platform extends the Unikernel abstraction in order to
+support large scale network simulation and emulation, using the same
+experiment specification. In this chapter we present
+the goals of \oflops (Section~\ref{sec:oflops-intro}) and
+a design overview of the \oflops platform (Section~\ref{sec:oflops-design}).
+Further, we select a number of off-the-self \of implementations
+(Section~\ref{sec:oflops-switches}) and present the results of a set of \oflops
+test scenarios over the elemenetary interaction provided by the protocol 
+(Section~\ref{sec:oflops-results}. 
+
+%% We can see that the architecture of the Mirage switch
+%% has no impact in the switching performance and is similar with the
+%% performance of ovs. Furthermore, we note that when we use a 1 Mbps
+%% packet probe we notice that both switches exhibit a high per packet
+%% processing delay. We believe that this is due to the underlying
+%% bridging functionality of the Dom0 network stack. We have to point out
+%% though, that the mirage switch is able to run with minimum memory
+%% requirements. Specifically, the switch is able to run and function
+%% using only 32 Mbytes of memory, while the openvswitch vm requires at
+%% least 128 Mbytes in order to boot up.We are currently working towards
+%% developing a better integration of the switch functionality with the
+%% network stack of xen in order to achieve lower switching latency.
+
 
 % SDN context
 % Driven by the OpenFlow
@@ -44,34 +65,42 @@ Section~\ref{sec:oflops-intro} an introduction on the \oflops platform,
 % OpenFlow implementations, which motivates our work.
 
 
-As we have discussed in Chapter~\ref{ch:background}, SDN techology can
-enhance the functional capabilities of a network and provide high resolution 
-flow control mechanisms in order to fulfil network application requirements. 
-Although the short period since the introduction of the SDN paradigm, 
-many novel control architectures have been proposed~\cite{plug_n_serv,difane,flowvisor-osdi}. 
-One the most successful instantiations of the SDN paradigm is the \of protocol, 
-standardized and developed by a joint consortium of educational and industrial
-institutes, the Open Network Foundation (ONF). Currently \of is the sole SDN 
-protocol that provides production support from a wide range of network vendors, 
-while educational funding in US~\cite{ofelia} and Europe~\cite{ofelia} have 
-develops large scale \of testbeds in order to support earch nnovativation in the
-field.
+% As we have discussed in Chapter~\ref{ch:background}, SDN techology can
+% enhance the functional capabilities of a network and provide high resolution 
+% flow control mechanisms in order to fulfil network application requirements. 
+% Although the short period since the introduction of the SDN paradigm, 
+% many novel control architectures have been proposed~\cite{plug_n_serv,difane,flowvisor-osdi}. 
+% One the most successful instantiations of the SDN paradigm is the \of protocol, 
+% standardized and developed by a joint consortium of educational and industrial
+% institutes, the Open Network Foundation (ONF). Currently \of is the sole SDN 
+% protocol that provides production support from a wide range of network vendors, 
+% while educational funding in US~\cite{ofelia} and Europe~\cite{ofelia} have 
+% develops large scale \of testbeds in order to support earch nnovativation in the
+% field.
+
 %\of is increasingly adopted, both by hardware vendors as well as by the
 %research community \cite{plug_n_serv,difane,flowvisor-osdi}.
 
-In order though to make the transition of SDN and \of from research to industry
-,  developers need to evaluate thoroughly proposed functionality and provide
-accurate availability and performance guarantees.  Nonetheless, since the SDN
-paradigm distributes control plane logic across various independent functional
-units, performance evaluation is a difficult tasks. In order to address this
-issue we developed \oflops~\footnote{\oflops is under GPL licence and can be
-  downloaded from \url{http://www.openflow.org/wk/index.php/Oflops}}, a
-measurement framework that enables rapid development of use-case tests for both
-hardware and software OpenFlow switch implementations. To better understand the
-behavior of the tested OpenFlow implementations, \oflops combines measurements
-from the OpenFlow control channel with data-plane measurements. To ensure
-sub-millisecond-level accuracy of the measurements, we bundle the \oflops
-software with specialized hardware in the form of the NetFPGA
+Although the short period since the introduction of the SDN paradigm, many novel
+control architectures have been
+proposed~\cite{plug_n_serv,difane,flowvisor-osdi}. The deployment of such
+architectures to production networks isn't straightforward. 
+In~\cite{Weissmann:va} authors describe their experience
+in deploying the first \of production networks in Stanford University and point
+out that the initial deployment was highly under-performing and unreliable when
+a simple reactive control scheme was deployed. The main source of problems
+relates to firmware and hardware limitations. In order though to make the
+transition of SDN and \of from research to industry ,  developers need to
+evaluate thoroughly proposed functionality and provide accurate availability and
+performance guarantees. In order to address this issue we developed
+\oflops~\footnote{\oflops is under GPL licence and can be downloaded from
+  \url{http://www.openflow.org/wk/index.php/Oflops}}, a measurement framework
+that enables rapid development of use-case tests for both hardware and software
+OpenFlow switch implementations. To better understand the behavior of the tested
+OpenFlow implementations, \oflops combines measurements from the OpenFlow
+control channel with data-plane measurements. To ensure sub-millisecond-level
+accuracy of the measurements, we bundle the \oflops software with specialized
+hardware in the form of the NetFPGA
 platform\footnote{\url{http://www.netfpga.org}}.  Note that if the tests do not
 require millisecond-level accuracy, commodity hardware can be used instead of
 the NetFPGA \cite{pam-accuracy}.
@@ -982,157 +1011,555 @@ which leads to a batched handling of requests.
 
 % LocalWords:  NIC ToS TCP pcp interpacket TCAM lookup SNMP CPUs parameterising
 
+
 \section{\sdnsim introduction} \label{sec:sdnsim-intro}
+
+In the SDN paradigm, backward-compatible evolvability of computer networks is
+achieved through the distribution of control to external programmable units. The
+protocols provides all required mechanisms in order to allow a remote entity to
+get sufficient forward plane feedback and control the forwarding process at a very fine
+level. So far the trend in \of design is to aggregate control in a single
+control unit, in order to have a single point of control in the network. This
+aggregation permits on one hand to achieve higher optimality in forwarding
+policy, while on the other hand the logic can be developed in richer
+programming environments, than the embedded systems usually found in current
+network devices.
+
+The ability to distribute control over multiple functional units, in conjunction
+with the complex nature of network stacks, as well as the diverse behaviour of
+\of switch and controlling platforms, reduces the ability of developers to
+predict the behaviour of an SDN design. In order to reason on correctness,
+developers must build realistic small scale experiments, and larger scale 
+experiments in order to reason on performance. In the related literature on network
+evaluation there have been two main experimental approaches:
+\emph{realistic testbed} and \emph{simulation}.
+
+In the realistic experimentation approach, scientists try to reconstruct the
+exact properties of the deployment environment. This approach provides an
+optimal measurement environment the provides full control of the parameter of
+the experiment, but has a significant overhead in resources and configuration
+time. Experimenting with a real datacenter would require a high number of
+machines that implement full functionality of the target environment, large
+interconnection planning and careful metrication and analysis of the resulting
+system. These requirements scale badly as the number of network hosts increases.
+In order to reduce resource costs, the research community has developed shared
+testbeds~\todo{add some pointers.}.  Such testbeds though limit the capability
+of users to control measurement noise and network topologies. 
+
+In the simulation approach, researchers replace some part of the functionality
+of the system by a simpler model. The goals of such an approach is to reduce the
+complexity of the experiment, and achieve scalability for large network sizes. This
+approach has two main drawbacks. Firstly, the fidelity of the results depends
+extensively on the reality of the assumptions of the model. Secondly, in order to
+simulate appropriately the network, the users usually need to rewrite the logic
+of their experiments in order to fit the abstraction of the underlying models.
+For example, in order to simulate \of-based network currently there is no
+off-the-self simulation platform to support the protocol. An \of architect is
+required to reimplement its \of logic in order to experiment with architectural
+designs. 
+
+\sdnsim~\footnote{\oflops is under GPL licence and can be downloaded from
+  \url{http://github.com/crotsos/sdnsim/}} is a novel framework, that bridges
+the two domains of experimentation and provides an \of specific development
+environment. The framework is written in OcaML, a high performance functional
+language, and extends the functionality of the
+Mirage~\footnote{\mirageurl} library OS. Developers can
+  implement the required functionality of their network design and at the
+  compilation step select the target experiment type. \sdnsim provides two
+  target options: a simulation target, that runs the Mirage code
+  on top of the ns-3 simulation environment, and a realistic target, that build
+  and deploys each node of the simulation as a DomU VM and configuration
+  resource allocation using xen's API. 
+
+% SDNsim is an ensemble of libraries that provide a simple simulation abstraction
+% layer to define and implement SDN deployment scenarios. The platform aims to
+% translate network definitions into concrete experiment implementations. More
+% specifically, the translation process can generate high-accuracy
+% event-driven simulations over the NS3 platform as well as real-time emulation
+% by interconnecting DomU virtual machines over the Xen platform.  Here, we
+% define the architecture of the platform, describe the library
+% applications that the platform supports, provide an initial performance
+% evaluation, and conclude with the required functionality. 
+% 
+% The source code can be found at \url{http://github.com/crotsos/mirage}; it
+% has been successfully tested under both Linux and Mac OSX. 
+% Details on the required step to install and try the code are forthcoming.
+% For Linux, the process is fairly straightforward; 
+% for MacOS X, a patch for the NS3 code is required to compile all the required modules. 
+
+\section{Mirage Library OS} \label{sec:mirage-intro}
+
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{mirage-toolchain}
+\caption{Specialising a \mirage application through recompilation alone, from
+  interactive UNIX Read-Eval-Print Loop, to reduce dependency on the host
+  kernel, and finally a unikernel VM.}
+\label{fig:mirage-toolchain}
+\end{figure}
+
+Cloud computing has revolutionized the way the business use IT infrastructures
+as well as the way we develop distributed computing applications. The
+abstraction is straightforward. A third party entity takes responsibility to
+maintain a datacenter. This infrastructure, is partitioned into smaller virtual
+computational units which clients can rent in order to run their applications.
+The elegance of this model is based on simplicity of the abstraction that the
+cloud provider provides to the user and the ability to port existing services
+running on a personal computer or a server to the cloud platform. 
+
+Although the simplicity of the exposed abstraction, the cloud architecture
+consist of a complex set of processing layers. A single application VM would
+include: i) the virtualization runtime layer, ii) the guest OS kernel layer,
+iii) A language runtime layer (POSIX, JVM etc.) iv) user-space
+thread layer. This layer complexity, although it provides excellent backwards
+compatibility for existing datacenter applications, it makes the process of
+optimisation, debugging as well as security difficult, while there is a
+significant overlap on the functionality provided by each layer. 
+
+Mirage is a clean-slate application synthesis framework that allows users to
+compile application to a single bootable VM image. Mirage relies on the idea of
+library OS; functionality is separated into logical modules which integrates in
+a resulting binary, only if needed by the code. As a result, Mirage is able to
+generate small size VM images which additionally are fast to boot. Although, 
+OCaml is a functional language, it is able to generate highly performand binary
+code and application specific microbenchmarks has shown performance to be
+compare to c code implementations. In order to
+minimize processing layers, IO operations are coded on top of the NetFront
+device abstraction provided by Xen, while the OS is using extensively zero-copy
+mechanisms and exposes directly the pages of the shared memory ring to
+application space, over a simple abstraction that enforces memory boundaries.
+
+Mirage executes OCaml code over a specialised language runtime modiﬁed in two
+key areas: memory management and concurrency. Because of the single process
+nature of Mirage images, the OS uses a single address space, separated between
+the text and data section of the program and the runtime heap. Because the
+program code is immutable during runtime, Mirage can lock write access to
+executable memory space, thus mitigating buffer overflow attacks. Additionally,
+this mechanism removes the requirement of Address Space Randomization (ASR),
+which simplifies and makes more efficient memory management.  To provide
+concurrency beyond Xen IO polling function, Mirage integrates the Lwt
+cooperative threading library~\cite{lwt}. This internally evaluates blocking
+functions into event descriptors to provide straight-line control ﬂow for the
+developer.  Written in pure OCaml, Lwt threads are heap-allocated values, with
+only the thread main loop requiring a C binding to poll for external events.
+Mirage provides an evaluator that uses Xen polling to listen for events and wake
+up lightweight threads. The VM is thus either executing OCaml code or blocked,
+with no internal preemption or asynchronous interrupts. The main thread
+repeatedly executes until it completes or throws an exception, and the domain
+subsequently shuts down with the VM exit code matching the thread return value.
+A useful consequence is that most scheduling and thread logic is contained in an
+application library, and can thus be modified by the developer as they see fit. 
+
+In order to provide basic system programming capabilities, Mirage OS provides
+two core modules, named Net and OS, that implement and expose the required
+functionality for networking and device management, respectively. The API is
+similar to the API provided by the Unix model from OCaml; developers can modify
+their code and compile existing applications to Mirage VMs. Due to the
+simplicity of the OS and Net modules, Mirage provides the ability to compile
+code to other target backends, apart from the Xen platform. Specifically, Mirage 
+can generate UNIX binaries, using both the POSIX library network functionality 
+and raw sockets, and even Javascript executables that run in a browser. There is
+also currently an effort to port Mirage in the FreeBSD kernel as well as the
+BareboneOS, an assembly written minimum OS. The diverse set
+of deployment backends, provides to developers an environment to
+test and optimize code gradually. Developers build initially their core logic over
+the POSIX backend in order to test the correctness of the code, then they can
+try their code over the Mirage default network stack, to perform a small scale
+performance evaliation, and finally they can synthesize the resulting deployable 
+Xen Image~\ref{fig:mirage-toolchain}.
 
 \section{\sdnsim design} \label{sec:sdnsim-design}
 
+\lstset{language=XML,
+numberstyle=\footnotesize,
+basicstyle=\ttfamily\footnotesize,
+captionpos=b,
+}
+\begin{lstlisting}[caption={A sample \sdnsim configuration file interconnecting
+  a server and a client host},label={lst:sdnsim-conf}]
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<topology module="Simple_tcp_test" backend="ns3-direct" 
+    duration="30">
+  <modules>
+    <library>lwt</library>
+    <library>lwt.syntax</library>
+    <library>cstruct</library>
+    <library>cstruct.syntax</library>
+    <library>mirage</library>
+    <library>mirage-net</library>
+    <library>pttcp</library>
+  </modules>
+  <node name="host1" main="host_inner"> 
+    <param>1</param>
+  </node>
+  <node name="host2" main="host_inner"> 
+    <param>2</param>
+  </node>
+  <link src="host1" dst="host2" delay="10" rate="100" 
+    queue_size="100" pcap="false"/>
+</topology>
+\end{lstlisting}
+
+\begin{figure}
+\centering
+\subfigure[NS3]{
+ \includegraphics[width=0.45\textwidth]{sdnsim-arch-ns3}
+ \label{fig:sdnsim-arch-ns3}}
+\subfigure[Xen] {
+ \includegraphics[width=0.45\textwidth]{sdnsim-arch-xen}
+ \label{fig:sdnsim-arch-xen}}
+\caption{\sdnsim host internal architecture: NS3
+  simulation~\ref{fig:sdnsim-arch-ns3} and xen real-time
+  emulation~\ref{fig:sdnsim-arch-xen}.}
+\label{fig:sdnsim-arch}
+\end{figure}
+
+For the user perspective, the core of \sdnsim consists on a single executable
+that works as one more OCaml build system. Developers write their OCaml code in
+order to define the functionality of network nodes, and use a single xml file in
+order to describe the network topology and match functionality to network hosts.
+A sample xml file is presented in Listing~\ref{lst:sdnsim-conf}. The
+configuration describes a simple client~(host1)~-~server~(host2) configuration.
+For an experiment definition, developers needs to define, at minimum,  the core
+code module~(topology@module), the target executable~(topology@backend) and the
+duration of the experiment~(topology@duration). In order to define a host,
+\sdnsim uses a host xml entity. For each host users must define the host
+name~(node@name) and the host main function~(node@main), while a number of named
+parameters~(node/param) can be passed to the main function. Finally, developers
+can define links between hosts~(link@src, link@dst) along with the
+device~(link@queue\_size, link@pcap) and propagation properties~(link@rate,
+link@delay), using the link xml entity. Links can be used also to integrate
+external network interfaces in the simulation, in order to allow the experiment to
+interact with entities outside of the experiment scope.
+
+The functionality of a node in the \sdnsim platform can be split in 3 layers.  A
+simple representation of the architecture of an \sdnsim host can be seen in
+Figure~\ref{fig:sdnsim-arch}.  At the top layer of the host is the application
+logic of the host. This layer is defined by the developer, and define the
+traffic load of the network and its forwarding logic. In order to allow
+realistic traffic patterns, \sdnsim can reuse all the application protocol libraries
+supported in the \mirage platform, namely dns, http, ssh and \of. Additionally,
+we have re-implemented in OCaml the pttcp tcp test tool functionality~\ref{pttcp},
+in order to allow model driven TCP flow generation. 
+
+In the middle layer of the host architecture, we reuse the network library and
+the OS abstraction defined by the Mirage platform. These libraries are mapped in
+the lower layer of the respective backend. Because this platforms aims to
+develop an \of capable simulation platform, the main focus for the integration
+between the two lower layer is the fidelity in network functionality and time
+consistency. Currently, \sdnsim supports two
+backends, {\it NS3} and {\it Xen}. For each backend a different strategy has been 
+followed in order to implement the lower layer interaction. 
+
+\subsubsection{Xen}
+
+For the Xen back end a lot of the work to integrate the \mirage{}
+libraries with the hypervisor was already developed by the \mirage{}
+project. There are two main differences on the design of the Xen back
+end in comparison to the NS3 back end.  First, in the Xen case, the
+emulated host now runs in real time and as a result it has to handle
+in the OS space the generation of time and network events. To avoid
+the low-level interaction of the OS code with the hypervisor
+hardware-software abstraction, the code uses the existing MiniOS code
+to boot and interact with the network devices. Packet receipt and
+transmission is handled by a number of ring buffers that can be
+accessed both by the OCaml code and the MiniOS library. Each VM
+appropriately handles events through a polling mechanism running
+within a loop, and waits for either packets to arrive or for sleep
+requests to time out. The second difference is the fact that, due to
+the real-time nature of this back end, the experimental measurement
+results may include high noise and variance, especially when highly
+computational tasks are implemented in the host space. The Xen back end
+sacrifices accuracy to provide faster execution times.
+
+Work on the Xen back end over the summer of 2012 focused on developing
+appropriate bindings for the Topology module in order to generate the
+appropriate VM binaries as well as configure network requirements.  To
+achieve this, the xen-api library was used. This library provides
+bindings in various programming languages that allow programmatic
+allocation of resources and deployment of new VMs.  The library uses an
+XML-based RPC protocol that communicates with a hypervisor server and
+provides both monitoring and configuration capabilities.
+Additionally, in order to configure the network environment, I used
+the OpenVSwitch software switch to provide bridging
+functionality for the VMs. OpenVSwitch provides a controlling
+daemon that is responsible for the monitoring and the configuration of
+the switching functionality in real time.  The daemon exposes a JSON
+RPC mechanism through which users can change aspects of the switching
+functionality in real time, such as the creation of resource limiting
+queues and the assignment of flows to queues. This is still an ongoing
+task without fully functional code.
+
+
+\subsubsection{NS3}
+
+NS3 is a framework for discrete time packet driven network simulations. It
+builds around a basic event-driven simulation engine and provides a set of
+libraries that implement an extensive set of network applications, routing
+protocols, data-link layer protocols and link emulations models. NS3 is widely
+used in academia and is considered as a default mechanism for simulation in the
+domain of MANETs and wireless communications. 
+
+In order to bridge the simulation clock with the Mirage host time, we have
+mapped the gettimeofday functionality of the OS with the global Simulator
+clock of the NS3 platform. Further, in order to provide accurate time events in
+the Mirage platform we modify the main mechanism for time events in the
+platform, the thread sleep function. Each sleep call is blocked and scheduled
+as an NS3 timed event. The thread is resumed only when the simulator fires the
+respective timed event. Finally, in order to make sure that any sleeping thread
+is not paused for a long period, the OS schedules {\emph idle} timed events that
+check for any yielded thread.
+
+The networking functionality uses an abstraction primitive of the NS3
+platform, PointToPoint channel. This primitive simulates a simple PPP
+encapsulated link. The main reason for using this connection
+abstraction is the fact that it is the only abstraction that
+implements rate limiting on the network device entity and that does
+not require any state sharing between the two hosts to schedule
+transmission. Such a model is valid for the case of large datacenters,
+as the Ethernet links are usually full duplex and the medium is
+shared by the two end-point, canceling any requirement for
+CSMA MAC protocols. For the sending functionality, the network device
+contains a single network queue for each device shared between the
+OCaml code and the NS3 simulator entity, on which packets can be
+stored temporarily when the network medium is busy transmitting
+data. To provide a reliable network device that will not drop packets
+when the queue is full, during transmission the OS netif module first
+checks the size of the queue; in case it is full, it defers its
+packet copy until the queue has an empty slot. To avoid
+consuming processing cycles from the simulation, the queue also
+provides a notification mechanism to the OCaml code, which notifies
+the net module when a slot is available in the queue. As a result, we
+avoid any unnecessary polling.  For packet receipt, the NS3 device allows
+registering receipt callback to each virtual network
+device. The packet demuxing callback implements logic to forward
+packets to the appropriate listening thread.
+
+An important assumption of the current architecture that provides accuracy in
+simulation time is the blocking nature of the event-handling process. 
+In this way,
+the virtual clock will not increment while a host is processing an event and
+all processing complexity of hosts is assumed to incur negligible delays. 
+
+Finally, in order to make the simulation scalable, a distributed
+message passing mechanism has been included that allows each host to
+run in an independent process and synchronize with other hosts only
+during network interactions.  This layer in the architecture has been
+included because the OCaml runtime cannot support multithreaded
+parallel programming in order to make the garbage collection easier
+and faster. By allowing this process level distribution of the
+simulation load, we are able to distribute the computation burden
+across multiple cores in multicore platforms, or even extend the
+simulation across the network, by deploying hosts in remote machines
+and notifying the MPI process of their existence.  On the other hand,
+the synchronization relaxation is not significant for the class of
+operations considered, as the traffic in a datacenter is dominated by
+the TCP protocol -- which by nature bases its rate-adaption
+capabilities on the synchronization of the participating hosts.
+
 \section{\sdnsim evaluation} \label{sec:sdnsim-precision}
 
-\subsection{\of library performance}
+In order to evaluate the performance of the develop develop a number of small scale
+microbenchmarks in order to evaluate the performance of the \of protocol
+functionality as well as the performance of the NS-3 binding.
+In~\cite{unikernel}, there is an exhaustive analysis of the performance of the
+\mirage platform, which we omit from this section. In Section~\ref{sec:of-perf},
+we use a number of off-the-self benchamrking platforms of the \of community
+and benchmark the \of controller and switch performance and in
+Section~\ref{sec:sdnsim-ns3-perf} we test the scalability of the NS3
+backend 
 
-% In this experiment we are considering a usage scenario which queries
-% the switch for unique flow statistics and modifies entries in the
-% flow table. The experiment we develop is similar to the flow
-% modification experiment presented in Section~\ref{sec:results-rate}.
-% two packet probe streams with 100 bytes packets at a rate of
-% 100Mbps.  Both probes send small packets of 100 bytes at a rate of
-% 10Mbps to the switch. The first probe uses the first 100 flows of
-% the table to switch packet in a round-robin manner, while the second
-% probe generates packets that use randomly the rest of the flows.  At
-% the same time, the controller is polling periodically the switch for
-% flow statistics for variable subsets of the flow table. We also poll
-% the CPU switch utilization through SNMP.  Each request queries for a
-% subset of 128 flows of the table.  The controller, after one minute
-% of operation, sends an ensemble of 100 flow modifications that
-% change the output port of the first 100 flows of the table.  In this
-% epxeriment we measure the delay between the time we send a the flow
-% modification and the timer we receive at least one packet from each
-% of the first 100 flows on the new port. For the duration of the
-% experiment we are also polling the switches for cpu statistics.
+\subsection{\of library performance} \label{sec:of-perf}
 
-% \subsection{Traffic interception by the controller} Because in
-% Openflow the controller should be able to have full control of the
-% traffic, the protocol defines a set of messages that allow the
-% controller to intercept or inject traffic. In order to achieve this,
-% the protocol defines 2 messages name \textit{Pkt\_in} and
-% \textit{Pkt\_out}.  Pkt\_in messages are generated automatically
-% when the switch has no rule to match a packet. Additionally, the
-% controller is able to insert flows in the flow table that define as
-% an action to push packets to the controller as pkt\_in
-% messages. Each packet contains openflow specific details for the
-% packet and optionally a buffer id that can be used in flow
-% modification messages to push packet on a specific port
-% later. Pkt\_out messages are generated by the controller and
-% contains the full content of a packet and detail of how the switch
-% should handle the packet.  Although these types of messages can be
-% useful to openflow application developers, we need to define whether
-% their limitations and the impact they have on the usage of the
-% switch. In order to measure this we conduct 2 experiments. For the
-% case of Pkt\_in messages we use only a single port from the switch
-% on which we send a single probe with random destination IP. The rate
-% of the measurement probe and the packet size are exported as
-% parameters of the experiment. Before the start of the experiment we
-% send a single delete message in order to clear the flow table. For
-% each pkt\_in event we store its sequence number and its delay. For
-% the case of Pkt\_out message we implement the reverse process. We
-% generate the same measurement probe but from the controller side,
-% exporting the same experiment parameters. Each packet is send on a
-% specific port where it is captured by the NetFPGA card. For each
-% packet we store its sequence number and its delay.
-% \subsubsection*{Results}
-% \begin{figure}[htb]
-%   \begin{center}
-%     \includegraphics[width=0.4\textwidth]{graphs/pkt_in_out/pkt_in_delay}
-%   \end{center}
-%   \caption{median delay to receive a pkt\_in message from the
-%     switch.}
-%   \label{fig:pkt_in}
-% \end{figure}
-% \begin{figure}[htb]
-%   \begin{center}
-%     \includegraphics[width=0.4\textwidth]{graphs/pkt_in_out/pkt_out_delay}
-%   \end{center}
-%   \caption{median delay to receive a pkt\_out message from the
-%     switch.}
-%   \label{fig:pkt_out}
-% \end{figure}
-% \begin{itemize}
-% \item Nec cannot generate packet\_in packets while for packet\_out
-%   after the first request the switch tears down the TCP connection
-%   with an RST.
-% \end{itemize}
-c In this experiment we are considering a usage scenario which queries
-% the switch for unique flow statistics and modifies entries in the
-% flow table. The experiment we develop is similar to the flow
-% modification experiment presented in Section~\ref{sec:results-rate}.
-% two packet probe streams with 100 bytes packets at a rate of
-% 100Mbps.  Both probes send small packets of 100 bytes at a rate of
-% 10Mbps to the switch. The first probe uses the first 100 flows of
-% the table to switch packet in a round-robin manner, while the second
-% probe generates packets that use randomly the rest of the flows.  At
-% the same time, the controller is polling periodically the switch for
-% flow statistics for variable subsets of the flow table. We also poll
-% the CPU switch utilization through SNMP.  Each request queries for a
-% subset of 128 flows of the table.  The controller, after one minute
-% of operation, sends an ensemble of 100 flow modifications that
-% change the output port of the first 100 flows of the table.  In this
-% epxeriment we measure the delay between the time we send a the flow
-% modification and the timer we receive at least one packet from each
-% of the first 100 flows on the new port. For the duration of the
-% experiment we are also polling the switches for cpu statistics.
+\subsubsection*{Controller}
 
-% \subsection{Traffic interception by the controller} Because in
-% Openflow the controller should be able to have full control of the
-% traffic, the protocol defines a set of messages that allow the
-% controller to intercept or inject traffic. In order to achieve this,
-% the protocol defines 2 messages name \textit{Pkt\_in} and
-% \textit{Pkt\_out}.  Pkt\_in messages are generated automatically
-% when the switch has no rule to match a packet. Additionally, the
-% controller is able to insert flows in the flow table that define as
-% an action to push packets to the controller as pkt\_in
-% messages. Each packet contains openflow specific details for the
-% packet and optionally a buffer id that can be used in flow
-% modification messages to push packet on a specific port
-% later. Pkt\_out messages are generated by the controller and
-% contains the full content of a packet and detail of how the switch
-% should handle the packet.  Although these types of messages can be
-% useful to openflow application developers, we need to define whether
-% their limitations and the impact they have on the usage of the
-% switch. In order to measure this we conduct 2 experiments. For the
-% case of Pkt\_in messages we use only a single port from the switch
-% on which we send a single probe with random destination IP. The rate
-% of the measurement probe and the packet size are exported as
-% parameters of the experiment. Before the start of the experiment we
-% send a single delete message in order to clear the flow table. For
-% each pkt\_in event we store its sequence number and its delay. For
-% the case of Pkt\_out message we implement the reverse process. We
-% generate the same measurement probe but from the controller side,
-% exporting the same experiment parameters. Each packet is send on a
-% specific port where it is captured by the NetFPGA card. For each
-% packet we store its sequence number and its delay.
-% \subsubsection*{Results}
-% \begin{figure}[htb]
-%   \begin{center}
-%     \includegraphics[width=0.4\textwidth]{graphs/pkt_in_out/pkt_in_delay}
-%   \end{center}
-%   \caption{median delay to receive a pkt\_in message from the
-%     switch.}
-%   \label{fig:pkt_in}
-% \end{figure}
-% \begin{figure}[htb]
-%   \begin{center}
-%     \includegraphics[width=0.4\textwidth]{graphs/pkt_in_out/pkt_out_delay}
-%   \end{center}
-%   \caption{median delay to receive a pkt\_out message from the
-%     switch.}
-%   \label{fig:pkt_out}
-% \end{figure}
-% \begin{itemize}
-% \item Nec cannot generate packet\_in packets while for packet\_out
-%   after the first request the switch tears down the TCP connection
-%   with an RST.
-% \end{itemize}
-\subsection{NS-3 performance}
+We first benchmark our controller library's performance through a simple
+baseline comparison against two existing OpenFlow controllers, NOX and
+Maestro. NOX~\cite{nox} is one of the first and most mature publicly available
+OpenFlow controllers; in its original form it provides programmability through
+a set of Python modules. In our evaluation we compare against both the master
+branch and the \emph{destiny-fast} branch, a highly optimised version that
+sacrifices Python integration for better performance. Maestro~\cite{maestro}
+is an optimised Java-based controller that aims to achieve fairness among
+switches. We compare these against the Mirage controller targeting two
+different network backends: \emph{mirage-unix} targets the UNIX Sockets
+backend and so uses the existing Linux TCP/IP stack, while \emph{mirage-xen}
+targets the Xen hypervisor and runs as a domU virtual machine using the Mirage
+TCP/IP stack.
+
+Our benchmark setup uses the \emph{cbench} application from the Oflops
+benchmarking
+platform.\footnote{\url{http://www.openflow.org/wk/index.php/Oflops}} Each
+emulated switch simultaneously generates \emph{packet-in} messages and the
+program measures the throughput of the controller in processing these
+requests. It provides two modes of operation, both measured in terms of
+\emph{packet-in} requests processed per second: \emph{latency}, where only a single
+\emph{packet-in} message is allowed in flight from each switch; and
+\emph{throughput}, where each switch maintains a full 64\,kB buffer of
+outgoing packet-in messages. The first measures the throughput of the
+controller when serving connected switches fairly, while the second measures
+absolute throughput when servicing requests.
+                                                                       
+We emulate 16 switches concurrently connected to the controller, each serving
+100 distinct MAC addresses. We run our experiments on a 16-core AMD server
+running Debian Wheezy with 40\,GB of RAM and each controller configured to use
+a single thread of execution. We restrict our analysis to the single-threaded
+case as Mirage does not yet support multi-threading. For each controller we
+run the experiment for 120\,seconds and measure the per-second rate of
+successful interactions. Table~\ref{tbl:controller} reports the average and
+standard deviation of requests serviced per second.
+
+Unsurprisingly, due to mature, highly optimised code, \emph{NOX fast} shows
+the highest performance for both experiments. However, we note that the
+controller exhibits extreme short-term unfairness in the throughput test.
+\emph{NOX} provides greater fairness in the throughput test, at the cost of
+significantly reduced performance. Maestro performs as well as NOX for
+throughput but significantly worse for latency, probably due to the overheads
+of the Java VM. Finally, Mirage throughput is somewhat reduced from NOX fast
+but substantially better than both NOX and Maestro with both backends; the Xen
+backend wins out over the UNIX backend due to reduction of layers in the
+network stack. In addition, Mirage Xen achieves the best product of
+performance and fairness among all tested controllers in the throughput test.
+Comparing latency, both Mirage backends perform much better than Maestro but
+suffer somewhat in comparison to NOX: we believe this is due to the lack of
+optimisation in the Mirage TCP/IP stack.
+
+\begin{table}\small
+\newcommand\T{\rule{0pt}{2.6ex}}
+\newcommand\B{\rule[-1.2ex]{0pt}{0pt}}
+\centering
+\begin{tabular} { l | r@{.}l r@{.}l | r@{.}l r@{.}l }
+\hline
+\T \multirow{2}{*}{Controller} 
+   & \multicolumn{4}{c|}{Throughput (kreq/sec)}  
+   & \multicolumn{4}{c}{Latency (kreq/sec)} \\
+\B & \multicolumn{2}{c}{avg} & \multicolumn{2}{c|}{std. dev.} 
+   & \multicolumn{2}{c}{avg} & \multicolumn{2}{c}{std. dev.} \\
+\hline
+\T NOX fast   & 122&6 & \quad{} 44&8 & 27&4 & \quad{} 1&4 \\
+NOX           &  13&6 &  1&2 & 26&9 & 5&6 \\
+Maestro       &  13&9 &  2&8 &  9&8 & 2&4 \\
+Mirage UNIX   &  68&1 & 11&7 & 21&1 & 0&2 \\
+\B Mirage Xen &  86&5 &  4&4 & 20&5 & 0&0 \\
+\hline
+\end{tabular}
+\caption{\label{tbl:controller}OpenFlow controller performance.}
+\end{table}
+
+\subsubsection{Switch}
+
+We also use the Oflops benchmark platform~\cite{oflops} to evaluate
+performance of the Mirage switch implementation. We compare against the Open
+vSwitch\footnote{\url{http://openvswitch.org}}~(OVS) kernel implementation, an
+OpenFlow-enabled software switch implemented as a Linux kernel module. OVS is
+currently used by many datacenter service providers to enable virtual machines
+to be bridged in dom0, while its OpenFlow functionality is used by vendors to
+implement OpenFlow firmware.
+
+For this experiment we use two virtual machines, one running the Oflops code,
+the other running the OpenFlow switch configured with three interfaces bridged
+separately in dom0. One interface provides a control channel for the switch,
+while the other two are used as the switch's data channels. This represents a
+setup that might be used to enable an application to modify switch
+functionality without affecting the network functionality in dom0. Using
+Oflops, we generate packets on one of the data channels and receive traffic on
+the other, having inserted appropriate flow table entries at the beginning of
+the test. We run the test for 30\,seconds using small packets (100\,bytes) and
+varying the data rate.
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{switch-media-delay}
+\caption{\label{fig:switch}Min/max/median delay switching 100\,byte packets
+        when running the Mirage switch and Open vSwitch kernel module as domU
+        virtual machines.}
+\vspace{-2ex}
+\end{figure}
+
+Figure~\ref{fig:switch} plots as error boxes the min, median and max of the
+median processing latency of ten test runs of the experiment. We can see that
+the Mirage switch's forwarding performance is very close to that of Open
+vSwitch, even mirroring the high per-packet processing latency with a probe
+rate of 1\,Mb/s; we believe this is due to a performance artefact of the
+underlying dom0 network stack. We omit packet loss due to space constraints,
+but can report that both implementations suffer similar levels of packet loss.
+However, the Mirage switch has a memory footprint of just 32\,MB compared with
+the Open vSwitch virtual machine requirement of at least 128\,MB. We are
+currently working toward better integration of the Mirage switch functionality
+with the Xen network stack to achieve lower switching latency.
+
+\subsection{NS-3 performance} \label{sec:sdnsim-ns3-perf}
+
+An initial experiment of the delay incurred by SDNsim involves
+simulating a simple topology setup.  The simulated topology is present
+in Figure~\ref{Haris-Fig2}.  The topology consists of a single
+multi-port switch with a number of connected hosts.  The hosts are
+generated in pairs and are programmed to generate steady-state
+full-rate TCP traffic from the client to the server. The switch is
+also connected to an OpenFlow controller that implements the control
+logic of a learning switch.  For this scenario, two variations of the
+topology exist, one with all hosts connected to the same switch, and a
+second one where the hosts are distributed between two switches. This
+experiment ran for 30 seconds of simulated time.
+
+The results of the simulation process are presented in
+Table~\ref{Haris-Table1}, which shows the amount of time of real
+execution time of the simulation, as well as the slowdown factor of
+the simulation. Although, the simulation platform appears to be
+extremely slow, the experiment uses steady-state TCP connections that
+sending traffic at a constant rate of 1 Gbps. This is an unrealistic
+scenario for datacenters, as the links are not expected to run at full
+utilization for a long period of time and the delay of the simulation
+is driven by the amount of network interrupts that occur in the
+network. Further, a significant gain from the multi-process
+distribution strategy can be seen by comparing the slowdown factor
+between the topology using a single switch and the one distributing
+the load between two switches. In the first scenario, the openflow
+switch is the bottleneck of the simulation, as it has to process all
+the events generated in the network sequentially, slowing down the
+process. In the second example, the network events are distributed
+between the two hosts of the network, thus allowing simulation
+parallelization -- which reduces the execution time almost in half.
+
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{sdnsim-topology}
+\caption{Topology of two basic simulation scenarios for the SDNsim platform}
+\label{Haris-Fig2}
+\end{figure}
+
+\begin{table}
+\caption{Simulation results}
+\label{Haris-Table1}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|} \hline
+ A&B&C&D&E&F&G\\\hline
+% \multicolumn{3}{*}{a} & \multirow{6}{|c|}{Number of hosts} \\ \hline
+% &\multirow{3}{|c|}{Single Switch} & \multirow{3}{|c|}{two switches} \\ \hline
+% & 2 & 8 & 12 & 4 & 8 & 12 \\
+\end{tabular}
+\end{center}
+\end{table}
+
+********* 
+LET'S FIX THIS, PLEASE!!!  The skeletal table is begun above but commented out.
+
+Delay (in min)
+17
+90
+171
+21
+50
+82
+Slowdown factor
+34
+180
+242
+42
+100
+164
+
+Table~\ref{Haris-Table1} shows execution time of a simple OpenFlow
+setup with a variable number of hosts generating TCP traffic at 1Gbps
+rate for a period of 1 minute.
 
 \section{Security Tradeoffs on Datacenter Network Micro-control} \label{sec:rdsf-eval}
 
