@@ -21,26 +21,26 @@ My work focuses on the evolvability problem of modern networks. The key idea of
 this work focuses on ways to evolve computer network functionality through the
 control plane. In this dissertation we argue the thesis that: 
 
-\begin{quotation} Computer network should compat the problem of network
+\begin{quotation} 
+  Computer network design should compat the problem of network
   ossification through context-aware evolved control planes, in order to provide
-  new properties to their inter-connecting fabric. Such novel control plane
-  implentations should focus on the requirements of the deployment environment
-  and customly understand and fit their properties and functionalities. Such
-  approach have to be deployed on the edges in order to obey the end-to-end
-  principle.  \end{quotation}
+  new performance functionalities to the inter-connecting fabric. Such control
+  mechanism should address the requirements of the deployment environment
+  while taking advantage of its distinct properties. Edge networks provide an 
+  excelent deployment target for such approaches, following the end-to-end
+  design principle. 
+\end{quotation}
 
 For the remainder of this introduction we justify the importance of this thesis.
-In section \ref{sec:intro:motivations} we present in details some of the
-limitation that current Internet faces and the inherent limitations of current
-architecture in terms of evolvability. In section \ref{sec:intro:contributions},
-we list briefly the main contributions of this thesis and in section
-\ref{sec:intro:outline}, we present briefly the content of each chapter of the
-thesis. Finally, in section \ref{sec:intro:pubs} we list the publications
+In Section~\ref{sec:intro:motivations} we present in details the limitations of
+current Internet design and the inherent difficulties for evolution. In Section~\ref{sec:intro:contributions}, we list our contributions and
+in Section~\ref{sec:intro:outline}, we present the content of each chapter of
+the thesis. Finally, in section~\ref{sec:intro:pubs} we list the publications
 relating to the content of this thesis. 
 
 \section{Motivation} \label{sec:intro:motivations}
 
-\subsubsection*{Conputer network evolution}
+\subsubsection*{Computer network evolution}
 
 \begin{figure}[ht] \centering \subfigure[global mobile traffic trend]{
     \includegraphics[width=0.45\textwidth]{mobile} \label{fig:internet} }
@@ -181,7 +181,7 @@ networks is high, while strong market competition makes difficult to offload
 costs directly to users. A number of measurement studies have
 described these differences~\cite{Huang:2010wb,Dischinger:2007bg}. 
 
-\subsubsection{Computer network ossification}
+\subsubsection*{Computer network ossification}
 
 % how does computer networks look like, How the Internet looks like?
 % Over the previous section we described the heterogeneity of current computer

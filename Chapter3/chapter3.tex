@@ -5,18 +5,58 @@
     \graphicspath{{Chapter3/Chapter3Figs/EPS/}{Chapter3/Chapter3Figs/}}
 \fi
 
-\section{Introduction}
+In this chapter we explore application of the SDN technology in personal cloud
+computing applications. In the recent years, the development in cloud computing
+applications provided a number of popular Internet-wide services that allow
+users to interconnect at the application layer and share information. Through
+this approach users bypass the restrictions imposed in the Internet by deployed
+middleboxes, at the cost though of exposing their information to third party
+cloud service providers and reduced performance and efficiency. 
+
+Using SDN technologies, we design an architecture that allows users to
+interconnect their devices with minimum interactions with the cloud
+infrastructure.The propose architecture deploy an openflow-enabled bridge and a
+local controller on each device. Each controller by default forwards packets as
+normal on the local network. The forwarding logic, though,  is augmenting
+through a distributed coordination protocol which permits nodes to negotiate
+possible connection opportunities and establish ad-hoc tunnels, enabling as a
+result an Internet-wide distributed control mechanism. At the core of
+our design, we tranform the naming service host abstraction. Each device
+acquires a global domain name, while each name resolution triggers a connection
+engine, that tries to find the best possible bidirectional channel between the
+two nodes. The naming service uses the established
+DNSSEC extension, providing a fully authenticated and secure control
+mechanism among \signpost and applications. Further, the distributed nature
+of the naming hierarchy in the Internet permits seamless control distribution.
+
+In order to understand the impact of the proposed architecture we develop a
+strawman implementation, named {\it Signpost}. Signpost implements the core of
+the control logic of the proposed architecture. Additionally, it integrades a
+number of network tactics of established tunneling and notification mechanisms.
+Currently \signpost provides integration of the main architecture with SSH, OpenVPN,
+TOR, Privoxy, Multicast-DNS and Nat punching. 
+
+In the chapter we present in Section~\ref{sec:signpost-introduction} the
+motivation for this work, followed then by the key observations for our design
+in section~\ref{sec:signpost-design}. Following the results of our
+observations, we present in section~\ref{sec:signpost-architecture} the
+architecture of our proposed proposed strawman implementation of the controller
+and the details of the tactics. Finally, in Section~\ref{sec:signpost-evaluation}
+we present a number of micro-benchmark tests for our system and conclude in
+Section\ref{sec:signpost-conclusion}.
+
+\section{Introduction}\label{sec:signpost-introduction}
 
 Present the gap in network understanding between the clients and the ISP and
 present a tool that allows to bridge it.
 
-\section{Enabling edge user-driven connectivity}
+\section{Enabling edge user-driven connectivity}\label{sec:signpost-design}
 
-\section{Signpost Architecture}
+\section{Signpost Architecture}\label{sec:signpost-architecture}
 
-\section{Evaluation}
+\section{Evaluation}\label{sec:signpost-evaluation}
 
-\section{Conclusions}
+\section{Conclusions}\label{sec:signpost-conclusion}
 %\section{Second Section}
 %\markboth{\MakeUppercase{\thechapter. My Second Chapter }}
 %and here I write more ...
