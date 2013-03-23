@@ -1,0 +1,1 @@
+[{"priority": 1, "data": [[1350703915000, 395780.0]], "type": "line", "id": 2, "name": "Multi-threaded TCP"}, {"priority": 0, "data": [[1350518631000, 280650.0], [1350696115000, 352020.0], [1350744782000, 377430.0]], "type": "line", "id": 2, "name": "Single-threaded TCP"}]
