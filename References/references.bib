@@ -2763,7 +2763,7 @@ year={1999}
   ofaddress =	 {New York, NY, USA},
 } 
 
-@Misc{SNAC,
+@misc{SNAC,
   title =	 {The SNAC OpenFlow controller},
   year =	 {2010},
   note =	 {\url{http://www.openflow.org/wp/snac/}},
@@ -3037,12 +3037,23 @@ number = {12},
 pages = {1334--1340}
 }
 
-@article{Huang:2010wb,
-author = {Huang, J and Xu, Q and Tiwana, B and Mao, Z M and Zhang, M and Bahl, P},
-title = {{Anatomizing application performance differences on smartphones}},
-year = {2010},
-pages = {165--178}
-}
+@inproceedings{Huang:2010wb,
+ author = {Huang, Junxian and Xu, Qiang and Tiwana, Birjodh and Mao, Z. Morley and Zhang, Ming and Bahl, Paramvir},
+ title = {Anatomizing application performance differences on smartphones},
+ booktitle = {Proceedings of the 8th international conference on Mobile systems, applications, and services},
+ series = {MobiSys '10},
+ year = {2010},
+ isbn = {978-1-60558-985-5},
+ location = {San Francisco, California, USA},
+ pages = {165--178},
+ numpages = {14},
+ url = {http://doi.acm.org/10.1145/1814433.1814452},
+ doi = {10.1145/1814433.1814452},
+ acmid = {1814452},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {3G network, application performance, mobile web browsing, performance comparison, smartphone},
+} 
 
 @inproceedings{Dischinger:2007bg,
 author = {Dischinger, Marcel and Haeberlen, Andreas and Gummadi, Krishna P and Saroiu, Stefan},
@@ -3074,13 +3085,23 @@ url = {http://www.cerias.purdue.edu/assets/pdf/mfe_unsec_econ_pr_rpt_fnl_online_
     year = {2002}
 }
 
-@article{Bauer:2011ws,
-author = {Bauer, S and Beverly, R and Berger, A},
-title = {{Measuring the state of ECN readiness in servers, clients, and routers}},
-year = {2011},
-pages = {171--180}
-}
-
+@inproceedings{Bauer:2011ws,
+ author = {Bauer, Steven and Beverly, Robert and Berger, Arthur},
+ title = {Measuring the state of ECN readiness in servers, clients,and routers},
+ booktitle = {Proceedings of the 2011 ACM SIGCOMM conference on Internet measurement conference},
+ series = {IMC '11},
+ year = {2011},
+ isbn = {978-1-4503-1013-0},
+ location = {Berlin, Germany},
+ pages = {171--180},
+ numpages = {10},
+ url = {http://doi.acm.org/10.1145/2068816.2068833},
+ doi = {10.1145/2068816.2068833},
+ acmid = {2068833},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {ecn, explicit congestion notification, router-assisted congestion control},
+} 
 @inproceedings{Honda:2011ci,
 author = {Honda, Michio and Nishida, Yoshifumi and Raiciu, Costin and Greenhalgh, Adam and Handley, Mark and Tokuda, Hideyuki},
 title = {{Is it still possible to extend TCP?}},
@@ -3090,30 +3111,30 @@ publisher = { ACM  Request Permissions},
 month = nov
 }
 
-@webpage{Kobayashi:vn,
+@misc{Kobayashi:vn,
 author = {Kobayashi, Masayoshi and Seetharaman, Srini and Parulkar, Guru and Appenzeller, Guido and Little, Joseph and van Reijendam, Johan and Weissmann, Paul and McKeown, Nick},
 title = {{Maturing of OpenFlow and Software Defined Networking through Deployments
 }},
 url = {http://yuba.stanford.edu/openflow/documents/openflow_deployment_journal_paper_aug2012.pdf}
 }
 
-@webpage{internet2,
+@misc{internet2,
 title = {{Internet2}},
 url = {http://www.internet2.edu/}
 }
 
-@webpage{ofelia,
+@wmisc{ofelia,
 title = {{FP7 Ofelia}},
 url = {http://www.fp7-ofelia.eu/}
 }
 
-@webpage{Weissmann:va,
+@misc{Weissmann:va,
 author = {Weissmann, Paul and Seetharaman, Srini},
 title = {{How mature is OpenFlow to be introduced in production networks}},
 url = {http://changeofelia.info.ucl.ac.be/pmwiki/uploads/SummerSchool/Program/session_004.pdf}
 }
 
-@webpage{pttcp,
+@misc{pttcp,
 title = {{Pratt's Test TCP}},
 url = {http://www.cl.cam.ac.uk/research/srg/netos/netx/index.html}
 }
@@ -3248,7 +3269,6 @@ year = {2009}
 @article{Cho2006,
 author = {Cho, Kenjiro and Fukuda, Kensuke and Esaki, Hiroshi and Kato, Akira},
 doi = {10.1145/1151659.1159938},
-file = {:Users/cr409/Dropbox/Menderley/f0ee304ccf7a4e88554d7fae57b6e5d25a3a0260.pdf:pdf},
 isbn = {1595933085},
 issn = {01464833},
 journal = {ACM SIGCOMM Computer Communication Review},
@@ -3303,12 +3323,138 @@ year = {2011}
  keywords = {application layer, ground truth, transport layer},
 } 
 
-@Misc {netfilter-conntract,
-  title={The netfilter.org "libnetfilter_conntrack" project},
-  url={http://www.netfilter.org/projects/libnetfilter_conntrack/index.html},
+@Misc{netfilter,
+  author={},
+  title={libnetfilter conntrack project},
+  url={{http://www.netfilter.org/projects/libnetfilter_conntrack/index.html}},
 }
 
 @Misc {win-wfp,
   title={Windows Filtering Platform},
   url={http://msdn.microsoft.com/en-us/library/windows/desktop/aa366510.aspx},
+}
+  
+@inproceedings{Akella2003,
+ author = {Akella, Aditya and Seshan, Srinivasan and Shaikh, Anees},
+ title = {An empirical evaluation of wide-area internet bottlenecks},
+ booktitle = {Proceedings of the 3rd ACM SIGCOMM conference on Internet measurement},
+ series = {IMC '03},
+ year = {2003},
+ isbn = {1-58113-773-7},
+ location = {Miami Beach, FL, USA},
+ pages = {101--114},
+ numpages = {14},
+ url = {http://doi.acm.org/10.1145/948205.948219},
+ doi = {10.1145/948205.948219},
+ acmid = {948219},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@article{Mazurek2010,
+author = {Mazurek, ML and Arsenault, JP and Bresee, Joanna},
+file = {:Users/cr409/Dropbox/Menderley/77e8fd62b6e07830859559e4f3a441c09d206233.pdf:pdf},
+isbn = {9781605589299},
+journal = {Proceedings of the 28th \ldots},
+keywords = {"access control,home computing,privacy,security"},
+pages = {645--654},
+title = {{Access control for home data sharing: Attitudes, needs and practices}},
+url = {http://dl.acm.org/citation.cfm?id=1753421},
+year = {2010}
+}
+
+@Misc {wiki-cloud,
+  title={Cloud computing, Wikipedia article},
+  url={http://en.wikipedia.org/wiki/Cloud_computing},
+}
+ 
+@article{Krishnamurthy2009,
+author = {Krishnamurthy, Balachander and Wills, CE},
+file = {:Users/cr409/Dropbox/Menderley/208fc5e8b1826070a90f9a532bb6af0bcd6dbae7.pdf:pdf},
+journal = {\ldots ACM workshop on Online social networks},
+keywords = {online social networks,personally identifiable in-,privacy},
+title = {{On the leakage of personally identifiable information via online social networks}},
+url = {http://dl.acm.org/citation.cfm?id=1592668},
+year = {2009}
+}
+
+@inproceedings{Wittie2010,
+ author = {Wittie, Mike P. and Pejovic, Veljko and Deek, Lara and Almeroth, Kevin C. and Zhao, Ben Y.},
+ title = {Exploiting locality of interest in online social networks},
+ booktitle = {Proceedings of the 6th International COnference},
+ series = {Co-NEXT '10},
+ year = {2010},
+ isbn = {978-1-4503-0448-1},
+ location = {Philadelphia, Pennsylvania},
+ pages = {25:1--25:12},
+ articleno = {25},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/1921168.1921201},
+ doi = {10.1145/1921168.1921201},
+ acmid = {1921201},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@inproceedings{Krishnan2009,
+ author = {Krishnan, Rupa and Madhyastha, Harsha V. and Srinivasan, Sridhar and Jain, Sushant and Krishnamurthy, Arvind and Anderson, Thomas and Gao, Jie},
+ title = {Moving beyond end-to-end path information to optimize CDN performance},
+ booktitle = {Proceedings of the 9th ACM SIGCOMM conference on Internet measurement conference},
+ series = {IMC '09},
+ year = {2009},
+ isbn = {978-1-60558-771-4},
+ location = {Chicago, Illinois, USA},
+ pages = {190--201},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/1644893.1644917},
+ doi = {10.1145/1644893.1644917},
+ acmid = {1644917},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {content distribution networks, latency inflation, network troubleshooting},
+}
+
+@article{Dholakia:2006vn,
+  title={Gender and IT in the household: Evolving patterns of Internet use in the United States},
+  author={Dholakia, Ruby Roy},
+  journal={The Information Society},
+  volume={22},
+  number={4},
+  pages={231--240},
+  year={2006},
+  publisher={Taylor \& Francis}
+}
+
+@article{kanan2009unsecured,
+  title={Unsecured Economies: Protecting Vital Information},
+  author={Kanan, Karthik and Rees, Jackie and Spafford, Eugene},
+  journal={Red Consultancy for McAfee, Inc},
+  year={2009}
+}
+
+@Misc{lwt,
+  title={cooperative threads library for OCaml},
+  url={http://ocsigen.org/lwt/},
+}
+
+@inproceedings{madhavapeddy2013,
+  title={Unikernels: Library Operating Systems for the Cloud},
+  author={Madhavapeddy, Anil and Mortier, Richard and Rotsos, Charalampos and Scott, David and Singh, Balraj and Gazagnaire, Thomas and Smith, Steven and Hand, Steven and Crowcroft, Jon},
+  booktitle={Proceedings of the eighteenth international conference on Architectural support for programming languages and operating systems},
+  pages={461--472},
+  year={2013},
+  organization={ACM}
+}
+
+@techreport{cai2011,
+  title={Maestro: balancing fairness, latency and throughput in the OpenFlow control plane},
+  author={Cai, Z and Cox, AL and Ng, TS Eugene},
+  year={2011},
+  institution={Rice University Technical Report TR11-07}
+}
+
+@article{iperf,
+  title={Iperf: The TCP/UDP bandwidth measurement tool},
+  author={Tirumala, Ajay and Qin, Feng and Dugan, Jon and Ferguson, Jim and Gibbs, Kevin},
+  year={2005}
 }

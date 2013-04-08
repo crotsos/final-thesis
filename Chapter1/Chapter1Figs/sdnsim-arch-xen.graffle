@@ -1167,6 +1167,11 @@
 						<string>0.666667</string>
 					</dict>
 				</dict>
+				<key>stroke</key>
+				<dict>
+					<key>CornerRadius</key>
+					<real>7</real>
+				</dict>
 			</dict>
 			<key>Text</key>
 			<dict>
@@ -1260,6 +1265,11 @@
 								<string>0.258389</string>
 							</dict>
 						</dict>
+						<key>stroke</key>
+						<dict>
+							<key>CornerRadius</key>
+							<real>7</real>
+						</dict>
 					</dict>
 					<key>Text</key>
 					<dict>
@@ -1347,6 +1357,11 @@
 								<string>0.666667</string>
 							</dict>
 						</dict>
+						<key>stroke</key>
+						<dict>
+							<key>CornerRadius</key>
+							<real>7</real>
+						</dict>
 					</dict>
 					<key>Text</key>
 					<dict>
@@ -1410,7 +1425,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-02-18 13:37:37 +0000</string>
+	<string>2013-04-05 09:27:47 +0000</string>
 	<key>Modifier</key>
 	<string>Haris Rotsos</string>
 	<key>NotesVisible</key>
@@ -1450,6 +1465,16 @@
 			<string>int</string>
 			<string>0</string>
 		</array>
+		<key>NSPrinter</key>
+		<array>
+			<string>coded</string>
+			<string>BAtzdHJlYW10eXBlZIHoA4QBQISEhAlOU1ByaW50ZXIAhIQITlNPYmplY3QAhZKEhIQITlNTdHJpbmcBlIQBKwRob21lhoY=</string>
+		</array>
+		<key>NSPrinterName</key>
+		<array>
+			<string>string</string>
+			<string>home</string>
+		</array>
 		<key>NSRightMargin</key>
 		<array>
 			<string>float</string>
@@ -1488,7 +1513,7 @@
 		<key>ExpandedCanvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{135, 218}, {879, 611}}</string>
+		<string>{{242, 130}, {879, 611}}</string>
 		<key>ListView</key>
 		<false/>
 		<key>OutlineWidth</key>

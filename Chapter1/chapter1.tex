@@ -729,7 +729,7 @@ consequence of the silicon design in current \of switches, that develop such
 functionality as an low-frequency exception mechanism. In order to characterise
 this functionality, we develop a simple experiment using \oflops that sends
 packets at a specific rate and measure the latency of the switch to process
-them. In Figure~\cite{fig:pkt_in_out_delay}, we show the latency induced on
+them. In Figure~\ref{fig:pkt_in_out_delay}, we show the latency induced on
 packets both for Packet\_in and Packet\_out messages. We omit in this experiment
 Switch 3 as this functionality maxed out its CPU utilisation and after a few seconds
 made the switch unresponsive over the control channel. For packet\_out messages,
@@ -1360,7 +1360,7 @@ executed in order.
 In order to evaluate the performance of the \sdnsim platform we develop a number
 of small scale microbenchmarks in order to evaluate the performance of the \of
 protocol functionality as well as the performance of the NS-3 binding.
-In~\cite{unikernel}, there is an exhaustive analysis of the performance of the
+In~\cite{madhavapeddy2013}, there is an exhaustive analysis of the performance of the
 \mirage platform, which we omit from this section. In Section~\ref{sec:of-perf},
 we use two off-the-self \of benchamarking platforms in order to characterise the 
 performance of the controller and switch implementation. Further, in
@@ -1377,7 +1377,7 @@ Maestro. NOX~\cite{nox} is one of the first and most mature publicly available
 \of controllers; in its original form it provides programmability through
 a set of Python modules. In our evaluation we compare against both the master
 branch and the \emph{destiny-fast} branch, a highly optimised version that
-sacrifices Python integration for better performance. Maestro~\cite{maestro}
+sacrifices Python integration for better performance. Maestro~\cite{cai2011}
 is an optimised Java-based controller that aims to achieve fairness among
 switches. We compare these against the Mirage controller targeting two
 different network backends: \emph{mirage-unix} targets the UNIX Sockets

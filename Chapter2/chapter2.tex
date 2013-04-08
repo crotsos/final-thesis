@@ -1,9 +1,10 @@
+\chapter{Home network control scalability} 
 
 \ifpdf
 \graphicspath{{Chapter2/Chapter2Figs/PNG/}{Chapter2/Chapter2Figs/PDF/}{Chapter2/Chapter2Figs/}}
-\else \graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}} \fi
-
-\chapter{Home network control scalability} 
+\else 
+\graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}} 
+\fi
 
 In this chapter we explore the applications of SDN technologies in the home
 network environment. Drawing conclusions from existing social and user studies,
@@ -116,7 +117,7 @@ Specifically, network filesystem and P2P applications generate significant
 traffic volumes in the home environment, while a large portion of the traffic
 remains local and can only be observed from within the network. 
 
-Netalyzer~\cite{Kreibich20}, a web based java-applet that tests network
+Netalyzer~\cite{Kreibich10}, a web based java-applet that tests network
 connectivity and protocol openness, provides useful insight on home networking.
 Analysis of collected data unveiled a significant number of protocol
 misconfiguration and malbehaving middleboxes in ISP networks. Additionally,
@@ -225,6 +226,8 @@ architecture.  Rather, they are \emph{structural}, emerging from the mismatch
 between the stable `end-to-end' nature of the Internet and the highly dynamic
 and evolving nature of domestic environments.  
 
+\todo{add reference to \cite{Mazurek2010} for access control requirements for
+  the house.}
 % Many empirical studies in recent years have explored the clear mismatch between
 % current networking technology and the needs of the domestic setting,  in both
 % the
@@ -266,7 +269,7 @@ they are often owned and controlled by different household members.
 
 To illustrate the situation we are addressing, consider the following three
 example scenarios, drawn from  situations that emerged from fieldwork 
-reported in more detail elsewhere~\cite{wmust2011,chetty10}: 
+reported in more detail elsewhere~\cite{wmust2011,Chetty10}: 
  
 \textbf{Negotiating acceptable use}.  {\it William and Mary have a spare room
   which they let to a lodger, Roberto.  They are not heavy network users and so,
@@ -1088,7 +1091,7 @@ alhpa version of the software, which was tested to work as expected.
 
 \section{Rethinking Home ISP communication} \label{s:qos}
 
-\begin{figure}[ht]
+\begin{figure}
   \centering
   \includegraphics[width=0.95\columnwidth]{isp_plan}
   \caption{\label{fig:isp_plan} The path for each network packet of 
@@ -1136,7 +1139,7 @@ the ISP over the distribution network in order to reach either to the egress
 points of the ISP, or to another aggregation point, if the pattern is destined
 to an internal service. The distribution network of an ISP consists of a small
 number of large routers with high capacity links. Usually at this point network
-administration use network tunnelling tecnhologies, like MPLS, in order to
+administration use network tunnelling technologies, like MPLS, in order to
 reduce forwarding information on the routers.  The egress network of the ISP
 consist of large routers that are hosted in AS IXP networks and connect the ISP
 with peering ASes. 
@@ -1194,25 +1197,25 @@ inserts information for each new connection in the HWDB database.  Each inserted
 record contains the 5-tuple of the flow and the name of the application that
 opened the respective socket.  Mechanisms to intercept new connection events
 from the network stack of the kernel are available for most OSes. In our
-implementation we use {\it netfilter-conntrack}~\cite{netfilter-conntrack} for
-Linux, {\it Windows Filtering Platform}~\cite{win-wfp} for Windows and {\it
+implementation we use {\emph netfilter-conntrack}~\cite{netfilter} for
+Linux, {\emph Windows Filtering Platform}~\cite{win-wfp} for Windows and {\emph
   ipfw} for Darwin/MacOSX. These libraries expose similar APIs and allow
 applications to register callbacks to the kernel network stack, which are
 invoked every time the state of a record on the connection table changes. In
 order to match the network tuples with the respective applications, we use the
-`{\it lsof}` command in unix-like systems, while for windows we parse the output
-of the `{\it netstat -p}` command.
+{\emph lsof} command in unix-like systems, while for windows we parse the output
+of the {\emph netstat -p} command.
 
 \paragraph*{ISP infrastructure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{queue_design}
+  \includegraphics[width=0.7\columnwidth]{queue_design}
   \caption{\label{fig:queue_design} Switches handling the backhaul link expose 
     virtual slices to homeowners through a FlowVisor instance.  Each switch
     configures for each household three queue primitives: A {\it low latency,
       high priority} queue, a {\it medium priority} queue and a {\it default}
-    queue}.}
+    queue.}
 \end{figure}
 
 % In the ISP infrastructure we focus our system on the management of the resources
@@ -1266,13 +1269,13 @@ in order to restrict the ability of a compromised node to create packet loops.
 
 \paragraph*{Home Router}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{homework_intf_qos}
-  \caption{\label{fig:homework_intf_qos} Performance mechanism  user control.
-    The user is able to view the network utilisation per application, as well as
-    express application prioritisation.}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.8\columnwidth]{homework_intf_qos}
+%   \caption{\label{fig:homework_intf_qos} Performance mechanism  user control.
+%     The user is able to view the network utilisation per application, as well as
+%     express application prioritisation.}
+% \end{figure}
 
 In our design, we expect the home router to be the rendez-vous point between the
 policies of the two network. In order to support the state requirements of this
@@ -1291,7 +1294,7 @@ of the system while the router uses it to map newly arriving flows to
 queues. 
 
 In order to expose in an intuitive way the resource management mechanism, we
-design a simple web interface, depicted in Figure~\cite{fig:homework_intf_qos}.
+design a simple web interface, depicted in Figure~\ref{fig:homework_intf_qos}.
 Through this interface the user can be informed on the aggregate resource
 consumption of each application, the time serries of the traffic rate per
 application and review all priority mappings configured. Additionally, the
@@ -1315,16 +1318,24 @@ information.
 
 \subsection{Evaluation} \label{sec:qos_eval}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{queue_eval_setup}
-  \caption{\label{fig:queue_eval_setup} Experimental setup to evaluate the
-    proposed resource management system.}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.8\columnwidth]{queue_eval_setup}
+%   \caption{\label{fig:queue_eval_setup} Experimental setup to evaluate the
+%     proposed resource management system.}
+% \end{figure}
 
-
-In order to test the functionality of the switch we implemented a lab testbed, 
-depicted in Figure~\ref{fig:queue_eval_setup}.
+We evaluate the proposed architecture using a lab testbed, depicted in
+Figure~\ref{fig:queue_eval_setup}. {\it Home1} and {\it Home2} emulate the
+networking activity of an ensemble of Home Connections. We focus the
+analysis on the behaviour of Home2, that emulates a single connection in the
+vicinity of an ensemble of Home connections, emulated by node Home1. 
+{\it Server1} and {\it Server2} instances run a number of listening daemon that
+generate traffic, based on traffic requests, from the Home instances and
+simulates Internet wide Services. Fιnally, {\it Switch1} and {\it  Switch2}
+emulate the switches that control the backhaul link. Steady state TCP is
+generated using the iperf tool~\cite{iperf}. We also utilize pttcp tool, in
+order to simulate stochastic models of short lived TCP flows. 
 
 \section{Conclusions} \label{sec:conclusion}
 
