@@ -5,25 +5,26 @@
     \graphicspath{{Chapter3/Chapter3Figs/EPS/}{Chapter3/Chapter3Figs/}}
 \fi
 
+\todo{need to update this to meet the motivation below}
 In this chapter we explore application of the SDN technology in Cloud Computing.
 The availability of cheap cloud computing resources, boosted the development of
 a wide ecosystem of applications that aim to fulfil the needs of users to handle
 efficiently and ubiquitly personal information.  We term this use case of cloud
-computing as Personal Cloud Computing (PCC). Applications like facebook,
+computing as Personal Cloud (PerCl). Applications like facebook,
 dropbox, google services~et.al.  abstract online user identity among devices,
 associate it with information, which is disseminated based on the user policy.
 Such services manage to simplify the way we use computers, but most of the times
 they employ mechanisms that undermine the security and privacy of users, while
 use network resources inefficiently. 
 
-We propose an Internet-wide overlay network architecture which enables PCC, while
+We propose an Internet-wide overlay network architecture which enables PerCl, while
 addressing the aforthmentioned shortcomings. The architecture builds around an
 \of controller running on end-hosts, which is enhanced with the ability to
-control several off-the-self tunneling software. The proposed architecture employs
+control several off-the-self tunneling programs. The proposed architecture employs
 a distributed network connectivity negotiation protocol between end-hosts, that
 scales the complexity of end-system orchestration through control ditribution.
 
-From the user perspcective, the system achieves backward compatibility with
+From the user perspective, the system achieves backward compatibility with
 existing applications through the integration of the  architecture on the
 network layer of the network stack. As a result, legacy aplications can take
 advantage of the architecture by communication over a specific local
@@ -68,68 +69,69 @@ Section\ref{sec:signpost-conclusion}.
 \section{Personal Clouds}\label{sec:signpost-introduction}
 
 In the recent years, the increase in the number of networked devices per user
-has created a significant information and resource management problem for the
-user.  Each device usually represents a different aspect of the user interaction
-with technology, but the distincts roles of each device can mix, e.g.
-smartphones are primarily a communication device but they are used as
-entertainment device too and users are interested in mechanisms that would allow
-them to share data with the home NAS.  Ultimately, users want
-to manage the ensemble of devices as a single control entity and virtualize
-resources. This requirement motivated the development of a large number of
-applications that enable seemless inter-device cooperation. Protocol designers
-have developed protocols that allow functionalities like remote desktop, file
-sharing, remote login, remote printing etc. over the network and across devices.
-Additionaly, in order to reduce the configuration burden, the network community
-has also proposed a number of automation mechanisms.  Multicast-DNS, Universal
-Plug and Play and ZeroConf allow a user upon network connection to review most
-available shared services and connect to them with a single click. We term {\it
-  ``Personal Cloud``}, the resource sharing and control abstraction that the user 
-can exercise among its devices. Personal cloud is an efficient way for users
-to
-embrace technology and take full advantage of it. Unfortunately, interconnecting 
-devices across the Internet has become increasingly difficult.
+has created a significant information and resource management problem for
+end-users. Although, each device has a specific role in the users everyday life,
+the distinct roles of devices can mix, requiring resource and infromation
+sharing.  For example, a smartphone is primarily a communication device. A
+number of end-users though uses such devices to render audio and video content
+for entertainment purposes, requiring an easy to use access mechanism to the
+files of the home entertainment unit.  Such emerging requirements drive the
+development of centralised device management and resource virtualization
+systems. We term such systems as {\it ``Personal Clouds''}. 
+A significant number of applications and protocols has been introduced
+that enables seemless inter-device cooperation and provide functionalities like
+remote desktop, file sharing, remote login, remote printing etc. over the
+network and across devices.  Additionally the network community has also
+developed a number of automation mechanisms to reduce the configuration burden.
+Multicast-DNS, Universal Plug and Play and ZeroConf protocols allow a user to
+browse and controll available shared services upon connection to a network.
+Such mechanism are very effective when devices are collocated within the same
+network and there isn't any policying in inter-device communication.
+In this section we discuss the problems arising in Internet-wide Personal Clouds,
+present existing approaches to the problem and discuss the goals of
+Signpost abstraction.
+
+% We term {\it ``Personal Cloud``}, the resource sharing and control abstraction
+% that the user can exercise among his devices. Personal cloud is an efficient way
+% for users to embrace technology and take full advantage of it. Unfortunately,
+% interconnecting devices across the Internet has become increasingly difficult.
+
 % , mainly due to the
 % way that the Internet evolves.
 
-\subsection{Disconnected Internet}
+\subsection{Challenges}
 
-Internet is an excelent example of a dynamic system that manages to adapt to the
-evolving demands of its users and modify its functionality and design in order
-to accomodate evolvability.  In the early days of the system, its designing
-boards set as a fundamental goal to promote simplicity and openness, in order to
-expand the user base worldwide. As a result, Internet protocols achieved pretty
-quick extensive systems support, while hosts could use Internet services simply
-by connecting to a network with an Internet gateway. During that period, the
+Internet is an excellent example of a dynamic system that manages to respond
+effectively to the evolving user requirements.  In the early days of the system,
+expand faster the user base, its design board set simplicity and openness as
+fundamental design goals.  As a result, Internet protocols achieved quickly
+extensive system support, while hosts could use any Internet services simply by
+connecting to a network with an Internet gateway. During that period, the
 Internet remained a large wide area network interconnecting research institutes
-and its main use cases focused on providing various types of asynchronous
-communication. Through the years, the evolution of Internet use cases
-highlighted a number of limitation on the design of the system, a number of
-which related to security and performance.
+and its main use cases revolve around asynchronous communication. Through the
+years, the evolution in its use cases highlighted a number of limitation on the
+design of the system, a number of which related to security and performance.
 
-In order to address these limitations in a backward compatible manner a number
-of design modifications were introduced in the Internet design. One of the most
-popular technique is the deployment of middleboxes.
-Middleboxes violate in a number of ways design principles of the Internet, but
-they provide an effective framework to insert in the network
-new functionality that can address some of its limitation. 
-NATboxes permit Internet to overcome the shortage of IP
-addresses, WAN optimizers optimize utilization of 
-udnerprovisioned links and firewalls secure critical networks against
-malicious hosts. Unfortunately, because this approach violates a number of
-design patterns of the Internet, like the end-to-end principle, middlebox usage has
-redefined the functionality of the Internet. A number of papers have quantifies
-their impact. In~\cite{blah} authors blame middlebox
-functionality for the inability to introduce new transport protocols, while
-in~\cite{blah} authors presents some details on how middleboxes handle corner cases
-of protocol implementation. \todo{ describe some efforts to overcome
-  middleboxes.}
+In order to address these limitations in a backward compatible manner, a number
+of network hacks were introduced in the Internet design. One of the most popular
+hack is the deployment of middleboxes.  Middleboxes violate in a number of ways
+design principles of the Internet, but they provide an effective framework to
+insert in the network new functionality and address a design limitation.
+NATboxes address the IPv4 address shortage, WAN optimizers improve utilization
+of underprovisioned links, while firewalls secure critical networks. Middlebox
+deployment has redefined to a great extend the Internet abstraction. A number of
+papers have quantifies their impact.  In~\cite{Honda:2011ci} authors pinpoint
+middlebox functionality as a core cause in the oscification of the transport
+layer, while in~\cite{Kreibich10} authors describe the limitations that
+middleboxes introduce in protocol specifications, through thorough test of some
+protocol corner cases.  \todo{ describe some efforts to overcome middleboxes.}
 
 An important impact of middlebox deployment and development is the reduced
-connectivity introduced in the Internet. Home networks host a number of
-hidden devices which are inaccesible from the Internet, while enterprise
-networks deploy strict security policies that permit their users to access only
-specific network applications. Personal Cloud deployment across the Internet is
-heavily restricted by the luck of openness.
+connectivity introduced in the Internet. Home networks host a number of hidden
+devices which are inaccesible from the Internet due to NATbox functionality,
+while enterprise networks reduce protocol functionality through strict network
+policy enforcement by network firewalls. Personal Cloud deployment across the
+Internet is heavily restricted by the luck of openness.
 
 % §develop and deploy various protocol modifications that tried to bypass these
 % design flaws.  Unfortunately, such systems tend to introduce stricter
@@ -145,68 +147,58 @@ heavily restricted by the luck of openness.
 % the Internet is a vital reason for the inability of the network community to
 % establish Private Clouds across the Internet.  
 
-\todo{Internet is disconnected due to policies as well as middleboxes. This
-  reduces the ability of users to interconnect devices. Although the applications
-exist, we cannot use them easily across the network.}
+\subsection{Approaches} 
 
-\subsection{Reconnecting Internet} 
-
-\todo{The Internet remains disconnected due to policies on the edges. The
-  core of the Internet enforces very little policying. As a result the problem
-  of interconnecting devices across ther Internet is not a limitation of the
-  network, but a luck of mechanism to achieve this. }
-
-Although Internet reachability is reduced, the system remains highly performant
+Although Internet reachability is reduced, the system remains highly performent
 and connected; it interconnect billion of users and transports terrabytes of
 information everyday. This is achieved due to the predominant mode of
 operation of Internet services. Hosts in the common case connect to
-well exposed services, that provide access to popular information. 
-This model, which is called Client-Server model, is a natural occurance of the
+a small subset of the Internet hosts, that expose network services and 
+provide access to popular information. 
+This model, which is called {\it Client-Server model}, is a natural result of the
 power law behaviour of various social and engineering mechanisms. Internet
-network graph is a power law graph, due to its hierarchical structure that
-allows scalability, while information popularity exhibits strong power law
-characteristics. 
+network graph is a power law graph, due to its scalable hierarchical structure, 
+while information popularity exhibits strong power law characteristics. 
 
-Personal cloud computing is not a good match for the
-Client-Server model. Personal devices most commonly are connected to networks
-that are optimised for outgoing activity, while the Internet is not able to
-acomodate well-connected services for every host. More
-specifically, NATed networks that can scale connectivity on the edges of the
-network require manual configuration by the administrator in order to permit
-hosts to expose services, while a number of edge networks, like mobile and
-enterprise networks, restrict publicly accessible services on connected
-hosts. In order to overcome these restrictions a number of approach has been
-proposed by the research community as well as the industry. We group these
-solutions in the following two categories:
+Personal cloud computing is not a good match for the Client-Server model.
+Personal devices most commonly are connected to networks that are optimised for
+outgoing connectivity, while the Internet is not able to accommodate well-connected
+services for every host. More specifically, NATed networks that can scale
+connectivity on the edges of the network require manual configuration by the
+administrator in order to permit hosts to expose services, while a number of
+edge networks, like mobile and enterprise networks, restrict publicly accessible
+services on connected hosts. In order to overcome these restrictions a number of
+approach has been proposed by the research community as well as the industry. We
+group these solutions in the following two categories:
 
-\paragraph*{User-managed decentralised Personal Cloud}: A number of 
-frameworks have been proposed over the years that use publicly available
-services and provide biderectional connectivity between devices. We are
-considering in this category tunneling software, like OpenVpn and SSH, and 
-NAT and firewall puncing mechanism, like STUN. Although such mechanisms are
-effective in a number scenarios, a number of assumption and configuration
-requirements dim them inappropriate for inexperinced users. As we have already
-discussed in Section \ref{blah} average Internet user is willing to engage in
-configuring netowrk services as long as they can be defined as short simple
-management tasks. Establishing connectivity using existing user managed mechanisms is not
-staightforward. Functionality contains assumptions on the connectivity of the
-environment and users have to resolve to ``try and error'' approaches to check
-which mechanism can be effective in a specific environment, while users are
-required to engage in a number of prior configurations in a number of different
-subsystems of the network. 
+\paragraph*{Decentralised Personal Cloud}: 
 
-In order to exemplify we can engage in a detailed description of the steps for a
-user to establish connectivity using the ssh service. Before the user is able to
-connect to a computer using SSH, he has to configure the service on his local
-mahine, configure security credentials on the server and configure any firewall
-and nat boxes. Upon connection, the user has to run the SSH client, choose the
-ports he is interested to forward and configure the connecting software to use
-the ports expose by the ssh client. This connectivity is subject to the ability
-of the user in the remote network to use the SSH protocol on the preconfigure
-port. 
+Numerous frameworks have been proposed over the years that use publicly
+available services and provide bidirectional connectivity between devices. We
+are considering in this category tunneling software, like OpenVpn and SSH, and
+NAT and firewall punching mechanism, like STUN. Although such mechanisms are
+effective in a number of scenarios, a number of assumption and configuration
+requirements dim them inappropriate for inexperienced users. As we have already
+discussed in Section~\ref{s:home_social} average Internet user is willing to
+configure its network service n as long as the configuration tasks are short
+and simple. Establishing connectivity through user-managed
+mechanisms is not straightforward. Functionality contains assumptions on the
+connectivity of the environment and users have to resolve to ``try and error''
+approaches to check which mechanism can be effective in a specific environment,
+while prior configurations in required in a number of different subsystems of the 
+network. 
 
+As an example, we describe the steps required by a user to establish
+connectivity using the SSH service. Before the user is able to connect to a
+computer using SSH, he has to configure the service on his local machine, the
+security credentials on the server and any firewall and NATbox deployed in the
+network. Upon connection, the user has to run the SSH client, choose the ports
+he is interested to forward and configure the connecting software to use them.
+This connectivity is subject to the ability of the user in the remote network to
+use the SSH protocol on the preconfigure port.  In case this is not possible,
+the user has to resolve to a different service.
 
-\paragraph*{service-assisted Personal Cloud}:
+\paragraph*{cloud-assisted Personal Cloud}:
 
 % According to wikipedia~\cite{wiki-cloud}, the definition of {\it ``Cloud''} is:
 % \begin{quote}
@@ -242,11 +234,6 @@ port.
 % cases, the end-user of a cloud application is usually exposed  directly only to
 % the upper layer of the afortmentioned abstractions. 
 
-An alternative approach which has been highly succesful in the recent years
-employs the Client-server model to establish connectivity between devices, using
-a third party service. Such systems have been highly effective, while the high
-high popularity of cloud services has reduced significantly the cost, providing
-significant resources at low costs and good performance. 
 % Cloud computing mechanisms have managed to provide a sufficient platform that
 % can accomodate the processign requirements for a large number of applications,
 % while it also provides ways to scale systems very fast in order to support
@@ -255,22 +242,27 @@ significant resources at low costs and good performance.
 % their data to the public cloud infrustructure and interact with the public API
 % of the service. The service provider can post analyse the user data in order to
 % create the intermediate data required in order to provide timely responsiveness
-% for its service. 
-Although this approach is deemed succesful, especially given
-the impact such applications have among users, its properties can be
-characterised ambivalent. A number of properties that cloud services provide
-may have a significant set of user implications. 
+% for its service.
+
+An alternative approach which has been highly succesful in the recent years uses
+third party services to establish inter-device connectivity.  In this class we
+consider cloud applications like google service suite and
+Dropbox. Such approaches have managed to provide a simple and intuitive
+abstraction to users, while taking advantage the development in cloud
+infrastructures, they provide high performance. Although this approach can be
+characterised as successful in providing connectivity, some properties remain
+ambivalent and demotivate user engagement. 
 
 \begin{itemize}
-  \item{\it authentication}: A number of cloud applications provide an effective
-       framework to control information dissemination between devices as well as
-       users.  Users are required solely to verify that an online identity is a
-       valid destination for an information quantum and the service ensures
-       secure dissemination of information based on the user policy.  This
-       mechanism though introduced privacy concerns.
+  \item{\it authentication}: cloud applications provide an effective
+       framework to control information dissemination between devices and
+       users.  Users can define an access policy based on online identities 
+       and the service will ensure secure delivery of information.  This
+       mechanism though introduces privacy concerns, as the authentication
+       mechanisms can be employed in online user identification and monitoring. 
        In~\cite{Krishnamurthy2009} authors reports cases of online OSN that leak
-       information to ad services which allows them to detect and characterize
-       individuals, while facebook has openly verified the existence of such
+       information to ad services in order to detect and characterize
+       individuals, while Facebook has openly verified the existence of such
        services~\footnote{\url{http://en.wikipedia.org/wiki/Facebook_Beacon}}. 
 
 % \paragraph*{authentication}: A number of cloud applications provide an effective framework
@@ -295,17 +287,18 @@ may have a significant set of user implications.
 % ability to characterise users, a functionality which is privacy envasing for
 % some users. 
 
-\item {\it performance}: Cloud services manage to deliver user
-acceptable performance to million of users across the world. Google claims that any user is in
-range of a few thousand of mile of at least a signle google datacenter. Although
-this approach provides a user satisfying service performance, it is wasteful in
-processing resources; Cloud services under utilize rich edge resources. Two
-devices that are behind the same subnet and communicate using a cloud service 
-have will suffer high RTT latency, while public cloud storage cost and
-performance is orders of magnitude higher that local network NAS. 
-Finally, a number of measurement studies have highlighted a significant impact
-on the 95th quantile network performance of cloud services, due to latency and packet
-losses incurred by the Internet~\cite{Wittie2010}. 
+\item {\it performance}: Cloud services manage to deliver user acceptable
+      performance to million of users across the world. Google claims that any
+      user is in range of a few thousand of mile of at least a single google
+      datacenter. Although this approach provides user satisfying service
+      performance, it is wasteful in processing resources; Cloud services under
+      utilize rich edge resources. Two devices that are behind the same subnet
+      will suffer from increased RTT values when communicating using a cloud service,
+      while public cloud storage cost and performance is orders of magnitude
+      worser than local network file services. In~\cite{Wittie2010}, authors
+      report a significant impact on the 95th quantile network
+      performance of cloud services, due to latency and packet losses incurred
+      by the Internet. 
 % \paragraph*{performance}: A number of cloud services manage to deliver user
 % acceptable performance to million of users across the world. This is achieved to
 % a great extend by careful design of data processing pipelines, that paralelize
@@ -325,15 +318,13 @@ losses incurred by the Internet~\cite{Wittie2010}.
 % losses incurred by the Internet~\cite{Wittie2010}. 
 
 \item {\it cost}: Free cloud services have an interesting 3-party economical
-      model that uses advertisment as a mechanism to sustain the cost of the
-      infrustructure. As a result, users are able to enjoy high quality services
-      with minimum costs. The providers though, because of the free nature of
-      the service are not wiling to provide any SLA's to users. If a part of the
-      service is compromised and some information is leaked, then the service
-      provider bears no obligation towards affected users. Such costs are not
-      directly observed by the end-user, but they may impact significantly his
-      everyday life. 
-
+      model that uses advertisement as a mechanism to cover the 
+      infrastructural costs. The providers though, due to the free nature of the service,
+      provide very weak user SLA's. If a part of the service is compromised and
+      information is leaked, the service provider bears no obligation
+      towards affected users. Such costs are not directly observed by the
+      end-user, but they may impact significantly his social and work experience. 
+      \todo{report Dropbox problem}
 % \paragraph*{cost}: Free cloud services have an interesting 3-party economical
 % model that uses advertisment as a mechanism to circulate capital and sustain the
 % cost of the infrustructure. As a result, users are able to enjoy high quality
@@ -346,13 +337,13 @@ losses incurred by the Internet~\cite{Wittie2010}.
 \item {\it Availability}: Cloud services run on well connected infrastructures
       with a large number of network engineers ensuring security and
       performance.  Any device with Internet connectivity is able to connect to
-      the cloud service, without any special configuration of the OS or the
-      Network policy. Cloud services function as an always accessible cache
-      between devices and users.  Although, the centralised design of such
-      services makes it impossible for devices to interconnect when Internet
-      connectivity is restricted. Two users behind the same firewall will never
-      be able to exchange a file over dropbox, if the network policy forbids any
-      connection with the servers of the service. 
+      the cloud service using default settings. Further, cloud services function
+      as an always accessible cache between devices and users.  Devices though
+      are unable to interconnect and access shared information, if Internet
+      connectivity is unavailable, even if they are able to interconnect on the
+      network layer.  Two users behind the same firewall will never be able to
+      exchange a file over dropbox, if the network policy forbids any connection
+      with the servers of the service. 
 % \paragraph*{Availability}: As we have already discussed in the Introduction of
 % this thesis, Internet has reduced significantly the bidirectional connection
 % property of Internet hosts. The deployment of performance-enhancing middleboxes
@@ -370,18 +361,92 @@ losses incurred by the Internet~\cite{Wittie2010}.
 % there isn't any Internet connectivity. Two users behind the same firewall will
 % never be able to exchange a file over dropbox, if the network policy forbids
 % any connection with the servers of the service. 
+\item {\emph Generality}: 
+
 \end{itemize}
 
 \todo{A large set of protocol to coordinate distributely home networks. }
 
-\section{Enabling edge user-driven connectivity}\label{sec:signpost-design}
+\subsection{Reconnecting the Internet}\label{sec:signpost-design}
 
-\todo{\dnssec description}
+In order to model the problem of Personal Cloud network connectivity, we propose
+a system that fuses existing approaches. Our system design goals are twofold.
+Firstly, we develop a user friendly framework that automates connectiion
+configuration. In order to achieve this, we model the way various existing 
+decentralised mechanisms establish connectivity and encode their configuration 
+and assumptions testing in a generic
+automation framework. Further, the system reuses existing network abstractions which are
+intuitive to Internet users. The connection establishment mechanism exports
+connectivity through the network layer abstraction, allowing existing
+applications to take advantage of the system. Further, we reuse the naming
+abstraction of the DNS service; each device has a user-defined domain name under
+the signpo.st domain.  Secondly, the system exposes a user-controlled security
+mechanism, which can provide different security properties on connections
+between devices. As a result, the user is able to fully control the
+dissemination of his information, without relying his policy enforcing mechanism
+on the service provider or leaking any privacy-sensitive information to a third
+party entity. 
 
-\todo{Effectful naming}
-\todo{How \signpost looks like to the outside}
+\begin{figure}[ht]
+  \begin{center}
+	\includegraphics[width=0.6\textwidth]{signpost-illustration}
+  \end{center}
+  \caption{A simple example of the Signpost abstraction when the user Alice
+    interconnects a smarthphone with the home computer over the Internet.}
+  \label{fig:signpost-user-abstraction}
+\end{figure}
+
+A schematic of the abstraction that our system provides to end-users is depicted
+in Figure~\ref{fig:signpost-user-abstraction}. In this scenario user Alice, who
+is at work and uses her smartphone, wishes to access some files from her laptop
+which is behind the NATed home router. In order to express her interest to
+connect to her laptop, the user needs solely to perform a name lookup for the
+domain name home.alice.signpost.io. The name lookup will propagate through the
+DNS infrastructure to the cloud presence of her signpost system. The Signpost
+server will trigger the two devices to try any possible network tactic and try
+to establish an end-to-end path between the two devices. Once the server has
+ensured that a first channel has been establish, it will reply to the initial
+DNS query with a local IP address which will be routed by the local Network
+stack to the tunnel between the two devices. In parallel, the server will
+continue recursively to test different tactics in case a better connection can
+be established. 
+
+% Our work builds on the observations on the shortcoming of current approaches to
+% interconnect devices, and tries to bridge the two domains, providing the
+% appropriate control mechanisms to end-users. On one hand, we want to
+% model a generic framework that will allow end-host to automatically test the
+% network environment, discover the optimum mechanism to interconnect two
+% devices and distributely negotiate the connection parameters with other devices,
+% without any user interaction. On the other hand, we want to provide to the users
+% a mechanism that will allow them to control to a great extend the security and
+% privacy of their information. 
 
 \section{Signpost Architecture}\label{sec:signpost-architecture}
+
+\begin{figure}[ht]
+  \begin{center}
+	\includegraphics[width=0.6\textwidth]{signpost-arch}
+  \end{center}
+  \caption{Signpost architecture }
+  \label{fig:signpost-arch}
+\end{figure}
+
+In order to implement the proposed architecture we develop a strawman
+implementation of the platform, named Signpost. Signpost touched three main
+points: Naming service, connection engine, tactic and forwarding. We further
+describe changes for each point in the system. 
+
+\subsection{Network Tactic}
+
+\subsection{Connection Manager}
+
+\subsection{}<++>
+
+\section{Security}
+
+\todo{\dnssec description}
+\todo{Effectful naming}
+\todo{How \signpost looks like to the outside}
 
 \todo{Connection Engine}
 
