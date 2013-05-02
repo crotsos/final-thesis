@@ -16,12 +16,12 @@
   \emph{\color{red}{#1}}
     }
 
-\newcommand{\signpost}{Signpost}
-\newcommand{\dnssec}{DNSSEC}
-\newcommand{\unik}{unikernel}
-\newcommand{\Unik}{Unikernel}
-\newcommand{\mirage}{Mirage}
-\newcommand{\Mirage}{Mirage}
+\newcommand{\signpost}{Signpost\xspace}
+\newcommand{\dnssec}{DNSSEC\xspace}
+\newcommand{\unik}{unikernel\xspace}
+\newcommand{\Unik}{Unikernel\xspace}
+\newcommand{\mirage}{Mirage\xspace}
+\newcommand{\Mirage}{Mirage\xspace}
 \newcommand{\mirageurl}{\emph{http://openmirage.org}}
 
 \usepackage{listings,color}
@@ -36,7 +36,10 @@
   showstringspaces=false,
   commentstyle=\color{gray}\upshape
 }
- 
+
+\newcommand\fqsn[1]{\url{#1.signpost.io}}
+\newcommand\spsn[1]{\url{#1}}
+
 \lstdefinelanguage{XML}
 {
   basicstyle=\ttfamily\color{darkblue}\bfseries,

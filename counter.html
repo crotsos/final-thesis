@@ -134,13 +134,13 @@
      }
 
       $.ajax({
-        url: "https://dl-web.dropbox.com/s/noh1vb3smhrd1hj/word_cloud.data",
+        url: "https://dl.dropboxusercontent.com/s/noh1vb3smhrd1hj/word_cloud.data",
         type: "GET",
         dataType: "text",
         success: plot_cloud
       });
        $.ajax({
-        url: "https://dl-web.dropbox.com/s/olxu508p1vb5vey/stats.data",
+        url: "https://dl.dropboxusercontent.com/s/olxu508p1vb5vey/stats.data",
         type: "GET",
         dataType: "text",
         success: onDataReceived
