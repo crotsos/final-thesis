@@ -5,7 +5,6 @@
     \graphicspath{{Chapter3/Chapter3Figs/EPS/}{Chapter3/Chapter3Figs/}}
 \fi
 
-\todo{need to update this to meet the motivation below}
 % In this chapter we explore application of the SDN technology in Cloud Computing.
 % The availability of cheap cloud computing resources, boosted the development of
 % a wide ecosystem of applications that aim to fulfil the needs of users to handle
@@ -17,7 +16,7 @@
 % they employ mechanisms that undermine the security and privacy of users, while
 % use network resources inefficiently. 
 
-In this chapter we explore applications of control distribution in Cloud and
+In this chapter we explore applications of network control distribution in Cloud and
 Mobile computing. The work focuses on the problem of information control and
 distribution between the devices of a user across the Internet; a mechanism we
 term Personal Cloud.  We propose \signpost, an Internet-wide overlay network architecture
@@ -59,7 +58,7 @@ for a number of network connection and notification services.  Currently,
 \signpost supports SSH, OpenVPN, TOR, NAT-punch and Privoxy connection
 mechanisms, while it can propagate Multicast-DNS notifications across devices.
 
-In the chapter we present in Section~\ref{sec:signpost-introduction} the
+In this chapter, we present in Section~\ref{sec:signpost-introduction} the
 motivation for this work, followed then by the key observations for our design
 in Section~\ref{sec:signpost-design}. In
 Section~\ref{sec:signpost-architecture}, we present the architecture of our
@@ -71,27 +70,41 @@ tests for our system and conclude in Section\ref{sec:signpost-conclusion}.
 
 In the recent years, the increase in the number of computing devices per user
 has created a significant information and resource management problem for
-end-users. The average set of user devices contains a laptop, a desktop, a
-tablet, a smartphone and a number of low cost computational units for home
-entertainment and gaming.  Such devices tend to offer specific user services and
-fulfil specific roles, but these roles are fluid and intercept. For example, a
-smartphone is primarily a communication device, but a number of end-users use
-smartphones to play audio and video content. In the latter case, the smartphone and
-the home entertainment system match in terms of functionality and the user is in
-need of mechanisms enabling data and resource sharing.  Ultimately the user
-wishes to replicate and synch a digital state among all devices, a functionality
-which we describe as a Personal Cloud. 
+end-users. In this modern era, the ensemble of the user digital footprint
+quantums establish a user's abstract digital presence. For example, a users work
+facet comprises of his work documents and files, while a part of his social
+experiences can be maps to his collection of digital photos. This digital
+information is trated by the user as a single entity that he wishes to access
+through any point of interaction with the digital domain.  Unfortunately, the
+set of personal devices through which a user interacts with his digital presence
+is large and consists on average of a laptop, a desktop, a tablet, a smartphone
+and a number of low cost computational units for home entertainment and gaming.
+These devices tend to offer specific user services and fulfil specific roles,
+thus requiring access only to a subset of the user digital presence, but these
+roles are fluid and intercept. For example, a smartphone is primarily a
+communication device, while a number of end-users use smartphones to play audio
+and video content. In the latter case, the smartphone and the home entertainment
+system provide similar functionality to the user, require access to the same
+subset of his digital presence and the user requires a simple abstraction that
+can replicate his digital footprint between his devices, a functionality which
+we describe as a \emph{Personal Cloud}. 
 
 In order to address these requirements numerous applications and protocols have
 been introduced that provide functionalities such as remote desktop access, file
-sharing, remote login, remote printing etc.  between devices.  Additionally, the
-network community has developed a number of mechanisms to reduce the
-configuration burden of resource sharing mechanisms.  Multicast-DNS, Universal
-Plug and Play and ZeroConf protocols allow a user to seamlessly browse and
-access available shared services upon connection to a network.  In this section,
-we discuss the problems arising in Personal Cloud functionality over the
-Internet, present existing approaches to the problem and introduce readers to
-abstraction provided by the \signpost framework.
+sharing, remote login, remote printing etc.  between devices.  Such applications
+extend existing computer abstractions and integrate mechanisms that allow user
+to access information or resources between devices.  Additionally, the network
+community has developed a number of mechanisms to reduce the configuration
+burden of resource sharing mechanisms.  Multicast-DNS, Universal Plug and Play
+and ZeroConf protocols allow a user to seamlessly browse and access available
+shared services upon connection to a network.  Such mechanisms have managed to
+improve significantly the digital experience in small scale network
+environments, like the home network, but they face significant difficulties to
+scale in heavily policed networks or across the Internet. In the rest of this
+Section, we discuss the problems arising in Personal Cloud functionality over
+the Internet~(Subsection~\ref{sec:sp-challenges}), present existing approaches
+to the problem~(Subsection~\ref{sec:sp-approaches}) and introduce readers to the
+\signpost framework~(Subsection~\ref{sec:sp-interface}).
 
 % We term {\it ``Personal Cloud``}, the resource sharing and control abstraction
 % that the user can exercise among his devices. Personal cloud is an efficient way
@@ -101,39 +114,41 @@ abstraction provided by the \signpost framework.
 % , mainly due to the
 % way that the Internet evolves.
 
-\subsection{Challenges}
+\subsection{Challenges} \label{sec:sp-challenges}
 
 Internet is an excellent example of a dynamic system managing to address
-effectively user requirement evolution.  In the early days of the system, in
+effectively evolution.  In the early days of the system, in
 order to extend user adoption, its  steering committee set simplicity and
-openness as two fundamental design goals.  As a result of these choices,
-Internet protocols gained support by a wide range of OSes, while the set of
-connected entities augmented exponentially.  Nontheless, during that period, the
+openness as two fundamental design goals. Due to these design choices, Internet
+protocols gained rapidly support by a wide range of OSes, while the set of
+connected entities augmented exponentially.  Nonetheless, during that period, the
 Internet remained a large wide area network, interconnecting research
-institutes, and its main use cases provided various types of asynchronous
-communication. Through the years, the evolution in its applications highlighted
-a number of limitation in the initial design of the system, a number of which
-related to security and performance.
+institutes, and the predominant applications provided constraint relaxed
+asynchronous communication. Through the years though, and as Internet users
+increased, new applications emerged and highlighted a number of
+security and performance limitation in the initial design of the system.
 
 In order to address these limitations in a backward compatible manner, a number
 of network hacks were introduced in the Internet design. One of the most popular
-hack is the deployment of middleboxes~\ref{RFC3234}.  Middleboxes violate in a
-number of ways design principles of the Internet, but they provide an effective
-framework to ``inject`` functionality that address design limitation.
+hack is the deployment of middleboxes~\cite{RFC3234}.  Middleboxes violate in a
+number of ways design principles of the Internet, in order to provide an effective
+framework to ``inject`` functionality that addresses design limitation. For
+example, 
 \emph{NATboxes} handle the IPv4 address space shortage, \emph{WAN optimizers}
 improve utilization of under-provisioned links, while \emph{firewalls} secure
-critical networks.  Unfortunately, Middlebox deployment redefined to a great
+critical networks.  Unfortunately, Middlebox deployment redefines to a great
 extend the Internet abstraction. A number of papers have described their
 impact: in~\cite{Honda:2011ci} authors pinpoint middlebox functionality as a
-core cause in the oscification of the transport layer, while
-in~\cite{Kreibich10} authors describe a number of protocol feature suppression
-due to middlebox functionality. 
+core cause in the ossification of the transport layer, while
+in~\cite{Kreibich10} authors describe a wide range of protocol functionality
+that has
+become suppressed due to middlebox functionality. 
 % Mainly, due to middlebox functionality, the
 % initial design properties of the system in terms of simplicity and openness have
 % been lost for a large subset of the Internet.  
 
 \todo{ describe some efforts to overcome middleboxes.}
-
+\todo{IPv6 can do some of that,but not everything }
 An important impact of middlebox deployment is the reduced connectivity
 introduced in the Internet. Home networks host a number of hidden devices which
 remain inaccessible from the Internet due to NATbox functionality, while strict
@@ -155,7 +170,7 @@ devices are not able to interconnect directly.
 % the Internet is a vital reason for the inability of the network community to
 % establish Private Clouds across the Internet.  
 
-\subsection{Approaches} 
+\subsection{Approaches} \label{sec:sp-approaches}
 
 % Although reachability is reduced, Internet remains a highly performant and
 % connected system; it interconnects billion of users and transports Terrabytes of
@@ -190,10 +205,11 @@ dim them inappropriate for inexperienced users. As we have already discussed in
 Section~\ref{s:home_social}, average Internet user is highly improbable to
 engage in systematic network configuration, if the configuration tasks are long
 or complex. Establishing connectivity through user-managed mechanisms is not
-straightforward or guaranteed to succeed. Functionality contains assumptions on the connectivity of the
-environment and users have to resolve to ``try and error'' approaches to check
-which mechanism can be effective in a specific environment, while a number of
-different network subsystems require prior configuration. 
+straightforward or guaranteed to succeed. Functionality contains assumptions on
+the connectivity of the environment and users have to resolve to ``try and
+error'' approaches to check which mechanism can be effective in a specific
+environment, while a number of different network subsystems require prior
+configuration. 
 
 As an example, we describe the steps required by a user to establish
 connectivity using the SSH service. Before the user is able to connect to a
@@ -253,13 +269,14 @@ In case this is not possible, the user has to resolve to a different service.
 % create the intermediate data required in order to provide timely responsiveness
 % for its service.
 
-An alternative approach which has been highly successful in the recent years
+An alternative approach, which has been highly successful in the recent years,
 uses third party services to establish inter-device connectivity.  In this class
-we consider cloud applications like the Google service suite and Dropbox. Such
-approaches provide a simple, intuitive and ubiquitous connection abstraction to
-users, taking advantage the development in cloud infrastructures. Although this
-approach can be characterised as successful in providing connectivity, some
-properties remain ambivalent and demotivate user engagement. 
+we consider cloud applications like the Google service suite and Dropbox. These
+applications provide a simple, intuitive and ubiquitous mechanisms to store and
+retrieve data in the cloud and define information dissemination policies.
+Although this approach can be characterised as successful in providing the
+required functionality, some of the properties are ambivalent and demotivate
+user engagement. 
 
 \begin{itemize}
   \item{\it authentication}: Cloud applications provide an effective control
@@ -268,7 +285,7 @@ properties remain ambivalent and demotivate user engagement.
        secure information delivery.  User authentication mechanisms though
        introduce privacy concerns, since they can be employed to identify and
        monitor users.  In~\cite{Krishnamurthy2009} authors reports cases of
-       information leak information to ad services from Online Social Networks,
+       personal information leakage to ad services from Online Social Networks,
        in order to detect and characterize individuals, and Facebook has openly
        verified the existence of such
        services~\footnote{\url{http://en.wikipedia.org/wiki/Facebook_Beacon}}. 
@@ -296,16 +313,18 @@ properties remain ambivalent and demotivate user engagement.
 % some users. 
 
 \item {\it performance}: The availability of large amount of computational
-      resources in current cloud infrastructures enable user acceptable
-      performance of services, regardless the large volume of processed data.
-      This approach though under-utilize the rich computational resources of
-      end-users in the edges of the Internet.  Two devices connected to the
+      resources in current cloud infrastructures provide user acceptable
+      performance, regardless the volume of processed data.
+      This approach though under-utilize the rich computational resources 
+      available in 
+      end-users device on the edges of the Internet.  Two devices connected to the
       same subnet will experience bloated RTT values when they communicate
       through a cloud service, while public cloud storage cost and performance
       is orders of magnitude worse than local network file services.
       In~\cite{Wittie2010}, authors report a significant impact on the 95th
       quantile network performance of cloud services, due to latency and packet
-      losses incurred by the Internet. 
+      losses incurred by the Internet.
+      \todo{Add dropbox measurement study}
 % \paragraph*{performance}: A number of cloud services manage to deliver user
 % acceptable performance to million of users across the world. This is achieved to
 % a great extend by careful design of data processing pipelines, that paralelize
@@ -325,8 +344,8 @@ properties remain ambivalent and demotivate user engagement.
 % losses incurred by the Internet~\cite{Wittie2010}. 
 
 \item {\it cost}: Free cloud services employ a 3-party economical model that
-      subsidizes infrastructural costs through advertisement. Cloud services
-      though, due to the free nature of the service, provide very weak SLA's. If
+      subsidizes infrastructural costs through advertisement. Nontheless, 
+      cloud services, due to the free nature of the service, provide very weak SLA's. If
       a part of the service is compromised and sensitive information is leaked,
       the service provider bears minimum obligation towards affected users. Such
       costs are not directly observed by the end-user, but they may impact
@@ -343,12 +362,13 @@ properties remain ambivalent and demotivate user engagement.
 
 \item {\it Availability}: Cloud services run on well connected infrastructures
       with a large number of network engineers ensuring security and
-      performance and any device with Internet connectivity is able to connect to
-      the cloud service using without any configuration.  Devices though
-      are unable to interconnect and access shared information, if Internet
-      connectivity is unavailable, even when they are connected to the same
-      network.  Two users behind the same firewall will never be able to
-      exchange a file over dropbox, if the network policy forbids any connection
+      performance. Any device with Internet connectivity is able to connect to
+      the cloud service without any network configuration.  This centralisation
+      of the services over the Internet, introduced a weak link in the service
+      functionality. Devices that can connect directly over a network, 
+      will never be able to interconnect and exchange information, if Internet
+      connectivity is unavailable.  Two users behind the same firewall will never be able to
+      exchange a file over Dropbox, if the network policy forbids any connection
       with the servers of the service. 
 % \paragraph*{Availability}: As we have already discussed in the Introduction of
 % this thesis, Internet has reduced significantly the bidirectional connection
@@ -367,20 +387,25 @@ properties remain ambivalent and demotivate user engagement.
 % there isn't any Internet connectivity. Two users behind the same firewall will
 % never be able to exchange a file over dropbox, if the network policy forbids
 % any connection with the servers of the service. 
-\item {\emph Generality}: 
-
+\item {\emph Generality}: Cloud applications develop distributed services
+      optimized for specific functionality. Google Drive provides online
+      document storage, Youtube provides online video hosting and Facebook
+      provides Online Social Network Services. Users are limited on their ability
+      to share information or resources by the offered capabilities of the
+      service provider and there isn't a sole service provider that can
+      support functionality for the complete ensemble of Personal Cloud services. 
 \end{itemize}
 
-\subsection{Reconnecting the Internet}\label{sec:signpost-design}
+\subsection{Reconnecting the Internet}\label{sec:sp-signpost}
 
 \signpost is a Personal Cloud enabling framework with user controlled security.
 The system establishes an Internet-wide overlay network between the devices of a
-user, fushing the aforthmentioned approaches. The abstraction relies on a
-cloud-based control channel between devices and is able to establish highly
-performant connections between them, using existing decentralized
-frameworks. In order to enable functionality of the control channel under strict
-network policying, we integrate it with DNS, a highly available and resilient
-service. 
+user, combining the aforthmentioned approaches. The abstraction relies on a
+cloud-based control channel established between devices which can be used to
+negotiate and establish highly efficient end-to-end connections, using existing
+decentralized frameworks. In order to ensure functionality
+under any circumstance, we integrate the control channel with the DNS protocol, a highly
+available and resilient service. 
 
 \signpost has two major design goals.  Firstly, the system establishes a user
 friendly framework that automates end-to-end path configuration between devices.
@@ -409,18 +434,19 @@ privacy sensitive data offload to cloud services.
 \todo{Add some reference to cloud controller}
 A schematic of the abstraction that our system provides to end-users is depicted
 in Figure~\ref{fig:signpost-user-abstraction}. In this scenario user Alice, who
-is at work and uses her smartphone, wishes to access some files from her laptop
+is at work and uses her smartphone, wishes to access some files on her laptop,
 which is behind the NATed home router. In order to express her interest to
 connect to her laptop, Alice needs solely to perform a name lookup for the
 domain name \fqsn{laptop.alice}. The name lookup will propagate through the
 DNS infrastructure to the cloud presence of her \signpost system. The \signpost
-server will trigger the two devices to try any possible network tactic and
-establish an end-to-end path between the two devices. Once the server has
+server will trigger the two devices to try multiple possible connection
+establishment techniques and
+setup an end-to-end path between the two devices. Once the server has
 ensured that a first path is available, it will reply to the initial
 DNS query with a local IP address which will be routed by the local network
 stack to the tunnel between the two devices. In parallel, the server will
-continue recursively to test different tactics in case a better connection can
-be established. 
+continue recursively to test different tactics, to discover more efficient
+connection mechanisms. 
 
 % Our work builds on the observations on the shortcoming of current approaches to
 % interconnect devices, and tries to bridge the two domains, providing the
@@ -443,7 +469,7 @@ be established.
 \end{figure}
 
 \signpost is an Internet-wide secure inter-device communication system. The
-system reuses existing Internet protocols and connectivity and provides
+system reuses existing Internet protocols and connectivity mechanisms and provides
 an overlay local network. In Figure~\ref{fig:signpost-arch} we present 
 a diagram of the \signpost architecture over different abstractions. 
 %%
@@ -451,7 +477,7 @@ In the lower section of Figure~\ref{fig:signpost-arch}, we present the design of
 the \signpost software and its integration with existing applications.
 \signpost logic is contained in a single executable, and requires from the guest
 OS to expose an OpenFlow switch interface and redirect DNS queries to the
-embedded DNS resolver.  \signpost software consists of three main subsystems: A
+embedded DNS resolver.  The software consists of three main subsystems: A
 {\it Connection Engine}~(Subsection~\ref{signpost-engine}) that sets up and
 manages {\it Network Tactics}~(Subsection~\ref{signpost-tactic} in order to establish
 end-to-end paths, a local DNS resolver and an \of-based {\it \signpost
@@ -460,7 +486,7 @@ routing functionality with \signpost logic.
 %%
 In the middle layer of Figure~\ref{fig:signpost-arch}, we present the control
 plane interconnection of \signpost devices. The system relies on an
-Internet-wide control inter-device control channel, which enables
+Internet-wide inter-device control channel, which enables
 connection capability and parameter negotiation. The architecture considers a
 \emph{Controller \signpost} instance running on a well connected host, which bridges
 the device control channel across the Internet.  Further, the system can
@@ -550,9 +576,9 @@ of end-to-end Internet paths, while a third class of these
 mechanisms enables connectivity through simple service advertisement. Further,
 the mechanisms vary significantly on the network layer they operate and the type
 of connection they provide.  Tunnels provide connectivity on a specific port of
-the transport layer, or introduce an overlay network on the network layer, while
-the majority of the tunelling mechanism functions over UDP or TCP
-protocol, there are protocols that function over lower layer protocols, like
+the transport layer, or introduce an overlay network on the network layer.
+The majority of the tunelling mechanism functions over UDP or TCP
+protocol, while there are protocols that function over lower layer protocols, like
 ICMP. Finally, authentication of users is not uniform.  Approaches vary from
 user-based authentication, using either passwords or certificates, 
 to simple passphrase checks, while a subset of the protocols doesn't
@@ -561,8 +587,8 @@ support any authentication.
 Due to the wide and diverse range of available mechanisms, we model their
 functionality in terms of \signpost through a simple abstraction, which we term
 {\it Network Tactic}. A sufficiently generic specification of this abstraction
-is core for the establishment of an automated connectivity platform.  Further,
-the abstraction enables modularization during the integration of new mechanism,
+is core for the establishment of an automated connectivity platform.
+This abstraction enables modularization during the integration of new mechanism,
 while enabling the development of algorithms that optimize specific indexes on
 the exploration of the optimal combination of tactics to fulfil a user
 connection policy.
@@ -586,13 +612,13 @@ state which will configure an end-to-end path. Once the end-to-end path is
 setted up, then the Tactic can progress to the enabled state and forward packets
 to the end-to-end path.  Finally, the tactic automata provides methods to
 backtrack from each state and clear stored state. In order to avoid packet
-reordering, \signpost permits parallel existance of multiple connected tactics
+reordering, \signpost permits parallel existence of multiple connected tactics
 for a set of devices, but a single tactic can be enabled at any point. 
 \todo{ Mention that tactic is able to control OpenFlow also}
 
 In term of modules implementation, \signpost achieves control distribution
 through the definition of a generic model to split functionality between the
-\signpost controller and client.  The functionality of a \signpost tactic
+\signpost controller and client for a specific tactic.  The functionality of a \signpost tactic
 is split logically in two layers: the Southbound layers, which implements low
 level tactic operations, and the Northbound module,
 which translates the tactic abstraction into low level operations.  The
@@ -601,17 +627,17 @@ Southmodule module logic is executed by the \signpost clients. The two layers of
 the tactic, communicate over the control channel using a tactic specific
 protocol. 
 
-As an example of this functionality split, we present the case of the test
-functionality for the OpenVpn tactic, an IP tunneling system that uses
-certificate-based authentication and functions over TCP or UDP. In the test
-section of the Southbound layer, the tactic exposes two main functionalities:
-init an OpenVpn server with default configuration and test if an OpenVpn server
-is accessible on a given IP and port. The Northbound layer of the tactic will
-instruct all devices participating to initiate a server instance and test
-connectivity to the other end of the link. The first client that will return
-with a successful result will become a client, while if the test request times
-out for both devices, then the server will initialise an OpenVpn server and
-instruct the devices to test connectivity through the cloud.
+As an example of this functionality split, we present the Test methof of the
+OpenVpn tactic, an IP tunneling system that uses certificate-based
+authentication and functions over TCP or UDP. In the test section of the
+Southbound layer, the tactic exposes two main functionalities: init an OpenVpn
+server with default configuration and test if an OpenVpn server is accessible on
+a given IP and port. The Northbound layer of the tactic will instruct all
+devices participating to initiate a server instance and test connectivity to the
+other end of the link. The first client that will return with a successful
+result will become a client, while if the test request times out for both
+devices, then the server will initialise an OpenVpn server and instruct the
+devices to test connectivity through the cloud.
 
 % In the development of the 
 % we also consider the way that the
@@ -633,7 +659,7 @@ instruct the devices to test connectivity through the cloud.
 
 In order to add seamless \signpost support in existing applications we choose to
 enable \signpost integration at the network layer. As a result, a \signpost
-cloud is abstracted as a local subnet and persistent local IP are allocated to
+cloud is abstracted as a local subnet and persistent local IPs are allocated to
 devices. In order to modify the forwarding logic of the end-host, we add a
 requirement for an \of switch running on the local system which will be
 connected to the embedded \of controller of the \signpost software. 
@@ -647,29 +673,32 @@ under the \signpost subnet, the system delegated their control to the respective
 enabled tactic which can exercise control either actively or pro-actively
 through a simple event driven model. Additionally, the controller enables
 tactics to inject packets in the network, through the \of protocol, while they
-are also able to install proactively \of flows that may affect the network.
+are also able to install proactively \of flows that can modify normal network
+routing functionality.
 Tactic developers have to be careful with this control delegation and install
 flows that affect solely tactic traffic. Finally, in order to reduce broadcast
-traffic on the tactics, we implement a simple ARP cache as part of the \of
+traffic notification in the control channel, we implement a simple ARP cache as part of the \of
 controller. The ARP caches replies with the MAC address fe:ff:ff:ff:ff:ff on
 every ARP request for IP addresses within the \signpost subnet. Tactics are
 responsible to exercise network level forwarding control. 
 
 \subsection{Connection Manager} \label{signpost-engine}
 
-\signpost is able to establish multiple end-to-end paths between devices by
-synthesizing tactics. Unfortunately, multipath connectivity is not supported by
-popular transport protocols, while newer protocols like SCTP and multipath TCP,
-which can manage multipath, are not available in production applications.
-Multipathing is something that \signpost could hide under the OpenFlow
-abstraction, but because the paths are not homegenous in terms of performance,
-network stack functionality may face problems due to packet re-ordering.  As a
-result, in \signpost we establish and use a single end-to-end path.  Path search
+\signpost is able to establish multiple end-to-end paths between devices through
+tactic synthesis. Unfortunately, multipath connectivity is not supported by
+popular transport protocols and newer protocols like SCTP and multipath TCP,
+that support multipath connectivity, are not available in production applications.
+Multipath functionality in \signpost could be integrated in existing transport
+protocol through careful \of flow manipulation, but because performance is not
+homogenous between paths,
+packet reordering may occur and reduce network stack functionality.  As a
+result,  \signpost we establish and use a single end-to-end path between any
+two devices.  Path search
 and establishment is encapsulated in the Connection Manager Subsystem. 
 
 \signpost path selection mechanism considers two parameters: tunnel performance
-and security policy. In terms of tunnel performance, we use a pretty simple
-model and represent it as a positive integer value, defined manually by the
+and security policy. In terms of tunnel performance, we use a weight
+mechanism and represent performance as a positive integer value, defined manually by the
 developer. We use a set of simple rule of thumbs to define tactic performance
 weight. Tactics that include the Controller in the forwarding path, are
 considered less efficient than those establishing direct connectivity, while
@@ -679,9 +708,9 @@ tactic synthesis, the performance index is computed as the sum of the
 performance of the partial tactic. This simplistic approach appears to be
 sufficient at the moment, but more complex tactic specific mechanisms can be
 employed, using active measurement performance estimates. In terms of security
-policy \signpost provides a simple interface to define it. The policy is
+policy \signpost exposes a simple interface. The policy is
 expressed through a configuration file and users specify security requirements
-on a per domain basis. \signpost architecture considers three decurity
+on a per domain basis. \signpost architecture considers three security
 properties: \textit{encryption}, \textit{authentication} and \textit{anonymity}.
 The encryption property establishes an end-to-end path with a strong
 cryptographic cipher applied on both ends, the authentication property applies
@@ -689,10 +718,10 @@ on mechanisms that employ strong authentication during the establishment of an
 end-to-end path, while the anonymity property applies on tactics that obfuscate
 user identity details from the Internet service provider. 
 
-In terms of path search, \signpost builds on top of the Tactic abstraction a
-simple width-first search algorithm on the controller of the \signpost Cloud. The
-search is initiated by the connect method of the Manager module, with parameters
-the name of the devices and a list of connection properties. The Manager is then
+\signpost path search  user a simple width-first search algorithm over the
+network tactic abstractions on the controller of the \signpost Cloud. The search
+is initiated by the connect method of the Manager module, with parameters the
+name of the devices and a list of connection properties. The Manager is then
 responsible to establish the end-to-end path and return once a first path is
 available. 
 
@@ -702,13 +731,16 @@ and, if successful, connects the two end-points. If the connection was
 successful and either there is no other Tactic enabled or the currently enabled
 tactic has a higher performance score, then the Manager will progress the tactic
 state machine to the Enabled state. Otherwise, the tactic is reset back to the
-testing state. In order to provide tactic synthesis, if the tactic doesn't
-fulfil the requested set of properties, the Manager will recursively enable
-tactics on top of the established path. The recursion terminates when enabling
-any additional tactic will incur a higher connection cost that the existing path
-or the synthesis contains more that 3 tactics. Using this algorithm, the Manager
-can provide a quick reply upon a path request, while in the background it
-searches for optimal tactic combinations. 
+testing state. In order to support synthesis of multiple tactics, if the
+connected tactic doesn't fulfil the security policy, the Manager will
+recursively enable tactics on top of the established path. Once the first tactic
+during a search becomes enabled, the Manager will return a positive value to the
+caller, while the Manager will continue recursively to search for better
+tactics.  The recursion terminates if the remaining tactics have a higher
+performance weight that the currently enabled tactic, or if the depth of the
+search is higher than three. Using this algorithm, the Manager can provide a
+quick reply to a path request, while in the background it searches for optimal
+tactic combinations. 
 
 \subsection{Effectful Naming} \label{signpost-naming}
 
@@ -719,12 +751,13 @@ device, and provide a secure mechanism to resolve these names into concrete
 network addresses.  \signpost naming functionality is established through the
 DNS protocol~\cite{RFC1034} for two main reasons. On one hand, DNS is an
 effective solution for the problem we try to address. DNS is a widely deployed
-and accessible services across the Internet, which is never blocked by the local
+and accessible service across the Internet, which is never blocked by the local
 network and provides a sufficient mechanism for bi-directional authentication.
-On the other hand, the DNS protocol is a delay-tolerant mechanism express
-interest to connect to a service. DNS domain names provide a naming
-representation of Internet service decoupled from the network layer technology,
-while the naming format is a good match to spoken language. 
+In addtion, the DNS service is an excelent mechanism to intercept user
+connectivity intentions. Internet naming service is a delay-tolerant mechanism for
+applications to express interest to connect to a service. DNS domain names
+provide a naming representation of Internet services decoupled from the network
+layer technology, while the naming format is a good match to spoken language. 
 
 Domain naming follows a simple organisation model which though provides very
 good scaling properties. Every domain name consist of a sequence of name token
@@ -734,11 +767,11 @@ Resource Records (RR) which define information for the specific domain name like
 network addresses, naming aliases, service information and many more. In order
 to scale the naming service efficiently across the Internet, the protocol
 provides a specific RR type, the NS record, which delegates control for a
-specific domain to a specific set of DNS server. Querying the domain tree for a
+domain to a specific set of DNS servers. Querying the domain tree for a
 specific RR requires at least the address of a DNS server. The DNS client can
 then follow service redirections in order to find a server responsible for the
-searched domain.  Additional, the inherent caching mechanism of the service
-reduces significantly the load on the the popular server for top-domain servers.
+requested domain.  Additional, the explicit caching mechanism of the service
+reduces significantly the load on naming servers.
 
 % \begin{itemize}
 % \item\emph{Ubiquity}. DNS is among the most widely deployed services on the
@@ -787,7 +820,7 @@ reduces significantly the load on the the popular server for top-domain servers.
 
 In the initial definition of the naming service, the protocol provided very weak
 security guarantees. In order to enhance the security primitives the IETF
-standardised a number of DNS protocol extensions, which ascribed as \dnssec.
+standardised a number of DNS protocol extensions, which ascribe as \dnssec.
 \dnssec defines several extra RR types~\cite{RFC4034} used to provide a signing
 chain that can authenticate DNS records.  In essence, a zone signs its
 authoritative RRsets using its private key, and then publishes its public key
@@ -809,7 +842,7 @@ Figure~\ref{fig:signpost-arch}, user Alice is granted control of the domain
 \fqsn{laptop.alice}.  By running a Signpost server, an individual has a globally
 accessible authenticated public identity on the Internet via their
 public-private key-pair. Using this key-pair, a user can sign and authenticate
-mesages, bootstrap public key cryptography mechanisms and run key-exchange
+messages, bootstrap public key cryptography mechanisms and run key-exchange
 mechanisms such as Diffie-Merkle-Hellman~\cite{diffie,RFC2631} and derive new
 shared private keys between any two devices over unsecure channels.
 
@@ -853,97 +886,303 @@ for domain name \fqsn{laptop.alice}, signed with a SIG(0) record with a
 key from host \fqsn{desktop.alice}, will be translated in a connection request
 between Alice's laptop and desktop device to the Connection Manager.
 In order to enforce liveness of RR record in the Internet, we set a zero TTL 
-value on all RR records, diabling any caching DNS functionality.
+value on all RR records, thus disabling any DNS caching.
 
 In the client side of the \signpost architecture, we have developed a local
 \signpost-aware DNS resolver. The resolver enhances the typical resolver
 functionality by signing \signpost connectivity request. For normal DNS queries,
 the resolver will fetch recursively requested records. For RR requests
 under the \signpost domain, the resolver augments the query with a SIG(0) record
-signed by the private key of the device. 
+signed with the private key of the device. 
 
-\todo{multicast DNS mention?}
+\todo{discnnected \signpost functionality} 
 
-\paragraph{Putting It Into Practice} Having established a secure identity, we
-require the means to signal a communication channel between any pair of a user's
-devices, no matter the middleboxes and other impediments between them. 
-%In this section we discuss how we adopt the increasingly widely deployed
-%DNSSEC~\cite{Friedlander:2007:DPT:1247001.1247004} for device naming, via a
-%Signpost DNS server ``in the cloud'', and a guaranteed route-of-last-resort
-%tunnel from every device to this server.
+Using the DNS protocol we are also able to ensure the functionality of the
+system when devices are disconnected from the \signpost Controller, while
+connected in the same network. \signpost uses DNS-based service
+discovery~(DNS-SD)~\cite{RFC6763} in order to enable device local connectivity.
+DNS-SD is a specification of DNS RR organisation which enables efficient service
+advertisement and browsing and along with Multicast-DNS~\cite{RFC6762} they
+establish an efficient local service discovery mechanism. The combination of
+DNS-SD and multicast-DNS is currently a widely used mechanism for service
+discovery in local networks and supported by most available operating systems.
+\signpost registers and advertises a service record for the \signpost service
+with name \_sp.\_tcp.local in the local network with a target the domain name of
+the device, along with an RRSIG RR and the DNSKEY RR of the device, signed with
+the private key of the user. Using these records a \signpost client is able to
+verify a destination \signpost service and establish a control channel. 
+% This way each device in the local network can listen for the service service
+% name and once a new node appears, it can verify the validity of the service.
+The device will use the service advertisement information when a name lookup is
+performed. During a name lookup,  the destination device will function as a
+\signpost Controller responsible for the specific device only and employ all the
+logic described previously.
 
-%along with a guaranteed \emph{route-of-last-resort} available through Signposts
-%that provides the latter. Where there are many possible such routes, the
-%``best'' should be chosen, ``best'' being, as ever, application dependent. We
-%discuss construction of higher bandwidth, lower latency routess that make
-%better use of localised resources later~(\S\ref{s:topo2}).
-
-To make this concrete, consider a simple scenario. Alice has a \signpost server
-running in a globally visible location in the public cloud. This serves her
-public key and zone, \fqsn{alice}, with DNSSEC providing a chain of signed
-attestations back to the DNS root that the record has not been tampered with en
-route. Alice has two network-connected devices, her phone and home desktop.  As
-is typical, her phone's 3G network connection is gatewayed by her mobile
-provider and her home computer is behind a NAT.  \todo{It is very likely that
-  mobile operators also NAT their users in the gateways. See mobile IP}. Thus
-none of her devices are readily reachable directly by each other, or by others
-via the Internet.
-
-Connecting these two devices currently requires Alice to manually configure a
-tunnel at her NAT box, or to run VPN software on her phone. No automatic
-signalling mechanism exists to setup these connections on demand, nor even to
-address the devices by a global name. With \signpost, Alice binds the concrete
-names \spsn{phone} and \spsn{home} to her devices, and runs a publicly visible
-server hosted in a cloud to coordinate their name resolution.
-
-Establishing a connection between \spsn{phone} and \spsn{home} via the \signpost
-is then relatively straightforward. One client, say \spsn{home}, initiates the
-process by attempting a DNS resolution of \fqsn{phone.alice}. Normal DNS
-mechanisms cause this query to reach Alice's \signpost, which has been delegated
-the zone \fqsn{alice}. It resolves the name \spsn{phone}, causing various
-\emph{tactics} (\S\ref{s:topo2}) to be executed, the result of which is that a
-VPN is established between Alice's phone and computer, and a valid IP address
-endpoint returned in the DNS query.
-
-\todo{Somewhere in this section we need to mention Signpost Clients and Signpost
-  Servers -- and the difference between `client' devices. Otherwise the
-  distinction gets confusing later in the report.}
-
-
-
-\section{Security and Key Management} \label{signpost-security}
-
-\todo{\dnssec description}
-
-% We propose a novel overlay network architecture that enables PCC while
-% minimizing the interaction with the cloud infrastructure. 
-% The propose architecture utilizes \of-enabled bridge and a
-% local controller on each device. Each controller by default forwards packets as
-% normal on the local network. The forwarding logic, though,  is augmenting
-% through a distributed coordination protocol which permits nodes to negotiate
-% possible connection opportunities and establish ad-hoc tunnels, enabling as a
-% result an Internet-wide distributed control mechanism. At the core of
-% our design, we tranform the naming service host abstraction. Each device
-% acquires a global domain name, while each name resolution triggers a connection
-% engine, that tries to find the best possible bidirectional channel between the
-% two nodes. The naming service uses the established
-% DNSSEC extension, providing a fully authenticated and secure control
-% mechanism among \signpost and applications. Further, the distributed nature
-% of the naming hierarchy in the Internet permits seamless control distribution.
+% \paragraph{Putting It Into Practice} Having established a secure identity, we
+% require the means to signal a communication channel between any pair of a user's
+% devices, no matter the middleboxes and other impediments between them. 
+% %In this section we discuss how we adopt the increasingly widely deployed
+% %DNSSEC~\cite{Friedlander:2007:DPT:1247001.1247004} for device naming, via a
+% %Signpost DNS server ``in the cloud'', and a guaranteed route-of-last-resort
+% %tunnel from every device to this server.
 % 
-% In order to understand the impact of the proposed architecture we develop a
-% strawman implementation, named {\it \signpost}. \signpost implements the core of
-% the control logic of the proposed architecture. Additionally, it integrades a
-% number of network tactics of established tunneling and notification mechanisms.
-% Currently \signpost provides integration of the main architecture with SSH, OpenVPN,
-% TOR, Privoxy, Multicast-DNS and Nat punching. 
+% %along with a guaranteed \emph{route-of-last-resort} available through Signposts
+% %that provides the latter. Where there are many possible such routes, the
+% %``best'' should be chosen, ``best'' being, as ever, application dependent. We
+% %discuss construction of higher bandwidth, lower latency routess that make
+% %better use of localised resources later~(\S\ref{s:topo2}).
+% 
+% To make this concrete, consider a simple scenario. Alice has a \signpost server
+% running in a globally visible location in the public cloud. This serves her
+% public key and zone, \fqsn{alice}, with DNSSEC providing a chain of signed
+% attestations back to the DNS root that the record has not been tampered with en
+% route. Alice has two network-connected devices, her phone and home desktop.  As
+% is typical, her phone's 3G network connection is gatewayed by her mobile
+% provider and her home computer is behind a NAT. Thus
+% none of her devices are readily reachable directly by each other, or by others
+% via the Internet.
+% 
+% Connecting these two devices currently requires Alice to manually configure a
+% tunnel at her NAT box, or to run VPN software on her phone. No automatic
+% signalling mechanism exists to setup these connections on demand, nor even to
+% address the devices by a global name. With \signpost, Alice binds the concrete
+% names \spsn{phone} and \spsn{home} to her devices, and runs a publicly visible
+% server hosted in a cloud to coordinate their name resolution.
+% 
+% Establishing a connection between \spsn{phone} and \spsn{home} via the \signpost
+% is then relatively straightforward. One client, say \spsn{home}, initiates the
+% process by attempting a DNS resolution of \fqsn{phone.alice}. Normal DNS
+% mechanisms cause this query to reach Alice's \signpost, which has been delegated
+% the zone \fqsn{alice}. It resolves the name \spsn{phone}, causing various
+% \emph{tactics} (\S\ref{s:topo2}) to be executed, the result of which is that a
+% VPN is established between Alice's phone and computer, and a valid IP address
+% endpoint returned in the DNS query.
+% 
+% \todo{Somewhere in this section we need to mention Signpost Clients and Signpost
+%   Servers -- and the difference between `client' devices. Otherwise the
+%   distinction gets confusing later in the report.}
+
+
+
+\subsection{Security and Key Management} \label{signpost-security}
+
+In order to bootstrap device authentication, \signpost uses a public key
+cryptography mechanism integrated with the \dnssec protocol.  \signpost employs
+a key hierarchy, which enables the system to control and revoke trust on device
+keys in real time. Our key hierarchy relies and extends the key hierarchy
+defined by the \dnssec protocol. For a \signpost cloud the user should construct
+at least two keys, A {\it Zone Signing Key (ZSK)} and a {\it Device Signing
+  Key(DSK)}. ZSK is used to sign DSK and a signed hash of the ZSK is served by
+the signpost.io domain servers, in order to add the key in the global \dnssec
+keychain. DSK is used by the controller to sign Device Keys and the key is
+signed by the ZSK. This differentiation of user keys permits a Personal cloud to
+have a persistent anchor in the \dnssec key chain, while the DSK allows the
+cloud to frequently update his key trust, in fixed weekly basis or when a key
+compromise is detected, without having to rely in the \dnssec infrastructure to
+propagate the updates to other servers. Each device registered with the cloud
+must construct a private Device Key when it first joins the system and add the
+public key to the Controler device key cache over a trusted channel. The public
+key will be signed by the DSK of the Cloud and shared as a DNSKEY RR by the
+controller. A device of a \signpost cloud requires only an anchor in the global
+\dnssec key infrastructure and it can easily verify the validate of any
+\signpost key.  
 
 
 \section{Evaluation}\label{sec:signpost-evaluation}
 
+In this section we analyse the performance of the \signpost system and its
+impact in the functionality of traditional Personal cloud applications. We,
+ present the implementation details of the system
+(Subsection~\ref{sec:sp-implementation}), measure the performance of the
+\signpost tactics over the Internet~(Subsection~\ref{sec:sp-tactic-eval}) and
+present a small scale study of the functionality of current application over the
+\signpost system. 
+
 \subsection{\signpost implementation}
 
+\signpost is implemented predominantly in Ocaml. The code reuses a number of available
+protocol libraries written in Ocaml. \signpost uses ocaml-dns for DNS server and
+client implementation, cyptokit library for cryptographic key manipulation and
+ocaml-openflow library for \of controller functionality. \signpost also uses a
+portion of C code code to implement binding with the OS routing stack. \signpost
+provides support for a wide range of platform. We have managed to run \signpost
+successfully under Linux and Android,
+using the OpenVSwitch switch implementation, and under MacOSX, using the userspce
+switch implementation provided by the ocaml-openflow library.
+
+
+% \begin{table*}
+% \centering \footnotesize
+% \begin{tabular}{|l|c|c|c|c|c|c|p{1.5cm}| }
+%   \hline
+%   Tactic name & Purpose & Layer & Transport & Auth. & Encrypted & Anon. & \signpost
+% Support\\
+%  %% & Comment & Source \\
+% \hline
+% Avahi       & Discover         & 7      & UDP         & No     & No     & No & Yes\\
+%  %% & Linux-based, bonjour-compatible system for local network resource discovery
+%  %% & \url{avahi.org/} \\
+% Samba       & Discover         & 7      & UDP         & No     & No     & No & No \\
+%  %% & Windows local network resource discovery protocol, implemented in WINS & \\
+% Bonjour     & Discover         & 7      & UDP         & No     & No     & No & Yes\\
+%  %% & Used for local network resource discovery
+%  %% & \url{developer.apple.com/opensource/} \\
+% Universal PnP & Discover         & 7      & UDP         & No     & No     & No & Yes\\
+% dns2tcp     & Tunnel             & 7      & UDP         & No     & No     & No & No \\
+%  %% & IP over DNS & \url{www.hsc.fr/ressources/outils/dns2tcp/index.html.en} \\
+% DNScat      & Tunnel            & 7      & UDP         & Yes    & No     & No & No \\
+%  %% & VPN with PPP & \url{tadek.pietraszek.org/projects/DNScat/} \\
+% HTTP-Tunnel & Tunnel            & 7      & TCP         & No     & No     & No & No \\
+%  %% & uses HTTP & \url{www.nocrew.org/software/httptunnel.html} \\
+% iodine      & Tunnel            & 7      & UDP         & Yes    & No     & No & Yes\\
+%  %% & IP over DNS & \url{code.kryo.se/iodine/} \\
+% NSTX        & Tunnel            & 7      & UDP         & No?    & No     & No & No\\
+%  %% & IP over DNS. Deprecated. Recommends iodine 
+%  %% & \url{thomer.com/howtos/nstx.html} \\
+% % IMAP        & Data transfer     & 7      & TCP         & Can be & Can be & No \\
+%  %% & & \\
+% Proxytunnel & Tunnel            & 7      & TCP         & Can be & Can be & No & No\\
+%  %% & can use both HTTP and HTTPS & \url{proxytunnel.sourceforge.net/} \\
+% ptunnel     & Tunnel            & 4      & ICMP        & Yes    & No     & No & No\\
+% tuns        & Tunnel            & 7      & UDP         & &        No     & No & No\\
+%  %% & IP over DNS. Doesn't split IP packets, but sets size so small that OS does
+%  %%   fragmentation. Neat. Only uses CNAME for maximum compatibility with
+%  %%   infrastructure. Poor performance :( 
+%  %% & \url{www.loria.fr/~lnussbau/tuns.html} \\ 
+% SSH         & Tunnel/Encrypt & 7      & TCP         & Yes    & Yes    & No & Yes\\
+% IPSec       & Tunnel/Encrypt & 3 (4*) & IP          & Yes    & Yes    & No & No\\
+%  %% & In layer 4 when traversing NATS (over UDP or TCP) & \\
+% OpenVPN     & Tunnel/Encrypt & 7      & UDP/TCP     & Yes    & Yes    & No & Yes\\
+%  %% & & \url{openvpn.net/} \\
+% libjingle   & Nat punch         & 7      & UDP/TCP     & Yes    & ?      & No & No\\
+%  %% & For punching holes. Negotiation over XMPP
+%  %% & \url{code.google.com/apis/talk/libjingle/index.html} \\
+% privoxy     & Anonymize         & 7      & TCP         & ?      & ?      & Yes & Yes\\
+% tor         & Anonymize         & 7      & TCP         & No     & Yes    & Yes & Yes\\
+%  %% & & \url{www.privoxy.org} \\
+% % SMTP        & Data transfer     & 7      & TCP         & Can be & Can be & No \\
+% stunnel     & Encrypt        & 7      & TCP         & Yes    & Yes    & No & No\\
+% TCPCrypt    & Encrypt        & 4      & TCP         & No     & Yes    & No & No\\
+% \hline
+% \end{tabular}
+% \caption{\label{tbl:signpost-tunnels}Tactics table.}
+% \end{table*}
+
+
+\signpost provides support for the following tactics: 
+\begin{itemize}
+  \item \emph{Direct}: The tactic enables communication path between devices
+        over the network without any tunneling mechanism. The functionality of
+        the tactic  provides a mechanism to test direct connectivity between the
+        two devices over a number of well-known ports and if successful it will
+        insert a single \of rule to translate \signpost IP addresses to the
+        respective network addresses. 
+  \item \emph{OpenVpn}: The tactic enables communication paths using the OpenVpn
+        tunneling mechanism. During connection,
+        \signpost devices will use the \signpost key infrastructure to generate
+        public keys and bootstrap the OpenVPN authentication mechanism.
+        Because of some limitation on the certificate chain evaluation of
+        OpenSSL, during a connection the tactic will generate transient private
+        keys which will be signed by the user private key, while the tactic 
+        will inject in the trusted certificate keychain a key certificate of the
+        destination device signed by the private key of the device. The tactic
+        configure the OpenVpn software to expose connectivity over an ethernet
+        TUN/TAP device, which is added under the \of switch control and normal
+        \of packet forwarding rule establish full bidirection connectivity.  
+        \todo{Mention OpenVPN ARP cache}
+  \item \emph{SSH}:  The tactic enables connectivity of the system using the SSH
+        protocol. For this tactic we configure and run a separate ssh daemon on
+        every \signpost device. The daemon runs on port 10000 and permits
+        key-based authenticated connectivity for tunneling.
+        User authentication is ensured by proper manipulation of authorized keys
+        on the server configuration. 
+        \signpost clients append device public keys
+        in the authorized\_key file in an ad-hoc manner, while clients are
+        instructed to use the private key of the device upon connection. SSH
+        program is configured to expose TUN/TAP ethernet interfaces between
+        devices, which are added under the control of the \of switch.
+  \item \emph{Privoxy}: This tactic enables HTTP request anonymization using 
+    the privoxy HTTP proxy. In order ot achieve this, we have predefined a
+    strict configuration of the privoxy software which strips all HTTP headers
+    that may leak personal information of the user. In order to establish
+    connectivity, the tactic handles TCP flows in a proactive manner. For each
+    SYN packet, the tactic injects two flows that forward data from the
+    application to the loopback device and to the listening port of the Privoxy proxy and
+    reverse.
+  \item \emph{Tor}: The tactic enables connectivity between devices over the
+        Anonymized network of Tor. Tor client software exposes a SOCKS proxy on
+        the local machine which can provide TCP connectivity to flows over the
+        Tor overlay network. In order to enable bidirectional connectivity over
+        the Tor network, the tactic uses the hidden service functionality of the
+        system. A node in Tor is able to expose listening ports. In order to
+        achieve this, the system uses random domain names under the .onion
+        domain to address nodes and it takes advantage of the socks protocol
+        capability to embed name lookups in SOCK connection requests. 
+        Upon the request for connection over the Tor network, the \signpost
+        client will negotiate with the remote device its domain name under the
+        Tor abstraction. Upon a SYN packet transmission of the application to
+        the remote device, the tactic will initiate a TCP connection with the
+        local SOCKS proxy with a
+        request to establish a path between the two devices. In parallel,
+        once the TCP connection is established with the local SOCKS proxy, the
+        tactic will respond to the initial SYN request with a SYNACK and advertise a zero
+        window in order to suppress any further data transmission from the application.
+        Once a SOCKS response is returned by the SOCKS proxy, the tactic will
+        either respond to the initial TCP flow with an ACK with a non-zero
+        window and insert appropriate \of rules to permit connectivity between
+        the two device over the SOCKS tunnel, or the client will inject a TCP RST 
+        if the SOCKS response was unsuccessful. 
+  \item \emph{DNS-SD}: This tactic is used to advertise services provided by the
+        \signpost devices. DNS-SD is a popular mechanism by current OSes to
+        advertise available host services in the local network.
+        The tactic doesn't provide any path establishing functionality to
+        applications, but it focuses to provide a mechanism to aid the
+        advertisement of host functionality. The functionality of the tactic will
+        intercept DNS-SD service advertisement and propagate them over the
+        control channel, to the other devices of the Cloud. Each \signpost
+        client is responsibled then to
+        inject DNS-SD multicast packets over the local loopback device of the OS
+        and propagates information in the local ZeroConf daemon. 
+  \item \emph{NAT-punch}: This tactic uses simple packet injection mechanisms in
+        order to allow devices to bypass NAT boxes. The
+        functionality of this tactic is limited and covers only the cases of
+        Full-cone NAT, Address-restricted NAT and Port-restricted NAT, and
+        requires that the NAT functionality doesn't perform any stateful packet
+        filtering. Nat punching functionality is achieve by using the Controller as
+        an intermediate service that can infer the port mappings configuration of
+        the NAT-box. On a TCP connection, the server will intercept the SYN
+        request, propagate the important TCP header parameters over the control
+        channel to the destination device and in parallel will send a SYN packet
+        from the device to the Controller in order to infer the port mapping
+        applied by the device. On the destination device the \signpost client
+        will generate a SYN packet with similar values to the inital SYN packet
+        and send the packet to the local listening service over the loopback
+        device as well as the Controller of the Cloud. During this processing,
+        both end of the TCP connection hold the connection idle with a zero
+        window. Once the exact port-mapping is inferred on the controller, the
+        information is propagate to both devices, which will insert
+        appropriate \of commands to manipulate source and destination port
+        renumbering and notify the end-points to resume data transmission using
+        a ACK with a non-zero window size.
+\end{itemize}
+
+\subsection{Tunnel Evaluation}
+
+\subsection{Application compatibility}
+
 \section{Conclusions}\label{sec:signpost-conclusion}
+
+\begin{itemize}
+  \item This is an elementary approach for Personal Cloud computing. 
+  \item A number of issues remain unandressed but can easily fit in the
+        \signpost architecture
+  \item extending the policy mechanism, we can integrate in a Personal cloud
+        devices from other users. Need though to develop a more refined policy
+        that will enable the user to control access from devce outside of its
+        personal to a subset of the available services. 
+  \item Tighter DNS integration of the control protocol.
+  \item 
+\end{itemize}
 %\section{Second Section}
 %\markboth{\MakeUppercase{\thechapter. My Second Chapter }}
 %and here I write more ...

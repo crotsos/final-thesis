@@ -5,40 +5,41 @@
 \graphicspath{{Introduction/IntroductionFigs/EPS/}{Introduction/IntroductionFigs/}}
 \fi
 
-Internet has become the predominant mode of communication in the modern
-societies of our times. Currently, 1/3 of earth population is connected to the
+Internet has become the predominant mode of communication of our times.
+Currently, 1/3 of earth population is connected to the
 Internet~\cite{itufacts2011}, while Internet-related business is estimated to
 account for 3.4\% of the global GDP~\cite{duRausas:2011un}. In paraller, a large
 fraction of our everyday social life requires network/Internet connectivity.
-Regardless the vital role of computer networking in our life, its strong
-backwards compatibility ties create a gap on our ability to evolve functionality
-in order to fulfil current resource short-term requirements. As a result,
-although the social setting requires novel functional properties from its global
-network, it is rather difficult to provide it, without disconnect a portion of
-it.
+While computer networks play an important role in our everyday life, their
+strong backwards compatibility requirement create a important gap in their
+functionality evolution in order to fulfil current evolving communication needs.
+As a result, current network technologies are not able to fulfil the novel
+functional requirements of the social setting, while providing continuous
+connectivity.
 
-My work focuses on the evolvability problem of modern networks. The key idea of
-this work focuses on ways to evolve computer network functionality through the
-control plane. In this dissertation we argue the thesis that: 
+Our work focuses on the evolvability problem of modern networks. The key idea of
+this work  investigates new network control mechanisms that evolve functionality
+and can scale for large network sizes. In this dissertation we argue the thesis that: 
 
 \begin{quotation} 
   Computer network design should compat the problem of network
   ossification through context-aware evolved control planes, in order to provide
-  new performance functionalities to the inter-connecting fabric. Such control
-  mechanism should address the requirements of the deployment environment
-  while taking advantage of its distinct properties. Edge networks provide an 
-  excelent deployment target for such approaches, following the end-to-end
-  design principle. 
+  new functionalities to the inter-connecting fabric. Such control
+  mechanisms should address the requirements of the deployment environment
+  and establish new domain-specialized control abstractions that take advantage 
+  of its distinct properties. 
 \end{quotation}
 
 For the remainder of this introduction we justify the importance of this thesis.
 In Section~\ref{sec:intro:motivations} we present in details the limitations of
-current Internet design and the inherent difficulties for evolution. In Section~\ref{sec:intro:contributions}, we list our contributions and
+current Internet design and the inherent evolutionary difficulties of its
+protocols. In Section~\ref{sec:intro:contributions}, we list our contributions and
 in Section~\ref{sec:intro:outline}, we present the content of each chapter of
 the thesis. Finally, in section~\ref{sec:intro:pubs} we list the publications
 relating to the content of this thesis. 
 
 \section{Motivation} \label{sec:intro:motivations}
+rt 
 
 \subsubsection*{Computer network evolution}
 
@@ -62,11 +63,11 @@ relating to the content of this thesis.
 \end{table}
 
 % a historical prespective on computer networks 
-One of the ideas that formed the subjective condition of the digital revolution
-of our era, was the concept of computer networking. The initial goal of this
-concept was to develop a new communication architecture that would allow
+One of the key mechanisms that formed the objective conditions for the digital revolution
+of our era, was the concept of computer networking. Initially, Computer networks aimed to
+provide a new communication architecture that would allow
 continuous communication over a redundant network, even when a significant
-number of vertex was destroyed.  The main building block of computer networks is
+number of links was destroyed.  The main building block of computer networks is
 the idea of packet-switched networks~\cite{Licklider1963}.  This idea gave birth
 to the pioneer of today's Internet, the {\it ARPANET}~\cite{Mills:1987tt},
 allowing for the first time in computing history communication between multiple
@@ -81,38 +82,37 @@ connectivity for the Internet.
 % why computer networking is successful from the user perspective
 Since the time of the ARPANET, computer networks have seen a significant
 elevation on their role in the social apparatus of our world due to a number of
-reasons. One of the most important trends, that boost their role, was the
-radical reduction in cost, size and capabilities of network-enabled personal
+reasons. One of the most important trends, that increased their usage, was the
+radical reduction in cost and size of network-enabled personal
 computers, following Moore's Law model. The low cost factor of personal
-computers along with the programmable nature of
-the computer CPU, makes it an elegant platform to develop applications that
-introduce seamlessly new functionalities. Nowadays, programmable CPUs are
+computers along with the highly programmable nature of
+their CPU, made them an elegant platform to develop applications that
+introduce new functionalities seamlessly. Nowadays, programmable CPUs are
 integrated in a number of multi-purpose devices such as mobile phones, display
 devices etc, while the ability of personal computers to transform in size,
 introduces new computing concepts, such as laptops, tablets and other.
 As a result, the paradigm of one computer per household of the 90's rapidly
 shifted to the paradigm of multiple devices per user, replacing a number of
 everyday single-purpose devices~\cite{Dholakia:2006vn}.  On one hand, this
-augmentation in computational devices requires new modes of communication that
-allow devices to share consistently state, driving a significant development in
-computer network technologies. A number of network-enabled applications are
-developed to address these requirements, while new network paradigms are
-introduced like home networks and hotspots. Existing computer network
-technologies make this work easy, as they only require a minimal implementation
-of a protocol and a peer with a forwarding entity in order to establish
-connectivity with any other device. On the other hand, the elevated role
+augmentation in computational devices drives to a great extend the development
+in network technologies in providing new inte-device communication mechanisms. 
+A number of network-enabled applications are
+developed that addresses these requirements, and new network paradigms are
+introduced to accomodate these changes, like home networks and hotspots. 
+On the other hand, the elevated role
 of computer networks and the introduction of the cloud computing paradigm,
 introduce a number of internet-wide services with a global scope. 
 % These new
 % applications introduce a number of new assumptions on performance and
 % connectivity over the Internet abstraction.  
-The important role of computer
-networks can be further reflected in the government level debate to proclaim
+The important role of computer networks for the society
+can be further reflected in the government level debate to proclaim
 Internet connectivity as a fundamental human right~\cite{klang2005human}.
 
 % why computer become important for the global economy too? 
-In parallel with the development of the personal computer paradigm, computer
-network are widely adopted as an integral asset for industry.  Currently the
+In parallel with the development of personal networking, computer
+network have become widely adopted as an integral asset for the enterprise world.  
+Currently the
 Internet produces 4,3\% of the global GDP. Computer Networking and the Internet,
 provide the middleware to interconnect modern multinational businesses. In the
 business domain computer network have become popular and important for two main
@@ -125,27 +125,28 @@ services in house.\todo{add a reference to the value of the cloud industry.}
 
 % what about the application requirements 
 The wide adaptation of computer networks has introduce a number of new use cases
-and applications. Computer networking depends to a great extend on the
-abstraction design pattern in order to support scalability and heterogeneity.
-The abstraction principle is based to a great extend on the OSI
-model~\ref{Day:1983vy}, which tries to separate network functionality into a
+and applications that introduce significant performance requirements in the
+short scale. Computer networking depends to a great extend on the abstraction
+design pattern in order to support scalability and heterogeneity.  The
+abstraction principle is based to a great extend on the OSI
+model~\cite{Day:1983vy}, which tries to separate network functionality into a
 number of layers and define the interface provided by each layer. A side effect
-of this design is that application developers don't have access on the
-properties of the underlying path.  The OSI model or
-the TCP/IP implementations provide semantics for the interfaces but they don't
-provide any guarantees on the performance properties.  Applications on the other
-hand, have performance requirement which they try to 'enforce' in the deployed
-environment. As a result, resource allocation in a network becomes difficult due
-to the diverse nature of network applications. In order to exemplify the problem, 
-we list in Table~\ref{tbl:application_requirement} a number of key traffic properties 
-for popular traffic classes of the Internet. Network applications have
-diverse properties which becomes difficult to address during network congestion. 
+of this design is that application developers remain agnostic to lower layer
+intternal state.  Further, The OSI model and the TCP/IP protocol suite luck
+performance-related semantics in their interface definitions.  Applications on
+the other hand, tend to behave egotistically, and aggrsively try to fulfil
+performance requirements in the deployed environment. As a result, short-scale
+resource allocation in a network becomes difficult due to the diverse nature of
+network applications. In order to exemplify the problem, we list in
+Table~\ref{tbl:application_requirement} a number of key traffic properties for
+popular traffic classes of the Internet. Network applications have diverse
+properties which becomes difficult to address as link utilisation increases. 
 
 % How computer application mix looks in the wire? 
-Network planning for long term periods is also difficult to address.  The main
-cause of this problem is the high churn in the  popularity of network
+Diversity in network application requirements hardens also network planning.
+The main cause of this problem is the high churn in the  popularity of network
 applications.  In order to exhibit this trend, we plot in
-Figure~\ref{fig:internet_apllications} the global prediction on traffic volumes
+Figure~\ref{fig:internet_applications} the global prediction on traffic volumes
 for popular application classes for five years. We use data from cisco
 visualization index white papers~\cite{Mobile:2012vd,Cisco:2012wu}. In the
 histogram we can see that network traffic is expected to increase an order of
@@ -225,9 +226,9 @@ An important architectural goal for the design of computer network was the
 minimization of functional requirements from joining hosts, allowing wide
 adoption of the technology and open accessibility.  When the idea of computer
 networks was first developed, the capabilities of computer hardware were limited
-and network connectivity should not consuming a significant portion of the
-computational resources of a node. As a result, the initial security
-requirements from computer network technologies were minimal. In the recent
+and network connectivity amied to minimize the computational requirements. 
+As a result, the initial security
+concerns of computer network technologies were minimized. In the recent
 years, due to the vital role of computer networks in industry, security
 requirements expanded. A McAfee report from 2009 reports that the cost of
 cybersecurity is calculated to approximately six hundred million
@@ -288,12 +289,12 @@ approach have been proposed over the years, that address a number of these
 problems. The process though to deploy a new protocol is not straightforward.
 Computer networks currently suffer from an effect that is term as \{it 'protocol
   ossification'\} in the research community. The protocol hierarchy in the
-internet currently looks like an hourglass. We currently have a multitude of
-protocol in the application and link layer, but we only have IP in the network
+internet currently looks like an hourglass. A multitude of
+protocol exist in the application and link layer, but we only have IP in the network
 layer and TCP and UDP in the transport layer. The specifications of these
-protocol define a number of mechanisms that allow protocol designers to develop
+protocols defined a number of mechanisms that allow protocol designers to develop
 extensions.  Unfortunately, these mechanisms are not guaranteed to be supported
-across the network, as their support is not critical for functionality and thus
+across the network, as it is not critical for functionality and thus
 can be sacrifices in favour of performance. As a result, the capabilities to
 evolve protocol in a manner that is compatible with the current Internet
 infrastructure is impossible. In~\cite{Bauer:2011ws} authors report that 80\% of
