@@ -5,96 +5,102 @@
     \graphicspath{{Background/BackgroundFigs/EPS/}{Background/BackgroundFigs/}}
 \fi
 
-This chapter provides a highl level discussion over the problem of control in
-packet-switched networks. We analyse the forwarding functionality of popular
-established network device~(Section~\ref{sec:background:forwarding}), we present
-existing frameworks to exercise forwarding control in computer
-networks~(Section~\ref{sec:background:netcontrol} and, finally, we present a
-list of applications developed for various environments, that exercise evolved
-network control~(Section~\ref{sec:background:ofapp}).
+This chapter provides an extensive discussion over the problem of control in
+packet-switched networks. We motivate the discussion over the problem of network 
+control, describing firstly the architecture of existing network devices
+(Section~\ref{sec:background:forwarding}) and  the currently-used mechanisms to
+exercise network control in modern production networks
+(Section~\ref{sec:background:netcontrol}). Motivated by the limitation of the
+production solutions, we present three research network control schemes that
+redefine the network control abstraction
+(Section~\ref{sec:background:netcontrol}) and present
+a number of proposed network control application that use these approaches and
+and exercise evolved network control in specific network envi (Section~\ref{sec:background:ofapp}).
 
-\section{Packet forwarding} \label{sec:background:forwrding}
+\section{Packet forwarding} \label{sec:background:forwarding}
 
-Packet-switched networks have become a \emph{`de-fact`} approach for
-communication. Their statistical multiplexing approach maximized the utilization
-of the medium capacity, while their simplicity has drive a significant reduction
-in cost.  In this section we focus on ethernet networks and we provide a high
-level view of the hardware design of two classes of network devices: the {\it
+Packet-switched networks have become a \emph{`de-facto`} technology in network
+communication. Packet-switched network maximize medium utilization through their
+inherent statistical multiplexing approach, while their simplicity significantly
+reduces network costs.  In this section we focus on Ethernet and IP networks,
+the predominant technology for packet switched networks, and we provide a
+hardware design overview of two popular types of network devices: the {\it
   Switch } and the {\it Router}. 
 
 \subsection{Switch}
 
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{switch_design}
-\caption{An abstract model of an Switching device.}
+\caption{A generic architecture of a Switching device.}
 \label{fig:background:switch_design}
 \end{figure}
 
-Network switches are the main mechanism to multiplex Ethernet links in modern
-network environments. The device provides collision-free connection between
-network segments and minimize packet flooding.  Switches have multiple
-functionalities in a network and as a result they come in different sizes. For
-example, unmanaged switches provide a low cost non-configurable device to
-efficiently interconnect computer in small network, supporting usually multiple
+Network switches are the main mechanism to multiplex Ethernet links.  This
+device type provides collision-free connectivity between network segments and
+use simple algorithms that minimize packet flooding.  Switches have multiple
+functional roles in a network and as a result their architecture is highly
+diverse. For
+example, unmanaged switches provide a low cost non-configurable interconnection device 
+for small networks, supporting usually multiple
 1 gig ports, while core distribution switches are used in large enterprise
 networks to interconnect aggregation switches, and support a few 10 or 40 Gig
 links.  In this presentation we will use a simple switch type, the
 Top-of-Rack~(TOR) switch.  This type of switch is used in datacenter network for
 traffic agregation between the edges and the core of the network and provides,
-as a minimum, learning-switch functionality. As presented in
-Figure~\ref{fig:background:switch_design}, a typical switch devices consists of
-the following components:
+at a minimum, learning-switch functionality. This switch type can forward
+non-blocking high-rate traffic at line rate, using a single silicon chip. 
+As presented in Figure~\ref{fig:background:switch_design}, a typical switch
+device consists of the following components:
 
 \begin{itemize}
-  \item \emph{CPU}: Switch boxes require a programmable CPU, which is used to
+  \item \emph{CPU}: Switch boxes contain a programmable CPU, which is used to
         run the control plane logic and provide reconfigurability to users.
-CANE        Switch vendors usually use low-power CPUs, such as SoC PowerPC chips or
-        even ARM and MIPS CPUs. The CPU has access to couple of runtime memory
-        module (Boot Flash and RAM) while there is also the ability to store
-        data from the system to persistent storage (e.g.~SD Cards) through
-        memory extension slots, accessible by the CPU.
+        Switch vendors usually use low-power CPUs, such as SoC PowerPC chips or
+        even ARM and MIPS CPUs. The CPU can access runtime memory
+        module (Boot Flash and RAM), to store transient state, and persistent
+        memory (e.g.~SD Cards) through memory extension slots, to store log
+        files and configuration.
   \item \emph{Switch ASIC}: The Application-specific integrated
-        circuit~(ASIC)~\cite{hp-asic,broadcom-asic,intel-asic} is the core
-        component for the forwarding plane of the switch.  An ASIC encapsulates
-        in a silicon all the required functionality for the Forwarding plane,
-        implemented in hardware. The capabilities of an ASIC are variable and
-        depend on the vendor and the cost, but define the functional limits of
-        the device. The implementation details for an ASIC remain an important
-        asset for the silicon producer, and as a result remain undisclosed. The
-        development of a silicon design is a long process which takes years of
-        development and testing, requiring extensive human and material
-        resources. 
+        circuit~(ASIC)~\cite{hp-asic,broadcom-asic,intel-asic} implements in
+        hardware the forwarding plane of the switch.  The capabilities of an
+        ASIC are variable, depending on the vendor and the cost, but define the
+        functional limits of the device. In addition, fine implementation
+        details of a ASIC silicon remain usually concealed, as they constitute an
+        important asset for the silicon producer.  The development of a silicon
+        design is a long process which takes years of development and testing,
+        requiring extensive human and material resources. As a result, the
+        introduction of novel functionality in the forwarding plane, is long and
+        non-trivial and requires a significant amount of time. 
 
-        For the analysed device type, current silicon design processing rate can
-        manage line-rate non-blocking traffic from all ports of the switch.  In
-        general we can establish four important modules for a switching ASIC.
+        TOR-type switches can handle
+        line-rate non-blocking traffic for a few ports, using a
+        single ASIC silicon.  Current ASIC contain four important modules.
         Firstly, the chip requires an {\it arbiter} module to multiplex and
         synchronize packet propagation from the Ethernet ports to the main
-        processing pipeline of the silicon. This is a significant mechanism as
-        the clock of the processing pipeline is faster than the Ethernet devices
-        data rate, and in order to avoid preemption, the input arbiter should
-        ensure that sufficient data are received by the system, before a packet
-        is propagated to the main processing chain, while also it should ensure
-        that the switch is processing fairly traffic between ports. In the main
-        processing pipeline the ASIC requires a {\it protocol parser} module and
+        processing pipeline of the silicon. The arbiter ensures non-preemptive
+        packet processing, by bridging the rate mismatch between the 
+        silicon clock and the transmission rate of the link. 
+        In the main
+        processing pipeline the ASIC requires a {\it protocol parsing} module and
         a {\it lookup module}. The protocol parser, extracts required packet
-        fields, which are used later by the lookup module to decide the output
-        port of the packet and potentially any required packet modifications.
-        The lookup module usually uses an interface to external memory modules
-        and fetches lookup and update forwarding informations.  The
-        communication with the external memory is often significantly slow and
-        thus makes complex the header processing\footnote{CAM/TCAM lookup: 1
-          cycle, SRAM: 2-3 nsec, DRAM: 20-35
+        fields, which are used later by the lookup module to define required
+        packet processing.
+        The lookup module relies on an interface with an external memory module
+        in order to match protocol fields with policy packet processing.
+        Memory modules have a trade-off between cost and access speed and a
+        low-cost design principle can make the design extremely complex.
+        \footnote{CAM/TCAM lookup: < 10 clock
+          cycles, SRAM: 2-3 nsec, DRAM: 20-35
           nsec,~\url{http://people.ee.duke.edu/~sorin/prior-courses/ece152-spring2009/lectures/6.2.2-memory.pdf}}.
         Finally, the output arbiter is responsible to perform the required
         modifications to the packet and forward it to the appropriate output
         queue. Apart for the mentioned modules, a silicon can have additional
         processing modules to enable extended functionality such as access
-        control list (ACL), statistics extraction etc.
+        control list (ACL), flow statistics monitoring etc.
   \item \emph{ASIC-CPU communication}: CPU switching logic is integrated with
         the ASIC functionality over a PCI or PCI-express interconnection. Over
         this channel the firmware of the switch is able to control registers
-        exposed by the ASIC, while the the ASIC is able to inform the CPU of
+        exposed by the ASIC, while the ASIC is able to inform the CPU of
         exceptional situations. The interconnection provides sufficient capacity
         to allow the CPU to poll the ASIC for statistics, or modify the
         forwarding process, but it sufficiently restricted to process forward
@@ -102,46 +108,46 @@ CANE        Switch vendors usually use low-power CPUs, such as SoC PowerPC chips
   \item \emph{Memory}: Apart for the in-ASIC memory modules, modern switches
         also use multiple memory types in order to provide a computational
         environment similar to a PC. An average switch will contain Boot Flash,
-        to boot the OS/firmware, DIMM RAM, to accomodate the run-time main
+        to boot the OS/firmware, DIMM RAM, to accommodate the run-time main
         memory of the firmware, and multiple memory slots, to provide low
         capacity storage to the firmware in order to persist switch logging and
         configuration.
   \item \emph{Ethernet ports} : The receipt and transmission of Ethernet packets
         is implemented as a separate hardware module. The module is responsible
-        to implement the physical layer protocol over the medium and transmit
-        packets. I addition the modules may also contain packet buffers to
-        reduce packet losses for bursty traffic.  \end{itemize}
+        to implement the physical layer protocol. In addition the modules may
+        also contain packet buffers to reduce packet losses for bursty traffic.  
+    
+\end{itemize}
 
 In this case we present a simple switch case that can support average traffic
-capacity on the edges of the network. Switches that process higher rates of
-traffic, establish more complex hardware design, in order to modularize further
-functionality and enable Terrabyte traffic rate support. An extensive discussion
-over hardware architecture of Cisco switches is presented
-in~\cite{cisco-routers}.
+requirements on the edges of the network. Higherer-end Switches, establish more 
+complex hardware design, in order to modularize further
+functionality and enable multi-port Terrabyte traffic. An extensive discussion
+over hardware architecture of Cisco switches is presented in~\cite{cisco-routers}.
 
 \subsection{Router}
 
 A router device is used to interconnect Ethernet networks, at the IP level.
 Router device follow similar hardware design, as in the case of Switches. 
 
-\subsection{Multi-layer forwarding}
 
 \section{Forwarding Control} \label{sec:backoground:netcontrol}
 
-Network control has been an important functionality since the early days of the
-Internet and a number of protocols and mechanisms have been introduced to
-address this functionality. In this section we will present existing approaches
-addressing the issue of distributed and scalable network control.
+Network control is an important aspect of network functionality, as it enables
+dynamic adaptation of network devices.  A number of protocols and mechanisms have 
+been introduced to provide resilient and distributed network control. In this section
+we will present standardized, as well as, research protocols and architectures
+that aim to provide dynamic network control.
 
 \subsection{Routing and switching}
 
-Current network device control plane has been influenced extensively by the
-end-to-end principle of the Internet. A switch or a router control logic only
-requires configuration of the local state and a number of distributed protocols
-enable information sharing. Information sharing permits device to create
-a global state of the network and implement effective forwarding policies. The
-device must persist only the local state between reboots, while the protocol can
-dynamically recreate global state after a reboot, thus providing long-term
+Current network control plane technologies have been influenced extensively by the
+end-to-end principle of the Internet. A switch or a router control logic
+requires only its local state, and a number of distributed protocols
+enable state exchange between devices, in order to construct a better view 
+of the network and increase forwarding policy efficiency. The
+device persists only its local state between reboots and the available protocols
+allow dynamic recreation of the global state, thus achieving long-term
 network resilience.  In this section we present existing production-level protocols that
 enable distributed network control. We focus on Ethernet and IP networks, as
 these are the predominant network protocol and we follow the natural split in
@@ -152,56 +158,52 @@ distinct characteristics.
 
 Data-Link layer control protocols aim to provide loop-detection, and VLAN and
 QoS automation. Loop detection is used to avoid packet loops in networks with
-redundant connectivity, since Ethernet packet format doesn't provide packet timeout
-functionality. IEEE standardised the STP protocol in the IEEE 
-802.1D-1998~\cite{ieee_802_1d} a distributed Spanning Tree calculation
-mechanism, based on the algorithm defined in~\cite{Perlman1985}. The algoritmh
+redundant connectivity, since Ethernet packet format doesn't provide packet
+timeout functionality. IEEE standardised the STP protocol in the IEEE
+802.1D-1998~\cite{ieee_802_1d}; a distributed Spanning Tree calculation
+mechanism, based on the algorithm defined in~\cite{Perlman1985}. The algorithm
 uses broadcast messages to discover a spanning tree over the graph of the
-network with respect to an elected root among the switches. The protocol defines
-a state machine per port and if a port is detected to cause loop, then the
-protocol can disable forwarding on the specific port.  Because the initial
-definition of the protocol incurred high latency in connection re-establishment,
-IEEE introduce RTSP, an evolve version of STP, in~\cite{ieee_802_1d_2004}.
-The STP mechanism was also evolved to address the requirements of VLAN
-configuration. VLAN tagging can create multiple different subgraph over the
-network and running STP individually over each subgraph can enable better
-utilization of the network. IEEE has defined  Multiple Spanning Tree Protocol
-(MSTP)~\cite{ieee_802_1q}, while Cisco has developed a series of
-protocols to address this problem~\cite{pvst,pvst+}, which though are not fully
-compatible with the IEEE standards.
-Finally, IEEE has recently defined an advanced STP protocol that enables
-switches to discover and use all redundant links in a network, in the IEEE 802.1aq
-standatd~\cite{ieee_802_1aq}.
+network, with respect to a root switch. The protocol defines a state machine per
+port, which can disable packet forwarding if a port is detected to cause loop.
+Because the initial definition of the protocol incurred high latency in Spanning
+Tree calculation after a network change, IEEE introduce RSTP, an evolve version
+of STP, in~\cite{ieee_802_1d_2004}.  The STP mechanism was also evolved to
+address the requirements of VLAN configuration. VLAN tagging can create multiple
+different subgraph over the network and individual STP runs over each subgraph
+can increase network utilization. This functionality is provided by IEEE
+Multiple Spanning Tree Protocol (MSTP)~\cite{ieee_802_1q}, while Cisco has
+developed a series of proprietary protocols~\cite{pvst,pvst+}.  Finally, IEEE
+has recently defined an advanced STP protocol that enables switches to discover
+and use in parallel redundant network links, in the IEEE 802.1aq
+standard~\cite{ieee_802_1aq}.
 
-In terms of configuration automation, network vendors and standardization bodies
-have developed a number of protocols that can disseminate informations to
-neighbouring nodes and ease device management. These class of protocols has high
-churn between vendors and each vendor has defined its own standard. In this
+In terms of automatic configuration, network vendors and standardization bodies
+have developed a number of protocols that can disseminate information to
+neighbouring nodes and ease device management. Such protocols have high
+churn between vendors and each vendor defines its custom standard. In this
 class of protocols we consider Link Layer Discovery Protocol (LLDP), supported
 by IEEE, Cisco Discovery Protocol (CDP),  Extreme Discovery Protocol, Nortel
-Discovery Protocol. Cisco, additionally, has developed VLAN Trunking Protocol
-(VTP), a protocol that automates VLAN configuration on trunk links between
-switches. Configuring VLAN functionality across a network is laborious and
-administrator seek mechanisms to ease the work.
+Discovery Protocol. Finally,in order to reduce the administation
+burden of VLAN trunk links between switch, Cisco has developed the VLAN Trunking Protocol
+(VTP).
 
 In the class of Data Link layer protocols we also consider the MPLS
 protocol~\cite{RFC3031}. The MPLS technology tries to bridge the gap between
-virtual-circuited technologies, like ATM, and packet-switched networks. MPLS
-mainly simplifies the control plane complexity and remove the small packet size
-rectriction from the ATM networks. Forwarding in MPLS functions based on labels
-which simplifies the lookup functionality in the silicon and reduces memory
-requirements. MPLS is used extensively in the distribution section of large
-networks and traffic is forward over tunnels. In order to automate the
-configuration of MPLS circuits, the protocol use the LDP protocol~\cite{RFC5036}, 
-which sets up labels across the network. In order to enable resource control
-over MPLS tunnel, IETF has defined a mechanism to map RSVP resource control
-over the MPLS label management~\cite{RFC3209}.  Because MPLS doesn't provide a
-mechanism to control resource allocation, resource control is implemented using
-a mechanism called {\it Autobandwidth}. Autobandwidth monitors tunnel bandwidth
-requirements and recalculates paths when bandwidth requirements change. A study
-on a deployment of this technology in the MSN network though has highlighted
-that this automation results in under-optimal resource allocations during
-recalculation~\cite{Pathak2011}.
+virtual-circuit technologies, like ATM, and packet-switched networks. MPLS
+reduces the ATM control plane complexity and removes the limiting small capsule
+size. MPLS forwarding relies on tunnel labels which simplifies the lookup
+functionality in the silicon and reduces memory requirements. MPLS is used
+extensively in the distribution layer of large networks. In order to automate
+the configuration of MPLS circuits, the protocol use the LDP
+protocol~\cite{RFC5036}, which sets up labels across the network. In order to
+enable resource control over MPLS tunnels, IETF has defined a mechanism to map
+RSVP resource control over the MPLS label management~\cite{RFC3209}.  Because
+MPLS doesn't provide a mechanism to control resource allocation, resource
+control is implemented using a mechanism called {\it Autobandwidth}.
+Autobandwidth monitors tunnel bandwidth requirements and recalculates paths when
+bandwidth requirements change. A study on a deployment of this technology in the
+MSN network though has highlighted that the allocation policy is commonly
+short-term under-optimal~\cite{Pathak2011}.
 
 % In Data-Link layer we can also consider the MPLS protocol 
 
@@ -287,7 +289,7 @@ approaches.
 Research in active networks tried to define two mechanisms : the {\it capsule
   API and format} and the {\it switch architecture}. In terms of capsule
 format, the active network community defined the Active Network Encapsulation
-Protocol~(ANEP)~\cite{alexander1997}.  ANEP, due to its format specification,
+Protocol~(ANEP)~\cite{alexander1997a}.  ANEP, due to its format specification,
 made a clear separation between functionality and data. An Active Node using a
 new protocol would inject firstly new processing logic, using code capsules, and then
 send the data stream, as data capsules.  The format was adopted by the ANTS and
@@ -330,7 +332,7 @@ trustworthy operating system, to secure the functionality of the switch, and
 build on top of it multiple security guarantees. The platform addressed issues
 regarding secure execution and authentication, while also providing primitives
 to verify capsule code.
-PLANet~\cite{Hicks1999} and Active Bridge~\cite{Alexander1997} used the
+PLANet~\cite{Hicks1999} and Active Bridge~\cite{Alexander1997b} used the
 SwitchWare framework and implemented novel functionality over an active network. 
 
 The active networks group in University of Arizona proposed its custom approach
@@ -445,7 +447,11 @@ fit for modern Ethernet-dominant network technologies.
 
 \subsection{SDN}
 
-
+Software Defined Defined (SDN)~\cite{sdn} networking is a novel approach for scalable 
+and flexible network control. Software defined networking focuses on a single
+observation that there is a clear split between the control and the data plane
+of a network device. Data Plane refers to the packet forwarding functionality of the system
+, while Control Plane refers to the logic behind this forwarding logic. 
 \subsubsection{OpenFlow protocol}
 
 \section{Control Plane Applications} \label{sec:background:ofapp}

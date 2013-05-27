@@ -197,14 +197,14 @@ TEXFILES=$(wildcard *.tex)
 latex:
 # Below the 'true' is included to prevent unnecessarily many errors.
 	@if [ -n "${LATEXTARGET}" ]; then \
-		$(MAKE) ${LATEXTARGET}.dvi; \
+		$(MAKE) ${LATEXTARGET}.pdf; \
 		true; \
 	else \
 		if [ `ls *.tex | wc -l` = "1" ]; then \
-			$(MAKE) `basename \`ls *.tex\` .tex`.dvi; \
+			$(MAKE) `basename \`ls *.tex\` .tex`.pdf; \
 			true; \
 		else \
-			$(MAKE) `echo $$PWD|tr '/' '\n'|tail -1`.dvi; \
+			$(MAKE) `echo $$PWD|tr '/' '\n'|tail -1`.pdf; \
 			true; \
 		fi; \
 	fi
@@ -237,8 +237,9 @@ view:
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(DVIPS) -o $*.ps $<
 
-%.pdf: %.tex Abstract/abstract.tex Introduction/introduction.tex Chapter1/chapter1.tex \
-      Chapter2/chapter2.tex Chapter3/chapter3.tex
+%.pdf: thesis.tex Abstract/abstract.tex Introduction/introduction.tex Background/background.tex \
+	Chapter1/chapter1.tex Chapter2/chapter2.tex Chapter3/chapter3.tex  \
+	References/references.bib References/rfc.bib
 	$(PDFLATEX) $<
 	@$(MAKEINDEX) -s nomencl.ist -o $*.nls $*.nlo
 	$(BIBTEX) $*
