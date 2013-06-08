@@ -5,23 +5,39 @@
     \graphicspath{{Chapter1/Chapter1Figs/EPS/}{Chapter1/Chapter1Figs/}}
 \fi
 
-In this chapter we present an extensive performance analysis of available SDN
-technologies. Our exploration aims to provide an in depth presentation of the
-limitations of existing implementation efforts and understand their impact in
-forwarding plane performance, as well as , provide a set of tools that enables
-SDN developers to study the performance of their network designs. The work
-focuses oni implementations of version 1.0 of the \of protocol, the only
-production-level protocol instantiation of the SDN paradigm.  We conduct our
-analysis using two measurement platforms: \oflops and \sdnsim.  \oflops is a
-high precision \of switch micro-benchmark platform. Using \oflops, we develop a
-set of test scenarios that benchmark the performance of elementary \of protocol
-interactions. On the other hand, \sdnsim is a macro-benchmark \of platform,
-which extends the Unikernel abstraction and provides support for large scale
-\of-based network simulations and emulations. Using \sdnsim, developers are able
-to import \oflops switch profiles in their experiment and test the
-performance of their SDN design.
+In our effort to develop scalable network control, we employ extensively the SDN
+design approach and the \of protocol abstraction to develop our applications.
+The SDN protocol provides two core functional properties that make it an
+excellent candidate.  On one hand, the clean separation of the control and the
+forwarding plane in a network is inherently backwards compatibility with
+existing network applications and interoperable with existing network devices.
+The evolution of the control plane of a network doesn't affect the support of
+forwarding plane protocols, while SDN can be deployed gradually in existing
+networks without forwarding performance penalties. As a result, a number of
+network vendors provide production-level support of \of control interfaces.
+Secondly, the \of control abstraction is sufficiently generic to support a
+diverse set of control approaches. The protocol provides support both reactive
+and proactive control schemes, while the flow definition granularity is
+dynamically controlled to match the environment requirement. In the following
+chapter of this thesis we employ the \of protocol to address
+two diverse network scalability problems. 
 
-\todo{A bit strange. need to rephrase}
+In this chapter we present an extensive performance analysis of the control
+scalability of available SDN technologies. Our exploration aims to provide an in
+depth presentation of the limitations of existing implementation efforts and
+understand their impact in forwarding plane performance, as well as, provide a
+set of tools that enables SDN developers to study the performance of their
+network designs. The work focuses on implementations of version 1.0 of the \of
+protocol, the only production-level protocol instantiation of the SDN paradigm.
+We conduct our analysis using two measurement platforms: \oflops and \sdnsim.
+\oflops is a high precision \of switch micro-benchmark platform. Using \oflops,
+we implement a set of benchmarking to characterise the performance of elementary
+\of protocol interactions. \sdnsim is a macro-benchmark \of
+platform, which extends the \Unik framework~\cite{madhavapeddy2013} to
+support large scale \of-based network simulations and emulations.
+Using \sdnsim, developers are able to import \oflops switch profiles in their
+experiment and test the performance of their SDN design.
+
 In this Chapter, we present the motivations (Section~\ref{sec:oflops-intro}) and
 the design overview of the \oflops platform (Section~\ref{sec:oflops-design}).
 We select a number of off-the-self \of switches
@@ -30,12 +46,12 @@ experiments, in order to assess the elementary protocol interaction performance
 (Section~\ref{sec:oflops-result}). Furthermore, we present the \sdnsim platform
 (Section~\ref{sec:sdnsim-intro}) and its design approach
 (Section~\ref{sec:sdnsim-design}). Finally, we assess the performance of the
-\sdnsim implementation along with a measurement study of different control
-architectures over the fat-tree topology (Section~\ref{sec:sdnsim-precision})
+\sdnsim implementation along with a measurement study of control
+scalability over the fat-tree topology (Section~\ref{sec:sdnsim-precision})
 and conclude (Section~\ref{sec:conclusion}). 
 
 % intro about SDN
-\section{Network Control Micro-Characterisation} \label{sec:oflops-intro}
+\section{Network Control Micro-Benchmark \\ and Characterisation} \label{sec:oflops-intro}
 
 % OpenFlow\footnote{\url{http://www.openflow.org/}}, an instance of
 % software-defined networking (SDN), gives access deep within the network
@@ -61,42 +77,47 @@ and conclude (Section~\ref{sec:conclusion}).
 %\of is increasingly adopted, both by hardware vendors as well as by the
 %research community \cite{plug_n_serv,difane,flowvisor-osdi}.
 
-Despite the recent introduction of the SDN paradigm, the research community
-has already proposed a wide range of applications that take advantages of the
-protocol capabilities~\cite{plug_n_serv,difane,flowvisor-osdi}. These
-architectures address significant problem of modern networking, but their
-deployment in production environments is not straightforward.  Computer network
-have become a vital asset for modern enterprises, and high availability and
-performance is critical. Modifying
-established network control mechanisms must ensure these requirements and 
-requires extensive testing and
-performance characterisation.  An example of an early \of deployment that faced significant
-problems in a production environment is reported in~\cite{Weissmann:va}. Authors
-describe their experience in deploying the first \of production network in the
-Computer Science department in Stanford University. In their article, they point
-out that the initial deployment exhibited significant performance and
-reliability problems, as the deployed hardware switching platform was unable to
-handle the rate of the control channel. A significant reason of this problem can
-be traced back to the fact that in the SDN application ecosystem, there is a
-luck of an established and global mechanism to assess switch performance.
-In existing switching devices, performance is defined through
-the speed and capacity of the switching fabric as well as the size of the mac
-cache. 
-The \of protocol increases significantly the degrees of freedom in user - device 
-interaction and the characterisation task is complex. 
+Despite the recent introduction of the SDN paradigm, the research community has
+already proposed a wide range of novel control architectures~\cite{plug_n_serv,
+  difane,flowvisor-osdi}. These architectures address significant problem of
+modern networking, but their deployment in production environments is not
+straightforward.  Computer network have become a vital asset for modern
+enterprises, and high availability and performance are critical. Modifying
+established network control mechanisms must ensure these requirements and
+requires extensive testing and performance characterisation.  An example of an
+early \of-based SDN deployment that faced significant problems in a production
+environment is reported in~\cite{Weissmann:va}. The authors describe their
+experience in deploying the first \of production network in the Computer Science
+department in Stanford University. In their article, they point out that the
+initial deployment exhibited significant performance and reliability problems.
+The deployed hardware switching platform couldn't support \of message processing
+at high rates. For example, in the morning a significant number of users would
+plug simultaneously their computers to the network, creating a large burst of
+new network flows. Because the reactive control approach they employed requires
+the generation of a {\tt pkt\_in} message for each new connection, the switch
+control CPU processing capacity couldn't cope with the high utilisation and
+either a number of flows would be dropped or the control channel would become
+unresponsive. In the SDN application development toolchain, there is a lack of
+an established and global mechanism to assess switch performance.  For
+traditional switch devices, the network community employs as performance
+metrics, the switch fabric non-blocking processing capacity and latency and MAC
+table size. In contrast, the control decoupling of the SDN paradigm expands the
+ways that the controller interacts with a switch device, while these
+interactions become a significant requirement for the functionality of the
+switch. As a result, the performance characterisation of SDN forwarding devices
+becomes non-trivial. 
 
-In order to address this issue we developed
-\oflops~\footnote{\oflops is under GPL licence and can be downloaded from
+In order to address this issue we developed \oflops~\footnote{\oflops is under
+  the GPL licence and can be downloaded from
   \url{http://www.openflow.org/wk/index.php/Oflops}}, a measurement framework
-that enables rapid development of performance tests for both hardware and software
-\of switch implementations. To better understand the behaviour of the tested
-\of implementations, \oflops combines measurements from the \of
-control channel with data-plane measurements. To ensure sub-millisecond-level
-accuracy of the measurements, we bundle the \oflops software with specialized
-hardware in the form of the NetFPGA
-platform\footnote{\url{http://www.netfpga.org}}.  Note that if the tests do not
-require millisecond-level accuracy, commodity hardware can be used instead of
-the NetFPGA \cite{pam-accuracy}.
+that enables rapid development of performance tests for both hardware and
+software \of switch implementations. To better understand the behaviour of the
+tested \of implementations, \oflops combines measurements from the \of control
+channel with data-plane measurements. To ensure sub-millisecond-level accuracy
+of the measurements, we bundle the \oflops software with specialized hardware in
+the form of the NetFPGA platform\footnote{\url{http://www.netfpga.org}}.  Note
+that if the tests do not require millisecond-level accuracy, commodity hardware
+can be used instead of the NetFPGA \cite{pam-accuracy}.
 
 % We use \oflops to test publicly available OpenFlow software
 % implementations as well as several OpenFlow-enabled commercial hardware
@@ -142,21 +163,6 @@ the NetFPGA \cite{pam-accuracy}.
 
 \section{\oflops design}\label{sec:oflops-design}
 
-Measuring OpenFlow switch implementations is a challenging task in terms of
-characterization accuracy, noise suppression and precision.  Performance
-characterization is not trivial as most OpenFlow-enabled devices provide rich
-functionality but do not disclose implementation details. In order to understand
-the performance impact of an experiment, multiple input measurement channels
-must be monitored concurrently. Further, current controller designs,
-like~\cite{Gude08,SNAC}, target production networks and thus are optimized for
-throughput maximization and programmability, but incur high measurement
-inaccuracy. Measurement noise suppression in the control plane requires a new
-simplified \of controller library with low processing latency. Finally, high
-precision measurements after a point are subject to loss due to unobserved
-parameters of the measurement host, such as OS scheduling and clock drift. The
-result of these challenges is that meaningful, controlled, repeatable
-performance tests are non-trivial in an \of environment.
-
 % Since the beggining of our measurement study, it became apparent to us
 % that the assesment of OpenFlow implementations is not trivial and it
 % has a number of challenges.  Firstly, in order to assess the
@@ -177,27 +183,53 @@ performance tests are non-trivial in an \of environment.
 
 \begin{figure}
 \centering
-\begin{minipage}[b]{0.49\linewidth}
-\centering
- \includegraphics[width=0.99\textwidth]{openflow-design} 
-\caption{\oflops design schematic}
+\subfigure[NetFPGA packet]{
+  \includegraphics[width=0.30\textwidth]{oflops-design-netfpga}
+\label{fig:oflops_design_netfpga}}
+\subfigure[Kernel-space]{
+  \includegraphics[width=0.30\textwidth]{oflops-design-kernel}
+\label{fig:oflops_design_kernel}}
+\subfigure[User-space]{
+  \includegraphics[width=0.30\textwidth]{oflops-design-userspace} 
+  \label{fig:oflops_design_userspace}}
 \label{fig:oflops_design}
-\end{minipage}
-\begin{minipage}[b]{0.49\linewidth}
-\centering
- \includegraphics[width=0.99\textwidth]{timer_precision} 
- \caption{Evaluating timestamping precision using a DAG card.}
-\label{fig:timestamping}
-\end{minipage}
+\caption{\oflops measurement setup. The framework provides integration with: 1) a
+  high accuracy NetFPGA packet generator hardware
+  design~(Figure~\ref{fig:oflops_design_netfpga}), 2) kernel space {\tt pktgen}
+  traffic generation module and PCAP packet capturing
+  module~\ref{fig:oflops_design_kernel},
+  3) User space packet capture and generation
+  threads~(Figure~\ref{fig:oflops_design_userspace}} 
 \end{figure}
 
+Measuring \of switch implementations is a challenging task in terms of
+characterization accuracy, noise suppression and precision.  Performance
+characterization is not trivial as most OpenFlow-enabled devices provide rich
+functionality but do not disclose implementation details. In order to understand
+the performance impact of an experiment, multiple input measurement channels
+must be monitored concurrently, such as, data and control channels. Further,
+current controller frameworks, like~\cite{Gude08,floodlight}, target production
+networks and incur significant measurement noise. Such controllers employ
+asynchronous processing libraries and multi-thread execution, to maximize the
+aggregate control channel processing throughput, and provide high-level
+programing interfaces, that require multiple data structure allocation and
+modification during packet processing.  The processing time of a specific \of
+message, especially at high rates, is subject to multiple aspects, like the
+thread scheduling policy and the asynchronous library execution
+logic~\cite{Jarschel2012}.  Measurement noise suppression in the control plane
+requires from the controller framework to minimize message processing and
+delegate control to the measurement module.  Finally, sub-millisecond precision
+in software is subject to unobserved parameters, like OS scheduling and clock
+drift. The result of these challenges is that meaningful, controlled, repeatable
+performance tests are non-trivial in an \of environment.
+
 The \oflops design philosophy aims to develop a low overhead abstraction layer
-that allows interaction with an OpenFlow-enabled device over multiple data
+that allows interaction with an \of-enabled device over multiple data
 channels.  The platform provides a unified system that allows developers to
 control and receive information from multiple control sources: data and control
 channels as well as SNMP to provide specific switch-state information.
 For the development of measurement experiments over \oflops, the platform
-provides a rich, event-driven, API that allows developers to handle events
+provides an event-driven, API that allows developers to handle events
 programatically in order to implement and measure custom controller
 functionality. The current version is written predominantly in C. Experiments
 are compiled as shared libraries and loaded at run-time using a simple
@@ -217,64 +249,93 @@ each one serving specific type of events:\\
 \textbf{4. SNMP Channel}: SNMP event dispatcher.\\
 \textbf{5. Time Manager}: time events dispatcher.
 
-\oflops provides the ability to control concurrently multiple data
-channels to the switch. Using a tight coupling of the data and control 
-channels, programers can understand the impact of the measurement
-scenario on the forwarding plane. To enable our platform to run on
-multiple heterogeneous platforms, we have integrated support for
-multiple packet generation and capturing mechanisms. For the packet
-generation functionality, \oflops supports three mechanisms:
-user-space, kernel-space through the pktgen module~\cite{pktgen}, and
-hardware-accelerated through an extension of the design of the NetFPGA
-Stanford Packet Generator~\cite{Covington09}.  For the packet
-capturing and timestamping, the platform supports both the pcap
-library and the modified NetFPGA design. Each approach provides
-different precisions and different impacts upon the measurement
-platform.
+\oflops provides the ability to control concurrently multiple data channels to
+the switch. Using a tight coupling of the data and control channels, programers
+can understand the impact of the measurement scenario on the forwarding plane.
+To enable our platform to run on multiple heterogeneous platforms, we have
+integrated support for multiple packet generation and capturing mechanisms. For
+the packet generation functionality, \oflops supports three mechanisms:
+user-space~(Figure~\ref{fig:oflops_design_userspace}), kernel-space through the
+pktgen kernel module
+module~\cite{pktgen}~(Figure~\ref{fig:oflops_design_kernel}), and
+hardware-accelerated through an extension of the design of the NetFPGA Stanford
+Packet Generator~\cite{Covington09}~(Figure~\ref{fig:oflops_design_netfpga}).
+For the packet capturing and timestamping, the platform supports both the pcap
+library and the modified NetFPGA design. Each approach provides different
+precisions and different impacts upon the measurement platform.
 
-A comparison of the precision of the traffic capturing mechanisms is 
-presented in Figure~\ref{fig:timestamping}. In this experiment we 
-use a constant rate 100 Mbps probe of small packets for a two minute 
-period. The probe is duplicated, using an optical wiretap with negligible 
-delay, and sent simultaneously to OFLOPS and to a DAG card. In the figure, 
-we plot the differences of the relative timestamp between each OFLOPS 
-timestamping mechanism and the DAG card for each packet. From the figure, 
-we see that the pcap timestamps drift by 6 milliseconds after 2 minutes.
-On the other hand, the NetFPGA timestamping mechanism has a smaller
-drift at the level of a few microseconds during the same period.
+\begin{figure}
+\centering
+  \begin{minipage}[b]{0.45\textwidth}
+\centering
+ \includegraphics[width=0.99\textwidth]{accuracy-topology} 
+ \caption{Measurement topology to evaluate capturing mechanism precision.}
+\label{fig:timestamping_topology}
+\end{minipage}
+\hspace{0.5cm}
+  \begin{minipage}[b]{0.45\textwidth}
+\centering
+ \includegraphics[width=0.99\textwidth]{timer_precision} 
+ \caption{Evaluating timestamping precision using a DAG card.}
+\label{fig:timestamping}
+\end{minipage}
+\end{figure}
+
+
+In order to assess the accuracy of the traffic capturing mechanism, we use the
+topology depicted in Figure~\ref{fig:timestamping_topology} to measure precision
+loss in comparison to a DAG card~\cite{dag_card}.  To calculate precision, we
+use a constant rate 100 Mbps probe of small packets for a two minute period. The
+probe is duplicated, using an optical wiretap with negligible delay, and sent
+simultaneously to OFLOPS and to a DAG card. In Figure~\ref{fig:timestamp}, we
+plot the differences of the relative timestamp between each OFLOPS timestamping
+mechanism and the DAG card for each packet. From the figure, we see that the
+PCAP timestamps drift by 6 milliseconds after 2 minutes.  On the other hand, the
+NetFPGA timestamping mechanism has a smaller drift at the level of a few
+microseconds during the same period.
 
 \section{Measurement setup}\label{sec:oflops-switches}
 
-The number of \of-enabled devices has slowly increased recently, with switch and
-router vendors providing experimental \of support such as prototype and
-evaluation firmware. At the end of 2009, the \of protocol specification was
-released in its first stable version 1.0~\cite{openflow-spec}, the first
-recommended version implemented by vendors for production systems.
-Consequently, vendors did proceed on maturing their prototype implementations,
-offering production-ready \of-enabled switches today. Using \oflops, we evaluate
-\of-enabled switches from three different switch vendors.  Vendor 1 has
-production-ready \of support, whereas vendors 2 and 3 at this point only provide
-experimental \of support.  The set of selected switches provides a
-representative but not exhaustive sample of available \of-enabled
-top-of-rack-style switching hardware. Details regarding the CPU and the size of
-the flow table of the switches are provided in Table~\ref{tbl:switch_list}.
+% The number of \of-enabled devices has slowly increased recently, with switch and
+% router vendors providing experimental \of support such as prototype and
+% evaluation firmware.
+% Consequently, vendors did proceed on maturing their prototype implementations,
+% offering production-ready \of-enabled switches today.
+
+At the end of 2009, the \of protocol specification was released in its first
+stable version 1.0~\cite{openflow-spec}, the first recommended version
+implemented by vendors for production systems.  The switch performance analysis
+was contacted in collaboration with T-labs in Spring of 2011. During that
+period, the introduction of \of support in commodity switches was limited and
+only a small number of devices provided production-level support for the
+protocol.  Using \oflops, we evaluated \of-enabled switches from three different
+switch vendors.  Vendor 1 has production-ready \of support, whereas vendors 2
+and 3 at this point only provide experimental \of support.  The set of selected
+switches provided a representative but not exhaustive sample of available
+\of-enabled top-of-rack-style switching hardware. Details regarding the CPU and
+the size of the flow table of the switches are provided in
+Table~\ref{tbl:switch_list}. In addition the switching fabric in the vendor
+hardware specification reports similar non-blocking capacity and packet
+processing rates. 
 
 \of is not limited to hardware. The \of protocol reference is the software
 switch, OpenVSwitch~\cite{openvswitch}, an important implementation for
 production environments. Firstly, OpenVSwitch provides a replacement for the
 poor-performing Linux bridge~\cite{bianco10}, a crucial functionality for
-virtualised operating systems.  Secondly, several hardware switch vendors use
-OpenVSwitch as the basis for the development of their own \of-enabled firmware.
-OpenVSwitch development team has standardised a clean abstraction over the
-control of the switch silicon (similar to linux HAL), which allows code reuse
-over any forwarding entity that implements the switch abstraction. Thus, the
-mature software implementation of the \of protocol is ported to commercial
-hardware, making certain implementation bugs less likely to (re)appear.  In this
-paper, we study OpenVSwitch alongside our performance and scalability study of
-hardware switches. Finally, in our comparison we include the \of switch design
-for the NetFPGA platform~\cite{openflow-netfpga}. This implementation is based
-on the \of reference implementation, extending it with a hardware forwarding
-design. 
+virtualised operating systems.  Currently, the Xen platform uses OpenVSwitch to
+forward traffic between VMs in the Dum0, a configuration which is inherited by
+major Cloud providers, like Amazon and Rackspace.  Secondly, several hardware
+switch vendors use OpenVSwitch as the basis for the development of their own
+\of-enabled firmware.  OpenVSwitch development team has standardised a clean
+abstraction over the control of the switch silicon (similar to linux HAL), which
+allows code reuse over any forwarding entity that implements the switch
+abstraction. Thus, the mature software implementation of the \of protocol is
+ported to commercial hardware, making certain implementation bugs less likely to
+(re)appear.  We study OpenVSwitch alongside our performance and scalability
+study of hardware switches. Finally, in our comparison we include the \of switch
+design for the NetFPGA platform~\cite{openflow-netfpga}. This implementation is
+based on the original \of reference implementation~\cite{of-reference-impl}, 
+extending it with a hardware forwarding design. 
 
 \begin{table}[h!]
   \begin{center}
@@ -301,13 +362,12 @@ design.
 \label{tbl:switch_list}
 \end{table}
 
-In order to conduct our measurements, we setup \oflops on a dual-core
-2.4GHz Xeon server equipped with a NetFPGA card.
-For all the experiments we utilize the NetFPGA-based packet generating and 
-capturing mechanism. 1Gbps control and data channels are connected directly 
-to the tested switches. We measure the processing delay incurred by the 
-NetFPGA-based hardware design to be a near-constant $900$ nsec independent 
-of the probe rate.
+In order to conduct our measurements, we setup \oflops on a dual-core 2.4GHz
+Xeon server equipped with a NetFPGA card.  For all the experiments we utilize
+the NetFPGA-based packet generating and capturing mechanism. 1Gbps control and
+data channels are connected directly to the tested switches. We measure the
+processing delay incurred by the NetFPGA-based hardware design to be a
+near-constant $900$ nsec.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Switch Evaluation}\label{sec:oflops-result}
@@ -322,49 +382,50 @@ of the probe rate.
 % \of operations.
 
 As for most networking standards, there are different ways to implement a
-given protocol based on a paper specification. \of is not different in this
-regard. The current reference implementation is defined through OpenVSwitch
+given protocol based on a paper specification. \of is no different in this
+regard. The current \of reference implementation is OpenVSwitch
 \cite{openvswitch}. However, different software and hardware implementations may
 not implement all features defined in the OpenVSwitch reference, or they may
 behave in an unexpected way. In order to understand the behaviour of switch \of
 implementation, we develop a suite of measurement experiments to
 benchmark the functionality of the elementary protocol interactions.  These
-tests target (1) the \of packet processing actions~\ref{sec:result-packets}, (2)
+tests target (1) the \of packet processing
+actions~(Section~\ref{sec:results-packets}), (2)
 the packet interception and packet injection functionality of the
-protocol~\ref{sec:result-pktin}, (3) the update rate of the \of flow table along
-with its impact on the data plane,~\ref{sec:result-rate} (4) the monitoring
-capabilities provided by \of, and (5) the impact of interactions between
-different \of operations.
+protocol~(section~\ref{sec:results-pktin}), (3) the update rate of the \of flow table along
+with its impact on the data plane,~(Section~\ref{sec:results-rate}) (4) the monitoring
+capabilities provided by \of~(Section~\ref{sec:results-monitoring}), and (5) the impact of interactions between
+different \of operations~(Section~\ref{sec:results-interactions}).
 
 
 \subsection{Packet modifications}\label{sec:results-packets}
 
-The \of specification \cite{openflow-spec} defines ten packet
-modification actions which can be applied on incoming
-packets. Available actions include modification of MAC, IP, and VLAN
-values, as well as transport-layer fields. A flow definition can
-contain any combination of them. The left column of
-Table~\ref{tbl:feature_delay} lists the packet fields that can be
-modified by an \of-enabled switch.
-These actions are used by network devices such as IP routers (e.g.,
-rewriting of source and destination MAC addresses) and NAT (rewriting
-of IP addresses and ports). Existing network equipment is tailored to
-perform a subset of these operations, usually in hardware to sustain
-line rate. On the other hand, how these operations are to be used is
-yet to be defined for new network primitives and applications, such as
-network virtualization, mobility support, or flow-based traffic
-engineering.
+The \of specification \cite{openflow-spec} defines ten packet modification
+actions which can be applied on incoming packets. Available actions include
+modification of source and destination MAC and IP addresses, VLAN tag and PCP
+fields and TCP and UDP source and destination port numbers. The action list
+of a flow definition can contain any combination of them. The left column of
+Table~\ref{tbl:feature_delay} lists the packet fields that can be modified by an
+\of-enabled switch.  These actions are used by network devices such as IP
+routers (e.g., rewriting of source and destination MAC addresses) and NAT
+(rewriting of IP addresses and ports). Existing network equipment is tailored to
+perform a subset of these operations, usually in hardware to sustain line rate.
+% On the other hand, how these operations are to be used is yet to be defined for
+% new network primitives and applications, such as network virtualization,
+% mobility support, or flow-based traffic engineering.
 
 % Explain how we measure the time taken to perform the modification.
-To measure the time taken by an OpenFlow implementation to modify a
-packet field header, we generate from the NetFPGA card UDP packets of
-100 bytes at a constant rate of 100Mbps (approx. 125 Kpps). 
-This rate is high enough to give statistically significant results in
-a short period of time, without causing any packet queuing for any of the
-switches.  The flow table is initialized with a flow that
-applies a specific action on all probe packets and the processing
-delay is calculated using the transmission and receipt timestamps,
-provided by the NetFPGA.
+To measure the time taken by an \of switch to modify a packet field header, we
+generate from the NetFPGA card UDP packets of 100 bytes at a constant rate of
+100Mbps (approximately 125 Kpps).  This rate is high enough to give
+statistically significant results in a short period of time, without causing
+packet queuing.  The flow table is initialized with a flow that applies a
+specific action on all probe packets and the processing delay is calculated as
+the difference between the transmission and receipt timestamps provided by the
+NetFPGA.  We report in Table~\ref{tbl:feature_delay} the median processing delay
+for each action, along with its standard deviation, and the percent of lost
+packets of the measurement probe.
+
 %, while also low enough so that the impact of
 %queuing at the network interface cards can be ignored. 
 %Each packet is
@@ -430,21 +491,17 @@ loss. Processing delay indicates whether the operation is
 \end{flushleft}
 \end{table*}
 % What the table shows...
-Evaluating individual packet field modification,
-Table~\ref{tbl:feature_delay} reports the median difference between
-the generation and capture timestamp of the measurement probe along
-with its standard deviation and percent of lost packets.
 
 We observe significant differences in the performance of the hardware
-switches due in part to the way each handles packet
+switches due in part to the way their firmware implements packet
 modifications. Switch1, with its production-grade implementation,
 handles all modifications in hardware; this explains its low packet
 processing delay between 3 and 4 microseconds. On the other hand,
-Switch2 and Switch3 each run experimental firmware providing only
+Switch2 and Switch3 each run experimental firmware that provided, at the time, only
 partial hardware support for \of actions. Switch2 uses the switch
 CPU to perform some of the available field modifications, resulting in two orders
 of magnitude higher packet processing delay and variance.
-Switch3 follows a different approach: All packets of flows with
+Switch3 follows a different approach; all packets of flows with
 actions not supported in hardware are silently discarded. The
 performance of the OpenVSwitch software implementation lies between
 Switch1 and the other hardware switches.  OpenVSwitch fully implements
@@ -465,55 +522,95 @@ OpenVSwitch when the flow actions are supported in hardware.
 % hardware
 
 We conducted a further series of experiments with variable numbers of packet
-modifications as flow actions. We observed, that the combined processing time of
-a set of packet modifications is equal to the highest processing time across all
-individual actions in the set. Furthermore, we notice that for Switch1 and 
-OpenVSwitch there is a limit of 7 actions, which potentially exposes some
-relation in the code base.
+modifications in the flow action list. We observed, that the combined processing
+time of a set of packet modifications is equal to the highest processing time
+across all individual actions in the set (e.g.~Switch2 requires approximately
+300~msec per packet to modify both IP source addresses and IP ToS field).
+Furthermore, we notice that for Switch1 and OpenVSwitch there is a limit of 7
+actions, which exposes limits enclosed in the implementation.
 
 \subsection{Traffic interception and injection}\label{sec:results-pktin}
 
 \begin{figure}[ht]
   \begin{center}
-    \subfigure[Packet in message latency]
+    \subfigure[{\tt packet\_in} message latency]
     {\includegraphics[width=0.99\textwidth]{pkt_in_delay}}
-    \subfigure[Packet out message latenct]
+    \subfigure[{\tt packet\_out} message latency]
 	{\includegraphics[width=0.99\textwidth]{pkt_out_delay}}
   \end{center}
-  \caption{Latency to intercept or inject a packet using the \of protocol}
+  \caption{Latency to intercept and inject a packet using the \of protocol}
   \label{fig:pkt_in_out_delay}
 \end{figure}
 
-\of protocol permits a controller to intercept or inject traffic over the
-control plane. This functionality permits to \of controller applications to be reactive and
-handle traffic on a per-flow basis. Packet injection allows the controller to
-interact with connected network hosts. The interception mechanism in \of has
-been reported in the initials deployments of the protocol to cause significant
-slow-down in the control plane and led to switch disconnection at high packet
-rate~\cite{Kobayashi:vn}. This is a direct consequence of the silicon design in
-current \of switches, that develop such functionality over a low-frequency
-exception notification channel. In order to characterise this functionality, we
-develop a simple experiment using \oflops that sends packet\_in messages over the
-control channel at different rates
-and measure the latency of the switch to process them. In
-Figure~\ref{fig:pkt_in_out_delay}, we plot the latency induced on packets both
-for Packet\_in and Packet\_out messages. We omit in this experiment Switch 3 as
-this functionality cause high CPU utilisation and after a few seconds made the
-switch unresponsive. For packet\_out messages, the switches rate limit through
-the TCP rate control mechanism the rate of messages received and as a result they
-provide a constant performance. For packet\_in messages, we observe a diverse
-behaviour between hardware switches at high packet rates. For Switch 1, packet
-loss and latency gets high for traffic rates above 400 packets per second.
-Additionally, we noticed that the switch is able to process a maximum of 500
-packets/sec. For Switch 2 latency and packet loss are significantly lower and
-stable. Switch 2 faced problem to process packets at high rates, over 2000
-packets per second. OpenVSwitch, has a high but stable latency for any tested
+\of protocol permits a controller to intercept or inject traffic from the
+control plane. Packet interception enables reactive control applications, while
+packet injection permits control application interaction with network hosts.
+Nonetheless, the interception mechanism in \of has been characterised as a
+significant bottleneck for the control plane in early \of protocol
+deployments~\cite{Kobayashi:vn}. This is a direct consequence of the silicon
+design in current \of switches, that develop such functionality over a
+low-bandwidth exception-notification channel. In order to characterise these
+functionalities, we design two simple experiments. For packet interception, we
+remove all entries from the switch flow table and send a measurement probe of
+small packets (100 bytes) on one of the data channels. We measure the delay
+between the time the packet was transmitted on the data channel and the time the
+controller received the equivalent {\tt packet\_in} message. For packet
+injection, we transmit {\tt packet\_out} messages over the control channel and
+measure the delay to receive the packet on a data channel. In
+Figure~\ref{fig:pkt_in_out_delay}, we plot the median packet processing latency
+for {\tt packet\_in} and {\tt packet\_out} messages. We omit in this experiment
+Switch 3 as these functionalities incur high CPU utilisation and, after a few
+seconds of traffic, the control channel becomes unresponsive. For {\tt
+  packet\_out} messages, all implementations rate limit their transmission
+through the TCP advertised window of the control connection and as a result the
+latency is near constant. We observe that hardware switch exhibit hight latency
+(150 msec for Switch2 and 350 msec for Switch1), in comparison to OpenVSwitch
+(approximately 0.1 msec).  For {\tt packet\_in} messages, we observe adiverse
+behaviour between hardware switches at high packet rates. For Switch1, packet
+loss and latency becomes note-worthy beyond 400 packets/sec, while the switch
+can process up to 500 packets/sec. For Switch2 latency and packet loss are
+significantly lower and stable. Switch2 incurs high processing latency beyond
+2000 packets/sec.  OpenVSwitch, has a high but stable latency for any tested
 data rates. 
 
 \subsection{Flow table update rate}\label{sec:results-rate}
 
-% So far, we get packet modification primitives and the expected performance that software/hardware can/should deliver.
-% 
+The flow table is a central component of an \of switch and is the
+equivalent of a Forwarding Information Base (FIB) on routers. Given the
+importance of FIB updates on commercial routers, e.g., to reduce the impact of
+control plane dynamics on the data plane, the FIB update processing time of
+commercial routers provide useful reference points and lower bounds for the time
+to update a flow entry on an \of switch. The time to install a new entry on
+commercial routers has been reported in the range of a few hundreds of
+microseconds~\cite{shaikh-igp}.
+
+\of provides a mechanism to define barriers between sets of
+commands: the \texttt{barrier} command. According to the OpenFlow
+specification~\cite{openflow-spec}, the \texttt{barrier} command is a way to be
+notified that a set of \of operations has been completed. Further, 
+the switch has to complete the set of operations issued prior to the
+\texttt{barrier}
+before executing any further operation. If the \of implementations 
+comply with the specification, we expect to receive a \texttt{barrier} notification for 
+a flow modification once the flow table of the switch has been updated, 
+implying that the change can be seen from the data plane.
+
+We check the behavior of the tested \of implementations,
+finding variation among them. For OpenVSwitch and Switch1,
+Figure~\ref{fig:flow_insertion_comparison} shows the time to install a
+set of entries in the flow table. Switch2 and Switch3 
+are not reported as this \of message is not supported by the firmware. 
+For this experiment, \oflops relies on a stream of packets of 100 bytes at
+a constant rate of 100 Kpackets/sec (10Mbps) that targets the newly installed flows in a
+round-robin manner. The probe achieves sufficiently low inter-packet
+periods in order to accurately measure the flow insertion time.
+%With such a probe stream, we obtain an inter-packet
+%period of less than 100$\mu$s, adequate for measuring any change in
+%the flow-insertion time.
+
+% 100 bytes -> 1 packet
+% 10^7 bytes -> x => x = 10^5 = 100 K
+
 \begin{figure}[ht]
   \begin{center}
     \subfigure[OpenVSwitch (log-log scale)]
@@ -527,69 +624,36 @@ data rates.
   \label{fig:flow_insertion_comparison}
 \end{figure}
 
-The flow table is a central component of an OpenFlow switch and is the
-equivalent of a Forwarding Information Base (FIB) on routers. Given the
-importance of FIB updates on commercial routers, e.g., to reduce the impact of
-control plane dynamics on the data plane, the FIB update processing time of
-commercial routers provide useful reference points and lower bounds for the time
-to update a flow entry on an OpenFlow switch. The time to install a new entry on
-commercial routers has been reported in the range of a few hundreds of
-microseconds~\cite{shaikh-igp}.
 
-OpenFlow provides a mechanism to define barriers between sets of
-commands: the \texttt{barrier} command. According to the OpenFlow
-specification~\cite{openflow-spec}, the barrier command is a way to be
-notified that a set of OpenFlow operations has been completed. Further, 
-the switch has to complete the set of operations issued prior to the barrier 
-before executing any further operation. If the OpenFlow implementations 
-comply with the specification, we expect to receive a barrier notification for 
-a flow modification once the flow table of the switch has been updated, 
-implying that the change can be seen from the data plane.
-
-We check the behavior of the tested OpenFlow implementations,
-finding variation among them. For OpenVSwitch and Switch1,
-Figure~\ref{fig:flow_insertion_comparison} shows the time to install a
-set of entries in the flow table. The NetFPGA-based switch results
-(not reported) are similar to those of Switch1, while Switch2 and Switch3 
-are not reported as this OpenFlow message is not supported by the firmware. 
-For this experiment, \oflops relies on a stream of packets of 100 bytes at
-a constant rate of 10Mbps that targets the newly installed flows in a
-round-robin manner. The probe achieves sufficiently low inter-packet
-periods in order to measure accurately the flow insertion time.
-%With such a probe stream, we obtain an inter-packet
-%period of less than 100$\mu$s, adequate for measuring any change in
-%the flow-insertion time.
-
-In Figure~\ref{fig:flow_insertion_comparison}, we show three different
-times. The first, {\it barrier notification}, is derived by measuring the time 
-between when the \textbf{first insertion command} is sent by the \oflops 
-controller and the time the barrier notification is received by the PC. The 
-second, {\it transmission delay}, is the time between the first and 
-last flow insertion commands are sent out from the PC running \oflops. 
-The third, {\it first packet}, is the time between the \textbf{first insertion
- command} is issued and a packet has been observed for the last of
-the (newly) inserted rules. For each configuration, we run the
-experiment 100 times and Figure~\ref{fig:flow_insertion_comparison}
-shows the median result as well as the $10^{th}$ and $90^{th}$ percentiles 
-(variations are small and cannot be easily viewed).
+In Figure~\ref{fig:flow_insertion_comparison}, we show three different times.
+The first, {\it barrier notification}, is derived by measuring the time between
+when the \textbf{first insertion command} is sent by the \oflops controller and
+the time the \texttt{barrier} notification is received by the PC. The second,
+{\it transmission delay}, is the time between the first and last flow insertion
+commands are sent out from the PC running \oflops.  The third, {\it first
+  packet}, is the time between the \textbf{first insertion command} is issued
+and a packet has been observed for the last of the (newly) inserted rules. For
+each configuration, we run the experiment 100 times and
+Figure~\ref{fig:flow_insertion_comparison} shows the median result as well as
+the $10^{th}$ and $90^{th}$ percentiles, although the variations are small and
+cannot be easily viewed.
 %\todo{point that the error
 %  bounds are tight and cannot easily viewed on the graph}
 
-From Figure~\ref{fig:flow_insertion_comparison}, we observe that even
-though the {\it transmission delay} for sending flow insertion commands 
-increases with their number, this time is negligible when compared with 
-data plane measurements ({\it first packet}). Notably, the {\it barrier notification} 
-measurements are almost constant, increasing only as the transmission delay 
-increases (difficult to discern on the log-log plot) and, critically, this operation 
-returns before any {\it first packet} measurement. This implies that the way
-the {\it barrier notification} is implemented does not reflect the time when 
-the hardware flow-table has been updated.
+From Figure~\ref{fig:flow_insertion_comparison}, we observe that even though the
+{\it transmission delay} for sending flow insertion commands increases with
+their number, this time is negligible when compared with data plane measurements
+({\it first packet}). Notably, the {\it barrier notification} measurements are
+almost constant, increasing only as the transmission delay increases (difficult
+to discern on the log-log plot) and, critically, this operation returns before
+any {\it first packet} measurement. This implies that the way the {\it barrier
+  notification} is implemented does not reflect the time when the hardware
+flow-table has been updated.
 
-In these results we demonstrate how \oflops can compute per-flow
-overheads. We observe that the flow insertion time for Switch1
-starts at $1.8$ms for a single entry, but converges toward an
-approximate overhead of $1$ms per inserted entry as the number of
-insertions grows.
+In these results we demonstrate how \oflops can compute per-flow overheads. We
+observe that the flow insertion time for Switch1 starts at $1.8$ms for a single
+entry, but converges toward an approximate overhead of $1$ms per inserted entry
+as the number of insertions grows.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Flow insertion types}
@@ -604,29 +668,28 @@ insertions grows.
   \label{fig:flow_insertion_delay}
 \end{figure}
 
-We now distinguish between flow insertions and the modification of existing flows.  
-With OpenFlow, a flow rule may perform exact packet matches or use wild-cards to 
-match a range of values. Figure~\ref{fig:flow_insertion_delay} compares the flow
-insertion delay as a function of the number of inserted entries. This is done for the 
-insertion of new entries and for the modification of existing entries.
+We now distinguish between flow insertions and the modification of existing
+flows.  With OpenFlow, a flow rule may perform exact packet matches or use
+wild-cards to match a range of values. Figure~\ref{fig:flow_insertion_delay}
+compares the flow insertion delay as a function of the number of inserted
+entries. This is done for the insertion of new entries and for the modification
+of existing entries.
 
-These results show that for software switches that keep all entries in memory, the 
-type of entry or insertion does not make a difference in the flow insertion time.
-Surprisingly, both Switch1 and Switch2 take more time to modify existing flow entries 
-compared to adding new flow entries.  For Switch1, this occurs for more than 10 new 
-entries, while for Switch2 this occurs after a few tens of new entries.
-After discussing this issue with the vendor of Switch2, we came to the
-following conclusion: as the number of TCAM entries increases, updates
-become more complex as they typically requires re-ordering of existing
-entries.
+These results show that for software switches that keep all entries in memory,
+the type of entry or insertion does not make a difference in the flow insertion
+time.  Surprisingly, both Switch1 and Switch2 take more time to modify existing
+flow entries compared to adding new flow entries.  For Switch1, this occurs for
+more than 10 new entries, while for Switch2 this occurs after a few tens of new
+entries.  After discussing this issue with the vendor of Switch2, we came to the
+following conclusion: as the number of TCAM entries increases, updates become
+more complex as they typically requires re-ordering of existing entries.
 
-Clearly, the results depend both on the entry type and implementation.
-For example, exact match entries may be handled through a hardware or
-software hash table. Whereas, wild-carded entries, requiring support
-for variable length lookup, must be handled by specialized memory
-modules, such as TCAM. With such possible choices and range of
-different experiments, the flow insertion times reported in
-Figure~\ref{fig:flow_insertion_delay} are not generalizable, but
+Clearly, the results depend both on the entry type and implementation.  For
+example, exact match entries may be handled through a hardware or software hash
+table. Whereas, wild-carded entries, requiring support for variable length
+lookup, must be handled by specialized memory modules, such as a TCAM. With such
+possible choices and range of different experiments, the flow insertion times
+reported in Figure~\ref{fig:flow_insertion_delay} are not generalizable, but
 rather depend on the type of insertion entry and implementation.
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -648,15 +711,15 @@ multiple flows and supports packet and byte counters.
 We now test the performance implications of the traffic statistics reporting 
 mechanism of OpenFlow. Using \oflops, we install flow entries that match 
 packets sent on the data path. Simultaneously, we start sending flow statistics 
-requests to the switch. Throughout the experiment we record: the delay getting 
+requests to the switch. Throughout the experiment we record the delay getting 
 a reply for each query, the amount of packets that the switch sends for each 
 reply and the departure and arrival timestamps of the probe packets.
 
-Figure~\ref{fig:stat_request} reports the time to receive a flow
+Figure~\ref{fig:stat_request_latency} reports the time to receive a flow
 statistics reply for each switch, as a function of the request
 rate. Despite the rate of statistics requests being modest, quite high
-CPU utilization results for even a few queries per second being
-sent. Figure~\ref{fig:stat_request} reports the switch-CPU utilization
+CPU utilization is recorded for even a few queries per second being
+sent. Figure~\ref{fig:stat_request_cpu} reports the switch-CPU utilization
 as a function of the flow statistics inter-request time. Statistics
 are retrieved using SNMP. Switch3 is excluded for lack of SNMP
 support.
@@ -664,7 +727,7 @@ support.
 \begin{figure}[h]
   \begin{center}
     \subfigure[Reply time.]
-    {\includegraphics[width=0.99\textwidth]{flow_stats_delay}}
+    {\includegraphics[width=0.99\textwidth]{flow_stats_delay} \label{fig:stat_request_latency}}
     \subfigure[CPU utilization.]
       {\includegraphics[width=0.99\textwidth]{flow_stats_cpu}\label{fig:stat_request_cpu}}
   \end{center}
@@ -694,24 +757,24 @@ impact of the flow-stats rate on their CPU, thanks to their significantly
 more powerful PC CPUs (Table~\ref{tbl:switch_list}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{OpenFlow command interaction}\label{sec:results-interactions}
+\subsection{\of command interaction}\label{sec:results-interactions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % why is it important this experiment
 
-An advanced feature of the OpenFlow protocol is its ability to
-provide applications with, e.g., flow arrival notifications from the 
+An advanced feature of the \of protocol is its ability to
+provide network control applications with, e.g., flow arrival notifications from the 
 network, while simultaneously providing fine-grain control of 
 the forwarding process. This permits applications to adapt
 in real time to the requirements and load of the
-network~\cite{plug_n_serv,Yap09}. Under certain OpenFlow usage
-scenarios, e.g., the simultaneous querying of traffic statistics and
-modification of the flow table, understanding the behavior of the data
-and control plane of OpenFlow switches is difficult without advanced
-measurement instrumentation such as the one provided by \oflops. 
-Through this scenario, we extend Section~\ref{sec:results-rate} to show 
+network~\cite{plug_n_serv,Yap09}. Using \oflops advanced measurement
+instrumentation, we develop a test scenario of dynamic network control,
+in order to understand the behavior of the switch
+control and data plane.  In this scenario, we emulate the simultaneous querying of traffic statistics and
+modification of the flow table.  
+More specifically, we extend Section~\ref{sec:results-rate} by showing
 how the mechanisms of traffic statistics extraction and table manipulation 
-may interact. Specifically, we initialize the flow table with 1024 exact
+interact. Specifically, we initialize the flow table with 1024 exact
 match flows and measure the delay to update a subset of 100 flows. 
 Simultaneously, the measurement module polls the switch for full table 
 statistics at a constant rate. The experiment uses a constant rate 10Mbps 
@@ -728,15 +791,15 @@ CPU values.
 \end{figure}
 
 In this experiment, we control the probing rate for the flow statistics 
-extraction mechanism, and we plot the time necessary for the modified 
-flows to become active in the flow table. For each probing rate, we
+extraction mechanism, and we plot the time necessary before the modified 
+flows become active in the flow table. For each probing rate, we
 repeat the experiment 50 times, plotting the median, $10^{th}$ and 
 $90^{th}$ percentile. In Figure~\ref{fig:interaction_test} we can see
 that, for lower polling rates, implementations have a near-constant
 insertion delay comparable to the results of Section~\ref{sec:results-rate}.
 For higher probing rates on the other hand, Switch1 and Switch3 do 
 not differ much in their behavior. In contrast, Switch2 exhibits a noteworthy 
-increase in the insertion delay explained by the CPU utilization increase
+increase in the insertion delay. This is explained by the CPU utilization increase
 incurred by the flow statistics polling (Figure~\ref{fig:stat_request_cpu}). Finally,
 OpenVSwitch exhibits a marginal decrease in the median insertion delay
 and at the same time an increase in its variance. We believe this behavior 
@@ -1293,7 +1356,7 @@ implementations, in terms of OpenFlow protocol support as well as performance.
 We identify considerable variation among the tested OpenFlow implementations.
 We take advantage of the ability of \oflops for data plane measurements to
 quantify accurately how fast switches process and apply OpenFlow commands.
-For example, we found that the barrier reply message is not correctly implemented,
+For example, we found that the \texttt{barrier} reply message is not correctly implemented,
 making it difficult to predict when flow operations will be seen by the data plane.
 Finally, we found that the monitoring capabilities of existing hardware switches 
 have limitations in their ability to sustain high rates of requests. Further, at high 

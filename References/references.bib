@@ -1,7 +1,7 @@
 % ------------------------------------------------------------------------
 % SAMPLE BIBLIOGRAPHY FILE
 % ------------------------------------------------------------------------
-
+ 
 @MISC{prime-number-theorem,
    author = "Charles Louis Xavier Joseph de la Vall{\'e}e Poussin",
    note = "A strong form of the prime number theorem, 19th century" }
@@ -971,7 +971,8 @@ ISSN={0018-9200},}
 
 
 # Openflow spec.
-@misc{openflow-spec,
+@MISC{openflow-spec,
+  author = {{OpenFlow Consortium}},
   title =	 {OpenFlow Switch Specification (version 1.0.0)},
   howpublished = {\url{www.openflow.org/documents/openflow-spec-v1.0.0.pdf}},
   month =	 {December},
@@ -2795,6 +2796,13 @@ year={1999}
 
 } 
 
+@MISC{of-reference-impl,
+  author={{OpenFlow Consortium}},
+  title={{OpenFlow reference implementation}},
+  year=2009,
+  howpublished={\url{http://www.openflow.org/wp/develop/}},
+}
+
 @misc{dag-card,
   author =	 {Endace Data Acquisition and Generation cards},
   howpublished = {http://www.endace.com/},
@@ -2878,7 +2886,9 @@ note={\url{http://www.ixiacom.com/}},
 }
 
 @misc{oflops-manual,
-title= {\oflops},
+  author={\oflops},
+title= {\oflops Manual},
+  year=2011,
 note={\url{http://www.openflow.org/wk/index.php/Oflops}},
 }
 
@@ -3118,6 +3128,7 @@ url = {http://www.fp7-ofelia.eu/}
 @misc{Weissmann:va,
 author = {Weissmann, Paul and Seetharaman, Srini},
 title = {{How mature is OpenFlow to be introduced in production networks}},
+year = 2011,
 url = {http://changeofelia.info.ucl.ac.be/pmwiki/uploads/SummerSchool/Program/session_004.pdf}
 }
 
@@ -3481,8 +3492,16 @@ year = {2009}
 }
 
 @MISC{cbench,
+  author={Cbench},
   title={Cbench: controller benchmark},
+  year=2010,
   url={http://docs.projectfloodlight.org/display/floodlightcontroller/Cbench},
+}
+
+@MISC{dag_card,
+  author={Endace},
+  title={{Endace DAG Cards}},
+  howpublished={\url{http://www.endace.com/endace-dag-high-speed-packet-capture-cards.html}},
 }
 
 @inproceedings{Varga2008,
@@ -3513,6 +3532,19 @@ year = {2009}
   author={Cisco},
   title={Catalyst Switch Architecture and Operation},
   url={http://www.net130.com/technic/networks2003/RST-2011.pdf},
+}
+
+@MISC{juniper_t_series,
+  author={Juniper},
+  howpublished={\url{http://www.slideshare.net/junipernetworks/t-series-core-router-architecture-review-whitepaper}},
+  title={T SerIeS Core rouTer ArChITeCTure overvIew},
+  year=2012,
+}
+
+@MISC{cisco_cef,
+  author={Cisco},
+  howpublished={\url{http://www.cisco.com/en/US/docs/ios/12_2/switch/configuration/guide/xcfcef.html}},
+  title={Cisco Express Forwarding Overview},
 }
 
 @MISC{broadcom-asic,
@@ -3736,25 +3768,6 @@ ISSN={0163-6804},
   number = 	 {UCAM-CL-TR-450}
 }
 
-@article{Crosby2002,
- author = {Crosby, Simon and Rooney, Sean and Isaacs, Rebecca and Bos, Herbert},
- title = {A perspective on how ATM lost control},
- journal = {SIGCOMM Comput. Commun. Rev.},
- issue_date = {November 2002},
- volume = {32},
- number = {5},
- month = nov,
- year = {2002},
- issn = {0146-4833},
- pages = {25--28},
- numpages = {4},
- url = {http://doi.acm.org/10.1145/774749.774754},
- doi = {10.1145/774749.774754},
- acmid = {774754},
- publisher = {ACM},
- address = {New York, NY, USA},
-} 
-
 @article{Lewis1998,
 author = {John T. Lewis and Raymond Russell and Fergal Toomey and Brian McGurk
   and Simon Crosby and Ian Leslie},
@@ -3779,6 +3792,25 @@ url = "http://www.sciencedirect.com/science/article/pii/S0140366498002242",
   pages={277},
   year={1996}
 }
+
+@article{Crosby2002,
+ author = {Crosby, Simon and Rooney, Sean and Isaacs, Rebecca and Bos, Herbert},
+ title = {A perspective on how ATM lost control},
+ journal = {SIGCOMM Comput. Commun. Rev.},
+ issue_date = {November 2002},
+ volume = {32},
+ number = {5},
+ month = nov,
+ year = {2002},
+ issn = {0146-4833},
+ pages = {25--28},
+ numpages = {4},
+ url = {http://doi.acm.org/10.1145/774749.774754},
+ doi = {10.1145/774749.774754},
+ acmid = {774754},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
 
 @article{O'Malley1992,
  author = {O'Malley, Sean W. and Peterson, Larry L.},
@@ -4007,8 +4039,50 @@ doi={10.1109/65.750445},
 ISSN={0890-8044},}
 
 @MISC{sdn,
-  authors={Open Network Foundations},
+  author={Open Network Foundations},
   title={},
   year=2012,
   howpublished={\url{https://www.opennetworking.org/images/stories/downloads/sdn-resources/white-papers/wp-sdn-newnorm.pdf}},
+}
+
+@MISC{of_consortium,
+  author={{OpenFlow Consortium}},
+  title={{OpenFlow - Enabling Innovation in Your Network}},
+  year={2009},
+  howpublished={\url{http://www.openflow.org}},
+}
+
+@MISC{google_of,
+  author={{Google}},
+  title={{OpenFlow @ Google}},
+  year = 2013,
+  howpublished={\url{http://www.opennetsummit.org/archives/apr12/hoelzle-tue-openflow.pdf}},
+}
+
+@INPROCEEDINGS{Jarschel2012, 
+author={Jarschel, M. and Lehrieder, F. and Magyari, Z. and Pries, R.}, 
+booktitle={Software Defined Networking (EWSDN), 2012 European Workshop on}, 
+title={A Flexible OpenFlow-Controller Benchmark}, 
+year={2012}, 
+pages={48-53}, 
+doi={10.1109/EWSDN.2012.15},}
+
+@MISC{cisco-mii,
+  author={Chu, Yi-Chin},
+  title={Serial-GMII Specification},
+  year=2005,
+  howpublished={\url{ftp://ftp-eng.cisco.com/smii/sgmii.pdf}},
+}
+
+@MISC{floodlight,
+  title={{Floodlight OpenFlow Controller}},
+  author={Big Switch},
+  year=2013,
+  howpublished={\url{http://www.projectfloodlight.org/floodlight/}}
+}
+
+@MISC{nodeflow,
+  title={{NodeFlow: An OpenFlow Controller Node Style}},
+  author={Berger, Gary},
+  howpublished={http://garyberger.net/?p=537},
 }
