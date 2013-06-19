@@ -1,0 +1,22 @@
+set xlabel 'Number of flows' font "Gill Sans,12";
+set ylabel "Median throughtput (packets/second)" font "Gill Sans,12";
+set yrange [0:200100];
+set xrange [0:600100];
+set style line 1 lt 1 lw 3 lc rgb "orange"; 
+set style line 2 lt 1 lw 3 lc rgb "blue";
+
+set size 1,1;
+set key font "Gill Sans,12";
+set ytics font "Gill Sans,12";
+set xtics ("0" 0, "1" 100000, "2" 200000, "4" 300000, "4" 400000, "5" 500000, \
+"{/Symbol \264}10^5" 600000) font "Gill Sans,12";
+
+plot "Chapter2/Chapter2Figs/throughput/exact-pps.csv" using 1:5:4:6 \
+     title 'exact' with errorlines ls 1, \
+     "Chapter2/Chapter2Figs/throughput/exact-pps.csv" using 1:5 title "" with \
+     lines ls 1, \
+     "Chapter2/Chapter2Figs/throughput/wildcard-pps.csv" using 1:5:4:6 \
+     title 'wildcard' with errorlines ls 2, \
+     "Chapter2/Chapter2Figs/throughput/wildcard-pps.csv" using 1:5 title "" \
+     with lines ls 2;
+ 

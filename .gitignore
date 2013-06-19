@@ -50,3 +50,6 @@ Chapter1/Chapter1Figs/timer_precision/
 .itmp
 thesis.brf
 thesis.nls
+
+*.make
+*.cookie

@@ -1,0 +1,17 @@
+set xlabel 'Number of interface IP addresses' font "Gill Sans,12";
+set ylabel "Median switching delay ({/Symbol m}s)" font "Gill Sans,12";
+set xrange [0:100];
+set yrange [0:1350];
+set style line 1 lw 3 lc rgb "orange"; 
+set style line 2 lw 3 lc rgb "blue";
+
+set size 1,1;
+set key  font "Gill Sans,12";
+set xtics font "Gill Sans,12";
+set ytics font "Gill Sans,12";
+
+plot "Chapter2/Chapter2Figs/stack-test/median.csv" using 1:5:4:6 \
+     title 'delay' with errorlines ls 2, \
+     "Chapter2/Chapter2Figs/stack-test/median.csv" using 1:5 title "" with \
+     lines ls 2;
+ 

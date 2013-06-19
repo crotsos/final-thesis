@@ -142,7 +142,7 @@ of the silicon and flexibility is restricted.
 % An extensive discussion over hardware architecture of
 % older high-end Cisco switches is presented in~\cite{cisco-routers}.
 
-\section{Forwarding Control in Production Networks} \label{sec:backoground:netcontrol}
+\section{Forwarding Control in Production Networks} \label{sec:background:netcontrol}
 
 % In this section, we
 % present the Data Link and Network layer protocols used in current production
@@ -177,7 +177,7 @@ Data-Link layer control protocols provide loop-detection, and VLAN and QoS
 automation. Loop detection is used to avoid packet loops in networks with
 redundant connectivity, as Ethernet doesn't provide timeout functionality.
 Spanning Tree protocol(STP) was a first attempt to addressed this problem,
-standardised by IEEE in 802.1D-1998~\cite{ieee_802_1d}. The protocol
+standardised by IEEE in 802.1D-1998~\cite{ieee_802_1d_1998}. The protocol
 implemented the distributed spanning tree construction algorithm presented
 in~\cite{Perlman1985}. The algorithm uses broadcast messages to discover a
 spanning tree over the graph of the network, with respect to a common root
@@ -237,7 +237,7 @@ Using this global state exchange, each router is able to construct the global
 connection graph. Each router can use the graph to calculate the minimum
 spanning tree of the network, using Djikstra's algorithm.  Currently there is a
 plethora of Link State protocol specification in the network community.  IETF
-has developed the OSPF protocol~\cite{2328}, an Ipv4 specific routing protocol,
+has developed the OSPF protocol~\cite{RFC2328}, an Ipv4 specific routing protocol,
 while the Open Systems Interconnection~(OSI) organisation has defined the IS-IS
 protocol~\cite{RFC1142}, a network layer agnostic routing protocol.  Link state
 routing protocols provide provide high flexibility to define the optimisation
@@ -320,7 +320,7 @@ Protocol~(ANEP)~\cite{alexander1997a}.  ANEP, through its format specification,
 made a clear separation between functionality and data. An Active Node using a
 new protocol would inject firstly new processing logic, using code capsules, and
 then send the data stream, as data capsules.  The format was adopted by the ANTS
-and Sprocket frameworks.  Sprocket~\cite{Schwartz200} was an effort to develop
+and Sprocket frameworks.  Sprocket~\cite{Schwartz2000} was an effort to develop
 an efficient capsule programming language by BBN technologies. The language uses
 a restricted set of the C language, avoiding any security vulnerable structures
 like pointers, while it introduced native support for SNMP browsing. Sprocket
@@ -616,7 +616,7 @@ Table is a memory abstraction which contains forwarding policy. It comprises of
 flow entries which conceptually consist of three parts: the flow tuple, the flow
 statistics and the flow action list.  The flow tuple synthesizes a flow
 description using all the significant packet header fields.  We present the list
-of fields in Table~\cite{tbl:background:openflow_tupple}.  The protocol
+of fields in Table~\ref{tbl:background:openflow_tupple}.  The protocol
 associates with each flow tuple a flow mask, which permits field wildcarding in
 a flow definition.  Flow statistics store flow packet and byte counters. The
 action list, contains the list of actions that should be applied on every

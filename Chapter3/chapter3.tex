@@ -60,7 +60,7 @@ mechanisms, while it can propagate Multicast-DNS notifications across devices.
 
 In this chapter, we present in Section~\ref{sec:signpost-introduction} the
 motivation for this work, followed then by the key observations for our design
-in Section~\ref{sec:signpost-design}. In
+in Section~\ref{sec:signpost-goals}. In
 Section~\ref{sec:signpost-architecture}, we present the architecture of our
 strawman implementation and its integration with existing software. Finally, in
 Section~\ref{sec:signpost-evaluation} we present a number of micro-benchmark
@@ -104,7 +104,7 @@ scale in heavily policed networks or across the Internet. In the rest of this
 Section, we discuss the problems arising in Personal Cloud functionality over
 the Internet~(Subsection~\ref{sec:sp-challenges}), present existing approaches
 to the problem~(Subsection~\ref{sec:sp-approaches}) and introduce readers to the
-\signpost framework~(Subsection~\ref{sec:sp-interface}).
+\signpost framework~(Subsection~\ref{sec:sp-signpost}).
 
 % We term {\it ``Personal Cloud``}, the resource sharing and control abstraction
 % that the user can exercise among his devices. Personal cloud is an efficient way
@@ -457,6 +457,8 @@ connection mechanisms.
 % without any user interaction. On the other hand, we want to provide to the users
 % a mechanism that will allow them to control to a great extend the security and
 % privacy of their information. 
+
+\section{\signpost Design Goals} \label{sec:signpost-goals}
 
 \section{\signpost Architecture}\label{sec:signpost-architecture}
 
@@ -843,7 +845,7 @@ Figure~\ref{fig:signpost-arch}, user Alice is granted control of the domain
 accessible authenticated public identity on the Internet via their
 public-private key-pair. Using this key-pair, a user can sign and authenticate
 messages, bootstrap public key cryptography mechanisms and run key-exchange
-mechanisms such as Diffie-Merkle-Hellman~\cite{diffie,RFC2631} and derive new
+mechanisms such as Diffie-Merkle-Hellman~\cite{RFC2631} and derive new
 shared private keys between any two devices over unsecure channels.
 
 The base \dnssec RR types, defined in~\cite{RFC4034}, provide a mechanism to
@@ -998,7 +1000,7 @@ impact in the functionality of traditional Personal cloud applications. We,
 present a small scale study of the functionality of current application over the
 \signpost system. 
 
-\subsection{\signpost implementation}
+\subsection{\signpost implementation} \label{sec:sp-implementation}
 
 \signpost is implemented predominantly in Ocaml. The code reuses a number of available
 protocol libraries written in Ocaml. \signpost uses ocaml-dns for DNS server and
@@ -1007,7 +1009,7 @@ ocaml-openflow library for \of controller functionality. \signpost also uses a
 portion of C code code to implement binding with the OS routing stack. \signpost
 provides support for a wide range of platform. We have managed to run \signpost
 successfully under Linux and Android,
-using the OpenVSwitch switch implementation, and under MacOSX, using the userspce
+using the \ovs switch implementation, and under MacOSX, using the userspce
 switch implementation provided by the ocaml-openflow library.
 
 
@@ -1166,7 +1168,7 @@ switch implementation provided by the ocaml-openflow library.
         a ACK with a non-zero window size.
 \end{itemize}
 
-\subsection{Tunnel Evaluation}
+\subsection{Tunnel Evaluation} \label{sec:sp-tactic-eval}
 
 \subsection{Application compatibility}
 
