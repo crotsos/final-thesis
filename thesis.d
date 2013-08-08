@@ -8,7 +8,6 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texl
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifpdf.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/infwarerr.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ltxcmds.sty)
-thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/path/path.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amssymb.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/eucal.sty)
@@ -35,6 +34,7 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texl
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/grfext.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/kvoptions.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/pifont.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/times.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/setspace/setspace.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/subfigure/subfigure.sty)
@@ -52,17 +52,18 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Introduction/in
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Macros/MacroFile1.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Macros/cmd.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,StyleFiles/watermark.sty)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,myrefs.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,thesis.tex)
 .SECONDEXPANSION:
 -include ThesisFigs/UnivShield.jpg.gpi.d
 thesis.d: $$(call graphics-source,ThesisFigs/UnivShield.jpg)
 thesis.pdf thesis._graphics: $$(call graphics-target,ThesisFigs/UnivShield.jpg)
--include Introduction/IntroductionFigs/mobile.pdf.gpi.d
-thesis.d: $$(call graphics-source,Introduction/IntroductionFigs/mobile.pdf)
-thesis.pdf thesis._graphics: $$(call graphics-target,Introduction/IntroductionFigs/mobile.pdf)
 -include Introduction/IntroductionFigs/internet.pdf.gpi.d
 thesis.d: $$(call graphics-source,Introduction/IntroductionFigs/internet.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Introduction/IntroductionFigs/internet.pdf)
+-include Introduction/IntroductionFigs/mobile.pdf.gpi.d
+thesis.d: $$(call graphics-source,Introduction/IntroductionFigs/mobile.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Introduction/IntroductionFigs/mobile.pdf)
 -include Background/BackgroundFigs/switch_design.pdf.gpi.d
 thesis.d: $$(call graphics-source,Background/BackgroundFigs/switch_design.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Background/BackgroundFigs/switch_design.pdf)
@@ -105,9 +106,6 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/flow_
 -include Chapter1/Chapter1Figs/interaction_test.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/interaction_test.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/interaction_test.pdf)
--include Chapter1/Chapter1Figs/mirage-toolchain.pdf.gpi.d
-thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/mirage-toolchain.pdf)
-thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/mirage-toolchain.pdf)
 -include Chapter1/Chapter1Figs/sdnsim-arch-ns3.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/sdnsim-arch-ns3.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/sdnsim-arch-ns3.pdf)
@@ -156,14 +154,17 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/homew
 -include Chapter2/Chapter2Figs/queue_eval_setup.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter2/Chapter2Figs/queue_eval_setup.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/queue_eval_setup.pdf)
--include Chapter3/Chapter3Figs/signpost-illustration.pdf.gpi.d
-thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/signpost-illustration.pdf)
-thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/signpost-illustration.pdf)
+-include Chapter3/Chapter3Figs/sp-illustration.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/sp-illustration.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/sp-illustration.pdf)
 -include Chapter3/Chapter3Figs/signpost-arch.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/signpost-arch.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/signpost-arch.pdf)
 -include Chapter3/Chapter3Figs/signpost-tactic.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/signpost-tactic.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/signpost-tactic.pdf)
+-include Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf)
 thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/references.bib)
 thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/rfc.bib)

@@ -12,9 +12,11 @@
 \usepackage{alltt}
 \usepackage{listings}
 \usepackage{multirow}
+\usepackage{pifont}
+\usepackage{multirow}
 
 \ifpdf
-    \pdfinfo { /Title  (Flexible Software Defined Network)
+    \pdfinfo { /Title  (Scalable Software Defined Networking)
                /Creator (TeX)
                /Producer (pdfTeX)
                /Author (Charalampos Rotsos Chralampos.Rotsos@cl.cam.ac.uk)
@@ -25,7 +27,7 @@
     \pdfcatalog { /PageMode (/UseOutlines)
                   /OpenAction (fitbh)  }
 \fi
-\title{Flexible Software Defined Network}
+\title{Scalable Software Defined Networking}
 
 \ifpdf
   \author{\href{mailto:Charalampos.Rotsos@cl.cam.ac.uk}{Charalampos Rotsos}}
@@ -58,6 +60,7 @@
 
 % Comment out the next line to get single spacing
 \onehalfspacing
+% \twospacing
 
 \begin{document}
 
@@ -100,6 +103,11 @@
 
 
 \mainmatter % book mode only
+
+
+% \Chapter{My List of publications}
+\include{myrefs}
+
 \include{Introduction/introduction}
 \include{Background/background}
 \include{Chapter1/chapter1}

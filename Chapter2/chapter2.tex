@@ -1,4 +1,4 @@
-\chapter{Home network control scalability} 
+\chapter{Home network management scalability} \label{sec:homework} 
 
 \ifpdf
 \graphicspath{{Chapter2/Chapter2Figs/PNG/}{Chapter2/Chapter2Figs/PDF/}{Chapter2/Chapter2Figs/}}
@@ -6,14 +6,15 @@
 \graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}} 
 \fi
 
-In this chapter we explore the applications of SDN technologies in the home
-network environment. Drawing conclusions from existing social and user studies,
-we redesign the home network control abstraction. We present a Strawman
-implementation of a network design which achieves simplicity and scalability of
-the control abstraction within the home environment. Additionally, we propose an
-extension of our design, which bridges the gap between the home network users
-performance requirements and the ISP resource allocation policy, providing a
-simple, scalable and user-friendly QoS mechanism.
+In this chapter we explore the applications of SDN technologies to scale network
+control in home networks. Drawing conclusions from existing social and user
+studies, we redesign the home network control abstraction to scale management of
+the home network. We present a Strawman implementation of a network design which
+achieves simplicity and scalability of the control abstraction within the home
+environment. Additionally, we propose an extension of our design, which bridges
+the gap between the home network users performance requirements and the ISP
+resource allocation policy, providing a simple, scalable and user-friendly QoS
+mechanism.
 
 In Section~\ref{s:elephant} we present a thorough review of ethnographic and
 social studies and elaborate on the nature of the problems and the inherent
@@ -829,7 +830,12 @@ data suggests a working maximum of 3000 installed flows which would give around
 networking stack is quite capable of handling the unusual address allocation
 pattern resulting from the allocation of each wireless-connected device to a
 distinct subnet which requires the router's wireless interface to support an IP
-address per connected device. 
+address per connected device. Increasing the number of assigned IP address has
+no impact on the processing latency and minimizes marginally the maximum packet
+processing rate. This performance behaviour can also be explained by the trie 
+data structure that the Linux kernel uses to lookup addresses; 
+in the house setting the lookup takes O($log_2m$) time, where m is the
+number of connected devices. 
 
 \subsection{Discussion}
 

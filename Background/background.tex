@@ -1,9 +1,10 @@
 \chapter{Background} \label{ch:background}
-\ifpdf
-    \graphicspath{{Background/BackgroundFigs/PNG/}{Chapter3/BackgroundFigs/PDF/}{Background/BackgroundFigs/}}
-\else
-    \graphicspath{{Background/BackgroundFigs/EPS/}{Background/BackgroundFigs/}}
-\fi
+
+% \ifpdf
+%     \graphicspath{{Background/BackgroundFigs/PNG/}{Chapter3/BackgroundFigs/PDF/}{Background/BackgroundFigs/}}
+% \else
+%     \graphicspath{{Background/BackgroundFigs/EPS/}{Background/BackgroundFigs/}}
+% \fi
 
 This chapter presents existing approaches of network control in packet switched
 networks.  We motivate the discussion over the problem of network control,
@@ -33,7 +34,7 @@ highlight the existing lower bound on the functionality and extendibility of
 such devices. 
 
 \begin{figure}
-\includegraphics[width=0.6\textwidth]{switch_design}
+\includegraphics[width=0.6\textwidth]{Background/BackgroundFigs/switch_design}
 \caption{A generic architecture of a Switching device.}
 \label{fig:background:switch_design}
 \end{figure}
@@ -283,7 +284,7 @@ is on average on the order of seconds. Similar results have been observer in
 BGP\@. In~\cite{Kushman2007} the authors highlight a strong correlation of BGP
 instability and VoIP performance. 
 
-\section{Programmable Network Control}
+\section{Programmable Network Control} \label{sec:background:prog_control}
 
 Because of the limitation of current standardized network control frameworks,
 the research community over the years has proposed a number of interesting
@@ -406,7 +407,7 @@ platforms with line rate performance.
 
 \begin{figure}
   \begin{center}
-\includegraphics[width=0.7\textwidth]{tempest_arch}
+\includegraphics[width=0.7\textwidth]{Background/BackgroundFigs/tempest_arch}
 \caption{Tempest switch architecture~\cite{UCAM-CL-TR-450}}
 \label{fig:background:tempest_arch}
 \end{center}
@@ -515,7 +516,7 @@ paradigm.
 
 \begin{figure}
   \begin{center}
-\includegraphics[width=0.5\textwidth]{openflow-schema}
+\includegraphics[width=0.5\textwidth]{Background/BackgroundFigs/openflow-schema}
 \caption{A schematic representation of a basic \of setup}
 \label{fig:background:openflow-schema}
 \end{center}
