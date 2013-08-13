@@ -18,21 +18,22 @@
 % use network resources inefficiently. 
 
 In this chapter we explore applications of SDN in Internet-wide inter-device
-connectivity.  The work focuses on the problem of information control and
-distribution between the devices of a user across the Internet; a mechanism we
-term a Personal Cloud.  Currently Personal Clouds rely on centralised cloud
-providers to establish Internet-wide connectivity due to limitations in
-bidirectional connectivity, discussed in Section~\ref{sec:intro:motivations}. As
-a result, users are subject to privacy threats and performance limitations. We
-argue that users require a distributed, scalable and user-friendly naming
-mechanism to enable Internet-scale user-managed Personal Clouds.  We propose
-\signpost, an Internet-wide overlay network architecture that establishes
-Personal Cloud functionality and provides continuous connectivity and controlled
-security. The architecture consists of daemons running on end-user devices, that
-can configure and run several off-the-self connection-establishing software
-packages.  The proposed architecture employs a distributed negotiation protocol
-between end-hosts, which scales the control complexity through control
-distribution.
+connectivity scalability.  The work focuses on the problem of information
+control and distribution between the devices of a user across the Internet; a
+mechanism we term a Personal Cloud.  Currently Personal Clouds rely on
+centralised cloud providers to establish Internet-wide connectivity due to
+limitations in bidirectional connectivity, discussed in
+Section~\ref{sec:intro:motivations}. As a result, users are subject to privacy
+threats and performance degredation. We argue that users require a distributed,
+scalable and user-friendly network control plane  to enable Internet-scale
+user-managed Personal Clouds.  We propose \signpost, an Internet-wide 
+evolve network control plane architecture 
+that establishes Personal Cloud functionality and provides
+continuous connectivity and controlled security. The architecture consists of
+daemons running on end-user devices, that can configure and run several
+off-the-self connection-establishing software packages.  The proposed
+architecture employs a distributed negotiation protocol between end-hosts, which
+scales the connectivity complexity through control distribution.
 
 % The architecture provides two points of integration with legacy applications. 
 % From the user perspective, the system integrates functionality on the
@@ -60,10 +61,11 @@ distribution.
 
 In order to understand the feasibility and performance of the proposed
 architecture we develop a strawman implementation, that implements the core
-control logic of the proposed architecture.  Additionally, it integrates support
-for a number of network connection and notification services.  Currently,
-\signpost supports SSH, OpenVPN, TOR, NAT-punch and Privoxy connection
-mechanisms, while it can also propagate Multicast-DNS notifications across devices.
+control logic of the proposed architecture.  In our strawman implementation we
+present the integration with a number of network connection and notification
+services.  Currently, \signpost supports SSH, OpenVPN, TOR, NAT-punch and
+Privoxy connection mechanisms, while it can also propagate Multicast-DNS
+notifications across devices.
 
 In this chapter, we present in Section~\ref{sec:signpost-introduction} the
 motivation for this work, followed then by the key observations for our design
@@ -82,7 +84,7 @@ tests for our system and conclude in Section~\ref{sec:signpost-conclusion}.
 
 In the recent years, the global increase in personal computer adoption has
 transferred a large portion of our life in the digital domain. For example, a
-portion of our labour is stored in digital format, like PDF and word processing
+portion of our labour is stored in digital PDF and word processing
 files, while a part of our social experiences maps to digital photo collections.
 As a result, our physical presence has a growing digital counterpart. The main
 user interaction medium with his digital presence is through his personal
@@ -96,7 +98,8 @@ presence, but these roles are fluid and intercept.  For example, a smartphone is
 primarily a communication device, but end-users may use it as a media player. In
 the latter case, the smartphone and the home entertainment system provide
 similar functionality to the user and require access to the same subset of his
-digital presence. This transition from a single PC to multiple devices and the
+digital presence. This transition from a single PC paradigm to a multi-device
+paradigm and the
 concurrent digital footprint augmentation creates a user requirement for new
 services providing global and homogeneous access and control of personal digital
 information and resources. We call this abstraction the user \emph{Personal
@@ -167,12 +170,12 @@ deployments.
     mobile and enterprise networks employ firewalls to restrict publicly
     accessible services on connected hosts for security reasons.
   \item {\it Authentication}\/: Distributed Personal Cloud applications employ
-    an inflexible authentication mechanism. Authentication is usually based
-    on global or user-based pre-shared passwords and public keys. In order to
-    grant access to a Personal Cloud service, the user must know a-priori
-    the interest of another user to connect and enable access in
-    the configuration of the service, while assuming available
-    an out-bounds secure channel to negotiate access details. 
+        an inflexible authentication mechanism. Authentication is usually based
+        on global or user-based pre-shared passwords and public keys. In order
+        to grant access to a Personal Cloud service, the user must know a-priori
+        the interest of another user to connect and enable access in the
+        configuration of the service, while assuming availability of out-of-bands
+        secure channels to negotiate access details. 
   \item {\it Usability}\/: Decentralised Personal Cloud applications introduce 
     configuration requirements which dim them inappropriate for inexperienced
     users. As we have already discussed in Section~\ref{s:home_social},
@@ -191,7 +194,7 @@ deployments.
     course of a day, he needs to setup a mechanism to access the current IP
     configuration, like DynDNS~\footnote{\url{http://dyn.com/dns/}}\@.  This
     connectivity is subject to the ability of the user in the remote network to
-    use the SSH protocol on the preconfigure port.  In case this is not
+    use the SSH protocol on a preconfigure port.  In case this is not
     possible, the user has to resolve to a different service.   
 \end{itemize}
 
@@ -205,7 +208,7 @@ store and retrieve data in the cloud and define information sharing policies.
 Centralised Personal Cloud applications have been highly successful as they
 overcome the connectivity problems of the decentralised approaches, by using
 cloud network and computational resources. In addition, their popularity is
-further augmented by the social functionality, supported by some of these
+further augmented by the social functionality supported by some of these
 applications. For example, Google Docs allow users to store online documents and
 process them in parallel with a defined subset of their contact list.  Although
 this approach can be characterised as successful in terms of functionality, some
@@ -380,10 +383,10 @@ architecture:
 \signpost is a Personal Cloud-enabling framework with user controlled security.
 The system establishes an Internet-wide overlay network between the devices of a
 user. The abstraction relies on a cloud-based control channel established
-between devices which can be used to negotiate and establish
-end-to-end connections, using existing decentralized frameworks. In order to
-ensure functionality under any circumstance, we integrate the control channel
-with the DNS protocol, an existing high availability and resilient service. 
+between devices which can be used to negotiate and establish end-to-end
+connections, using existing decentralized frameworks. In order to ensure
+functionality under any circumstance, we integrate the control channel with the
+DNS protocol, an existing high availability and resilient service. 
 
 The system establishes a user friendly framework that automates end-to-end path
 configuration between devices.  \signpost models existing connectivity
@@ -415,15 +418,15 @@ in Figure~\ref{fig:signpost-user-abstraction}. In this scenario user Bob, who is
 at work and uses his smartphone, wishes to access some files on his laptop,
 which is behind the NATed home router. In order to express his interest to
 connect to his laptop, Bob must perform a name lookup for the domain name
-\fqsn{laptop.bob} (step~\ding{192}). The name lookup will propagate through the public DNS service
-to the cloud presence of her \signpost system, which we call the {\it \signpost
-  controller}. The \signpost controll will trigger the two devices to try
-multiple possible connection establishment mechanisms and setup an end-to-end
-path between the two devices (step~\ding{193}). Once the server has ensured that a first path is
-available (step~\ding{194}), it will reply to the initial DNS query with a local IP address which
-will be routed by the local network stack to the tunnel between the two devices
-(step~\ding{195}).
-In parallel, the server will continue recursively to test different tactics, to
+\fqsn{laptop.bob} (step~\ding{192}). The name lookup will propagate through the
+public DNS service to the cloud presence of his \signpost system, which we call
+the {\it \signpost controller}. The \signpost controller will trigger the two
+devices to try multiple possible connection establishment mechanisms and setup
+an end-to-end path between the two devices (step~\ding{193}). Once the server
+has ensured that a first path is available (step~\ding{194}), it will reply to
+the initial DNS query with a local IP address which will be routed by the local
+network stack to the tunnel between the two devices (step~\ding{195}).  In
+parallel, the server will continue recursively to test different tactics, to
 discover more efficient connection mechanisms. 
 
 % Our work builds on the observations on the shortcoming of current approaches to
@@ -496,9 +499,9 @@ abstraction of the DNS service. Each device has a global domain name, while the
 domain hierarchy and name aliasing expresses the control relationship between
 devices and users.  We extend the normal name resolution functionality of the
 DNS protocol and introduce the  {\it Effectful name resolution} operation for
-\signpost-enable domains; a name resolution expresses the interest of a user to
+\signpost-enabled domains; a name resolution expresses the interest of a user to
 establish an end-to-end path~(Subsection~\ref{signpost-naming}). For the rest of
-the section we present in depth the details of the \signpost system. 
+the section we present in depth design details of the \signpost system. 
 
 \subsection{Network Tactic} \label{signpost-tactic}
 

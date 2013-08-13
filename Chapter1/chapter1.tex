@@ -1,4 +1,4 @@
-\chapter{SDN control plane scalability} \label{sec:sdn_scalability} 
+\chapter{SDN Control Plane Scalability} \label{sec:sdn_scalability} 
 \ifpdf
     \graphicspath{{Chapter1/Chapter1Figs/PNG/}{Chapter1/Chapter1Figs/PDF/}{Chapter1/Chapter1Figs/}}
 \else
@@ -6,34 +6,32 @@
 \fi
 
 In this thesis we develop mechanisms to scale computer network functionality, by
-redesigning the control plane.  A fundamental mechanism we employ in our
-exploration, is the SDN design approach and the \of protocol abstraction.  We
-chose the SDN design approach due to two core functional properties.  On one
-hand, the clean separation of the control and the forwarding plane in a network
-is inherently backwards compatibility with existing network applications and
-interoperable with existing network devices.  The evolution of the control plane
-of a network doesn't affect forwarding plane protocol support in a network,
-while SDN supports progressive deployment in production networks without any
-forwarding performance penalty. Due to this property, a number of network
-vendors provide production-level support for the \of protocol.  Secondly, the
-\of control abstraction is sufficiently generic to support a diverse set of
-control approaches. The protocol supports reactive and proactive control
-schemes, while the flow definition granularity is dynamically controlled to
-match the application requirements. In the following chapters of this thesis we
-employ the \of protocol to address two diverse network scalability problems. 
+redesigning the control plane.  In our exploration we employ extensively  he SDN
+design paradigm and the \of protocol abstraction.  We chose the SDN design
+approach due to two core functional properties.  On one hand, the clean
+separation of the control and the forwarding plane in a network is inherently
+backwards compatibility with existing network applications and interoperable
+with existing network devices.  The evolution of the control plane of a network
+doesn't affect forwarding plane protocol support, while SDN supports progressive
+deployment in production networks without any forwarding performance penalty.
+Secondly, the \of control abstraction is sufficiently generic to support a
+diverse set of control approaches. The protocol supports reactive and proactive
+control schemes, while the flow definition granularity is dynamically controlled
+to match the application requirements. In the following chapters of this thesis
+we employ the \of protocol to address two diverse network scalability problems. 
 
 In this chapter we present an extensive performance analysis of the control
-scalability in available SDN technologies. Our exploration aims to provide an 
+scalability of available SDN technologies. Our exploration aims to provide an 
 in-depth presentation of the limitations of existing implementation efforts and
 understand their impact in forwarding plane performance, as well as, provide a
-set of tools that enables SDN developers to study the performance of their
+set of tools which enable SDN developers to study the performance of their
 network designs. The work focuses on implementations of version 1.0 of the \of
 protocol, the only production-level protocol instantiation of the SDN paradigm.
 We conduct our analysis using two measurement platforms: \oflops and \sdnsim.
 \oflops is a high precision \of switch micro-benchmark platform. Using \oflops,
 we implement a set of benchmark tests to characterise the performance of elementary
 \of protocol interactions. \sdnsim is a macro-benchmark \of platform, which
-extends the \Unik framework~\cite{madhavapeddy2013} to support large scale
+extends the Mirage framework~\cite{madhavapeddy2013} to support large scale
 \of-based network simulations and emulations.  Using \sdnsim, developers are
 able to import \oflops switch profiles in their experiment and test the
 performance of their SDN design.
@@ -52,56 +50,7 @@ and conclude (Section~\ref{sec:conclusion}).
 
 % intro about SDN
 
-\section{\oflops Conclusions}\label{sec:conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todo{Add some notes on \sdnsim}
-We presented, \oflops, a tool that tests the capabilities and performance of 
-OpenFlow-enabled software and hardware switches. \oflops combines advanced 
-hardware instrumentation, for accuracy and performance, and provides an extensible 
-software framework. We use \oflops to evaluate five different OpenFlow switch 
-implementations, in terms of OpenFlow protocol support as well as performance.
-%In our performance evaluation, we benchmark the packet processing, flow table
-%modification and traffic statistics export functionalities of the switches.
-
-We identify considerable variation among the tested OpenFlow implementations.
-We take advantage of the ability of \oflops for data plane measurements to
-quantify accurately how fast switches process and apply OpenFlow commands.
-For example, we found that the \texttt{barrier} reply message is not correctly implemented,
-making it difficult to predict when flow operations will be seen by the data plane.
-Finally, we found that the monitoring capabilities of existing hardware switches 
-have limitations in their ability to sustain high rates of requests. Further, at high 
-rates, monitoring operations impact other OpenFlow commands.
-
-We hope that the use of \oflops will trigger improvements in the
-OpenFlow protocol as well as its implementations by various vendors.
-
-
-
-\section{Network Control Micro-Benchmark \\ and Characterisation} \label{sec:oflops-intro}
-
-% OpenFlow\footnote{\url{http://www.openflow.org/}}, an instance of
-% software-defined networking (SDN), gives access deep within the network
-% forwarding plane while providing a common, simple, API for network-device
-% control. Implementation details are left to the discretion of each vendor. This
-% leads to an expectation of diverse strengths and weaknesses across the existing
-% OpenFlow implementations, which motivates our work.
-
-
-% As we have discussed in Chapter~\ref{ch:background}, SDN techology can
-% enhance the functional capabilities of a network and provide high resolution 
-% flow control mechanisms in order to fulfil network application requirements. 
-% Although the short period since the introduction of the SDN paradigm, 
-% many novel control architectures have been proposed~\cite{plug_n_serv,difane,flowvisor-osdi}. 
-% One the most successful instantiations of the SDN paradigm is the \of protocol, 
-% standardized and developed by a joint consortium of educational and industrial
-% institutes, the Open Network Foundation (ONF). Currently \of is the sole SDN 
-% protocol that provides production support from a wide range of network vendors, 
-% while educational funding in US~\cite{ofelia} and Europe~\cite{ofelia} have 
-% develops large scale \of testbeds in order to support earch nnovativation in the
-% field.
-
-%\of is increasingly adopted, both by hardware vendors as well as by the
-%research community \cite{plug_n_serv,difane,flowvisor-osdi}.
+\section{Network Control Micro-Benchmark} \label{sec:oflops-intro}
 
 Despite the recent introduction of the SDN paradigm, the research community has
 already proposed a wide range of novel control architectures~\cite{plug_n_serv,
@@ -124,7 +73,7 @@ the generation of a {\tt pkt\_in} message for each new connection, the switch
 control CPU processing capacity couldn't cope with the high utilisation and
 either a number of flows would be dropped or the control channel would become
 unresponsive. In the SDN application development toolchain, there is a lack of
-an established and global mechanism to assess switch performance.  For
+an established and global mechanism to assess \of mplementation scalability.  For
 traditional switch devices, the network community employs as performance
 metrics, the switch fabric non-blocking processing capacity and latency and MAC
 table size. In contrast, the control decoupling of the SDN paradigm expands the
@@ -133,10 +82,11 @@ interactions become a significant requirement for the functionality of the
 switch. As a result, the performance characterisation of SDN forwarding devices
 becomes non-trivial. 
 
-In order to address this issue we developed \oflops~\footnote{\oflops is under
+In order to fulfil the requirement for \of switch performance evaluation, 
+we developed \oflops~\footnote{\oflops is under
   the GPL licence and can be downloaded from
   \url{http://www.openflow.org/wk/index.php/Oflops}}, a measurement framework
-that enables rapid development of performance tests for both hardware and
+enabling rapid development of performance tests for hardware and
 software \of switch implementations. To better understand the behaviour of the
 tested \of implementations, \oflops combines measurements from the \of control
 channel with data-plane measurements. To ensure sub-millisecond-level accuracy
@@ -145,67 +95,7 @@ the form of the NetFPGA platform\footnote{\url{http://www.netfpga.org}}.  Note
 that if the tests do not require millisecond-level accuracy, commodity hardware
 can be used instead of the NetFPGA \cite{pam-accuracy}.
 
-% We use \oflops to test publicly available OpenFlow software
-% implementations as well as several OpenFlow-enabled commercial hardware
-% platforms, and report our findings about their varying performance
-% characteristics.  
-
-% I would remove the following paragraph, this is not very relevant.
-%The SDN concept has been employed by several authors to introduce innovation 
-% in the forwarding behavior of the network. For example, 
-%Greenhalgh~\etal.~\cite{flowstream} build a flexible flow
-%processing platform based on commodity hardware. Handigol~\etal~\cite{plug_n_serv} 
-%demonstrate a Web traffic load-balancer based on OpenFlow. 
-%Yu~\etal~\cite{difane} scale
-%flow-switching in an enterprise network by distributing the flow rules
-%across the different switches. Sherwood~\etal~\cite{flowvisor-osdi}
-%augment OpenFlow with flow-space isolation.
-
-
-% What we propose in this paper: exploit the SDN paradigm to measure SDN capabilities.
-%\todo{reviewer: you either make the case that SDN has "more and more promising use-cases" 
-%or you say that you want to "help SDN become relevant"}
-%While more and more promising use-cases for SDN technology are being
-%proposed, the capabilities and performance delivered by SDN-enabled
-%hardware is largely unknown. The history of networking has repeatedly
-%reminded the research community that it takes time between innovations
-%are proposed and the corresponding real-world applications are being
-%deployed, e.g., multicast, VoIP, IPv6. To help SDN become a relevant
-%technology in the real-world, we propose a framework that allows
-%SDN-based application developers to test the actual capabilities of
-%SDN hardware.
-
-% The rest of this paper is structured as follows. We first present the design
-% of the \oflops framework in Section~\ref{sec:design}. We describe the 
-% measurement setup in Section~\ref{sec:switches}. We describe our measurements
-% in Section~\ref{sec:results}. We provide basic experiments that test the flow
-% processing capabilities of the implementations (Section~\ref{sec:results-packets})
-% as well as the performance and overhead of the OpenFlow communication channel 
-% (Section~\ref{sec:results-rate}). We follow with specific tests, targeting the monitoring
-% capabilities of OpenFlow (Section~\ref{sec:results-monitoring}) as well as interactions
-% between different types of OpenFlow commands (Section~\ref{sec:results-interactions}).
-% We conclude in Section~\ref{sec:conclusion}.
-% Rest of this paper...
-
-\section{\oflops design}\label{sec:oflops-design}
-
-% Since the beggining of our measurement study, it became apparent to us
-% that the assesment of OpenFlow implementations is not trivial and it
-% has a number of challenges.  Firstly, in order to assess the
-% performance and understand the limitations of a network device that
-% has both rich functionality and for which we have little idea of the
-% implementation, multiple input measurement should be monitored
-% concurently in order to encompass all parameters of an
-% experiment. Secondly, OpenFlow controllers like \cite{Gude08,SNAC}
-% provide advanced APIs that support fine-grained control of the switch,
-% through extensions based upon language mechanisms such as C++ bindings
-% to Python. As a result, such extensions introduce processing
-% complexity on the control channel which may introduce measurement
-% noise, making them inappropriate for our measurements. Finally, for
-% some of our measurements we required fine time precision, which after
-% a point is subject to losses due to measurement host parameters, such
-% as OS scheduling.
-
+\section{\oflops Design}\label{sec:oflops-design}
 
 \begin{figure}
 \centering
@@ -236,18 +126,18 @@ the performance impact of an experiment, multiple input measurement channels
 must be monitored concurrently, such as, data and control channels. Further,
 current controller frameworks, like~\cite{Gude08,floodlight}, target production
 networks and incur significant measurement noise. Such controllers employ
-asynchronous processing libraries and multi-thread execution, to maximize the
-aggregate control channel processing throughput, and provide high-level
+asynchronous processing libraries and multi-thread execution models, to maximize
+the aggregate control channel processing throughput, and provide high-level
 programing interfaces, that require multiple data structure allocation and
 modification during packet processing.  The processing time of a specific \of
 message, especially at high rates, is subject to multiple aspects, like the
 thread scheduling policy and the asynchronous library execution
 logic~\cite{Jarschel2012}.  Measurement noise suppression in the control plane
 requires from the controller framework to minimize message processing and
-delegate control to the measurement module.  Finally, sub-millisecond precision
-in software is subject to unobserved parameters, like OS scheduling and clock
-drift. The result of these challenges is that meaningful, controlled, repeatable
-performance tests are non-trivial in an \of environment.
+delegate processing control to the measurement module.  Finally, sub-millisecond
+precision in software is subject to unobserved parameters, like OS scheduling
+and clock drift. The result of these challenges is that meaningful, controlled,
+repeatable performance tests are non-trivial in an \of environment.
 
 The \oflops design philosophy aims to develop a low overhead abstraction layer
 that allows interaction with an \of-enabled device over multiple data
@@ -302,12 +192,13 @@ precisions and different impacts upon the measurement platform.
   \begin{minipage}[b]{0.45\textwidth}
 \centering
  \includegraphics[width=0.99\textwidth]{timer_precision} 
- \caption{Evaluating timestamping precision using a DAG card.}
+ \caption{Evaluating timestamping precision using a DAG card. PCAP timestamps
+   exhibit a significant drift in the order of microseconds, in comparison to
+   the NetFPGA hardware design}
 \label{fig:timestamping}
 \end{minipage}
 \end{figure}
 
-\todo{Add more details on the timestamp measurement label}
 In order to assess the accuracy of the traffic capturing mechanism, we use the
 topology depicted in Figure~\ref{fig:timestamping_topology} to measure precision
 loss in comparison to a DAG card~\cite{dag_card}.  To calculate precision, we
@@ -320,13 +211,7 @@ PCAP timestamps drift by 6 milliseconds after 2 minutes.  On the other hand, the
 NetFPGA timestamping mechanism has a smaller drift at the level of a few
 microseconds during the same period.
 
-\section{Measurement setup}\label{sec:oflops-switches}
-
-% The number of \of-enabled devices has slowly increased recently, with switch and
-% router vendors providing experimental \of support such as prototype and
-% evaluation firmware.
-% Consequently, vendors did proceed on maturing their prototype implementations,
-% offering production-ready \of-enabled switches today.
+\section{Measurement Setup}\label{sec:oflops-switches}
 
 At the end of 2009, the \of protocol specification was released in its first
 stable version 1.0~\cite{openflow-spec}, the first recommended version
@@ -335,37 +220,35 @@ was contacted in collaboration with T-labs in Spring of 2011. During that
 period, the introduction of \of support in commodity switches was limited and
 only a small number of devices provided production-level support for the
 protocol.  Using \oflops, we evaluated \of-enabled switches from three different
-switch vendors.  Vendor 1 has production-ready \of support, whereas vendors 2
-and 3 at this point only provide experimental \of support.  The set of selected
-switches provided a representative but not exhaustive sample of available
-\of-enabled top-of-rack-style switching hardware. Details regarding the CPU and
-the size of the flow table of the switches are provided in
-Table~\ref{tbl:switch_list}. In addition the switching fabric in the vendor
-hardware specification reports similar non-blocking capacity and packet
+switch vendors.  Vendor 1 provided production-ready \of support, whereas vendors
+2 and 3 during that period provided experimental \of support.  The set of
+selected switches provided a representative but not exhaustive sample of
+available \of-enabled top-of-rack-style switching hardware, during that time.
+Details regarding the CPU and the size of the flow table of the switches are
+provided in Table~\ref{tbl:switch_list}. In addition the switching fabric in the
+vendor hardware specification reports similar non-blocking capacity and packet
 processing rates. 
 
 \of is not limited to hardware. The \of protocol reference is the software
-switch, \ovs~\cite{openvswitch}, an important implementation for
-production environments. Firstly, \ovs provides a replacement for the
-poor-performing Linux bridge~\cite{bianco10}, a crucial functionality for
-virtualised operating systems.  Currently, the Xen platform uses \ovs to
-forward traffic between VMs in the Dum0, a configuration which is inherited by
-major Cloud providers, like Amazon and Rackspace.  Secondly, several hardware
-switch vendors use \ovs as the basis for the development of their own
-\of-enabled firmware.  \ovs development team has standardised a clean
-abstraction over the control of the switch silicon (similar to linux HAL), which
-allows code reuse over any forwarding entity that implements the switch
-abstraction. Thus, the mature software implementation of the \of protocol is
-ported to commercial hardware, making certain implementation bugs less likely to
-(re)appear.  We study \ovs alongside our performance and scalability
-study of hardware switches. Finally, in our comparison we include the \of switch
-design for the NetFPGA platform~\cite{openflow-netfpga}. This implementation is
-based on the original \of reference implementation~\cite{of-reference-impl}, 
-extending it with a hardware forwarding design. 
+switch, \ovs~\cite{openvswitch}, an important implementation for production
+environments. Firstly, \ovs provides a replacement for the poor-performing Linux
+bridge~\cite{bianco10}, a crucial functionality for virtualised operating
+systems.  Currently, the Xen platform uses \ovs to forward traffic between VMs
+in the Dum0, a configuration which is inherited by major Cloud providers, like
+Amazon and Rackspace.  Secondly, several hardware switch vendors use \ovs as the
+basis for the development of their own \of-enabled firmware.  \ovs development
+team has standardised a clean abstraction for the control of the packet
+forwarding elements (similar to linux HAL), which allows code reuse by any
+forwarding entity. Thus, the mature software implementation of the \of protocol
+is ported to commercial hardware, making certain implementation bugs less likely
+to (re)appear.  We study \ovs alongside our performance and scalability study of
+hardware switches. Finally, in our comparison we include the \of switch design
+for the NetFPGA platform~\cite{openflow-netfpga}. This implementation is based
+on the original \of reference implementation~\cite{of-reference-impl}, extending
+it with a hardware forwarding design. 
 
 \begin{table}[h!]
   \begin{center}
-{
   \begin{tabular}{ |c | c | c | }
     \hline                        
     \textbf{Switch} & \textbf{CPU} & \textbf{Flow table size} \\
@@ -381,8 +264,6 @@ extending it with a hardware forwarding design.
     NetFPGA &  DualCore 2.4GHz & 32K exact \& 100 wildcard \\
     \hline 
   \end{tabular}  
-
-}
 \end{center}
 \caption{OpenFlow switch details.}
 \label{tbl:switch_list}
@@ -407,26 +288,26 @@ near-constant $900$ nsec.
 % by \of, and (4) the impact of interactions between different 
 % \of operations.
 
-As for most networking standards, there are different ways to implement a
-given protocol based on a paper specification. \of is no different in this
-regard. The current \of reference implementation is \ovs
-\cite{openvswitch}. However, different software and hardware implementations may
-not implement all features defined in the \ovs reference, or they may
-behave in an unexpected way. In order to understand the behaviour of switch \of
-implementation, we develop a suite of measurement experiments to
-benchmark the functionality of the elementary protocol interactions.  These
-tests target (1) the \of packet processing
-actions~(Section~\ref{sec:results-packets}), (2)
-the packet interception and packet injection functionality of the
-protocol~(section~\ref{sec:results-pktin}), (3) the update rate of the \of flow table along
-with its impact on the data plane,~(Section~\ref{sec:results-rate}) (4) the monitoring
-capabilities provided by \of~(Section~\ref{sec:results-monitoring}), and (5) the impact of interactions between
-different \of operations~(Section~\ref{sec:results-interactions}).
+As for most networking standards, there are different ways to implement a given
+protocol based on a paper specification. \of is no different in this regard. The
+current \of reference implementation is \ovs~\cite{openvswitch}. However,
+different software and hardware implementations may not implement all features
+defined in the \ovs reference, or they may behave in an unexpected way. In order
+to understand the behaviour of switch \of implementation, we develop a suite of
+measurement experiments to benchmark the functionality of the elementary
+protocol interactions.  These tests target (1) the \of packet processing
+actions~(Section~\ref{sec:results-packets}), (2) the packet interception and
+packet injection functionality of the
+protocol~(section~\ref{sec:results-pktin}), (3) the update rate of the \of flow
+table along with its impact on the data plane,~(Section~\ref{sec:results-rate})
+(4) the monitoring capabilities provided by
+\of~(Section~\ref{sec:results-monitoring}), and (5) the impact of interactions
+between different \of operations~(Section~\ref{sec:results-interactions}).
 
 
-\subsection{Packet modifications}\label{sec:results-packets}
+\subsection{Packet Modifications}\label{sec:results-packets}
 
-The \of specification \cite{openflow-spec} defines ten packet modification
+The \of specification \cite{openflow-spec} defines 10 packet modification
 actions which can be applied on incoming packets. Available actions include
 modification of source and destination MAC and IP addresses, VLAN tag and PCP
 fields and TCP and UDP source and destination port numbers. The action list
@@ -451,14 +332,6 @@ the difference between the transmission and receipt timestamps provided by the
 NetFPGA.  We report in Table~\ref{tbl:feature_delay} the median processing delay
 for each action, along with its standard deviation, and the percent of lost
 packets of the measurement probe.
-
-%, while also low enough so that the impact of
-%queuing at the network interface cards can be ignored. 
-%Each packet is
-%timestamped when leaving the NetFPGA card. The packet then arrives at
-%the OpenFlow switch via a direct 1Gbps Ethernet link, the switch
-%matches the packet against the flow table, and sends it back to the
-%NetFPGA card where it is timestamped again.
 
 \begin{table*}[tb]
 \begin{flushleft}
@@ -518,34 +391,19 @@ loss. Processing delay indicates whether the operation is
 \end{table*}
 % What the table shows...
 
-We observe significant differences in the performance of the hardware
-switches due in part to the way their firmware implements packet
-modifications. Switch1, with its production-grade implementation,
-handles all modifications in hardware; this explains its low packet
-processing delay between 3 and 4 microseconds. On the other hand,
-Switch2 and Switch3 each run experimental firmware that provided, at the time, only
-partial hardware support for \of actions. Switch2 uses the switch
-CPU to perform some of the available field modifications, resulting in two orders
-of magnitude higher packet processing delay and variance.
-Switch3 follows a different approach; all packets of flows with
-actions not supported in hardware are silently discarded. The
-performance of the \ovs software implementation lies between
-Switch1 and the other hardware switches.  \ovs fully implements
-all \of actions. However, hardware switches outperform
-\ovs when the flow actions are supported in hardware.
-% than the delay of the hardware path of the hardware switches,
-% dominated by the NIC-CPU latency.
-%
-% For example, the time of an ensemble of modifications is dictated by the
-% maximum time across all modifications.\todo{Last sentence is reported to be
-% misleading by the reviewers}
-% Furthermore, we notice that for switch1 and openvswitch there is
-% limit of 7 actions, which may enveil similrities in the code base.
-% From the results presented in Table~\ref{tbl:feature_delay}, we can
-% already conclude that an experimental hardware-based OpenFlow
-% implementation is likely to deliver poor performance compared to a
-% mature software-based implementation running on commodity PC
-% hardware
+We observe significant differences in the performance of the hardware switches
+due in part to the way their firmware implements packet modifications. Switch1,
+with its production-grade implementation, handles all modifications in hardware;
+this explains its low packet processing delay between 3 and 4 microseconds. On
+the other hand, Switch2 and Switch3 each run experimental firmware that
+provided, at the time, only partial hardware support for \of actions. Switch2
+uses the switch CPU to perform some of the available field modifications,
+resulting in two orders of magnitude higher packet processing delay and
+variance.  Switch3 follows a different approach; all packets of flows with
+actions not supported in hardware are silently discarded. The performance of the
+\ovs software implementation lies between Switch1 and the other hardware
+switches.  \ovs fully implements all \of actions. However, hardware switches
+outperform \ovs when the flow actions are supported in hardware.
 
 We conducted a further series of experiments with variable numbers of packet
 modifications in the flow action list. We observed, that the combined processing
@@ -555,7 +413,7 @@ across all individual actions in the set (e.g.~Switch2 requires approximately
 Furthermore, we notice that for Switch1 and \ovs there is a limit of 7
 actions, which exposes limits enclosed in the implementation.
 
-\subsection{Traffic interception and injection}\label{sec:results-pktin}
+\subsection{Traffic Interception and Injection}\label{sec:results-pktin}
 
 \begin{figure}[ht]
   \begin{center}
@@ -569,13 +427,14 @@ actions, which exposes limits enclosed in the implementation.
 \end{figure}
 
 \of protocol permits a controller to intercept or inject traffic from the
-control plane. Packet interception enables reactive control applications, while
-packet injection permits control application interaction with network hosts.
+control plane. Packet interception is fundamental for reactive control applications, while
+packet injection enables control application interaction with network hosts.
 Nonetheless, the interception mechanism in \of has been characterised as a
 significant bottleneck for the control plane in early \of protocol
 deployments~\cite{Kobayashi:vn}. This is a direct consequence of the silicon
 design in current \of switches, that develop such functionality over a
-low-bandwidth exception-notification channel. In order to characterise these
+low-bandwidth exception-notification
+channel~(Section~\ref{sec:background:forwarding}). In order to characterise these
 functionalities, we design two simple experiments. For packet interception, we
 remove all entries from the switch flow table and send a measurement probe of
 small packets (100 bytes) on one of the data channels. We measure the delay
@@ -589,17 +448,17 @@ Switch 3 as these functionalities incur high CPU utilisation and, after a few
 seconds of traffic, the control channel becomes unresponsive. For {\tt
   packet\_out} messages, all implementations rate limit their transmission
 through the TCP advertised window of the control connection and as a result the
-latency is near constant. We observe that hardware switch exhibit hight latency
+latency is near constant. We observe that hardware switch exhibit high latency
 (150 msec for Switch2 and 350 msec for Switch1), in comparison to \ovs
-(approximately 0.1 msec).  For {\tt packet\_in} messages, we observe adiverse
-behaviour between hardware switches at high packet rates. For Switch1, packet
+(approximately 0.1 msec).  For {\tt packet\_in} messages, we observe diverse
+behaviours between hardware switches at high packet rates. For Switch1, packet
 loss and latency becomes note-worthy beyond 400 packets/sec, while the switch
 can process up to 500 packets/sec. For Switch2 latency and packet loss are
 significantly lower and stable. Switch2 incurs high processing latency beyond
 2000 packets/sec.  \ovs, has a high but stable latency for any tested
 data rates. 
 
-\subsection{Flow table update rate}\label{sec:results-rate}
+\subsection{Flow Table Update Rate}\label{sec:results-rate}
 
 The flow table is a central component of an \of switch and is the
 equivalent of a Forwarding Information Base (FIB) on routers. Given the
@@ -610,30 +469,27 @@ to update a flow entry on an \of switch. The time to install a new entry on
 commercial routers has been reported in the range of a few hundreds of
 microseconds~\cite{shaikh-igp}.
 
-\of provides a mechanism to define barriers between sets of
-commands: the \texttt{barrier} command. According to the OpenFlow
+\of provides a mechanism to define barriers between sets of commands: the
+\texttt{barrier} command. According to the OpenFlow
 specification~\cite{openflow-spec}, the \texttt{barrier} command is a way to be
-notified that a set of \of operations has been completed. Further, 
-the switch has to complete the set of operations issued prior to the
-\texttt{barrier}
-before executing any further operation. If the \of implementations 
-comply with the specification, we expect to receive a \texttt{barrier} notification for 
-a flow modification once the flow table of the switch has been updated, 
-implying that the change can be seen from the data plane.
+notified that a set of \of operations has been completed. Further, the switch
+has to complete the set of operations issued prior to the \texttt{barrier}
+before executing any further operation. If the \of implementations comply with
+the specification, we expect to receive a \texttt{barrier} notification for a
+flow modification once the flow table of the switch has been updated, implying
+that the change can be seen from the data plane.
 
-We check the behavior of the tested \of implementations,
-finding variation among them. For \ovs and Switch1,
-Figure~\ref{fig:flow_insertion_comparison} shows the time to install a
-set of entries in the flow table. Switch2 and Switch3 
-are not reported as this \of message is not supported by the firmware. 
-For this experiment, \oflops relies on a stream of packets of 100 bytes at
-a constant rate of 100 Kpackets/sec (10Mbps) that targets the newly installed flows in a
-round-robin manner. The probe achieves sufficiently low inter-packet
-periods in order to accurately measure the flow insertion time.
+We check the behavior of the tested \of implementations, finding variation among
+them. For \ovs and Switch1, Figure~\ref{fig:flow_insertion_comparison} shows the
+time to install a set of entries in the flow table. Switch2 and Switch3 are not
+reported as this \of message is not supported by the firmware.  For this
+experiment, \oflops relies on a stream of packets of 100 bytes at a constant
+rate of 100 Kpackets/sec (10Mbps) that targets the newly installed flows in a
+round-robin manner. The probe achieves sufficiently low inter-packet periods in
+order to accurately measure the flow insertion time.
 %With such a probe stream, we obtain an inter-packet
 %period of less than 100$\mu$s, adequate for measuring any change in
 %the flow-insertion time.
-
 % 100 bytes -> 1 packet
 % 10^7 bytes -> x => x = 10^5 = 100 K
 
@@ -695,7 +551,7 @@ as the number of insertions grows.
 \end{figure}
 
 We now distinguish between flow insertions and the modification of existing
-flows.  With OpenFlow, a flow rule may perform exact packet matches or use
+flows.  With \of, a flow rule may perform exact packet matches or use
 wild-cards to match a range of values. Figure~\ref{fig:flow_insertion_delay}
 compares the flow insertion delay as a function of the number of inserted
 entries. This is done for the insertion of new entries and for the modification
@@ -709,6 +565,8 @@ more than 10 new entries, while for Switch2 this occurs after a few tens of new
 entries.  After discussing this issue with the vendor of Switch2, we came to the
 following conclusion: as the number of TCAM entries increases, updates become
 more complex as they typically requires re-ordering of existing entries.
+In~\cite{Gupta01}, the authors characterise the update complexity of a TCAM to
+be linear. 
 
 Clearly, the results depend both on the entry type and implementation.  For
 example, exact match entries may be handled through a hardware or software hash
@@ -719,37 +577,34 @@ reported in Figure~\ref{fig:flow_insertion_delay} are not generalizable, but
 rather depend on the type of insertion entry and implementation.
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Flow monitoring}\label{sec:results-monitoring}
+\subsection{Flow Monitoring}\label{sec:results-monitoring}
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The use of OpenFlow as a monitoring platform has already been
-suggested for the applications of traffic matrix
-computation~\cite{opentm-pam,tm-presto} and identifying large traffic
-aggregates~\cite{openflow-measurement-hotice}. To obtain direct
-information about the state of the traffic received by an OpenFlow
-switch, the OpenFlow protocol provides a mechanism to query traffic
-statistics, either on a per-flow basis or across aggregates matching
-multiple flows and supports packet and byte counters. 
+The use of OpenFlow as a monitoring platform has already been suggested for the
+applications of traffic matrix computation~\cite{opentm-pam,tm-presto} and
+identifying large traffic aggregates~\cite{openflow-measurement-hotice}. To
+obtain direct information about the state of the traffic received by an OpenFlow
+switch, the OpenFlow protocol provides a mechanism to query traffic statistics,
+either on a per-flow basis or across aggregates matching multiple flows and
+supports packet and byte counters. 
 %The result of a query returns packet and byte
 %counters, either for the matched flows individually or for the
 %aggregate.
 
-We now test the performance implications of the traffic statistics reporting 
-mechanism of \of. Using \oflops, we install flow entries that match 
-packets sent on the data path. Simultaneously, we start sending flow statistics 
-requests to the switch. Throughout the experiment we record the delay getting 
-a reply for each query, the amount of packets that the switch sends for each 
-reply and the departure and arrival timestamps of the probe packets.
+We now test the performance implications of the traffic statistics reporting
+mechanism of \of. Using \oflops, we install flow entries that match packets sent
+on the data path. Simultaneously, we start sending flow statistics requests to
+the switch. Throughout the experiment we record the delay getting a reply for
+each query, the amount of packets that the switch sends for each reply and the
+departure and arrival timestamps of the probe packets.
 
 Figure~\ref{fig:stat_request_latency} reports the time to receive a flow
-statistics reply for each switch, as a function of the request
-rate. Despite the rate of statistics requests being modest, quite high
-CPU utilization is recorded for even a few queries per second being
-sent. Figure~\ref{fig:stat_request_cpu} reports the switch-CPU utilization
-as a function of the flow statistics inter-request time. Statistics
-are retrieved using SNMP. Switch3 is excluded for lack of SNMP
-support.
-\todo{add texttt for all \of messages}
+statistics reply for each switch, as a function of the request rate. Despite the
+rate of statistics requests being modest, quite high CPU utilization is recorded
+for even a few queries per second being sent. Figure~\ref{fig:stat_request_cpu}
+reports the switch-CPU utilization as a function of the flow statistics
+inter-request time. Statistics are retrieved using SNMP. Switch3 is excluded for
+lack of SNMP support.
 
 \begin{figure}[h]
   \begin{center}
@@ -762,53 +617,49 @@ support.
   \label{fig:stat_request}
 \end{figure}
 
-From the flow statistics reply times, we observe that all switches have (near-)constant 
-response delays: the delay itself relates to the type of switch.
-As expected, software switches have faster response times than
-hardware switches, reflecting the availability of the information in memory
-without the need to poll multiple hardware counters. These consistent response
-times also hide the behavior of the exclusively hardware switches
-whose CPU time increases proportionally with the rate of requests.  We
-observe two types of behavior from the hardware switches: the switch
-has a high CPU utilization, answering flow-stats requests as fast as
-possible (Switch2), or the switch delays responses, avoiding
-over-loading its CPU (Switch1). Furthermore, for Switch1,
-we notice that the switch is applying a pacing mechanism on its
-replies. Specifically, at low polling rates the switch splits its
-answer across multiple TCP segments: each segment containing statistics for a
-single flow.  As the probing rate increases, the switch
-will aggregate multiple flows into a single segment. This suggests that 
-independent queuing mechanisms are used for handling flow statistics 
-requests. Finally, neither software nor NetFPGA switches see an 
-impact of the flow-stats rate on their CPU, thanks to their significantly 
-more powerful PC CPUs (Table~\ref{tbl:switch_list}).
+From the flow statistics reply times, we observe that all switches have
+(near-)constant response delays: the delay itself relates to the type of switch.
+As expected, software switches have faster response times than hardware
+switches, reflecting the availability of the information in memory without the
+need to poll multiple hardware counters. These consistent response times also
+hide the behavior of the exclusively hardware switches whose CPU time increases
+proportionally with the rate of requests.  We observe two types of behavior from
+the hardware switches: the switch has a high CPU utilization, answering
+flow-stats requests as fast as possible (Switch2), or the switch delays
+responses, avoiding over-loading its CPU (Switch1). Furthermore, for Switch1, we
+notice that the switch is applying a pacing mechanism on its replies.
+Specifically, at low polling rates the switch splits its answer across multiple
+TCP segments: each segment containing statistics for a single flow.  As the
+probing rate increases, the switch will aggregate multiple flows into a single
+segment. This suggests that independent queuing mechanisms are used for handling
+flow statistics requests. Finally, neither software nor NetFPGA switches see an
+impact of the flow-stats rate on their CPU, thanks to their significantly more
+powerful PC CPUs (Table~\ref{tbl:switch_list}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{\of command interaction}\label{sec:results-interactions}
+\subsection{\of Command Interaction}\label{sec:results-interactions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % why is it important this experiment
 
-An advanced feature of the \of protocol is its ability to
-provide network control applications with, e.g., flow arrival notifications from the 
-network, while simultaneously providing fine-grain control of 
-the forwarding process. This permits applications to adapt
-in real time to the requirements and load of the
-network~\cite{plug_n_serv,Yap09}. Using \oflops advanced measurement
-instrumentation, we develop a test scenario of dynamic network control,
-in order to understand the behavior of the switch
-control and data plane.  In this scenario, we emulate the simultaneous querying of traffic statistics and
-modification of the flow table.  
-More specifically, we extend Section~\ref{sec:results-rate} by showing
-how the mechanisms of traffic statistics extraction and table manipulation 
-interact. Specifically, we initialize the flow table with 1024 exact
-match flows and measure the delay to update a subset of 100 flows. 
-Simultaneously, the measurement module polls the switch for full table 
-statistics at a constant rate. The experiment uses a constant rate 10Mbps 
-packet probe to monitor the data path, and polls every 10 seconds for SNMP 
-CPU values.
+An advanced feature of the \of protocol is its ability to provide network
+control applications with, e.g., flow arrival notifications from the network,
+while simultaneously providing fine-grain control of the forwarding process.
+This permits applications to adapt in real time to the requirements and load of
+the network~\cite{plug_n_serv,Yap09}. Using \oflops advanced measurement
+instrumentation, we develop a test scenario of dynamic network control, in order
+to understand the behavior of the switch control and data plane.  In this
+scenario, we emulate the simultaneous querying of traffic statistics and
+modification of the flow table.  More specifically, we extend
+Section~\ref{sec:results-rate} by showing how the mechanisms of traffic
+statistics extraction and table manipulation interact. Specifically, we
+initialize the flow table with 1024 exact match flows and measure the delay to
+update a subset of 100 flows.  Simultaneously, the measurement module polls the
+switch for full table statistics at a constant rate. The experiment uses a
+constant rate 10Mbps packet probe to monitor the data path, and polls every 10
+seconds for SNMP CPU values.
 
-\begin{figure}[t!!]
+\begin{figure}[t]
   \begin{center}
     \includegraphics[width=0.99\textwidth]{interaction_test}
   \end{center}
@@ -817,62 +668,25 @@ CPU values.
   \label{fig:interaction_test}
 \end{figure}
 
-In this experiment, we control the probing rate for the flow statistics 
-extraction mechanism, and we plot the time necessary before the modified 
-flows become active in the flow table. For each probing rate, we
-repeat the experiment 50 times, plotting the median, $10^{th}$ and 
-$90^{th}$ percentile. In Figure~\ref{fig:interaction_test} we can see
-that, for lower polling rates, implementations have a near-constant
-insertion delay comparable to the results of Section~\ref{sec:results-rate}.
-For higher probing rates on the other hand, Switch1 and Switch3 do 
-not differ much in their behavior. In contrast, Switch2 exhibits a noteworthy 
-increase in the insertion delay. This is explained by the CPU utilization increase
-incurred by the flow statistics polling (Figure~\ref{fig:stat_request_cpu}). Finally,
-\ovs exhibits a marginal decrease in the median insertion delay
-and at the same time an increase in its variance. We believe this behavior 
-is caused by interactions with the OS scheduling mechanism: the constant 
-polling causes frequent interrupts for the user-space daemon of the switch, 
-which leads to a batched handling of requests.
+In this experiment, we control the probing rate for the flow statistics
+extraction mechanism, and we plot the time necessary before the modified flows
+become active in the flow table. For each probing rate, we repeat the experiment
+50 times, plotting the median, $10^{th}$ and $90^{th}$ percentile. In
+Figure~\ref{fig:interaction_test} we can see that, for lower polling rates,
+implementations have a near-constant insertion delay comparable to the results
+of Section~\ref{sec:results-rate}.  For higher probing rates on the other hand,
+Switch1 and Switch3 do not differ much in their behavior. In contrast, Switch2
+exhibits a noteworthy increase in the insertion delay. This is explained by the
+CPU utilization increase incurred by the flow statistics polling
+(Figure~\ref{fig:stat_request_cpu}). Finally, \ovs exhibits a marginal decrease
+in the median insertion delay and at the same time an increase in its variance.
+We believe this behavior is caused by interactions with the OS scheduling
+mechanism: the constant polling causes frequent interrupts for the user-space
+daemon of the switch, which leads to a batched handling of requests.
 
-% \subsection{Timer precision} As part of each flow modification the
-% protocol defines that the controller is able to define an expiration
-% value for the flow. When a flow is expired, it is removed from the
-% table. The protocol supports two different mechanism to define the
-% timeout of a flow. Timeouts can be defined either based on the
-% insertion time or the last time that the flow was used. The
-% definition of the precision of this mechanism would be beneficial to
-% applications that require high precision from the routing mechanism.
-% In order to address the precision of the mechanism we are developing
-% an experiment over the \oflops platform. The experiment utilizes 2
-% ports of the switch and a single measurement probe with constant all
-% field and random destination IP. During initialization the switch is
-% initialized with a single wildcard flow that output packets to port
-% 2. At time t=10 sec since the start of the experiment the controller
-% sends an ensemble of exact match rules with different destination
-% IP's and a hard expiration delay of 10 seconds. All the flows of the
-% ensemble contain a single action which outputs packets on port
-% 1. The experiments terminate when we receive all the flow expiration
-% messages from the switch. During the experiment we log for each flow
-% the time at which we received the first and last packet of the
-% measurement probe for each destination IP. In the experiment we
-% export as a parameter the number of flows send to the switch. For
-% each number of flows we rerun the experiment for 20 times. In Figure
-% \ref{fig:timer_precision} we present the results of our
-% experiment. For each number of flows we plot an errorbar with the
-% minimum, maximum and medium of the maximum error in the timeout of a
-% flow based on the results of the packet timestamps of the
-% measurement probe.
-% \subsubsection*{Results}
-% \subsection{Simulating a reactive switch} Simulate a Nox like
-% behaviour and measure the time send at each stage of the flow
-% insertion process. export as parameters the rate we send packets and
-% the number of flows inserted.
-% \subsubsection*{Results}
 % LocalWords:  OpenFlow Oflops IP VLAN balancers SDNs virtualization NetFPGA th
 % LocalWords:  UDP Mbps Gbps multiport timestamp \ovs dev dest src addr
-
 % LocalWords:  NIC ToS TCP pcp interpacket TCAM lookup SNMP CPUs parameterising
-
 
 \section{\of Macro-experimentation} \label{sec:sdnsim-intro}
 
@@ -891,25 +705,11 @@ which leads to a batched handling of requests.
 \oflops, along with Cbench~\cite{cbench}, provides a sufficient toolchain to
 profile functionality of \of building blocks.  Nonetheless, in order to
 understand the impact of scalable control in a computer network, we require
-mechanisms to transform \of building block performance profiles into network-wide
-performance measurements, under specific traffic patterns and network topology.
-% Nontheless, ealistic mathematical models of network system is a 
-% highly complex process, as a network contains a large number of parameters that
-% can impact performance and high fidelity models are intractable, 
-% the large number of network parameters make such models
-% intractable. A
-% computer network comprises of multiple functional units with interrelated
-% functionality and multiple performance tuning parameters(e.g.~Bufferbloat
-% problem~\cite{Gettys2011} describes multiple network buffers that affect flow
-% performance during congestion).  
-%
-% The distribution of control functionality over multiple functional units, in
-% conjunction with the diverse behaviour of \of switch and controlling platforms,
-% reduce the ability to develop analytical models that can estimate the behaviour
-% of an SDN design. 
-A common practice to reason about performance and correctness of a network
-architecture relies on the design of experiments that reproduce specific
-network-wide functionalities.  In the related literature on network
+mechanisms to transform \of building block performance profiles into
+network-wide performance measurements, under specific traffic patterns and
+network topology.  A common practice to reason about performance and correctness
+of a network architecture relies on the design of experiments that reproduce
+specific network-wide functionalities.  In the related literature on network
 experimentation there have been two main implementation approaches : {\it
   realistic-testbed} and {\it simulation}.
 
@@ -922,9 +722,9 @@ example, setting up a realistic testbed for datacenter network experimentation
 requires a significant number of machines and network devices, careful
 interconnection planning and targeted metrication and analysis of the resulting
 system. In an effort to improve resource scalability for realistic testbeds, the
-research community has established a number of shared testbeds. Shared testbeds
-employ techniques such as virtualization and statistical multiplexing, to scale
-resource utilization, in a multi-tenant experimentation
+research community provides a number of shared testbeds. Shared testbeds employ
+techniques such as virtualization and statistical multiplexing to scale
+resource utilization in a multi-tenant experimentation
 platform~\cite{planetlab,emulab}.  However, shared testbeds are not always a
 good fit for network experiments. In such testing environments, there is limited
 resource control, while resource sharing may introduce measurement noise, which
@@ -936,7 +736,7 @@ reduces the complexity of large scale network experiments, and provides resource
 scalability. Nonetheless, the scaling property has inherent limitations.
 Firstly, the fidelity of the results depends greatly on the validity of the
 model assumptions. Secondly, in order to simulate network experiments, users
-usually need to readjust the logic of their experiments in order to fit the
+usually need to readjust the logic of their experiments to fit with the
 abstraction of the underlying models.  For example, POSIX socket-based
 applications must modify their connection abstraction to match the API of the
 simulation platform, while forwarding plane traffic patterns may have to
@@ -947,11 +747,12 @@ transform into stochastic models.
 framework, that bridges the two aforthmentioned approaches. The framework is
 written in OCaml, a high performance functional language, and extends the
 functionality of the Mirage~\footnote{\mirageurl} library OS. Developers can
-describe the desired network functionality over the \mirage OS abstraction, and
-at compilation transform the experiment definition in a concrete experiment realisation.
-\sdnsim provides two experimentation options: \emph{Simulation}, transforms
-the experiment definition into \ns{3}~\cite{Henderson2006} simulation, and \emph{Emulation},
-translates the experiment definition in Xen-based emulation of the experiment.
+describe network functionality over the \mirage OS abstraction, and
+at compilation transform the experiment definition in a concrete experiment
+realisation.  \sdnsim provides two experimentation options: \emph{Simulation},
+transforms the experiment definition into an \ns{3}~\cite{Henderson2006}
+simulation, and \emph{Emulation}, translates the experiment definition in
+Xen-based emulation of the experiment.
 
 \section{Mirage Library OS} \label{sec:mirage-intro}
 
@@ -1002,83 +803,40 @@ OpenFlow controller & 0.168 \\
   data are compiled directly into the image.}
 \end{table}
 
-One of the core goals of the \sdnsim platform is to establish a simple
-abstraction over which a developer can describe an experimentation scenario.  At
-compile time the framework translates the experiment description into a concrete
-implementation which emulates or simulates the scenario.  In \sdnsim we use the
-Mirage framework to provide an application development environment. Mirage is a
-cloud service development framework written in OCaml.  Mirage applications are
-single purpose appliances that are compile-time specialised into standalone
-kernels deployable on the Xen platform.  
+% One of the core goals of the \sdnsim platform is to establish a simple
+% abstraction over which a developer can describe an experimentation scenario.  At
+% compile time the framework translates the experiment description into a concrete
+% implementation which emulates or simulates the scenario.  Mirage is a
+% cloud service development framework which revisits the idea of library OSes, in
+% an effort to improve performance, scalability and security.  Mirage applications
+% are single purpose appliances that are compile-time specialised into standalone
+% kernels deployable on the Xen platform.  
 
-The Mirage framework provides two helpful functional properties: low memory
-footprint and sufficiently simplified system abstraction.  Mirage revisits the idea of
-library OS; OS functionality is separated into logical modules and added to an
-appliance only if the code expresses an explicit dependency.  As a result, a
-Mirage application will integrate in a VM only the required OS functionality, 
-resulting in minimized OS image size and memory allocation by the OS libraries 
-at run-time. In Table~\ref{t:codesize}, we present the compiled image size for a
-set of Mirage applications.
+In \sdnsim we use the Mirage framework to provide an application development
+environment. Mirage is a a cloud-service development framework written
+predominantly in OCaml, where applications are single purpose appliances that
+are compile-time specialised into standalone kernels deployable on the Xen
+platform.  We chose to use rhe Mirage framework due to two fundamental
+functional properties: low memory footprint and simplified integratability.
+Mirage revisits the idea of library OS; OS functionality is separated into
+logical modules and added to an appliance only if the code expresses an explicit
+dependency.  As a result, a Mirage application will integrate in a VM only the
+required OS functionality, resulting in compact OS images with minimized
+memory requirements. In Table~\ref{t:codesize}, we present the compiled image
+size for a set of Mirage applications.
 
 Furthermore, Mirage OS provides a simple development API for systems
 programming. This functionality is implemented by two core modules, named
 \textit{Net} and \textit{OS}.  The OS module provides basic thread scheduling,
 device management and device IO functionality, while the Net module provide a
-network stack supporting ICMP, IP, TCP, UDP and DHCP protocols and socket-like
+network stack supporting ICMP, IP, TCP, UDP and DHCP protocols through a socket-like
 programming API. The interface of the core Mirage API is sufficiently generic to
 enable development of complex distributed services, while sufficiently simple to
 integrate Mirage functionality over a wide range of platforms. Specifically, a
 Mirage application can compile into a Xen image, a linux application and a
 nodeJS executable. Currently, the platform is also ported to the FreeBSD kernel
-space and the BareMetal OS~\cite{baremetalOS}, a high performance
-assembly-code OS.
-% The diverse set of deployment backends, provides  a sufficient environment for
-% test and optimization, as depicted in Figure~\ref{fig:mirage-toolchain}.
-% Developers build initially their core logic over the POSIX backend in order to
-% test the correctness of the code, then they can try their code over the Mirage
-% default network stack, to perform a small scale performance evaluation, and
-% finally they can synthesize the resulting deployable Xen Image.
-
-% As a result, Mirage can generate small size VM images with very
-% fast boot times.  
-
-% The aim of the framework
-% is to provide small size cloud OS images that are efficient and secure.  In
-% order to achieve this, 
-
-% Furthermore, using OCaml, a type-safe
-% functional language, the framework is able to mitigate a number of security
-% attacks to applications.
-
-% Mirage executes OCaml code using a specialised language runtime modified in two
-% key areas: \textit{memory management} and \textit{concurrency}.  Since Mirage
-% applications are single process VMs, traditional complex memory virtualisation
-% and Address Space Randomisation (ASR) mechanisms are removed from the
-% architecture.  Mirage applications use a single address space, separated between
-% the text and data section of the program and the runtime heap. In addition,
-% since the program code is immutable during runtime, Mirage locks write access to
-% executable memory space, thus mitigating buffer overflow attacks.  Finally, in
-% order to improve performance for our system, Mirage provides a memory-safe
-% zero-copy mechanism and exposes applications to the memory space of the shared
-% memory ring.
-
-% In terms of concurrency, Mirage uses  the Lwt cooperative threading library
-% abstraction~\cite{lwt}. Lwt provides an OCaml syntax extension that can annotate
-% blocking IO and internally evaluate blocking functions into event
-% descriptors to provide straight-line control ﬂow for the developer.  Written in
-% pure OCaml, Lwt threads are heap-allocated values, with only the thread main
-% loop requiring a C binding to poll for external events.  Mirage provides an
-% evaluator that uses Xen polling to listen for events and wake up lightweight
-% threads. The VM is thus either executing OCaml code or blocked, with no internal
-% preemption or asynchronous interrupts. The main thread repeatedly executes until
-% it completes or throws an exception, and the domain subsequently shuts down with
-% the VM exit code matching the thread return value.  A useful consequence is that
-% most scheduling and thread logic is contained in an application library, and can
-% thus be modified by the developer as they see fit. 
-
-% Although, OCaml is a functional language, it is able to generate highly
-% performant binary code and application specific microbenchmarks has shown
-% performance to be compare to C code implementations. 
+space and the BareMetal OS~\cite{baremetalOS}, a high performance assembly-code
+OS.
 
 \section{\sdnsim design} \label{sec:sdnsim-design}
 
@@ -1109,8 +867,57 @@ captionpos=b,
   </node>
   <link src="host1" dst="host2" delay="10" rate="100" 
     queue_size="100" pcap="false"/>
+  <link_ext host="host1" dev="eth1" delay="10" rate="100" 
+    queue_size="100" pcap="false" ip="10.1.1.1">
 </topology>
 \end{lstlisting}
+
+From the developer perspective, \sdnsim consists of a single executable that
+functions as an OCaml build system. Developers implement host functionality as
+Mirage applications, and use a single XML file to describe the network topology
+and assign functionality to network nodes.  A sample XML file is presented in
+Listing~\ref{lst:sdnsim-conf}. The configuration describes a simple client
+(host1) - server (host2) configuration.  A minimum experiment definition must
+define the core code module~(topology@module), the target
+executable~(topology@backend) and the duration of the
+experiment~(topology@duration). In order to define a host, \sdnsim uses a host
+XML entity. Each host entity must define a host name~(node@name) and a host main
+function~(node@main), while a number of named parameters~(node/param) can be
+passed to the main function. The link XML entity defines a link between two
+hosts~(link@src, link@dst) along with the device~(link@queue\_size, link@pcap)
+and propagation properties~(link@rate, link@delay), using the link XML entity.
+Finally, links can also be used to integrate external network interfaces into
+the simulation, in order to allow the experiment to interact with applications
+outside of the experiment scope. We enable this functionality using the
+link\_ext XML entity which is similar to the link entity, but instead of src and
+destination attributes, it uses the host and dev entities to define the host to
+which the entity will be attached. In addition, an ip attribute is used to
+define the address of the device. 
+
+The functionality of a node in the \sdnsim platform can be split in 3 layers.  A
+simple representation of the architecture of an \sdnsim host is depicted in
+Figure~\ref{fig:sdnsim-arch}.  The top layer contains the application logic of
+the host. This layer is defined by the developer and encodes the traffic model
+and the network forwarding logic of the experiment. In order to allow realistic
+traffic patterns, \sdnsim reuses all the application libraries
+supported by the \mirage platform, reported in Table~\ref{t:facilities}. In addition,
+we modify the \of processing code and introduce a latency control mechanism. 
+Using the rate control mechanism, \sdnsim can simulate and emulate
+switch and controller models, measured through the \oflops and Cbench tools.
+We also have implemented in OCaml the pttcp tcp test tool~\cite{pttcp} for
+model driven traffic generation. 
+
+The middle layer of the host architecture, contains the network and the OS
+libraries of the Mirage platform. This layer provides OS functionality to the
+application layer. Finally, the lower layer of the host architecture, provides
+integration of the Mirage OS with the execution environment of the experiment.
+Currently, \sdnsim supports two execution environments: the {\it \ns{3}}
+\/simulation platform  and the {\it Xen} \/virtualisation platform. These two
+execution environments are highly heterogeneous and employ different execution
+models.  In the rest of this section we present details on the integration of
+\sdnsim experiments with each execution environment.  Since \sdnsim aims for
+high network accuracy, we focus our presentation on how integration occur on
+network functionality and time.
 
 \begin{table}
 \centering
@@ -1127,52 +934,7 @@ Formats     & JSON, XML, CSS, S-Expressions\\
         libraries.}
 \end{table}
 
-From the developer perspective, \sdnsim consists of a single executable that
-functions as an OCaml build system. Developers implement host functionality as
-Mirage applications, and use a single XML file to describe the network topology
-and assign functionality to network nodes.  A sample XML file is presented in
-Listing~\ref{lst:sdnsim-conf}. The configuration describes a simple client
-(host1) - server (host2) configuration.  A minimum experiment definition must
-define the core code module~(topology@module), the target
-executable~(topology@backend) and the duration of the
-experiment~(topology@duration). In order to define a host, \sdnsim uses a host
-XML entity. Each host entity must define a host name~(node@name) and a host main
-function~(node@main), while a number of named parameters~(node/param) can be
-passed to the main function. Finally, the link XML entity defines a link between
-two hosts~(link@src, link@dst) along with the device~(link@queue\_size,
-link@pcap) and propagation properties~(link@rate, link@delay), using the link
-XML entity. Links can also be used to integrate external network interfaces into
-the simulation, in order to allow the experiment to interact with entities
-outside of the experiment scope.
-\todo{External programs?}
-
-The functionality of a node in the \sdnsim platform can be split in 3 layers.  A
-simple representation of the architecture of an \sdnsim host is depicted in
-Figure~\ref{fig:sdnsim-arch}.  The top layer contains the application logic of
-the host. This layer is defined by the developer and encodes the traffic model
-and the network forwarding logic of the experiment. In order to allow realistic
-traffic patterns, \sdnsim can reuse all the application protocol libraries
-supported in the \mirage platform, reported in Table~\ref{t:facilities}. In addition,
-we modify the \of processing code and introduce a latency control mechanism. 
-Using the rate control mechanism, \sdnsim can simulate and emulate
-switch and controller models, measured through the \oflops and Cbench tools.
-We also have re-implemented in OCaml the pttcp tcp test tool~\cite{pttcp} for
-model driven traffic generation. 
-
-The middle layer of the host architecture, contains the network and the OS
-libraries of the Mirage platform. This layer provides OS functionality to the
-application layer. Finally, the lower layer of the host architecture, provides
-integration of the Mirage OS with the execution environment of the experiment.
-Currently, \sdnsim supports two execution environments: the {\it \ns{3}}
-\/simulation platform  and the {\it Xen} \/virtualisation platform. These two
-execution environments are highly heterogeneous and employ different execution
-models.  In the rest of this section we present details on the integration of
-\sdnsim experiment with each execution environment, as well as, the employed
-mechanisms to represent.  Since \sdnsim aims for
-high network accuracy,we focus our presentation on how integration achieves 
-network and time fidelity.
-
-\begin{figure}[ht]
+\begin{figure}[ht] 
 \centering
 \subfigure[\ns{3}]{\includegraphics[width=0.45\textwidth]{sdnsim-arch-ns3}\label{fig:sdnsim-arch-ns3}}
 \subfigure[Xen] {\includegraphics[width=0.45\textwidth]{sdnsim-arch-xen}\label{fig:sdnsim-arch-xen}}
@@ -1185,24 +947,26 @@ network and time fidelity.
 
 \subsection{Xen backend}
 
-A Mirage Xen Image uses a simple PV Boot mechanism. The mechanism initializes a
-VM with a single virtual CPU, loads the Xen event channel and jumps to the main
-function of the application which runs the thread scheduling loop.  Mirage
-threads use the Lwt language extension, an event-driven asynchronous programming
-library.  Using Lwt syntax, a closure can be noted as blocking, and spawn a new
-Lwt thread.  An Lwt thread is either executing code or idles waiting for an IO
-event or a synchonisation primitive (e.g.~a semaphore) or a timer timeout.
-Mirage threads are cooperative and non-preemptive and the main scheduling loop
-works as follow: Execute any resumable sleeping threads, calculate the time left
-until the next timer event and poll for events from the event channel until that
-time.  Timing integration with the Xen platform is achieved through the Xen
-shared\_info struct, a structure containing CPU time information and shared
-between the Dum0 and the DumU VMs.  Network integration is implemented over Xen
-NetFront driver and IO polling is integrated with the Xen event channel.
+An \sdnsim emulation host uses a simple PV Boot mechanism. At startup \sdnsim
+initializes a VM with a single virtual CPU, loads the Xen event channel and
+jumps to the main function of the OS module which runs the thread scheduling
+loop.  \sdnsim uses the OCaml Lwt language extension, an event-driven
+asynchronous programming library, to enable a multi-threading programming
+abstraction.  Using the Lwt syntax, a developer can spawn new threads by
+annotating closures as blocking. An Lwt thread is either executing code or idles
+waiting for an IO event or a synchronisation primitive (e.g.~a semaphore) or a
+timer timeout.  Lwt threads are cooperative and non-preemptive and the main
+scheduling loop works as follow: Execute any resumable sleeping threads,
+calculate the time left until the next timer event and poll for events from the
+event channel until that time expires.  Timing integration with the Xen platform
+is achieved through the Xen shared\_info struct, a structure containing CPU time
+information which is shared between the Dum0 and the DumU VMs.  Network
+integration is implemented using the Xen NetFront driver and the Xen event
+channel.
 
-\sdnsim uses the Xen Managment API~(XAPI)~\cite{xapi} to setup an emulation over
+\sdnsim uses the Xen Managment API~(XAPI)~\cite{xapi} to bootstrap emulations over
 the XEN platform.  \sdnsim is able to create, start and stop VM instances and
-configure network topology.  Network topology is implemented through VM Virtual
+configure network topologies.  Network topologies are implemented using  VM Virtual
 Network Interface (VIF) bridging in the Dum0. A link between two hosts in an
 experiment definition is translate to a layer-2 bridge which contains a VIF from
 each VM\@.  XAPI also expose an interface to control link rate and propagation
@@ -1215,11 +979,12 @@ configurations are completed, all VMs are booted.
 \subsection{\ns{3} backend}
 
 \ns{3}~\cite{Henderson2006} is a discrete-time packet-driven network simulation
-framework. The core of the system consists of a discrete time simulation engine,
-while a set of \ns{3} libraries provide an extensive set of network
+framework. The core of the system consists of a discrete time simulation engine
+and a set of \ns{3} libraries providing network
 applications, routing protocols, data-link layer protocols and link emulations
-models. \ns{3} is fundamentally an extensive refactor of the \ns{2} code-base,
-which aims to provide a stable core of simulation functionality and models. 
+models. \ns{3} is fundamentally an extensive refactor of the \ns{2} code-base
+and provides a stable core of network functionality over which users can develop
+custom simulation scenarios. 
 
 The \ns{3} backend has a significant difference from the Xen backend; the
 execution model is discrete and non-reentrant. \ns{3} applications can only
@@ -1227,17 +992,17 @@ register their interest for specific time and network events, event handling is
 atomic and the progress of the simulation is centrally controlled by the
 simulation engine. In order to port the Lwt library to the \ns{3} simulation
 engine, we transform thread blocking calls into equivalent \ns{3} events.  More
-specifically, the Mirage clock abstraction is bridged with the \ns{3} simulation
-clock and all sleep calls are scheduled as \ns{3} time events.  The thread is
+specifically, the Mirage OS clock abstraction is bridged with the \ns{3} simulation
+clock and all sleep calls are scheduled as \ns{3} time events.  A thread is
 resumed from a sleep call when the simulator executes the respective time event.
 Network blocking calls are integrated with the network device abstraction of
 \ns{3}.  The packet reading thread registers a packet handler on the network
 device, while the packet writing thread checks the device queue occupancy and
 blocks while the queue is full. Finally, in order to avoid scheduling deadlocks,
 the OS schedules {\it idle} \/time events that resume any yielded threads. Using
-these transformation we are able to provide a semantically accurate Lwt
+these transformations we are able to provide a semantically accurate Lwt
 integration with the \ns{3} engine.  Network links between hosts are simulated
-using the {\it PointToPoint} \/model. This model simulates a PPP link over a
+using the {\it PointToPoint} \/link model. This model simulates a PPP link over a
 lossless medium, a valid approximations for the full duplex non-shared medium of
 current network datacenters.
 
@@ -1274,21 +1039,22 @@ channels.  We compare these controllers against our Xen-based \mirage \of
 controller application.
 
 Our benchmark setup uses the {\it Cbench}~\cite{cbench} measurement tool. Cbench
-emulates multiple switches which simultaneously generates {\tt pkt\_in} messages.
-The program measures the processing throughput of each controller.
-It provides two modes of operation, both measured in terms of {\tt pkt\_in}
-requests processed per second: {\it latency}, where only a single
-{\tt pkt\_in} message is allowed in flight from each switch; and
-{\it throughput}, where each emulated switch maintains a full 64\,kB buffer of outgoing
-packet-in messages. The first measures the throughput of the controller when
-serving connected switches fairly, while the second measures absolute throughput
-when servicing requests from switches.
+emulates multiple switches which simultaneously generates {\tt packet\_in}
+messages.  The program measures the processing throughput of each controller.
+It provides two modes of operation, both measured in terms of {\tt packet\_in}
+requests processed per second: {\it latency}, where only a single {\tt
+  packet\_in} message is allowed in flight from each switch; and {\it
+  throughput}, where each emulated switch maintains a full 64\,kB buffer of
+outgoing messages. The first measures the throughput of the controller
+when serving connected switches fairly, while the second measures absolute
+throughput when servicing requests from switches.
                                                                        
 We emulate 16 switches concurrently connected to the controller, each serving
 100 distinct MAC addresses. We run our experiments on a 16-core AMD server
 running Debian Wheezy with 40\,GB of RAM and each controller configured to use a
 single thread of execution. We restrict our analysis to the single-threaded case
-as Mirage, at time of testing, does not support multi-threading. For each
+as the Mirage execution environment, at time of testing, does not support
+multi-threading. For each
 controller we run the experiment for 120\,seconds and measure the per-second
 rate of successful interactions. Table~\ref{tbl:controller} reports the average
 and standard deviation of requests serviced per second.
@@ -1302,11 +1068,11 @@ worse for latency, probably due to the overheads of the Java VM\@.  Finally,
 \mirage throughput is somewhat reduced from NOX fast but substantially better
 than both NOX and Maestro. In addition, the \mirage controller achieves the best
 product of performance and fairness among all tested controllers in the
-throughput test.  Comparing latency, Mirage performs much better than Maestro
+throughput test.  Comparing latency, \mirage performs much better than Maestro
 but suffer somewhat in comparison to NOX\@. From the comparison results, we
-conclude that the \mirage controller performance is comparable to the performance of
-existing controlling platforms and our emulation environment can reproduce
-the performance of realistic \of deployment. 
+conclude that the \mirage controller performance is comparable to the
+performance of existing controlling platforms and our emulation environment can
+reproduce the performance of realistic \of deployment. 
 
 \begin{table}
 \newcommand\T{\rule{0pt}{2.6ex}}
@@ -1339,8 +1105,8 @@ two virtual machines, one running the \oflops code, the other running the
 \of switch configured with three interfaces bridged separately in dom0. One
 interface provides a control channel for the switch, while the other two are
 used as the switch's data channels. Using \oflops, we generate packets on one of
-the data channels and receive traffic on the other, having inserted appropriate
-flow table entries prior to the beginning of the test. We run the test for
+the data channels and receive traffic on the other, having bootstrapped appropriate
+the switch flow table. We run the test for
 30\,seconds, a sufficient measurement period to detect statistically significant
 results. We use small packets (100\,bytes)\footnote{we use a packet size
   slightly larger that the minimum packet size because we append in the
@@ -1362,7 +1128,8 @@ even mirroring the high per-packet processing latency with a probe rate of
 1\,Mb/s; we believe this is due to a performance artefact of the underlying dom0
 network stack. We omit packet loss, but can report that both implementations
 suffer similar levels of packet loss.  From the comparison results of the
-\mirage \of switch, we can conclude, that our \of switch can emulate software
+\mirage \of switch, we can conclude, that our \of switch can emulate accurately 
+software
 switch functionality. Nonetheless, the minimum latency of our switch emulation
 (approximately 100 msec) is 2 order of magnitude higher than a hardware switch
 (approximately 0.5-1 $\mu$sec). In order to bridge this latency gap, we propose
@@ -1445,15 +1212,111 @@ traffic models and designs~\cite{Kandula09}.
 % switches, thus reducing the experiment running time. Although the simulation
 % scenario 
 
-\section{Software-defined hierarchical network control} \label{sec:rdsf-eval}
-\todo{Maybe remove this section}
+\section{hierarchical control distribution in Software-defined network} 
+\label{sec:rdsf-eval}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \section{\sdnsim conclusions} 
 
+\begin{table}
+\begin{center}
+\begin{tabular}{|c| l |} \hline
+  Parameter & value \\ \hline
+  packet\_in processing delay & 10 msec \\ \hline
+  flow\_mod insertion delay & 1,2 msec \\ \hline
+  link capacity & 1 Gbps \\ \hline
+  Request arrival rate & 1500 retrievals/sec \\ \hline
+  link propagation delay & 0.5 $\mu$sec \\ \hline
+  switch processing delay & 100 $\mu$sec \\ \hline
+\end{tabular}
+\end{center}
+\label{tbl:sdnsim_experiment_parameters}
+\caption{control hierarchy simulation parameters}
+\end{table}
+
+The \of abstraction provides an excellent mechanism to centralise control in a
+network and avoid the performance overhead of existing distributed control plane
+protocols. Using \of, allows to offload the control plane of all switches of a
+network to a single centralised network controller which has full knowledge of
+the network state and construct an optimal routing policy.  Nonetheless, as the
+network size increases, the centralisation strategy will face significant
+problem to scale centrally the control plane requirements.  Large networks
+require a mechanism to distribute the control computation over multiple
+tightly-coupled controllers. In order to address this requirement we use \sdnsim
+to test a hierarchical control system. In our control architecture, we propose
+the introduction of a hierarchy of controllers which control a subset of the
+switch devices and a subspace of the \of tuple space. In order to enable control
+distribution, as well as, responsive control, each node of the hierarchy run a
+flowvisor instance to multiplex switch control channels. The flowvisor is
+configurated to delegate control to a local controller, while also propagating
+control events to upper layers of the hierarchy in order to build higher level
+controllers which construct global view of the network and enforce higher
+priority control policies. In order to understand the impact of this control
+hierarchy, we use \sdnsim, to simulate the control architecture and evaluate the
+impact of multi-level control schemes on the performance of the data plane. 
+
+In our experiment we use a FatTree~\cite{Al-Fares08} network topology with 4
+pods and simulate a small-scale datacenter. For data plane traffic we use a
+simple client-server architecture to replicate the functionality of data
+retrievals in Map-Reduced platforms. In the network we assign the machines
+hosted in the first three pods to function as data requesters and the machines
+hosted in the forth pod to function as data providers. Each data request
+consists of a small 10 bytes packet from the requester, to define the number of
+bytes which will be send subsequently by the data provider. The traffic size of
+the request is selected uniformly at random between the values 4KB, 8KB and
+32KB.  The request arrival rate follows a Poisson model, while the destination
+is choose uniformly at random between the servers of the forth pod. In addition,
+each client keeps a persistent long-lived background TCP connection. Using this
+simple model we can experiment with traffic models similar to a datacenter
+network. In the control of the network we simulate the control logic of the
+FatTree design: every 1 second the network control receives flow-level
+statistics from the switch and reassign network flows in order to reduce link
+utilisation and spread the load between redundant. In order to study the effects
+of our architectural approach, we variate the number of FlowVisor instances
+which process \of traffic before reaching the local controller of the switch and
+study the impact of the proximity of the controller on data plane performance,
+by measuring the completion time of each network flow. Further parameters of the
+simulation are described in Table~\ref{tbl:sdnsim_experiment_parameters}.
+
+
 \section{Summary} \label{sec:modeling:summary}
 
-This chapter discusses the scalability of the main SDN approach 
+
+% \section{\oflops Conclusions}\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \todo{Add some notes on \sdnsim}
+
+This chapter discusses the scalability capabilities of the predominant SDN
+implementation, the \of protocol.  We presented, \oflops, a tool that tests the
+capabilities and performance of OpenFlow-enabled software and hardware switches.
+\oflops combines advanced hardware instrumentation, for accuracy and
+performance, and provides an extensible software framework. We use \oflops to
+evaluate five different \of switch implementations, in terms of OpenFlow
+protocol support as well as performance.  In our performance evaluation, we
+benchmark the packet processing, traffic interception and injection, flow table
+modification and traffic statistics export functionalities of the switches.  We
+identify considerable variation among the tested \of implementations.  We take
+advantage of the ability of \oflops for data plane measurements to quantify
+accurately how fast switches process and apply \of commands.  For example, we
+found that the \texttt{barrier} reply message is not correctly implemented,
+making it difficult to predict when flow operations will be seen by the data
+plane.  Finally, we found that the monitoring capabilities of existing hardware
+switches have limitations in their ability to sustain high rates of requests.
+Further, at high rates, monitoring operations impact other OpenFlow commands.
+
+In addition, in this chapter we present the \sdnsim platform, an experimentation
+framework for large-scale high-precision experimentation with control plane
+architectures. \sdnsim reuses the \mirage systems abstraction layer to enable
+developer to program the functionality of their network. An \sdnsim experiment
+definition can seamlessly translate at compile into a simulation over the \ns{3}
+simulation platform, or a high precision emulation over the Xen virtualization
+framework. We conduct a number of micro-benchmarks and evaluate that the
+software provide emulation performance comparable to software \of controller and
+switching platforms, while \sdnsim simulation provide good scaling properties.
+Furthermore, using \sdnsim we investigate the impact of hierarchical distributed
+control architectures on the performance of the data plane of the network.  In
+the next chapter, we explore applications of the SDN paradigm to scale network
+management. 
 
 %We also readily acknowledge this paper as a snapshot of work in
 %progress; every set of results poses new questions but also the role

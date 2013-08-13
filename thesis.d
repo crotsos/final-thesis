@@ -8,6 +8,7 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texl
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifpdf.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/infwarerr.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ltxcmds.sty)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/generic/path/path.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amssymb.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/eucal.sty)
