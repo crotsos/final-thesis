@@ -86,9 +86,9 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/oflop
 -include Chapter1/Chapter1Figs/accuracy-topology.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/accuracy-topology.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/accuracy-topology.pdf)
--include Chapter1/Chapter1Figs/timer_precision.pdf.gpi.d
-thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/timer_precision.pdf)
-thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/timer_precision.pdf)
+-include Chapter1/Chapter1Figs/timer-precision.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/timer-precision.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/timer-precision.pdf)
 -include Chapter1/Chapter1Figs/pkt_in_delay.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/pkt_in_delay.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/pkt_in_delay.pdf)

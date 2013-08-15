@@ -1,0 +1,10 @@
+set xlabel  'relative delay since first packet (sec)' font ",16";
+set ylabel  'timestamp error (nsec)' font ",16";
+set key left Left reverse inside font ",16";
+set xtics font ",16";
+set ytics font ",16";
+
+plot '< gzcat Chapter1/Chapter1Figs/timer_precision/comparison_dag_pcap.txt.gz' \
+  using ($2/1000000000):($2-$3) every 1000 title 'pcap' with lines lt 3,\
+  '< gzcat Chapter1/Chapter1Figs/timer_precision/comparison_dag_netfpga.txt.gz' \
+  using ($2/1000000000):($2-$3) every 1000 title 'netfpga oflops' with lines lt 2;
