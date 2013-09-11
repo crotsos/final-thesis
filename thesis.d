@@ -167,5 +167,14 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/signp
 -include Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/DNSSEC_hierarchy.pdf)
+-include Chapter3/Chapter3Figs/tor-example.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/tor-example.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/tor-example.pdf)
+-include Chapter3/Chapter3Figs/nat-punch-example.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/nat-punch-example.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/nat-punch-example.pdf)
+-include Chapter3/Chapter3Figs/measurement_topology.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/measurement_topology.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/measurement_topology.pdf)
 thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/references.bib)
 thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/rfc.bib)

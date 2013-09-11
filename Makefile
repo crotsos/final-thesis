@@ -788,6 +788,11 @@ XINDYENC	?= utf8
 # otherwise the function is just a no-op.  Issue 112 has details.
 USE_CYGPATH := $(if $(shell $(WHICH) $(CYGPATH) 2>/dev/null),yes,)
 
+log:
+	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.data
+	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.data
+
+
 define path-norm
 $(if $(USE_CYGPATH),$(shell $(CYGPATH) -u "$1"),$1)
 endef
@@ -4145,7 +4150,4 @@ endef
 #
 # vim: noet sts=0 sw=8 ts=8
 
-log :
-	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.data
-	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.data
 

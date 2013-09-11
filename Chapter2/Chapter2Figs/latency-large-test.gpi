@@ -1,15 +1,15 @@
-set xlabel 'Number of flows' font "Gill Sans,12";
-set ylabel "Median switching delay ({/Symbol m}s)" font "Gill Sans,12";
+set xlabel 'Number of flows' font "Gill Sans,15";
+set ylabel "Switching delay ({/Symbol m}s)" font "Gill Sans,15";
 set xrange [0:600100];
 set yrange [700:950];
 set style line 1 lt 1 lw 3 lc rgb "orange"; 
 set style line 2 lt 1 lw 3 lc rgb "blue";
 
 set size 1,1;
-set key font "Gill Sans,12";
+set key font "Gill Sans,15";
 set xtics ("0" 0, "1" 100000, "2" 200000, "3" 300000, "4" 400000, "5" 500000, \
-"{/Symbol \264}10^5" 600000) font "Gill Sans,12";
-set ytics font "Gill Sans,12";
+"{/Symbol \264}10^5" 600000) font "Gill Sans,15";
+set ytics font "Gill Sans,15";
 
 plot "Chapter2/Chapter2Figs/latency/exact-median.csv" using 1:5:4:6 \
      title 'exact' with errorlines ls 1, \
