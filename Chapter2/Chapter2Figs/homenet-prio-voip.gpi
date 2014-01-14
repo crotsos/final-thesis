@@ -1,0 +1,11 @@
+set ylabel  'throughtput (bits/sec)'
+set y2label  'gaming latency (msec)'
+set xlabel 'time of day'
+
+# set style line 1 lc rgb '#00004d' lt 1 lw 3
+set style line 2 lc rgb '#004d00' lt 2 lw 2
+
+plot \
+  './throughput-voip.data' using 1:2:x2ticlabels(2) title 'gaming' axis x1y2 with lines \
+  lc rgb "#00004d" lw 1,\
+  './throughput-voip-back.data' using 1:2 title 'bursty web' with lines lt 2;
