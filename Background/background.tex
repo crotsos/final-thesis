@@ -313,66 +313,57 @@ Devolved Control of ATM Networks~(DCAN) and Software Defined Networking~(SDN).
 
 \subsection{Active Networks}
 
-The problem of protocol ossification in the network layer and the requirement
-for network evolution, was highlighted  by the network research community since
-mid 90's. In~\cite{O'Malley1992}, the authors argue on the generality of the
-7-layer OSI network abstraction. They claimed that the networks functionality
-should be more dynamic and forwarding devices should be able to accommodate
-variable number of protocol layers. In their work they present an extensible
-protocol modeling framework to layer protocol processing. Motivated by these
-observations, DARPA funded the \emph{Active Networks}
+The network research community has highlighted the inflexibility to evolve
+network design, often termed \textit{protocol ossification}, since mid 90's.
+\cite{O'Malley1992} challenged the generality of the OSI network model and
+suggested an evolved model which provided the ability to synthesize protocol
+parsers and incorporate variable numbers of layers in forwarding devices.
+Motivated by these observations, DARPA funded the \emph{Active Networks}
 project~\cite{darpa_active_net}, in an effort to develop next generation network
-devices that can accommodate seamlessly new protocol functionality. 
+devices that can seamlessly integrate new protocol functionality. 
 
 Active networks modify the default packet processing mechanism and introduce the
 notion of \emph{capsules}. Capsules are network packets that carry data, as well
 as, processing code. On each hop, the default packet processing logic is
 extended with the code contained in the capsule, thus redefining network
 functionality. This network processing approach provided user-driven protocols
-upgrades, without a requirement for devices upgrade.  In addition, the
-development of novel programming languages, like Java, provided the building
-blocks to implement code distribution frameworks.
+upgrades, without a requirement to modify devices.  In addition, the development
+of novel programming languages, like Java, provided the building blocks to
+implement code distribution frameworks.
 
-Research in active networks tried to define two mechanisms : the {\bf capsule
-  API and format} and the {\bf switch architecture}. In terms of capsule
-format, the active network community defined the Active Network Encapsulation
-Protocol~(ANEP)~\cite{alexander1997a}.  ANEP, through its format specification,
-made a clear separation between functionality and data. An Active Node using a
-new protocol would inject firstly new processing logic, using code capsules, and
-then send the data stream, as data capsules.  The format was adopted by the ANTS
-and Sprocket frameworks.  Sprocket~\cite{Schwartz2000} was an effort to develop
-an efficient capsule programming language by BBN technologies. The language uses
-a restricted set of the C language, avoiding any security vulnerable structures
-like pointers, while it introduced native support for SNMP browsing. Sprocket
-compiled source code to compact MIPS assembly. Each switch would receive code
-capsules and run the code in a MIPS virtual machine. The VM could not persist
-any state on the switch, but it was able to modify the data section of a packet.
-Sprocket provided secured injected code with a public key secure hash of the
-code binary, but without sufficient details on the authentication logic.
-ANTS~\cite{Wetherall1998} was an attempt by the Active Networks group in MIT to
-develop a sufficient capsule programming environment.  ANTS uses a restricted
-version of the Java language to program capsules, because of the inherent object
-serialization functionality of Java, while the processing logic is defined
-through a small set of Java interfaces. ANTS permits injected code to persist
-flow state on a switch and modify packet content. An interesting extension of
-the ANTS framework was the code dissemination mechanism. An end-node deployed
-new protocol functionality solely to the local Internet gateway, and the code is
-forwarded along with the packets to each next-hop. Finally, The university of
-Pensylvania active networks group developed its own approach to capsule
-programming.  PLAN~\cite{Hicks1998} used a restricted version of the OCaml
-language to abstract capsule access to the local switch state and implement
-custom forwarding logic. PLAN did not follow the ANEP packet format. A PLAN
-capsule contains code and data and the code section replaces the network header
+Research in active networks tried to define two primary building blocks for the
+Active Network implementation : the {\bf capsule API and format} and the {\bf
+  switch architecture}. In terms of capsule format, the active network community
+defined the Active Network Encapsulation Protocol~(ANEP)~\cite{alexander1997a}.
+The ANEP protocol was adopted by the ANTS and Sprocket capsule programming
+frameworks.  Sprocket~\cite{Schwartz2000} was developed by BBN technologies and
+defined a programming language, using a restricted set of C.
+The language avoided any insecure structures like pointers and provided
+native support for SNMP browsing. The sprocket compiler output MIPS
+assembly and the binary was executed using a MIPS VM on each network device.
+Sprocket did not persist any state on the switch, but allowed in capsule conde 
+to modify packet data. ANTS~\cite{Wetherall1998} was an attempt
+by the MIT Active Network group to develop a JAVA-based capsule programming
+environment.  ANTS used a restricted version of the Java language, due its
+intuitive serialization functionality, while switch and capsule integration was modelled using 
+Java interfaces. Capsule code was allowed to persist switch state
+and modify packet content. An interesting functionality of the ANTS
+framework was the code dissemination mechanism. An end-node deploys its protocol
+functionality solely to the local Internet gateway, and the code would be forwarded
+along the network towards the destination, hop-by-hop. Finally, the university of Pensylvania
+active networks group developed PLAN~\cite{Hicks1998}, an OCaml-based approach
+to capsule programming.  PLAN did not follow the ANEP packet format. A PLAN
+capsule contained code and data, with the capsule code replacing the network header
 information. In order to secure switch infrastructure, the language disallowed
 packet data modification or switch state persistence.  Ultimately, the language
 provided a framework for programmable control plane.
 
 In terms of Active Network platform architecture, the community developed a
-number of architectures, addressing multiple aspects of efficiency in capsule
+number of architectures, addressing multiple aspects of efficient capsule
 processing. University of Pensylvania proposed the SwitchWare Execution
 Environment (EE)~\cite{Alexander1998}.  The architecture defined an OCaml module
-framework for capsule processing. A core focus of the SwitchWare EE was strong
-multi-dimension security for active networks, both on the local system, as well
+framework for capsule processing, with a strong focus on 
+security, both on the switch, as well
 as, during capsule execution.  SwitchWare used SANE~\cite{Alexander1998b}, a
 trustworthy operating system, to secure the functionality of the switch, and
 build on top of its security primitive higher level of trust. The platform
@@ -382,19 +373,18 @@ Bridge~\cite{Alexander1997b} used the SwitchWare framework to implement novel
 functionality in active networks. 
 
 The active networks group in University of Arizona proposed its custom approach
-to high performance active network forwarding. Their approach relies on the Scout
-OS~\cite{Montz1995}, a communication-oriented OS supporting efficient
-layered data processing. On top of Scout, the group developed the Liquid Software
-API~\cite{Hartman1999}. The integration of Liquid Software API and Scout, aimed to
-establish a tight integration between the OS and the JVM and improve capsule
-processing, using the JIT JAVA compiler. 
+to high performance active network forwarding. Their approach relies on the
+Scout OS~\cite{Montz1995}, a communication-oriented OS supporting efficient
+layered data processing. On top of Scout, the group developed the Liquid
+Software API~\cite{Hartman1999}. The integration of Liquid Software API and
+Scout, aimed to establish a tight integration between the OS and the JVM and
+thus achieve improved capsule processing, using the JIT JAVA compiler. 
 
-The CANEs project~\cite{Chae2002} from Georgia Tech Active Networks groups
-followed a different approach for the problem and designed a system which
-enabled multi-protocol packet processing. CANEs defined a number of
-abstractions, which enabled active network applications to stack multiple
-protocol processors on the forwarding path. CANEs project build on top of the
-Bowman Switch OS~\cite{merugu1999} and established a simple and efficient
+The CANEs project~\cite{Chae2002} from Georgia Tech Active Network group
+proposed a switch design, which increased flexibility in multi-protocol packet
+processing. In detail, it defined a number of abstractions, which allowed
+multiple protocol stacking on the forwarding path. CANEs project build on top of
+the Bowman Switch OS~\cite{merugu1999} and established a simple and efficient
 abstraction over the Switch resources. 
 
 Researchers from the Columbia University, presented the NetScript switch
@@ -402,7 +392,7 @@ abstraction~\cite{daSilva2001}. NetScript is a new programming language
 optimized for flexible protocol processing definition and composition. The
 project defines three types of protocol composition: layered composition,
 composition through protocol bridging and end-to-end composition. Netscript
-provides developers the ability to builf flexible extension in existing protocol processing. 
+provides developers the ability to build flexible extension in existing protocol processing. 
 
 Finally, a joint effort between the Network Laboratory of ETH and the University
 of St. Louis, developed a hybrid hardware and software approach for high
@@ -414,13 +404,13 @@ protocol processor to run in Gigabit rates.
 
 Active network research put forward a number of interesting insights on the
 controllability and evolvability problem in control plane functionality.
-Nonetheless, their complex and clean-slate approach, reduced their applicability
-in production environments. In addition, Active Network functionality was highly
-benefited from the relatively low rate of the network rates of the time. CPU
-processing capability of the time was able to accommodate the respective link
-rates. The rapid evolution of data rate in Ethernet interfaces to Gigabit
-speeds, through, makes impossible the development of programmable forwarding
-platforms with line rate performance in the current time. 
+Nonetheless, their complex and clean-slate approach, reduced Active Network
+applicability in production environments. In addition, Active Network
+functionality was highly benefited from the relatively low link rates of the
+time. CPU processing capability of the time, was able to accommodate the
+respective link rates. The rapid evolution of data rate in Ethernet interfaces
+to Gigabit speeds, through, makes impossible the development of programmable
+forwarding platforms with line rate performance in the current time. 
 
 \subsection{Devolved Control of ATM Networks}
 
@@ -433,30 +423,32 @@ platforms with line rate performance in the current time.
 \end{figure}
 
 \todo{add GSMP protocol reference}
-An effort to network programmability in ATM network was also developed by the
-University of Cambridge, as part of the DCAN project~\cite{dcan}.  The main
-focus of the DCAN project was the development of a dynamic network control plane
-which could virtualise an ATM network.  In~\cite{Rooney1998}, the authors
-present Tempest, a novel ATM switch architecture, which achieved the goals of
-the DCAN project.  Tempest provides a clear separation between the control and
-forwarding plane of a network device.  The control plane of network devices, is
-centralised in a single programmable entity, which implements intelligent and
-dynamic forwarding.  The implementation of Tempest is logically divided between
-three abstractions, depicted in Figure~\ref{fig:background:tempest_arch}. The
-Figure presents how a single switch is able to function in parallel as an IP
-router, an ATM switch and a Hollowman controlller~\cite{Rooney1997}, a devolved
-ATM control framework. 
+Active Networks focused extensively on Ethernet technologies and strive to
+develop protocol evolvability. A similar approach for ATM was developer in the
+University of Cambridge for the DCAN~\cite{dcan} project, focusing though
+primarily on control evolvability and network virtualisation. DCAN tried
+primarily to simplify the control plane of ATM devices, in order to support
+network multi-functionality. 
+
+As part of the DCAN project, \cite{Rooney1998} present Tempest, a novel ATM
+switch architecture, which enabled clean separation between the control and
+forwarding plane of an ATM switch. Similar to the SDN approach,  The control
+plane was centralised in a single programmable entity, which could implement
+intelligent and dynamic forwarding.  The implementation of Tempest was logically
+divided between three subsystems, depicted in
+Figure~\ref{fig:background:tempest_arch}. The Figure presents how a single
+switch is able to function in parallel as an IP router, an ATM switch and a
+Hollowman controlller~\cite{Rooney1997}, a devolved ATM control framework. 
 
 \paragraph{Prospero Switch Divider} 
 
 The \emph{Prospero} abstraction provides a mechanism to virtualise ATM switch
-resources. Prospero provides a resource control interface, which can divide
-switch resource between multiple virtual switches, called \emph{switchlets}.  A
-switchlet controls a subset of the switch ports, VCI and VPI mappings, packet
-buffer and bandwidth. For packet buffer and bandwidth virtualization, Prospero
-uses the ATM defined QoS  principles. In addition, Prospero is responsible to
-map the control interface, exposed to controllers, with the underlying switch
-functionality. 
+resources into multiple virtual switches, called \emph{switchlets}, through a
+resource control interface.  A switchlet controls a subset of the switch ports,
+VCI and VPI mappings, packet buffer and bandwidth. In addition, Prospero used
+the ATM QoS principles to implement packet buffer and bandwidth virtualization.
+Fundamentally, Prospero is responsible to map the control interface, exposed to controllers,
+with the underlying switch functionality. 
 
 \paragraph{Ariel Switch Independent Control Interface} 
 
@@ -469,15 +461,16 @@ switch configuration, Port provides primitive controllability of ports
 Connections expose control of VPI/VCI mappings, Statistics exposes packet and
 byte counters and Alarms push state change notifications to the controller. Any
 Tempest switch runs an Ariel server and translates Ariel request to Prospero
-control requests. 
+control requests. Ariel fundamentally was an abstraction layer between the
+switch silicon and the Prospero control interface. 
 
 \paragraph{Caliban Switch Management Interface}
 
-Apart from control capability support, Tempest also supported evolved network
+In addition to network control, Tempest also supported evolved network
 management, through the Caliban interface. The interface functionality is
 similar to the SNMP protocol. Caliban provides fine level SNMP-style
-information, but can also provide higher level aggregation operations over the
-switch state. 
+information, as well as, higher level aggregation operations over the switch
+state. 
 
 In addition to the redefinition of the network control abstraction, Tempest also
 proposed a relaxed network resource management scheme.  Specifically, the
@@ -485,54 +478,50 @@ architecture proposed a measurement-based admission control mechanism for
 circuit establishment~\cite{Lewis1998}. The measurement scheme redefined the
 static resource allocation scheme in ATM network, and used effective bandwidth
 measurement techniques to estimate available resources.  This admission control
-scheme provided higher utilisation of network resources, while providing QoS
-guaranteed. 
+scheme provided higher utilisation of network resources, with minimum relaxation
+of the QoS guarantees. 
 
-Tempest defined a highly efficient network control abstraction. The
-effectiveness of the control abstraction motivates modern network control
-approaches, like SDN, to reimplement it over Ethernet devices.  In addition, the
-simplicity of the control abstraction, permitted integration of the technology
-with existing forwarding devices  and enabled line rate forwarding and efficient
-resource control.  Nonetheless, its strong reliance on the ATM technology made
-the approach less relevant for the modern Ethernet-dominated networks~\cite{Crosby2002}. 
+Tempest defined a highly efficient network control abstraction, which motivated
+modern network control approaches, like the SDN, to reimplement it over Ethernet
+devices.  In addition, the simplicity of the control abstraction, permitted
+integration of the technology with existing forwarding devices  and enabled line
+rate forwarding and efficient resource control.  Nonetheless, its strong
+reliance on the ATM technology made the approach less relevant for the modern
+Ethernet-dominated networks~\cite{Crosby2002}. 
 
 \subsection{SDN}\label{sec:background:sdn} 
 
-A recent attempt to develop a framework for distributed and scalable control is
-the Software Defined Networking (SDN) paradigm. SDN~\cite{sdn} enables the clean
-separation between the control and the forwarding plane of a network device. The
-control plane logic is implemented in a separate programmable device and a well
-defined protocol establishes the inter-connection between the two devices. 
+A recent attempt for distributed and scalable network control is the SDN
+paradigm. SDN~\cite{sdn} provides a clean separation between the control and the
+forwarding plane of a network device. The control plane logic is removed from
+the network device and implemented in a separate programmable device. A well
+defined protocol establishes the integration between the two devices. 
 
 The SDN approach is inspired by relevant earlier attempts in network
-programmability(Active Networks and DCAN), but follows an evolutionary approach.
-SDN supports existing network data protocols and focuses to provide the
-mechanism to development custom forwarding mechanisms.  The paradigm is
-motivated by two observations in current network technologies.  Firstly, the
-evolution of computer networks has reduced the applicability of the multi-layer
-network abstraction. Production networks contain middleboxes (e.g.~firewall,
-NAT, layer-5 switches) that operate on multiple layers of the network and engage
-extensively in layer violation.  Such devices cannot integrate with existing
-control mechanisms, while they remain transparent by the end-hosts. The SDN
-paradigm aims to provide a new unifying cross-layer control model that can
-integrate control for such devices.  Secondly, although network complexity has
-increased, network devices still use stand-alone configuration mechanisms (e.g.
-remote logic, CLI interfaces) and global network policies must be decomposed by
-network administrators in individual network device policies, to fit the
-existing control abstraction. In order to modify network-wide configuration,
-network administrators must login over telnet or use a web interface to
-configure each device manually.  In addition, network vendors develop
-proprietary control protocols which reduce device interoperable.  SDN enables
-management centralisation, while the flexibility of the control abstraction
-enables control innovation mechanisms that match network environment
-requirements.
+programmability(Active Networks and DCAN), but follows an evolutionary approach
+and provides a mechanism to improve the performance of existing data plane
+protocols and develop custom forwarding algorithms.  The paradigm is motivated
+by two key observations.  Firstly, the evolution of computer networks has
+collapsed the layers of the OSI and TCP/IP model. Production networks contain
+middleboxes (e.g.~firewall, NAT, layer-5 switches) operating on multiple
+layers of the network and engaging extensively in layer violation.  
+% Such devices cannot integrate with existing control plane architecture and
+% remain transparent. 
+The SDN paradigm provides a unifying cross-layer control model that matches
+better to modern network device functionality and integrates under a single
+interface.  Secondly, although network complexity has increased, network devices
+still use stand-alone configuration mechanisms (e.g.~remote logic, CLI
+interfaces), while network administrators must specialize global network policy
+into individual network device policies, to fit the existing control
+abstraction.  Furthermore, a series of distributed control protocols remain
+proprietary, thus reducing device interoperable.  SDN enables management
+centralisation and fast reactive control.
 
 The SDN paradigm was highly successful in the network community and within a few
-years since its introduction, network vendors engaged in the development of
-production-level implementations. In addition, the research community has
-developed a number of interesting SDN architectures which address several network
-problems. The \of protocol is currently the pre-dominant implementation of the SDN 
-paradigm.
+years since its introduction, network vendors started to integrate support in
+production-level devices. In parallel, the research community has developed a
+number of SDN architectures which address several network limitations. The \of
+protocol is currently the pre-dominant implementation of the SDN paradigm.
 
 \subsubsection*{\of protocol} 
 
@@ -609,62 +598,60 @@ paradigm.
   \caption{\of available packet actions} \label{tbl:background:openflow_actions}
 \end{table}
 
+The \of protocol was originally developed by the \of Consortium, a collaborative
+organisation of academic institutes, but soon its development was adopted by the
+ONF, a standards definition committee comprised of academic institutions and
+network vendors. \of has been a highly successful approach to network control. A
+number of vendors has introduced support of the protocol in their products while
+there are already \of deployments in enterprise
+networks~\cite{google_of,Kobayashi:vn}.
 
+Figure~\ref{fig:background:openflow-schema} presents an example of an elementary
+\of topology consisting of two entities: the \emph{controller} and the
+\emph{switch}. The controller implements and disseminates the control logic of
+the network to one or more switches over a control channel.  In addition, the
+network community has developed a number of programming environments to develop
+\of control applications. Such programming environments provide a higher level
+abstraction over the \of protocol and reduce the exposure of the developer to
+the run-time details~\cite{nox,floodlight,nodeflow}.
 
-
-\of is an instantiation of the SDN paradigm. The protocol was originally
-developed by the \of Consortium, a collaborative organisation of academic
-institutes, but soon its development was adopted by the ONF, a standards
-definition committee comprised of academic institutions and network vendors. \of has
-been a highly successful approach to network control. A number of vendors
-has introduced support of the protocol in their products
-while there are already \of deployments in enterprise networks~\cite{google_of,Kobayashi:vn}.
-
-A representation of a simple \of topology is presented in
-Figure~\ref{fig:background:openflow-schema}. A minimum \of topology consists of
-two entities: the \emph{Controller} and the \emph{Switch}. The Controller
-implements and disseminates the control logic of the network to the switches
-over a control channel. A controller can control multiple switches. In addition, 
-the network community has developed a number of programming environments to
-develop \of control applications. Such programming environments provide a 
-higher level abstraction over the \of protocol and reduce the exposure of
-the developer to the run-time details~\cite{nox,floodlight,nodeflow}.
-
-The switch entity is responsible to transform \of protocol operations in data
-path policy modifications. The \of functionality is split between the data and
-control layer of the switch. In the data layer, the protocol implements a simple
-packet processing algorithm.  For each packet, the hardware extracts a number of
-fields and matches them against the entries of a \emph{Flow Table}.  The Flow
+\todo{ this is a simplified description for the protocol model. Different
+  protocol version extend some aspects of the model}
+The switch entity is responsible to transform \of protocol interactions in data
+path policy updates. The \of functionality is split between the data and control
+layer of the switch. In the data layer, the protocol implements a simple packet
+processing algorithm.  For each packet, the hardware extracts a number of fields
+and matches them against the entries of one or more \emph{Flow Table}.  The Flow
 Table is a memory abstraction which contains forwarding policy. It comprises of
 flow entries which conceptually consist of three parts: the flow tuple, the flow
-statistics and the flow action list.  The flow tuple synthesizes a flow
-description using all the significant packet header fields.  We present the list
-of fields in Table~\ref{tbl:background:openflow_tupple}.  The protocol
-associates with each flow tuple a flow mask, which permits field wildcarding in
-a flow definition.  Flow statistics store flow packet and byte counters. The
-action list, contains the list of actions that should be applied on every
-matched packet.  We present in Table~\ref{tbl:background:openflow_actions} the
-packet processing actions defined by the \of protocol.  On a packet reception,
-if a matching flow is found in the flow table, then the flow statistics are
-updated and the action list is applied on the packet. If there aren't any
-matching flow entries, the packet propagates as an exception to the control
-layer of the switch.  The control plane of the switch implements the translation
-of the \of protocol into data path modifications.  It provides access and
-modification functionality to the switch configuration and the flow table. The
-switch is able also to propagate autonomously information and exceptions 
-to the controller. 
+statistics and the flow action list.  The flow tuple is effectively a flow
+description using all the significant packet header fields.  The flow definition
+has evolved over the years and Table~\ref{tbl:background:openflow_tupple}
+presents the list of supported fields by each protocol version.  The protocol
+associates each flow tuple with a flow mask, permiting field wildcarding.  Flow
+statistics store packet and byte counters for each flow. The action list,
+contains the list of actions applied to each matched packet.  We present in
+Table~\ref{tbl:background:openflow_actions} the packet processing actions
+defined by the \of protocol.  For each packet, if a matching flow is found in
+the flow table, then the flow statistics are updated and the action list is
+applied on the packet. If there is no matching entry in the flow table, then the packet
+propagates as an exception to the control layer of the switch.  
+
+The control plane of the switch implements the translation of the \of protocol
+into data path modifications.  It provides access and modification functionality
+to the switch configuration and the flow table. The switch is able also to
+propagate autonomously information and exceptions to the controller. 
 
 The ensemble of a flow table and a set of switch ports comprises an \of
 \emph{datapath} and is the core abstraction for network control.  The protocol
-defines a number of protocol message types to manage datapath resources. \of 
-control operations can be grouped in two categories:
-\emph{Forwarding control} and \emph{Switch configuration}. In the rest of the
-section we present how this functionality is addressed by \of messages and how
-this mechanism is evolved over the different versions of the protocol. We
-focus our protocol presentation over the 1.0 version of the protocol.
-ONF has releases three revisions of the
+defines a number of protocol message types to manage datapath resources. \of
+control operations can be grouped in two categories: \emph{Forwarding control}
+and \emph{Switch configuration}. In the rest of the section we present how this
+functionality is addressed by \of messages and how this mechanism is evolved
+over the different versions of the protocol. We focus our protocol presentation
+over the 1.0 version of the protocol.  ONF has releases three revisions of the
 protocol, version 1.1, 1.2 and 1.3, which change significantly the protocol
-specification. Nonetheless, the majority of production systems are predominantly 
+specification. Nonetheless, the majority of production systems are predominantly
 version 1.0 compliant.
 % the \of protocol version 1.0 to control a
 % network. This version was introduced in 2009 and is currently the market default
@@ -718,45 +705,43 @@ capability to control per port traffic shaping queues.
 \paragraph{Protocol evolution} 
 
 Since the specification of the version 1.0 of the protocol, the \of steering
-committee has produced 3 non-backward compatible revisions of the protocol. The
-updates in the protocol are motivated both by the osmosis between the hardware
-and software \of community, as well as, by the introduction of new deployment
-use cases. 
+committee has produced 3 non-backward compatible revisions of the protocol. This
+protocol evolution is driven both by the osmosis between the hardware and
+software \of community and the introduction of new deployment use-cases. 
 
-Version 1.1 of the protocol introduces a number of modification in the main
-protocol pipelne in order to improve the integration of the protocol with the
-silicon functionality. Firstly, the default packet processing algorithm is
-differentiated. A switch can accommodate multiple flow tables and the lookup
-process searches sequentially each of the tables for flow matches. The packet
-must have a match in each of the tables otherwise a {\tt pkt\_in} message is
-generated. In addition, in order to persist partial results between tables, the
-protocol define a 64-bit metadata field and the action list is augmented with
-operations over the metadata field, as well as, over the table search process
-(e.g.~terminate lookup, skip table).  Secondly, the protocol introduces a
+Version 1.1  modifies the main protocol processing pipelne and improves the
+integration of the protocol with the ASIC functionality. In terms of packet
+processing, the packet lookup process searches sequentially, instead of
+parallel, between the switch flow tables.  The packet must match an entry in
+each of the tables otherwise a {\tt pkt\_in} message is generated. In addition,
+in order to persist partial results between tables, the protocol define a 64-bit
+metadata field and the action list is augmented with operations over the
+metadata field, as well as, over the table search process (e.g.~terminate
+lookup, skip table).  \todo{this is shit} Secondly, the protocol introduces a
 primitive to express multipath support in the protocol. This functionality is
 exposed through a group table abstraction.  Group table entries contain a set of
-buckets containing flow actions and an assigned output port. A controller in the
-action of a flow can forward packet to a group entry. The goup selection action
-can select to forward the packet either to all the buckets of the entry (ALL) or
-select randomly a bucket, in a manner similar to the Equal Cost Multiple Path
-routing (ECMP)~\cite{RFC2992} functionality, (SELECT) or select a specific
-bucket (INDIRECT) or forward packet to the first group entry for which the
-output port can forward packet (FAST\_FAILOVER).  Thirdly, the protocol
-introduces MPLS matching support and manipulation.
+buckets containing flow actions and an assigned output port. A flow action list
+can forward a matching packet to a group entry. The group selection action can
+forward a packet to all the buckets of the entry (ALL) or to a random bucket,
+similar to Equal Cost Multiple Path routing (ECMP)~\cite{RFC2992} functionality,
+(SELECT) or select a specific bucket (INDIRECT) or to the first group entry with
+a non-blocked output port (FAST\_FAILOVER).  Thirdly, the protocol introduces
+MPLS matching support and manipulation.
 
 Version 1.2 of the protocol extends data plane protocol support. This revision
 introduces support for IPv6 and Provider Bridge Network (PBB - Mac-in-Mac)
 traffic. In addition the protocol defines a new TLV format for flow Match
 definition, in order to relax the \of tuple definition.  Finally, the protocol
-defines a model to enable multi-controller connectivity for switches.
-Multi-Controller schemes provides resilience to the control of the network. 
+defines a model for efficient multi-controller switch functionality, in an
+effort to improve control resilience.
 
-In Version 1.3 the protocol definition introduces protocol support of QoS
-control. The protocol defines a new table abstraction, the metering table, which
-contains queue definitions. In addition, this protocol definition introduces the
-idea of multiple parallel control channels towards the same controller, in order
-to parallelize {\tt pkt\_in} transmission, and defines a mechanism to support
-message fragmentation.  
+
+Version 1.3 introduces protocol support of QoS control. The protocol defines a
+new table abstraction, the metering table, which contains queue definitions. In
+addition, this protocol defines a control plane improvement using multiple
+parallel control channels to the controller, in order to parallelize {\tt
+  pkt\_in} transmission, and defines a mechanism to support message
+fragmentation.  
 
 Because the recent versions of the protocol has become complex, the vision of
 future \of deployment, is to differentiate switch abstraction and develop

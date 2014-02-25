@@ -792,6 +792,8 @@ log:
 	echo `date +"%s"` `perl texcount.pl -inc -total -nosub thesis.tex | egrep '(Words)|(Number)' | awk '{print $$NF}'` >> stats.data
 	./texcount.pl -inc -brief -freq thesis.tex | awk 'BEGIN{st=0;} {if(st==0) {if($$1=="---") {st=1}}else {print $$1,$$2}}' | tr -d \: | grep -v "Sum of"  | grep -v -f filter-regexp.txt | head -100 > word_cloud.data
 
+tags: Abstract/abstract.tex Acknowledgement/acknowledgement.tex Background/background.tex Chapter1/chapter1.tex Chapter2/chapter2.tex Chapter3/chapter3.tex Conclusions/conclusions.tex Introduction/introduction.tex References/references.bib References/rfc.bib
+	ctags */*.tex References/*.bib
 
 define path-norm
 $(if $(USE_CYGPATH),$(shell $(CYGPATH) -u "$1"),$1)

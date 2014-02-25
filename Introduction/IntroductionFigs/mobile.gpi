@@ -8,11 +8,12 @@ set style fill solid noborder 0.5
 set datafile separator " "
 
 set xlabel "year"
-set ylabel "Data (in PB/month)"
+set ylabel "Data (PB/month)"
+# set logscale y
 
-set y2tics 10 nomirror
-set y2range [0:100]
-set y2label "% of total Internet traffic"
+# set y2tics 10 nomirror
+# set y2range [0:100]
+# set y2label "% of total Internet traffic"
 
 plot 'Introduction/IntroductionFigs/mobile.data.bk' \
   using 2 t "Data" lt 4 axes x1y1, \
@@ -20,10 +21,11 @@ plot 'Introduction/IntroductionFigs/mobile.data.bk' \
   '' using 4:xticlabels(1) t "Video" lt 2 axes x1y1, \
   '' using 5:xticlabels(1) t "VoIP" lt 5 axes x1y1, \
   '' using 6:xticlabels(1) t "Game" lt 6 axes x1y1, \
-  '' using 7:xticlabels(1) t "M2M" lt 7 axes x1y1, \
-  '' using ($8*100):xticlabels(1) w lines t "" lt 4 axes x1y2, \
-  '' using ($9*100):xticlabels(1) w lines t "" lt 1 axes x1y2, \
-  '' using ($10*100):xticlabels(1) w lines t "" lt 2 axes x1y2, \
-  '' using ($11*100):xticlabels(1) w lines t "" lt 5 axes x1y2, \
-  '' using ($12*100):xticlabels(1) w lines t "" lt 6 axes x1y2, \
-  '' using ($13*100):xticlabels(1) w lines t "" lt 7 axes x1y2
+  '' using 7:xticlabels(1) t "M2M" lt 7 axes x1y1;
+#   , \
+#   '' using ($8*100):xticlabels(1) w lines t "" lt 4 axes x1y2, \
+#   '' using ($9*100):xticlabels(1) w lines t "" lt 1 axes x1y2, \
+#   '' using ($10*100):xticlabels(1) w lines t "" lt 2 axes x1y2, \
+#   '' using ($11*100):xticlabels(1) w lines t "" lt 5 axes x1y2, \
+#   '' using ($12*100):xticlabels(1) w lines t "" lt 6 axes x1y2, \
+#   '' using ($13*100):xticlabels(1) w lines t "" lt 7 axes x1y2

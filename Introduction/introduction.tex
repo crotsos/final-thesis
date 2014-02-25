@@ -1,645 +1,470 @@
-%% Thesis Introduction --------------------------------------------------
 \chapter{Introduction} \label{s:introduction:introduction}
 
-Computer network technologies in the recent years have become the predominant
-communication medium of our digital era.  In 2011, a third of the global
-population is Internet-connected through a wide range of network
-technologies~\cite{itufacts2011}, while Internet resources, based on
-estimations, generate 3.4\% of the global GDP~\cite{duRausas:2011un}. In
-parallel, a large fraction of our everyday social life depends on network
-connectivity (e.g.~Social networking, e-mail, e-shopping etc.). Due to the
-increasing importance of network technologies, functional requirements are
-constantly evolving and network infrastructures {\emph must} be future-proof
-against increasing traffic rates and performance and security policy complexity.
+Computer networks have become the predominant interconnection fabric of our
+modern-era. Nonetheless, the widespread usage of network technologies has
+highlighted several scalability problems in network functionality, primarily
+deriving from the design of network protocols and architectures.  Addressing
+these limitation through protocol redesign is a challenging process, which
+requires significant time and effort for deployment. 
 
-From an architectural point of view, network functionality is logically
-separated in two planes: the control and data plane. The data plane is
-responsible to forward rapidly packets between device ports.  The control plane
-is responsible to orchestrate and transform network policy inputs (e.g.~device
-configuration, routing protocol etc.) into efficient forwarding policies for the
-data plane. The performance of a network relies on the performance of both
-planes of functionality. Recent efforts in ASIC design~\cite{covington13}, for
-hardware-based forwarding devices, and network IO
-performance~\cite{routebricks,rizzo12,Han10}, for software-based switches,
-provide strong evidence on the scalability of the data plane functionality in
-supporting current network speeds.  In contrast, existing control plane
-architectures face significant limitations to match the evolution of the data
-plane from a performance perspective~(Section~\ref{sec:background:netcontrol}). 
+This dissertation is concerned with performance scalability problems in modern
+networks.  The thesis of this dissertation is that control plane redesign can
+mitigate network bottleneck, introduced by protocol design, while ensuring
+backwards compatibility and high performance. We argue that existing control
+plane mechanisms remain inflexible and their ``single abstraction fits all''
+approach fails to fulfil the unique requirements for a set of novel deployment
+environments, e.g.~data centers and home networks.  We advocate that modern
+networks require control redesign, \textit{specialised} to the requirement and
+opportunities of  the environment. The recent introduction of SDN in network
+devices provides a sufficient and readily-available enabler for our proposed
+approach. 
+% In order to achieve this, we propose the
+% incorporation of the SDN paradigm as our technology enabler. 
+% \todo{there is a strong requirement for refinement here.}
 
-% Current data plane functionality experiences a significant evolutionary mismatch
-% in comparison to the data plane. 
-In contrast to the device data plane performance, which can been described
-through the forwarding rate and processing latency of the device, control plane
-performance definition has a much higher dimensionality and is tightly coupled
-with the deployment environment. An example of a significant performance
-parameter of the control plane is the responsiveness of the control plane. Data
-plane routing and link layer loop avoidance algorithms use decentralised
-consensus algorithms to share network state and achieve resilient and
-distributed control.  Due to the distributed nature of existing control
-algorithms, the convergence time during state changes is on average orders of
-magnitude higher in comparison to the packet processing latency of the data
-plane. This latency difference becomes important for high capacity links, as
-the number of packets forwarded over an under-optimal path, after a change in
-network connectivity, is increased.  Similarly, a significant performance parameter
-for the control plane of a network is functional evolvability.  Existing control
-plane functionality is distributed and integrated with the network device, thus
-requiring significant network-wide device upgrades in order to evolve the
-control plane.  In addition, control plane performance definition involves
-subjective non-measurable parameters, such as user friendliness.  Current
-network control plane architectures expose a highly complex control abstraction
-to the user, in order to fulfil the requirements for generic and universally
-applicable control, which fail to scale from a management
-perspective~\cite{Mahajan02}.
+For the remainder of this chapter, we discuss the motivations of our work
+(\S~\ref{sec:intro:motivations}), followed by the explicit definition of our
+contributions (\S~\ref{sec:intro:contributions}) and  the outline of this thesis
+(\S~\ref{sec:intro:outline}).
 
-The recent introduction of the Software Defined Network (SDN) paradigm defines a
-novel unified control abstraction for network devices which enables higher
-flexibility to redefine the control plane logic and scale
-performance~(Section~\ref{sec:background:sdn}).  The SDN paradigm supports a
-wide range of control mechanisms, and can be used to synthesize rapidly novel
-high-level control abstraction.  In this dissertation we argue the thesis that: 
+% In 2011, a third of the global population is Internet-connected through a wide
+% range of network technologies~\cite{itufacts2011}, while Internet resources,
+% based on estimations, generate 3.4\% of the global GDP~\cite{duRausas:2011un}.
 
-\begin{quotation} 
-  Current network technologies face a significant and multi-dimensional
-  performance bottleneck on the control plane of the network. In order to
-  improve control plane performance in a scalable manner we must redesign the
-  control plane functionality, using the SDN control abstraction, in order to
-  optimize specific aspects and match the deployment environment requirements. 
-\end{quotation}
-
-% As a result of the elevated role of the
-% network abstraction, the functional requirements of a modern network have
-% significantly evolved in the recent years and some network functionalities face
-% scalability problems. In parallel, the strong requirement for backwards
-% compatibility keeps core Internet protocols unchanged since the 70's, unable to
-% address these scalability problems by design.  As a result, current network
-% technologies are not able to fulfil the novel functional requirements of the
-% technological and social setting and clean slate re-design of the Internet to
-% fulfil these requirements is not possible.
-
-% While computer networks play an important role in our everyday life, their
-% strong backwards compatibility requirement create a important gap in their
-% functionality evolution in order to fulfil current evolving communication
-% needs.
-
-% Our work focuses on the scalability problem of modern networks and examines
-% whether evolved network control logic, designed for specific network
-% environments, can scale network functionality. In this dissertation we argue the
-% thesis that: 
-% 
-% \begin{quotation} 
-%   Computer network design can scale specific functional aspects through
-%   context-aware evolved control planes.  Such control mechanisms should address
-%   the requirements of the deployment environment and establish new
-%   domain-specific control abstractions that take advantage of its distinct
-%   properties. 
-% \end{quotation}
-
-For the remainder of this introduction chapter we justify the importance of this
-thesis.  In Section~\ref{sec:intro:motivations} we discuss the evolution of
-existing network technologies and the scalability limitations incurred by
-existing control plane functionality. In Section~\ref{sec:intro:contributions},
-we list our contributions and in Section~\ref{sec:intro:outline}, we present the
-content of each chapter of the thesis.
+% Due to the increasing importance of network technologies, functional
+% requirements are constantly evolving and network infrastructures {\emph must} be
+% future-proof against increasing traffic rates and performance and security
+% policy complexity.
 
 \section{Motivation} \label{sec:intro:motivations}
 
-In this section we discuss some of the motivations for our thesis. Specifically,
-we present the evolutionary aspect of network technologies, in terms of
-requirements, applications and connection technologies
-(Section~\ref{sec:intro:net_evolution}) and highlight some of the limitation of
-the current control plane
-technologies~(Section~\ref{sec:intro:control_limitations}).
+This section presents the motivations for our thesis. Specifically, motivated by
+the radical evolution of current network
+technologies(\S~\ref{sec:intro:net_evolution}), we discuss the resulting network
+performance complexity~(\S~\ref{sec:intro:perf_complexity}) and exemplify some
+of the limitation incurred by the design of Internet
+protocols~(\S~\ref{sec:intro:control_limitations}).
 
-\subsection{Computer Network Growth} \label{sec:intro:net_evolution}
-
-\begin{figure}[ht] 
-  \centering 
-  \subfigure[global Internet traffic
-  trend]{\includegraphics[width=0.48\textwidth]{Introduction/IntroductionFigs/internet} \label{fig:mobile} }
-  \subfigure[global mobile Internet traffic
-  trend]{\includegraphics[width=0.48\textwidth]{Introduction/IntroductionFigs/mobile} \label{fig:internet} }
-  \caption{Cisco Visual Network Index reports on global network traffic per
-    application for Internet (Figure~\ref{fig:internet}) and for Mobile
-    Internet (Figure~\ref{fig:mobile}). Application } 
-  \label{fig:internet_applications} 
-\end{figure}
-
-\begin{table} 
-  \centering
-  {\tiny
-    \begin{tabular}{ | p{3cm} | c c c c | } 
-      \hline
-      Application                              & rate                        & latency        & jitter         & \# connections \\ \hline 
-      web~\cite{Akamai_4_seconds,Butkiewicz11} & no requirement              & $<$ 4 sec        & no requirement & $>$ 10 (median) \\ 
-      video~\cite{Finamore11}                  & 0.3~(240p) - 5~(1080p) Mbps & no requirement & -              &  1 \\ 
-      peer-to-peer~\cite{Rasti07,pouwelse2004} & maximum possible            & no requirement & no requirement &  maximum possible \\ 
-      VoIP                                     & 100 kbps~(voice) - 1.5 Mbps~(voice and HD video)    & $<$ 500 msec       & $<$ 100msec      & 1 \\ 
-      gaming~\cite{armitage2006networking}     &  $<$ 100 kbps                 & $<$ 100 msec       & $<$ 50 msec      & 1\\ \hline
-    \end{tabular} 
-  }
-  \caption{Network performance requirements for a set of popular traffic classes.} 
-  \label{tbl:application_requirement}
-\end{table}
-
-% A core building block of computer networks is the idea of packet-switched
-% networks~\cite{Licklider1963}.  In comparison to the popular circuit-switched
-% network technologies of the past, packet-switched networks increase
-% the medium utilisation and provide strong resilience to
-% link losses.  Packet-switched networks achieve higher medium utilisation by
-% delivery guarantees relaxation and data transmission multiplexing, while data
-% propagation can dynamically modify end-to-end paths, if a path becomes unavailable. 
+\subsection{Computer Network Evolution} \label{sec:intro:net_evolution}
 
 % a historical perspective on computer networks 
 One of the key mechanisms that formed the objective conditions for the digital
-revolution of our era, was the concept of computer networking.  Computer
-networking refers to the ability of two computers to exchange data over a
-communication medium. A first attempt to implement a computer network of
-significant size was the {\it ARPANET} \/system, a novel communication system of
-the times which provided higher resilience and performance in comparison to
-existing circuit-switched communication systems.  ARPANET~\cite{beranek81} was
-adopted by a small number of US education and research institutes and allowed,
-for the first time in computing history, to interconnect multiple mainframes
-over a mess network. The initial set of standardised applications provided
-elementary mechanisms to exchange data: e-mail~\cite{RFC0561},
-FTP~\cite{RFC0354} and voice~\cite{RFC0741}. ARPANET was later replaced by the
-NSFNET~\cite{Mills:1987tt} in the 80's, which finally evolved in today's
-Internet.  As part of this transition, the research community developed also the
-standards for the Internet protocol suite~\cite{Clark:1988}.
+revolution of our era, was the concept of packet-switched computer networking.
+Computer networks provide a generic data-exchange mechanism between 2 computers
+over a physical medium.
+% Computer networking is the mechanism enabling two computers to exchange data
+% over a physical medium. 
+The most successful attempt to define and implement an heterogeneous computer
+network of significant size, was \textit{ARPANET}~\cite{beranek81}. ARPANET
+improved the resilience and performance in comparison to circuit-switched
+networks, while its simplified design allowed easy integration of existing
+computing systems.  ARPANET was adopted by a small number of US education and
+research institutes and allowed, for the first time in computing history, to
+interconnect multiple mainframes using a packet-switched network. The ARPANET
+community standardized a small set of data-exchange protocols, specifically
+e-mail~\cite{RFC0561}, FTP~\cite{RFC0354} and voice~\cite{RFC0741}. ARPANET was
+later replaced by the NSFNET~\cite{Mills:1987tt}, which finally evolved in
+today's Internet.  As part of this transition, the research community developed
+the standards for the Internet protocol suite~\cite{Clark:1988}, the lower and
+medium layers of the network stack.
 
-Although the concept of computer networks was conceived in the 1960's,
-approximately 20 years since the implementation of a programmable computer, the
-adoption, as well as, the development of the technology was radical over the
-years. Computer networks have managed to provide a sufficient abstraction to
-replace a number of traditional communication systems (e.g.~Telephone networks)
-and support the requirements for a wide spectrum of applications and deployment
-environments. Nonetheless, this exponential in the usage of network technologies
-has introduces significant requirements for networks to support large number of
-users and devices and performance guarantees that weren't initially consider in
-the design of the technologies. This growth has introduced novel scalability
-requirements for network and more specifically on its control plane, which is
-mainly responsible to support the growth. 
-Since the ARPANET time, computer networks gained a significant
-position in the global social apparatus, driven by two major adopters: {\it personal
-  computing users} and {\it businesses}.
+Computer networks, conceived only 20 years after the implementation of a
+programmable computer, have gained a significant position in our society since
+the ARPANET years, guided by the digital revolution.  Their communication
+abstraction currently replaces a number of traditional communication systems,
+while providing support for a wide range of applications and deployment
+environments (e.g.~Telephone networks).  As a result, in 2011 a third of the
+global population is Internet-connected through a wide range of network
+technologies~\cite{itufacts2011}, while Internet resources are estimated to
+generate 3.4\% of global GDP~\cite{duRausas:2011un}.  In developed economies an
+average users is connected to the Internet in parallel over multiple devices
+(e.g.~laptop, smartphone, home entertainment system) and a large portion of
+daily activities relies on network technologies (e.g.~e-banking, e-gov, online
+social networking). Furthermore, broadband connectivity increase in developing
+economies exhibits a positive correlation with GDP growth (10\% increase in
+broadband connectivity improves GDP by approximately 1\%~\cite{katz2011}).  The
+growth in network adoption introduces novel performance requirements for network
+technologies and protocols.  
 
-% why computer networking is successful from the user perspective
-For personal computer users, network technologies provide the medium to access
-rich informations sources and interconnect users and devices seamlessly. An
-end-user nowadays can easily use his personal computer, when connected to an
-Internet gateway, to connect to system abstractions like the World Wide Web (WWW)
-and the Cloud, and access a wealth of information and services.  Currently,
-the WWW is the ultimate information source of our times, providing free access
-to a large portion of the global human knowledge, while the Web 2.0
-functionality of the modern Web enables the development of highly responsive
-services which replace traditional information distribution
-mechanisms~\cite{stempel2000}.  Recent development in network applications have
-established novel mechanisms for fast and wide-scale social interaction.
-Currently, Online Social Networks (OSN) interconnect millions of users across
-the world, while instant messaging services, like google chat and Skype, enable
-real-time text, voice and video communication over the Internet.  In addition,
-the radical reduction in cost and size of network-enabled personal computers, as
-modelled by Moore's Law, has increased significantly the number of devices
-per-user and subsequently increase the network connectivity requirements.  More
-and more devices are shipped with network support and 
-requires connectivity. The constantly increasing adoption of network
-technologies by person computer users fuels a significant portion of network
-innovation and motivates the development of new connection mechanisms (e.g.
-mobile Internet).  The important role of computer networks for users can be
-further reflected in the government level debate to proclaim Internet
-connectivity as a fundamental human right~\cite{klang2005human, Wicker2013},
-introducing significant technological challenges to scale Internet connectivity
-for the global population~\cite{cerf2012}.
+\subsection{The Lernaean Hydra of Network Performance} \label{sec:intro:perf_complexity}
 
-% why computer become important for the global economy too? 
+According to~\cite{wikiperf}: 
+\begin{quotation} 
+  \textbf{Network performance} refers to measures of service quality of a
+  telecommunications product as seen by the customer.
+\end{quotation}
 
-% The business sector adopters employ computer networking technologies to
-% establish a reliable business service middleware and a scalable, fast and
-% low-cost channel to reach costumers. The importance of network technologies for
-% the business world can be reflected on the value that the Internet generates,
-% which is computed to be 4,3\% of the global GDP\@.  
-Computer network technologies and infrastructures have become a valuable asset
-for the business sector as well. Business sector adopters employ computer
-networks primarily as a cheap, fast and multi-functional communication medium to
-interconnect business logic and distribute content to users. The success of
-network technologies to provide these functionalities motivates the business
-sector to invest in the technology, as well as, innovates the usage of the
-technologies in new domains~(e.g.~cloud computing abstractions in a data center
-and distributed content distribution). Such novel network concepts stress the
-capabilities of available connectivity mechanisms, highlighting interesting
-scalability problems~(e.g.~large scale data centers face significant problems to
-scale layer 2 connectivity).  The increase in the adoption of network
-technologies in the business sector can be further identified in the increase of
-the number of Internet Autonomous Systems (AS).  Since 1995 the number has
-exponentially increased from 2000 ASes to approximately 45000 ASes, reflecting
-the increase in the number of organisations using the global Internet
-infrastructure as a core communication mechanism for their
-business~\cite{potaroo}. This increase in ASes introduced a significant
-scalability problems for the control plane of the largest network in the world,
-the Internet~\cite{bgp_instab_labovitz:1997}. 
+Based on this definition, network performance is highly subjective, defined by
+the network environment, the application requirements and the user. The
+increased adoption of network technologies creates an equal augmentation in
+network use-cases and, consequently, the definition of network performance
+becomes complex and domain and application-specific. In addition, network
+performance metrics are not limited to pure network packet processing
+capabilities and consider other, potentially subjective, aspects, like
+usability.  We elaborate on the complexity and multiple dimensions of
+performance discussing two example aspects: application resource requirements
+and network heterogeneity. 
 
-% Network technology penetration is  further augmented in the business sector
-% through the cloud abstraction. Multiple businesses use cloud services to
-% reduce IT costs and offload infrastructure maintenance to 3rd party providers.
+\begin{table} 
+  \centering 
+%  {\tiny 
+    \begin{tabular}{| p{5cm} | p{2cm} p{2cm} p{2cm} p{2.5cm} |} 
+      \hline
+      Application                              & throughput (Mbps) & latency (sec) & jitter (sec)  & flow number (median) \\ \hline
+      web~\cite{Akamai_4_seconds,Butkiewicz11} & -                 & 4            & -              & 10               \\
+      video~\cite{Finamore11}                  & 0.3 - 5           & -            & -              & 1                \\
+      peer-to-peer~\cite{Rasti07,pouwelse2004} & -                 & -            & -              & 30               \\ 
+      VoIP                                     & 0.1 - 1.5         & 0.5          & 0.1            & 1                 \\ 
+      gaming~\cite{armitage2006networking}     & 0.1               & 0.1          & 0.05           & 1                 \\
+      \hline 
+    \end{tabular} 
+%  } 
+  \caption{Network performance requirements for a set of popular traffic classes.} \label{tbl:application_requirement} 
+\end{table}
 
-% Computer networks technologies provide the medium to run 
-% online shops and content distribution services, the fabric to interconnect big-data 
-% processing frameworks and the 
+% \todo{tail at
+%   scale, add requirements for cloud service providers for map reduced
+%  applications.}. 
+Simplicity and  multi-device availability  of the network abstraction have given
+rise to the development of a wide range of applications, with global audiences
+and diverse performance requirements.  As an example,
+Table~\ref{tbl:application_requirement} presents the network requirements in
+terms of bandwidth, latency, jitter and number of concurrent flows for web, video
+streaming, peer-to-peer,  VoIP and gaming application classes.  Based on the
+table, it is evident that current network applications have contradicting
+requirements. Peer to peer applications have no performance requirement but aim
+to maximize network throughput, while VoIP application have strict latency
+requirements.  As a result, applications face difficulties to share network
+resources during congestion.  Network operators overcome the sharing problem by
+over-provisioning bandwidth resources, but physical limitations reduce the
+effectiveness of the approach. 
 
-% In order to bridge user experience between its devices new network applications
-% have been developed to addresses the user requirement for device interconnection
-% and new network paradigms are introduced to enable ubiquitous Internet access to
-% the whole range of personal computing devices, like home networks and mobile
-% Internet. 
+\begin{figure}[] 
+  \subfigure[global Internet traffic trend]
+    {\includegraphics[width=0.49\textwidth]{Introduction/IntroductionFigs/internet}\label{fig:mobile}}  
+  \subfigure[global mobile Internet traffic trend]
+  {\includegraphics[width=0.49\textwidth]{Introduction/IntroductionFigs/mobile}\label{fig:internet}}
+  \caption{Cisco Visual Network Index reports on global network traffic per
+    application for Internet (Figure~\ref{fig:internet}) and for Mobile Internet
+    (Figure~\ref{fig:mobile}).}
+  \label{fig:internet_applications} 
+\end{figure}
 
-% what about the application requirements
-% \paragraph{computer network application dynamics}
+Application performance exhibits similar complexity in a macroscopic level.
+Figure~\ref{fig:internet_applications} presents estimated traffic volumes for
+six popular network application classes between the years 2011-2016 for mobile
+and fixed Internet, using data from the Cisco visualization
+index~\cite{Mobile:2012vd,Cisco:2012wu}. Aggregate network traffic volumes
+exhibit an exponential increase and are expected to augment an order of
+magnitude for mobile Internet and four times for fixed Internet between the
+years 2011 and 2016. Traffic volume increase, is primarily driven by video
+transmission applications which increase their popularity over the file-sharing
+applications. The popularity churn is explained by the fact that the predominant
+file-sharing content of video is now available through high-availability CDN
+services, like Youtube. Nonetheless, as the two classes exhibit different
+characteristics with respect to  bandwidth requirements, network providers are
+obliged to map this change in their architecture and service configuration.
+Application classes commonly exhibit such popularity dynamics.Network
+application popularity can vary over time but a minimum volume will exist in the
+network and shape ISP policies and architectures. 
 
-The wide adoption of network technologies drives a continuous application
-innovation and new network use-cases emerge constantly.  This innovation in
-network applications has a significant impact on the complexity of computer
-network management.  The two aforementioned general classes of adopters use the
-same network technologies to fulfil a diverse set of requirements.  In order to
-exemplify this problem, we present in Table~\ref{tbl:application_requirement}
-the resource requirements for a number of popular network applications, namely
-web traffic, video streaming, peer-to-peer applications,  VoIP and
-gaming\todo{tail at scale, add requirements for cloud service providers for map
-  reduced applications}. In the table we report the requirements for each
-application in terms of bandwidth, latency, jitter and number of connections.
-From the table entries, we note that some application pairs have contradicting
-requirements, when using a congested link.  For example, peer-to-peer
-applications will try to maximize used network capacity, by flooding network
-links, and create increase latency and jitter for delay-sensitive
-applications like VoIP\@.  These contradictions are further magnified by the
-design abstraction of current network protocols, which hides the state of the
-lower layers of the network, lucks performance-related semantics and effectively
-reduces the short-term effectiveness of end-to-end resource control.  Nowadays,
-the importance of the network control plane in network resource management is
-increased. During congestion incidents, the control plane must be able to react
-at flow-level timescales and dynamically allocate resources to fulfil
-application requirements. 
-
-% Computer networking depends to a great extend on the abstraction
-% design pattern in order to support scalability and heterogeneity.  The
-% abstraction principle is based to a great extend on the OSI
-% model~\cite{Day:1983vy}, which tries to separate network functionality into a
-% number of layers and define the intermediate interfaces. A side effect
-% of this design approach, application developers remain agnostic to lower layer
-% internal state.  Further, The OSI model and the TCP/IP protocol suite luck
-% performance-related semantics in their interface definitions.  Applications on
-% the other hand, tend to behave egotistically and aggressively try to fulfil
-% performance requirements in the network environment. As a result, short-scale
-% resource allocation in a network becomes difficult due to the diverse nature of
-% network applications. In order to exemplify the problem, we list in
-% Table~\ref{tbl:application_requirement} a number of key traffic properties for
-% popular traffic classes of the Internet. Network applications have diverse
-% properties which becomes difficult to address as link utilisation increases. 
-
-% How computer application mix looks in the wire? 
-Application innovation complicates also long-term network planning and
-introduces a flexibility requirements in the control plane.  In
-Figure~\ref{fig:internet_applications}, we plot the estimated traffic volumes
-for six popular network application classes between the years 2011-2016 for
-mobile and fixed Internet, using data from the Cisco visualization
-index~\cite{Mobile:2012vd,Cisco:2012wu}. From the figure, we note that network
-traffic is expected to increase an order of magnitude for mobile Internet, while
-the fixed Internet traffic is expected to increase four times. The graphs also
-point out the short-term application popularity churn.  The video streaming
-class is expected to increase significantly both in traffic volume and overall
-traffic over the data and file sharing classes, introducing strict requirements
-in term of path capacity and latency.  Experience in network application
-evolution determines that new network applications are common to gain rapid
-popularity, once they are introduced to the users.  Network technologies must
-exhibit flexibility and provide a friendly network environment to fulfil the
-resource requirement of the new application without infrastructural upgrades.
-Furthermore, once network applications establish their popularity between users,
-they will maintain a fixed network traffic volume for a long period of time,
-depending on the popularity and novelty of the application. The share of the
-application traffic with respect to the overall traffic volume of the network
-may reduce over time, especially as link speeds increase and new popular
-application emerge, but the network should be able to continue providing a
-friendly environment for the application for a long period of time.  This
-results in a continuous enlargement of the resource allocation policies and
-introduces significant complexity on the network control plane.
-
-\todo{review the data of the application trends}
 % % How does the network look like in terms of point to point connectivity. 
-A significant evolution in network technologies is also observed in the lower
-layers of the network abstraction, which encapsulate significant heterogeneity.
+A significant evolution exists also in the lower layers of the network.
 Ethernet has been the predominant Internet link layer protocol since the 80's,
-mainly due to its low cost and complexity design principle. The network
-community has defined standards to run Ethernet over a wide range of medium
-types, like coper, fibber, off-licence radio frequencies, satellite links and
-mobile networks, while keeping the network abstraction unmodified. This approach
-encapsulates a number of medium properties (e.g.~link layer ARQ, link rate),
-within the Ethernet abstraction and hides significant performance
-characteristics of the lower layer.
+mainly due to its low cost and low design complexity. The network community has
+defined standards to implement the Ethernet abstraction over a wide range of
+medium types, like coper, fibber, off-licence radio frequencies, satellite links
+and GSM networks, encapsulating significant heterogeneity. This approach hides a
+number of medium properties (e.g.~link layer ARQ, link rate), which reflect
+significant performance characteristics of the link layer. At the same time,
+applications, network layer protocols and users remain unaware of these factors
+and require homogeneous performance semantics. 
 
-% An example of this
-% property is the Internet. Internet exhibits a 3 layer hierarchy of ASes, which
-% provide scalability and low average path lengths.  Tier 1 and 2 ISPs provide
-% forwarding in an homogeneous and fast manner. Such ISP's are in charge of a
-% relatively small number of network points and thus are able to upgrade network
-% infrastructure with relatively low costs, which can further be offloaded to
-% clients through SLA agreements. For Tier-3 ISPs things are a lot different. This
-% class of ISPs covers a wide range of services. Also because this is the last hop
-% to end users, such networks tend to be large and spread over large geographic
-% distances. For this type of networks, connectivity properties are variable,
-% users SLA have minimum guarantees, performance depends on the link sharing ratio
-% and the medium types. Additionally, the cost to upgrade such networks is high,
-% while strong market competition makes difficult to offload costs directly to
-% users. A number of measurement studies have described these
+% An example of this property is the Internet. Internet exhibits a 3 layer
+% hierarchy of ASes, which provide scalability and low average path lengths.
+% Tier 1 and 2 ISPs provide forwarding in an homogeneous and fast manner. Such
+% ISP's are in charge of a relatively small number of network points and thus
+% are able to upgrade network infrastructure with relatively low costs, which
+% can further be offloaded to clients through SLA agreements. For Tier-3 ISPs
+% things are a lot different. This class of ISPs covers a wide range of
+% services. Also because this is the last hop to end users, such networks tend
+% to be large and spread over large geographic distances. For this type of
+% networks, connectivity properties are variable, users SLA have minimum
+% guarantees, performance depends on the link sharing ratio and the medium
+% types. Additionally, the cost to upgrade such networks is high, while strong
+% market competition makes difficult to offload costs directly to users. A
+% number of measurement studies have described these
 % differences~\cite{Huang:2010wb,Dischinger:2007bg}. 
 
-\subsection{Control Plane Limitations} \label{sec:intro:control_limitations}
+\subsection{Performance Limitations} \label{sec:intro:control_limitations}
 
-% how does computer networks look like, How the Internet looks like?
-% Over the previous section we described the heterogeneity of current computer
-% networks and the dynamics of network applications. In order to address these
-% properties in an efficient way, computer network technologies should be able to
-% evolve. But within existing network systems it is difficult to deploy new
-% technologies. 
-
-% Although computer networks are highly important for society the adaptability of
-% network technologies to user requirement has not been equal over the years. This
-% mismatch can be ascribed to a number of reasons. 
-
-% network design were developed in an environment that had different properties
-Unlike traditional distributed systems, the design of network technologies and
-protocols must be able to accommodate all potential future requirements. This
-fundamental design goals stem both because of the large number of individual
-components forming the network, as well as, the capability of individual
-components to accommodate protocol updates~(e.g. ASIC silicons are optimized to
-implement specific network functionality at line rate, but they are unable to
-modify their functionality).  Current control and data plane protocols,
-unfortunately,  experience a number of design limitations primarily due to the
-inability of their designers to predict the radical adoption of the technology.
-The early adopters of the NSFNET, which defined the Internet protocol standards,
-were universities and research facilities and the design process aimed to
-provide support for asynchronous communication applications, low link speeds and
-best-effort connectivity guarantees. Furthermore, in order to ease the design of
-network devices, the protocols followed the end-to-end design
-principle~\cite{end2endIP}. The control plane on the intermediate hops of the
-path ensures long-term network connectivity.  Current Internet protocols have
-managed to provide a strongly connected network, but as network size and
-complexity increases, the control plane becomes an important mechanism to
-optimize network performance.
+Current network protocols experience a number of design limitations, primarily
+due to the inability to predict the radical adoption of the technology during
+their development.  The early adopters of the NSFNET, the incubator  of the
+Internet protocol standards, were universities and research facilities and the
+resulting system aimed to support asynchronous communication, low data-rates,
+open service connectivity and best-effort guarantees. These initial assumptions
+have been radically revised in the Internet over the recent years, but the
+protocol designs haven't been able to keep up with the change. As a result, the
+mismatch between protocol capabilities and requirements becomes evident, due to
+traffic rates and size increase.
+% Internet protocols effectively
+% provide a connected and resilient communication network, but as network size and
+% traffic rates increase, the complexity increases equally.  \todo{why do I care
+%   about this? Simply declaration on why the network is not able to scale by
+%   design.Basic outcome is that network conditions have changed and we need new
+%   mechanisms to reflect these changes.} 
 % ~\todo{ratio of transmission to propagation delay is reduced}.  
 
-An interesting observation on the evolution of network technologies and
-especially on the control plane of the network is the abstraction simplicity
-requirement set by the network community.  The existing Internet protocols were
-selected through a ``natural selection process'' against other isomorphic
-protocols, developed during the early days of the NSFNET\@. During that period,
-the OSI and ITU organisations published a number of network protocol
-definitions~\cite{x.213,x.233} which provided connectivity for all layers of the
-network abstraction, while the ATM Forum also defined similar higher-layer
-protocols, on top of the ATM technology~\cite{Siu95}. These protocol attempts
-provided highly detailed abstractions, as well as, highly complex protocols
-which, although, can address some of the current functional limitations.
-Nonetheless, their increased complexity introduced performance scalability
-problems for the computational resources of the time and the protocols became
-obsolete in favor of current Internet protocols.
+% \todo{Interesting observation, that explains why the Ethernet design dominated}
+An interesting observation on the evolution of network technologies, and
+especially of their control plane, is that abstraction simplicity is a prime
+design goal. The Internet protocol definition process followed a
+Darwinian selection approach between available solutions, during the early days
+of NSFNET\@. Along with the TCP/IP protocol suite, OSI and ITU proposed
+equivalent protocol stacks~\cite{x.213,x.233}, while the ATM Forum also defined
+similar higher-layer protocols~\cite{Siu95}. These protocol design efforts
+defined detailed abstractions, which addressed some current functional
+limitations.  For example, ATM provided strong resource guarantees which where
+motivated by the design choices, like fixed cell size and 
+circuit-based forwarding approach.  Nonetheless, their high complexity
+faces performance scalability problems, with respect to the available
+computational resources, and the protocols became obsolete in favour of the
+TCP/IP protocol suite. For the rest of the section, we discuss in detail some
+example of network bottlenecks which are a consequence of the design of current
+network protocols.
 
-For the rest of the section, we discuss some important network limitations of
-current technologies.
+% \subparagraph*{Security} 
+% 
+% The initial security requirements for computer network technologies were
+% minimal. On one hand, early technology adopters, such as educational and
+% research institutes, used networks to provide open, free and accessible
+% services, aiming to augment technology adoption. As a result, their security
+% requirements were minimal. On the other hand, the computing resources of the
+% time were limited and couldn't support the computation requirements for a
+% security-aware network design.  In parallel the US Department of Defence~(DoD) ,
+% in order to ensure secure transmission of classified information, designed and
+% implemented a number of high security networks, namely MILNET, SIPRnet and
+% NIPRnet. These networks function as partially stand-alone inter-networks owned
+% by the DoD and provide strong security primitives in the network design.  Their
+% design supports low bandwidth connectivity~(primarily HTTP and mail services)
+% and uses enhanced security mechanisms in the lower layers of the stack along
+% with existing Internet protocol in the higher layers of the
+% network~\cite{siprnet}. 
+% 
+% These initial network security requirements are currently invalidated. A McAfee
+% report from 2009 estimates the cost for cybersecurity to approximately 600
+% million dollars~\cite{kanan2009unsecured}.  Similarly, during the wikileaks
+% scandal in 2011~\cite{cablegate}, a significant number of US state documents was
+% intercepted from the SIPRnet system, exposing the limitation in the design of
+% the network.  The threat model for network systems is wide and contains numerous
+% attacks; from information interception to denial-of-service attacks.  The
+% research community has proposed a number of protocols to address the security
+% requirements of today network environment, e.g.~IPSEC~\cite{RFC2401} and loose
+% source routing~\cite{Argyraki09}.  Nonetheless, although such protocol introduce
+% enhanced security guarantees for the data plane, they also introduce significant
+% complexity on the control plane of the network. For example, for IPsec the data
+% plane can implement at line rate the encryption/decryption task, but an IPsec
+% gateway must maintain protocol state for each tunnel.  Network security requires
+% security-aware control logic spanning from the lowest layers of the network
+% abstraction and spread across the network. 
 
-\subparagraph*{Security} 
-
-The initial security requirements for computer network technologies were
-minimal. On one hand, early technology adopters, such as educational and
-research institutes, used networks to provide open, free and accessible
-services, aiming to augment technology adoption. As a result, their security
-requirements were minimal. On the other hand, the computing resources of the
-time were limited and couldn't support the computation requirements for a
-security-aware network design.  In parallel the US Department of Defence~(DoD) ,
-in order to ensure secure transmission of classified information, designed and
-implemented a number of high security networks, namely MILNET, SIPRnet and
-NIPRnet. These networks function as partially stand-alone inter-networks owned
-by the DoD and provide strong security primitives in the network design.  Their
-design supports low bandwidth connectivity~(primarily HTTP and mail services)
-and uses enhanced security mechanisms in the lower layers of the stack along
-with existing Internet protocol in the higher layers of the
-network~\cite{siprnet}. 
-
-These initial network security requirements are currently invalidated. A McAfee
-report from 2009 estimates the cost for cybersecurity to approximately 600
-million dollars~\cite{kanan2009unsecured}.  Similarly, during the wikileaks
-scandal in 2011~\cite{cablegate}, a significant number of US state documents was
-intercepted from the SIPRnet system, exposing the limitation in the design of
-the network.  The threat model for network systems is wide and contains numerous
-attacks; from information interception to denial-of-service attacks.  
-The research community has proposed a number of protocols to address the
-security requirements of today network environment, e.g.~IPSEC~\cite{RFC2401}
-and loose source routing~\cite{Argyraki09}.  Nonetheless, although such
-protocol introduce enhanced security guarantees for the data plane, they also
-introduce significant complexity on the control plane of the network. For
-example, for IPsec the data plane can implement at line rate the
-encryption/decryption task, but an IPsec gateway must maintain protocol state
-for each tunnel.  Network security requires security-aware control logic
-spanning from the lowest layers of the network abstraction and spread across
-the network. 
-
-% \subparagraph*{Network Addressing} 
-% When the IP protocol was firstly deployed in the Internet, the size of the
-% network was sufficiently small. Host addresses use a 32-bit
-% integer, split in byte aligned classes in order to permit aggregation at
-% the forwarding entities. Within 10 years, the initial assumptions over the size
-% of classes was re-established through the classless Inter-domain routing (CIDR),
-% in order to allow better utilisation of the IP space. Within 15 years
-% the initial assumption over the size of the address space proved also
-% short-sighted, as IP addresses were not sufficient to cover the needs of hosts.  A
-% number of layer violations, like NATs, were widely used within the subsequent
-% years in order to provide connectivity to the increasing number of end-hosts. In
-% order to address this problem within the design of the network protocol, a
-% revised version of IP has been proposed~\cite{RFC2460} since 1998, but its
-% deployment is slow, as the size of the current Internet makes it extremely
-% difficult to replace IPv4 without significant connectivity problems and costs.
+% \subparagraph*{Network Addressing} When the IP protocol was firstly deployed
+% in the Internet, the size of the network was sufficiently small. Host
+% addresses use a 32-bit integer, split in byte aligned classes in order to
+% permit aggregation at the forwarding entities. Within 10 years, the initial
+% assumptions over the size of classes was re-established through the classless
+% Inter-domain routing (CIDR), in order to allow better utilisation of the IP
+% space. Within 15 years the initial assumption over the size of the address
+% space proved also short-sighted, as IP addresses were not sufficient to cover
+% the needs of hosts.  A number of layer violations, like NATs, were widely used
+% within the subsequent years in order to provide connectivity to the increasing
+% number of end-hosts. In order to address this problem within the design of the
+% network protocol, a revised version of IP has been proposed~\cite{RFC2460}
+% since 1998, but its deployment is slow, as the size of the current Internet
+% makes it extremely difficult to replace IPv4 without significant connectivity
+% problems and costs.
 
 \subparagraph{Network management scalability}
 
-A significant control plane scalability bottleneck can be traced back to the
-policy expression interface of current technologies. In
-Section~\ref{sec:background:forwarding} we provide an extensive presentation of
-the basic network control mechanisms and describe the exposed control
-abstraction.  Current network control schemes rely on network administrators to
-manually transform the global control policy into localised policies for each
-network device. In addition, the layered nature of existing network devices
-requires individual configuration for each network layer.  Furthermore, there is
-a luck of mechanisms to evaluate the effectiveness and validity of the resulting
-network configuration.  Policy evaluation relies on traditional connectivity
-testing tools, like ping and tcpdump, and byte and packet SNMP counters from
-network devices.  As a result, large-scale network management is a highly
-laborious process and requires significant experience. Ultimately, modern
-network management interfaces have a significant non-scalable bottleneck on the
-``mechanism'' translating the network functional requirement into distributed
-device configuration, the network manager.  
+Policy and configuration interfaces in current networks introduce a significant
+performance bottleneck.  \cite{Mahajan02} pinpoint a significant portion of
+global BGP routing errors to protocol misconfigurations, prompted to a great
+extend by the counter-intuitive configuration interface.  \cite{Kim11} highlight
+limitations of current configuration interfaces by studying the configuration
+evolution of two medium-sized campus networks.  Device configuration files
+exhibit a continuous size increase, containing frequently stale rules, pruned
+only during policy conflicts or major policy revisions.  Interfaces remain
+low-level and inexpressive. As a result, network policy updates translate into
+multiple device reconfigurations, while forwarding and security policy are
+merged by the device interface. The configuration bottleneck is
+equally important in environments with non-expert administrators, like the
+home network.  \cite{grinter05} conclude that human understanding of the network
+abstraction is limited and the complexity of the control abstraction leads to
+under-optimized network configuration, especially  in terms of security and
+performance. 
 
-In~\cite{Kim11}. the authors conduct a measurement study on the evolution of the
-configuration of two medium-sized campus networks. Their longitude analysis
-highlights the constant expansion of the network policy for the two networks, as
-well as, the mixture in the network configuration of security and forwarding
-control.  In addition, the network configuration process is highly subjective
-and depends on the device type and the deployment environment.  Especially for
-switch and router configuration, every network policy change translates into a
-number of device policy updates across the network, highlighting the restricted
-expressiveness of the policy definition languages.  Finally, device policies
-over time are common to contain stale rules in order to avoid potential network
-misconfiguration, which are pruned only when they are contradicting newer policy
-updates or during major policy revisions.  Similarly, in~\cite{Mahajan02} the
-authors study global BGP protocol errors and report a significant portion of
-protocol misconfiguration which reduce connectivity and performance. These
-misconfigurations can be ascribed to the counter intuitive control abstraction
-of the routing protocol.  The mismatch between human understanding and network
-abstraction is further exemplified in the domain of home networking.
-In~\cite{grinter05}, the authors contact a small scale user study and highlight
-the mismatch between the user-perceived network connectivity abstraction and the
-real network functionality. This mismatch leads to under-optimized network
-configuration. Ultimately, homeowners tend to sacrifice security and
-performance, in order to reduce the burden of network management. 
+Currently, network configuration relies to a great extent on the network
+administrator, who is responsible to manually transform the network policy into
+specialised configurations for each network device and network layer.  For
+example, the policy must be translated both into VLAN tagging configurations in
+the data-link layer, and routing and firewall configurations for the network
+layer.  Section~\ref{sec:background:forwarding} provides an extensive
+presentation of current network control mechanisms and available control
+abstractions.  
+The radical development of network technologies has limited effect on device
+interfaces, which remain low-level and counter-intuitive to
+administrators. As a result, network configuration remains still a process
+requiring and relying on the network administrator experience.  Effectively,
+network management interfaces introduce a bottleneck on the ``mechanism''
+translating the network policy into distributed device configurations, the
+network administrator.  
 
-The management problem is further augmented by the standalone functionality of
-the control plane of a set of common network devices, like performance-enhancing
-middleboxes, firewalls and NATs. Such devices maintain a local static network
-configuration, disconnected from the distributed control plane of traditional
-network devices.  This luck of interaction may introduce unexpected network
-behaviours during significant network changes, e.g.~subnetwork disconnections
-and reduced host connectivity.  The network management domain requires a
-technological revolution, similar to the revolution of high-level programming
-language in the 70's.  In order to scale network management performance, we
-require new user-friendly control abstractions which can automate the process of
-policy translation and unify the control domains across the network. 
-% The SDN abstraction is able to
-% address these management scalability limitations and provide a highly flexible
-% control abstraction, resembling the evolution that higher-level programming
-% languages provided in the programming community in the 70's. 
+Network management requires a technological ``revolution'', similar to the
+introduction of high-level programming language in the 70's.  In order to scale
+network management performance, we require new user-friendly control
+abstractions which can automate the process of policy translation, unify the
+control domain across the network and specialize the control plane functionality
+to the deployment environment. 
+
+% The management problem is further augmented by standalone functionality of
+% common network devices, like performance-enhancing middleboxes, firewalls and
+% NATs. The luck of control-plane interaction with other devices, can introduce
+% unexpected network effects during state changes, e.g.~network segment
+% disconnection and reduced host-connectivity.  
 
 \subparagraph*{Resource allocation} 
-% Internet provides a best-effort forwarding mechanism. This design decision was
-% chosen in order to enforce the end-to-end principle of the
-% Internet~\cite{end2endIP} and avoid state in the intermediate nodes of the
-% network. Such an approach covered sufficiently the requirements of the networked
-% applications of the time. As new network application became available over the
-% years, more strict performance requirements were introduced. Unfortunately,
-% Internet currently has no mechanism to address these requirement network-wide.
-As discussed in Section~\ref{sec:intro:net_evolution} dynamic and fast resource
-control is an important requirement for todays network technologies.  Network
-engineers are accustomed to address this problem by network resource
-overprovision~\cite{TeiSha02}. This approach though becomes insufficient as
-network link rates increase. Users have become accustomed to fast network
-functionality, which severely degrades by queueing delays and
-packet drops in high-speed networks. In related literature, a number of
-approaches has been proposed to address this problem in multiple layers of the
-network stack (e.g.~ECN~\cite{RFC5562}, DiffServ~\cite{RFC2475}, RSVP over
-MPLS-TE\cite{RFC3209}). 
 
-Resource management in current network technologies is implemented as a feedback
-mechanism between two entities: the end-to-end congestion mechanism and the
-network forwarding mechanism. End-to-end congestion run on the end-hosts of a
-network flow and aims to infer the available capacity of the end-to-end path
-using some flow properties, e.g.~packet losses, RTT variance. Network forwarding
-policy defines the end-to-end path between any pair of hosts over the network
-connection graph and, in some cases, define the prioritisation and buffer size
-for specific network flows. The two mechanism interact dynamically. End-to-end
-congestion control estimates capacity of the path and control the data rate of
-the flow. The aggregate flow rates are measured by the network forwarding logic
-to define an optimal end-to-end path which optimizes specific network-wide
-indexes, e.g.~average link utilisation. Fundamentally, there is a strong
-mismatch between the time-scale of the two mechanisms which can degrade flow
-performance. In order to enable better resource allocation mechanism, we must
-evolve current control plane to react faster to the overall network performance. 
+As discussed in Section~\ref{sec:intro:perf_complexity}, modern network
+functionality requires dynamic, fine grain and rapid resource control in order
+to fulfil the diverse application requirements.  Network engineers commonly
+address this problem through resource over-provision~\cite{TeiSha02}, which
+though exhibits reduced effectiveness at high link-rates. High access speeds
+increase application responsiveness and shape equivalently end-user
+expectations.  During high link utilisation though, network responsiveness and,
+consequently, user experience 
+degrade severely, in the vicinity of queueing delays and packet losses.  A
+number of mechanisms has been proposed to improve resource control, in multiple
+layers of the network stack (e.g.~ECN~\cite{RFC5562}, DiffServ~\cite{RFC2475},
+RSVP over MPLS-TE\cite{RFC3209}). These mechanisms, for different reasons,  fail
+to provide a generic solution to the problem. 
 
-\subparagraph*{Network functionality} 
+The ideal mechanism for effective resource control requires a-priori knowldge of
+resource requirement from end-hosts, in order to define optimal resource
+allocations.
 
-In an effort to improve control and performance of current network technologies
-the network community has developed the concept of middleboxes, transparent
-network devices that modify the behaviour of network protocols. Devices like
-NATboxes, WAN optimizers and firewalls function transparently in a network and
-enable custom programmability in the protocol functionality without a
-requirement to modify the protocol specifications.  Middleboxes have redefined
-to a great extend overall protocol functionality, as they commonly introduce new
-assumptions in the protocol functionality and violate the Rubstness principle of
-networks~\footnote{``In general, an implementation must be conservative in its
-  sending behavior, and liberal in its receiving behavior.  That is, it must be
-  careful to send well-formed datagrams, but must accept any datagram that it
-  can interpret (e.g., not object to technical errors where the meaning is still
-  clear).''~\cite{RFC0791}}. In~\cite{Honda:2011ci}, the authors contact a
-large-scale robustness measurement across the Internet and report that uncommon
-but protocol-legal network flow behaviours have a significant possibility to
-fail due to the functionality of such devices. 
+Current network follow a distributed approximation using a feedback mechanism between two
+systems: the end-to-end congestion control and the network forwarding policy.
+End-to-end congestion control infers the available bandwidth of the network path
+using flow properties, like packet losses and RTT variance, and adjusts
+accordingly the traffic rate. The Network forwarding policy defines, statically
+or dynamically, network paths between hosts, as well as, prioritisation and
+buffer size for specific network flows. Forwarding policy decisions can modify
+flow properties, affect end-to-end congestion control and effectively enforce
+resource control policy.  Nonetheless, because the two mechanisms are weakly
+integrated, current resource control exhibits significant latency with respect
+to network access speeds.  Effective network resource management requires
+smarter control planes, which augment the inputs to the decision algorithm and
+provide faster response.
 
-An important side-effect of the introduction of middlebox functionality is the
-redefinition of elementary network properties.  A typical example of this effect
-is the bi-directionality property of network connectivity. The widespread
-deployment of NATboxes, which scale Internet addressing, change Internet-wide
-hosts connectivity.  A NATed host is able to access any Internet service, but
-cannot receive incoming connection from any Internet host. The protocol
-community has developed a number of stand-alone control protocols for
-middleboxes, enabling end-hosts to effectively affect middlebox
-functionality~\cite{eggert08}. Nonetheless, in order to enable adaptability of
-network technologies in new domains, without loosing the ability to evolve
-existing protocols, we need to integrate middlebox control with the control
-plane of the network. 
+\subparagraph*{Connectivity scalability} 
+
+A popular approach to address network scalability problems uses middleboxes,
+transparent network devices which redefine the behaviour of data plane
+protocols, like NAT boxes, WAN optimizers and firewalls.  Middleboxes have
+redefined to a great extend overall protocol functionality, as they commonly
+introduce new assumptions in the protocol functionality and violate the
+Robustness principle of networks~\footnote{``In general, an implementation must
+  be conservative in its sending behavior, and liberal in its receiving
+  behavior.  That is, it must be careful to send well-formed datagrams, but must
+  accept any datagram that it can interpret (e.g., not object to technical
+  errors where the meaning is still clear).''~\cite{RFC0791}}.
+\cite{Honda:2011ci} presents an Internet-wide robustness measurement and report
+that obscure but correct protocol behaviours turn out to be unsupported by a
+number of end-points, primarily due to the functionality of such devices. 
+
+An important side-effect of middlebox functionality is the redefinition of
+elementary network properties, like the bi-directionality of network
+connectivity.  For example, NAT boxes improve address scalability, but reduce
+host reachability.  All hosts behind a NAT are able to access any Internet
+service using a single IP address, but require network reconfiguration to expose
+an Internet-wide service. A series of protocols has been proposed to 
+enable end-hosts middlebox control~\cite{eggert08}, but their generality is
+limited and context-specific.
+
+
+% Nonetheless, in order to enable adaptability of network technologies in new
+% domains, without loosing the ability to evolve existing protocols, we need to
+% integrate middlebox control with the control plane of the network. 
+
 
 \section{Contributions} \label{sec:intro:contributions}
 
-This dissertation contends that existing approaches to network control introduce
-a significant performance bottleneck in network functionality and are
-insufficient for the constantly evolving and diverse requirements of the new
-applications domains for network technologies. A more flexible approach is
-required to address the control requirements for modern network technologies,
-which unifies network control across all devices of the network and optimizes
-specific performance aspect in order to fulfil the functional requirements of
-the deployment environment. We employ the recent SDN control abstractions in
-order to increase the flexibility to develop new control plane architectures. 
-
-We claim the following specific contributions:
+This dissertation contends that existing network architectures face a
+significant performance bottleneck in network functionality 
+% \todo{change pitch of this sentence} 
+and provide limited support to the constantly evolving network requirements of
+end-hosts.  Modern networks require flexible and specialized control approaches,
+which address complex functional requirements and unify network control across
+all devices of the network. Our study employs extensively the SDN control approach and the \of protocol.
+Nonetheless, the applicability of our contributions are not limited and can
+easily adapt to alternative programmable control frameworks. In detail, we claim
+the following specific contributions:
 
 \begin{itemize}
-  \item \textbf{Control scalability}: This thesis presents two measurement
-        platforms which enable SDN developers to understand the performance
-        capabilities of their SDN platforms and architectures. The tool focus
-        respectively on evaluating the control plane functionality of existing
-        SDN switches, as well as, providing an environment to reproduce the
-        functionality of a network and evaluate the performance of custom
-        control plane architectures. Using these tools, we conduct a measurement
-        analysis to evaluate the control plane performance limitations of a
-        number of off-the-self forwarding devices and evaluate the capabilities
-        of the various control interactions. 
-  \item \textbf{Management scalability}: We consider the problem of scalable
-        network management in the context of the home network and design a novel
-        control plane architectures. Motivated by recent home network users , we
-        redesign the home router to enable homeowner to receive accurate
-        information from their network and exercise intuitive control over the
-        network devices.
-  \item \textbf{Security and connectivity scalability}: As discuss in our
-        motivations section, current Internet architecture cannot scale support
-        for elementary connectivity properties across the Internet. User have
-        become accustomed to employ third party services in order to enable
-        device interconnectivity across the Internet, while sacrificing
-        performance, security and functionality. We address this scalability
-        problem with \signpost, a novel control plane architectures which
-        provides scalable Internet-wide device inter-connectivity across the
-        Internet with user-defined performance and security. \signpost provides
-        an intelligence control plane for the end-user device which can adapt to
-        the network capabilities of the environment and employ readily available
-        connectivity mechanisms to enable inter-device connectivity. 
+  \item \textbf{Control scalability evaluation}: We provide an in-depth study of 
+    the SDN control scalability. We present two measurement and evaluation platforms for
+    SDN control, \oflops and \sdnsim. \oflops is a high precision switch
+    evaluation platform, providing a range of testing modules for elementary \of
+    interaction. \sdnsim is an experimentation platform, specialised for
+    \of technologies, which allows a user to describe and
+    either simulate or emulate an experimental setup. These two platforms establish a
+    generic toolbox, providing flexible evaluation of SDN control
+    applications. Using these tools, we provide an in-depth
+    analysis of the control-plane performance and limitations for a  
+    wide range of off-the-self \of switch implementations. Additionally, using as
+    input the \oflops switch performance models, we explore the impact of
+    a hierarchical control  scheme in a small-scale datacenter architecture. 
+ 
+  \item \textbf{Management scalability}: We present a control application which
+    addresses the problem of network management and resource control in the
+    context of home networks.  Motivated by recent ethnographic and measurement
+    studies for home networks, we identify user requirements for accurate
+    network state information and intuitive control primitives. We address these
+    requirement through the home router, by redesigning the control plane
+    functionality.  While maintaining full compatibility with existing network
+    applications, our design provides a user intuitive control abstraction,
+    which incorporates the user social input in the forwarding decision and
+    improves both access control and  QoS.
+
+  \item \textbf{Connectivity scalability}: We revisit the problem of
+    connectivity scalability in the Internet.  Our exploration is motivated by
+    the requirement of end-users to interconnect devices across the Internet in
+    an ad-hoc manner, thus forming Personal Clouds. Currently, this requirement
+    is fulfilled through data offloading to third party cloud services, raising
+    concerns regarding performance, efficiency and security.  We propose
+    \signpost, a distributed control plane architecture for end-hosts which
+    provides inter-device connectivity and controllable performance and
+    security, across the network. In addition, simple augmentation of end-host forwarding
+    logic, allows \signpost to integrate seamlessly with a wide range of
+    existing resource sharing applications.
 \end{itemize}
 
 \section{Outline} \label{sec:intro:outline}
 
 The rest of this dissertation is organised as follows.
-Chapter~\ref{ch:background} provides background information related to this
-work. It presents the architecture of current network devices and the physical
-limitation of network control, discusses the available control plane mechanisms
-and their weaknesses and discusses alternative control plane approaches and
-their applications.  
+Chapter~\ref{ch:background} provides background information related to our
+thesis. Motivated by the architecture of current network devices and the
+physical and design limitation of network control, we revisit control-plane
+mechanisms and related research efforts for control-plane scalability.  
 
 In Chapter~\ref{sec:sdn_scalability} we study the control scalability of the SDN
 paradigm.  We present two control plane benchmarking platforms, {\it OFLOPS}
-\/and {\it SDNSIM}, designed to measure the baseline scalability of the Software
-Defined Networking~(SDN) paradigm. Using these tools, we conduct a measurement
-study to characterise the performance of SDN-enabled devices, as well as, the
-impact of distributed control architectures in the data plane performance.  In
+\/and {\it SDNSIM}, designed to provide high precision evaluation of the
+scalability of \of device implementations and architectures, respectively. Using
+these tools, we conduct a measurement study to characterise the performance of
+baseline \of operation by SDN-enabled devices and the impact of
+distributed control architectures in the data plane performance.  In
 Chapter~\ref{sec:homework}, we study the problem of control plane management
 performance, focusing on the home network setting. Using existing user studies
 we draw the user network management requirements and redesign the control plane
@@ -650,15 +475,161 @@ evaluation of the architecture and provide evidence on the scalability and
 backwards compatibility of our architecture.  In Chapter~\ref{sec:signpost} we
 investigate application of the SDN paradigm in connectivity scalability. We
 present \signpost, a novel user-centric control plane architecture for
-end-hosts, providing Internet-wide device connectivity with user controlled
-security. We present the architecture of the framework, the integration of the
-architecture with existing connectivity-enabling mechanisms and we evaluate the
+end-hosts, providing Internet-wide device connectivity with user-controlled
+performance and security. We present the architecture of the framework, its
+integration with existing connectivity-enabling mechanisms and we evaluate the
 performance and applicability of the framework.  Finally, in
 Chapter~\ref{sec:conclusions} we draw conclusions from our study and suggest
 further work. 
 
-%%% ----------------------------------------------------------------------
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "../thesis"
-%%% End: 
+
+
+% \chapter{Introduction} \label{s:introduction:introduction}
+% 
+% Computer network technologies in the recent years have become the predominant
+% communication medium of our digital era.  In 2011, a third of the global
+% population is Internet-connected through a wide range of network
+% technologies~\cite{itufacts2011}, while Internet resources, based on
+% estimations, generate 3.4\% of the global GDP~\cite{duRausas:2011un}. In
+% parallel, a large fraction of our everyday social life depends on network
+% connectivity (e.g.~Social networking, e-mail, e-shopping etc.). Due to the
+% increasing importance of network technologies, functional requirements are
+% constantly evolving and network infrastructures {\emph must} be future-proof
+% against increasing traffic rates and performance and security policy complexity.
+% 
+% From an architectural point of view, network functionality is logically
+% separated in two planes: the control and data plane. The data plane is
+% responsible to forward rapidly packets between device ports.  The control plane
+% is responsible to orchestrate and transform network policy inputs (e.g.~device
+% configuration, routing protocol etc.) into efficient forwarding policies for the
+% data plane. The performance of a network relies on the performance of both
+% planes of functionality. Recent efforts in ASIC design~\cite{covington13}, for
+% hardware-based forwarding devices, and network IO
+% performance~\cite{routebricks,rizzo12,Han10}, for software-based switches,
+% provide strong evidence on the scalability of the data plane functionality in
+% supporting current network speeds.  In contrast, existing control plane
+% architectures face significant limitations to match the evolution of the data
+% plane from a performance perspective~(Section~\ref{sec:background:netcontrol}). 
+% 
+% % Current data plane functionality experiences a significant evolutionary
+% % mismatch in comparison to the data plane. 
+% In contrast to the device data plane performance, which can been described
+% through the forwarding rate and processing latency of the device, control plane
+% performance definition has a much higher dimensionality and is tightly coupled
+% with the deployment environment. An example of a significant performance
+% parameter of the control plane is the responsiveness of the control plane. Data
+% plane routing and link layer loop avoidance algorithms use decentralised
+% consensus algorithms to share network state and achieve resilient and
+% distributed control.  Due to the distributed nature of existing control
+% algorithms, the convergence time during state changes is on average orders of
+% magnitude higher in comparison to the packet processing latency of the data
+% plane. This latency difference becomes important for high capacity links, as the
+% number of packets forwarded over an under-optimal path, after a change in
+% network connectivity, is increased.  Similarly, a significant performance
+% parameter for the control plane of a network is functional evolvability.
+% Existing control plane functionality is distributed and integrated with the
+% network device, thus requiring significant network-wide device upgrades in order
+% to evolve the control plane.  In addition, control plane performance definition
+% involves subjective non-measurable parameters, such as user friendliness.
+% Current network control plane architectures expose a highly complex control
+% abstraction to the user, in order to fulfil the requirements for generic and
+% universally applicable control, which fail to scale from a management
+% perspective~\cite{Mahajan02}.
+% 
+% The recent introduction of the Software Defined Network (SDN) paradigm defines a
+% novel unified control abstraction for network devices which enables higher
+% flexibility to redefine the control plane logic and scale
+% performance~(Section~\ref{sec:background:sdn}).  The SDN paradigm supports a
+% wide range of control mechanisms, and can be used to synthesize rapidly novel
+% high-level control abstraction.  In this dissertation we argue the thesis that: 
+% 
+% \begin{quotation} Current network technologies face a significant and
+%   multi-dimensional performance bottleneck on the control plane of the network.
+%   In order to improve control plane performance in a scalable manner we must
+%   redesign the control plane functionality, using the SDN control abstraction,
+%   in order to optimize specific aspects and match the deployment environment
+%   requirements.  \end{quotation}
+% 
+% % As a result of the elevated role of the network abstraction, the functional
+% % requirements of a modern network have significantly evolved in the recent
+% % years and some network functionalities face scalability problems. In parallel,
+% % the strong requirement for backwards compatibility keeps core Internet
+% % protocols unchanged since the 70's, unable to address these scalability
+% % problems by design.  As a result, current network technologies are not able to
+% % fulfil the novel functional requirements of the technological and social
+% % setting and clean slate re-design of the Internet to fulfil these requirements
+% % is not possible.
+% 
+% % While computer networks play an important role in our everyday life, their
+% % strong backwards compatibility requirement create a important gap in their
+% % functionality evolution in order to fulfil current evolving communication
+% % needs.
+% 
+% % Our work focuses on the scalability problem of modern networks and examines
+% % whether evolved network control logic, designed for specific network
+% % environments, can scale network functionality. In this dissertation we argue
+% % the thesis that: 
+% % 
+% % \begin{quotation} Computer network design can scale specific functional
+% % aspects through context-aware evolved control planes.  Such control mechanisms
+% % should address the requirements of the deployment environment and establish
+% % new domain-specific control abstractions that take advantage of its distinct
+% % properties.  \end{quotation}
+% 
+% For the remainder of this introduction chapter we justify the importance of this
+% thesis.  In Section~\ref{sec:intro:motivations} we discuss the evolution of
+% existing network technologies and the scalability limitations incurred by
+% existing control plane functionality. In Section~\ref{sec:intro:contributions},
+% we list our contributions and in Section~\ref{sec:intro:outline}, we present the
+% content of each chapter of the thesis.
+
+
+
+% % why computer networking is successful from the user perspective
+% For personal computer users, network technologies provide the medium to access
+% rich informations sources and interconnect users and devices seamlessly. An
+% end-user nowadays can easily use his personal computer, when connected to an
+% Internet gateway, to connect to system abstractions like the World Wide Web
+% (WWW) and the Cloud, and access a wealth of information and services.
+% Currently, the WWW is the ultimate information source of our times, providing
+% free access to a large portion of the global human knowledge, while the Web 2.0
+% functionality of the modern Web enables the development of highly responsive
+% services which replace traditional information distribution
+% mechanisms~\cite{stempel2000}.  Recent development in network applications have
+% established novel mechanisms for fast and wide-scale social interaction.
+% Currently, Online Social Networks (OSN) interconnect millions of users across
+% the world, while instant messaging services, like google chat and Skype, enable
+% real-time text, voice and video communication over the Internet.  In addition,
+% the radical reduction in cost and size of network-enabled personal computers, as
+% modelled by Moore's Law, has increased significantly the number of devices
+% per-user and subsequently increase the network connectivity requirements.  More
+% and more devices are shipped with network support and requires connectivity. The
+% constantly increasing adoption of network technologies by person computer users
+% fuels a significant portion of network innovation and motivates the development
+% of new connection mechanisms (e.g.  mobile Internet).  The important role of
+% computer networks for users can be further reflected in the government level
+% debate to proclaim Internet connectivity as a fundamental human
+% right~\cite{klang2005human, Wicker2013}, introducing significant technological
+% challenges to scale Internet connectivity for the global
+% population~\cite{cerf2012}.
+% 
+% % why computer become important for the global economy too? 
+% Computer network technologies and infrastructures have become a valuable asset
+% for the business sector as well. Business sector adopters employ computer
+% networks primarily as a cheap, fast and multi-functional communication medium to
+% interconnect business logic and distribute content to users. The success of
+% network technologies to provide these functionalities motivates the business
+% sector to invest in the technology, as well as, innovates the usage of the
+% technologies in new domains~(e.g.~cloud computing abstractions in a data center
+% and distributed content distribution). Such novel network concepts stress the
+% capabilities of available connectivity mechanisms, highlighting interesting
+% scalability problems~(e.g.~large scale data centers face significant problems to
+% scale layer 2 connectivity).  The increase in the adoption of network
+% technologies in the business sector can be further identified in the increase of
+% the number of Internet Autonomous Systems (AS).  Since 1995 the number has
+% exponentially increased from 2000 ASes to approximately 45000 ASes, reflecting
+% the increase in the number of organisations using the global Internet
+% infrastructure as a core communication mechanism for their
+% business~\cite{potaroo}. This increase in ASes introduced a significant
+% scalability problems for the control plane of the largest network in the world,
+% the Internet~\cite{bgp_instab_labovitz:1997}. 
