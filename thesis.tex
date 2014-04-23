@@ -1,3 +1,4 @@
+%!TEX root = /Users/cr409/Dropbox/thesis/thesis.tex
 %input macros (i.e. write your own macros file called MacroFile1.tex)
 \include{Macros/MacroFile1}
 
@@ -14,6 +15,10 @@
 \usepackage{multirow}
 \usepackage{pifont}
 \usepackage{multirow}
+\usepackage{array}
+\usepackage[]{natbib}
+% \usepackage[colorlinks=false]{hyperref}
+
 
 \ifpdf
     \pdfinfo { /Title  (Scalable Software Defined Networking)
@@ -88,12 +93,13 @@
 
 \frontmatter % book mode only
 \pagenumbering{roman}
-%\include{Dedication/dedication}
-%\include{Acknowledgement/acknowledgement}
-%\include{Abstract/abstract}
+\include{Dedication/dedication}
+\include{Acknowledgement/acknowledgement}
+\include{Abstract/abstract}
 
 \tableofcontents
 \listoffigures
+\listoftables
 \printnomenclature  %% Print the nomenclature
 \addcontentsline{toc}{chapter}{Nomenclature}
 
@@ -120,11 +126,13 @@
 %\include{Appendix1/appendix1}
 %\include{Appendix2/appendix2}
 
+\bibpunct{[}{]}{,}{a}{}{;}
+
 \bibliographystyle{plainnat}
-%\bibliographystyle{Classes/CUEDbiblio}
+% \bibliographystyle{Classes/CUEDbiblio}
 %\bibliographystyle{Classes/jmb}
 %\bibliographystyle{Classes/jmb} % bibliography style
 \renewcommand{\bibname}{References} % changes default name Bibliography to References
-\bibliography{References/references,References/rfc} % References file
+\bibliography{References/references-bk,References/rfc-bk} % References file
 
 \end{document}

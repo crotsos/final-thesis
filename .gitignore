@@ -54,3 +54,4 @@ thesis.nls
 
 *.make
 *.cookie
+*_aux

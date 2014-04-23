@@ -92,9 +92,9 @@
                  linktocpage,
                  pagebackref,
                  colorlinks = true,
-                 linkcolor = blue,
+                 linkcolor = black,
                  urlcolor  = blue,
-                 citecolor = red,
+                 citecolor = black,
                  anchorcolor = green,
                  hyperindex = true,
                  hyperfigures
@@ -115,7 +115,7 @@
                  colorlinks = true,
                  linkcolor = blue,
                  urlcolor  = blue,
-                 citecolor = red,
+                 citecolor = black,
                  anchorcolor = green,
                  hyperindex = true,
                  hyperfigures

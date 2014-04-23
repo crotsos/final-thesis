@@ -17,248 +17,47 @@ the gap between the home network users performance requirements and the ISP
 resource allocation policy, providing a simple, scalable and user-friendly QoS
 mechanism.
 
-More specifically, in this chapter we present the engineering and social
-characteristics of home networks~(Section~\ref{s:elephant}) and elaborate on the
-nature of the problems and the inherent opportunities of the specific network
-environment~(\ref{s:evolution}).  Furthermore, we describe our home router
-design~(Section~\ref{s:router}) and present and evaluate a number of proposed
+In this chapter, motivated by the nature of the problems and the inherent
+opportunities of home networks (Section~\ref{s:evolution}),  we present a home
+router design~(Section~\ref{s:router}) and evaluate a number of proposed
 protocol modifications placing the homeowner in direct control of their
-network~(Section~\ref{s:protocols}) . In Addition, we present a simple QoS
+network~(Section~\ref{s:protocols}). In addition, we present a simple QoS
 mechanism enabling user-ISP collaboration to improve resource utilisation in the
-last-mile using commodity SDN devices~(Section~\ref{s:qos}). Finally 
-we conclude the results of our exploration~(Section~\ref{s:conclusion}) .
+last-mile bottleneck of the ISP (Section~\ref{s:qos}). Finally we conclude
+the results of our exploration~(Section~\ref{s:conclusion}).
 
 Note that throughout this Chapter we refer to the individual managing the home
 network as the homeowner without loss of generality; clearly any suitably
 authorised member of the household, owner or not, may be able to exercise control
 based on specifics of the local context. 
 
-% \begin{itemize}
-% \item We elaborate on the nature of the problems and opportunities inherent to
-%       home networks~(\S\ref{s:elephant});
-% \item We describe our home router and how its flow-based approach enables it to
-%       help improve the user experience~(\S\ref{s:router}); and
-% \item We present and evaluate protocol modifications that place the homeowner in
-%       more direct control of their network~(\S\ref{s:protocols}).  
-% \end{itemize}
-
-\section{Technological and Social aspects of home networking} \label{s:elephant}
-
-% Consumer broadband Internet access is a critical component of the digital
-% revolution in domestic settings: for example, Finland has made broadband access
-% a legal right for all its
-% citizens~\footnote{\url{http://www.bbc.co.uk/news/10461048}}. A growing number
-% of services are now provided over the Internet, including government,
-% entertainment, communications, retail and health.  
-The growth in the number of IP-enabled devices over the last decade  has
-expanded the use-cases for in-home wired and wireless networking from Internet
-connection sharing to local media sharing, gaming, and other applications.  Home
-network functionality, unlike other network environments, contains a strong
-social aspect, which establishes a dynamic relationship between the technology
-and the social organisation of the setting and thus exhibits unique properties.
-In this Section, we elaborate results from various home network studies and
-elaborate on the characteristics of home network environments, both from a
-social, as well as, an engineering perspective.  More specifically, in
-Subsection~\ref{s:home_measurement} we present the distinct technical
-characteristics of home network technologies, while in
-Subsection~\ref{s:home_social} we focus on the social characteristics of
-home networking, using findings from relevant ethnographic studies. 
-
-% Despite the growth in Internet use and
-% the explosion of interest in home networking, the opacity of networking
-% technologies means that they remain extraordinarily difficult for people to
-% install, manage, and use in their homes.
-
-% {\it ``The technical know-how required to set up a network and run music or
-%   video across cables or wi-fi, is `the elephant in the room that no-one wants
-%   to talk
-%   about.'\,''}\,\footnote{\url{http://news.bbc.co.uk/1/hi/technology/6949607.stm}}
-
-\subsection{Home Networking as a system} \label{s:home_measurement}
-
-Home networks are highly heterogeneous edge networks, typically
-Internet-connected via a single broadband link, where non-expert network
-operators provide a wide range of services to a small set of users.  Home
-networks use predominantly ADSL and cable technologies for Internet
-connectivity, while fiber, 3G and satellite technologies are not uncommon.
-While we focus on home networks, we note that many environments, e.g.,~small
-offices, coffee shops, hotels, exhibit similar characteristics and thus may
-benefit from similar approaches. Such capabilities are likely to be infeasible
-in more traditional settings, e.g.,~backbone and enterprise networks.  In this
-section we use existing studies to present the technical characteristics of
-modern home network. 
-% More specifically, we present the type of devices
-% connected to a home network, the properties of the local and Internet traffic
-% and the properties of local and Internet connectivity. 
-
-% Home network measurement studies have focused both on the local network
-% properties as well as the nature of the Internet traffic. Local network analysis
-% provides useful insight on the way devices interact within the house and the
-% possible performance limitations. Such measurement studies focused mainly on
-% developing active or passive measurement tools, that runs on end-hosts in the
-% network and collect data. 
-Home networks commonly provide local device connectivity through wired and
-wireless Ethernet, both supported by modern PCs. Wired network
-adapters predominantly support the 802.3ab (1 Gbps full-duplex) standard and
-wireless network adapters support predominantly 802.11a/g (54 Mbps) standards
-with hardware-accelerated encryption, while 802.11n (600 Mbps) support slowly
-becomes commodity. Wired Ethernet connectivity provides high data rates with negligible
-medium interferences, but fails in supporting flexible spatial mobility within
-the household. In contrast, wireless Ethernet connectivity supports extensive
-device mobility, but network performance is susceptible to environmental
-parameters.  A number of studies have tried to study the behaviour of wireless
-Ethernet in an effort to improve performance. In~\cite{homenetProfiler} the
-authors develop the Homenet measurement framework, an end-host active
-measurement tool integrated with an active user survey.  Results from the
-Homenet measurements tool report on average good signal strengths for wireless
-home networks~($<$ -80dBm), while the measurement tool picks up advertisement,
-on average, of 10 other wireless networks, a third of which used overlapping
-channels.  These observations point out the continuous improvement of wireless
-technology and contrast earlier results in~\cite{Yarvis05characterizationof}.
-In addition, the visibility of wireless networks beyond the physical limits of
-the home highlights a significant access control problem. The WPA encryption scheme
-ensures network data integrity but the control scheme is inflexible; pre-shared key
-knowledge provides full access to the home network.
-
-Furthermore, home Internet connectivity exhibits variable performance, dand
-depends to a great extend on the ISP configuration.
-In~\cite{Dischinger2007}, the authors contact an active network measurement of
-residential broadband ISPs and identify significant performance variance.
-In addition,  the study identifies a performance bottleneck
-on the last mile of the broadband link.  In a relevant study, the authors
-in~\cite{Sundaresan2011} contact a long-term study of broadband connectivity,
-using the home router to run various networks test, and detect significant
-effects on network throughput and latency by ISP throttling mechanisms, like
-PowerBoost~\cite{powerboost}. In their analysis they conclude that broadband
-performance can be affected by multiple factors, distributed  across the
-network, while accurate performance characterisation cannot be contacted through
-a single measurement test.  The effects of the ISP network configuration in
-Internet connectivity are measured by the Netalyzer~\cite{Kreibich10} tool, a
-network connectivity and protocol openness evaluation framework.  Netalyzer uses
-a network buffer discovery test which measured up to 200 msec of buffer
-latencies in popular ISP networks. Such Buffering latencies are common to
-develop during pick hours and affect to a great extend the user experience. 
-The importance of Internet performance for residential broadband networks is
-reflected on a governmental level, where independent state authorities evaluate
-ISP service quality~\cite{fcc, ofcom}.  
-
-Home networks exhibit interesting characteristics with respect to applications
-and traffic properties. Home network commonly have relaxed network policies,
-predominantly defined and enforced by the ISP, and, as a result, permit usage of
-a wide range of applications.  In~\cite{Reggani12} the authors develop a passive
-measurement tool, logging continuously end-host traffic.  Trace analysis unveils
-that in a home network setting end-hosts generate and consume significant
-volumes of network filesystem and P2P applications, while a large portion of the
-traffic remains local and is observable only from within the network.
-Residential broadband Internet traffic patterns exhibit significant temporal and
-spatial variability.  In~\cite{Cho2006} authors detect in 2005 a significant
-volumes of P2P traffic in Japanese bradband ISPs.  More recent
-studies~\cite{Maier2009} of Internet traffic from a German ADSL provider point
-out a shift of user trend towards web applications, with a large portion of
-traffic being HTTP-based. Similar trends are detected in USA,  as presented
-in~\cite{Erman2011}. In this study the authors analyse full packet traces from
-an ADSL provider and identify that 70\% of the network traffic uses the HTTP
-protocol, primarily for online video and one-click hosting services. 
-
-Finally, home network studies identify an increase in the number of devices
-connected to a home network, as well as, significant heterogeneity between the
-devices.  In the Homenet~\cite{homenetProfiler} survey users report, on average,
-7-8 network enabled-devices installed in the local network, while active probing
-of the network discovered, on average, only 1-2 active devices. Further, the
-user survey reports a wide range of connected devices (e.g.~smartphones,
-tablets, game consoles, etc.).  This points out that any change of the home
-network functionality must be backwards compatible with a wide range of
-operating systems and devices. Nonetheless, in a similar study
-in~\cite{Hatonen10} the authors test a number of off-the-self home routers and
-unveil high variability in the semantics of the NAT and DNS functionality
-implemented by the router firmware. Since such routers are widely deployed in
-home networks, device network functionality, as well as, users are accustomed to
-such variability.
-% to consider this variability as acceptable. 
-% widespread usage of such routing kit, the impact to home networking appears to be
-% minimal and home network environment appears to be resilient to non-standard
-% router implementations. 
-
-\subsection{Home Network as a social activity} \label{s:home_social}
-
-Home networks technologies have been a domain of interest for the HCI and
-sociology research communities, as they provide an interesting environment to
-study the interactions of social behaviours and technology.  Studies in the
-field usually engage in user interviews in order to understand how users
-perceive and interact with network technologies. 
-
-An important aspect in analysing the home network from a social aspect, requires
-an in-depth understanding of the user perception of  home network technologies.
-In~\cite{shehanpoole08,grinter05} the authors use sketching to enable users to
-describe their understanding of home network connectivity. The analysis
-highlights two important observations; user opacity to the network increases
-inversely proportional to their user network experience -- verifying the
-effectiveness of the abstraction-based design of the current network stack, and
-users identify network devices using the social context of the home network.
-Further, in~\cite{tolmie07} the authors perform an empirical analysis of the
-interactions of home members with network technologies.  Interestingly, their
-finding identify that, on average, users are least motivated to optimize home
-network configuration, as long as the perceived performance is tolerable.
-Additionally, users interest to engage in network maintenance increases when the
-task resembles other common household duties~(well defined and simple tasks with
-short durations), while the interest conflict that arise due to the shared
-nature of such infrastructures is usually solved through negotiation between the
-household members. Relevant studies have highlighted the importance of accurate
-information of the utilization and state of the network for network management.
-In~\cite{Chetty10}, the authors develop a visualization system, informing home
-network users with statistics on bandwidth utilization.  Interestingly, the
-system improved user understanding of network functionality and troubleshooting,
-but, additionally, raised privacy concerns. 
-
-Home network configuration and management are influenced to a great extend by
-the design of the house and the routines of the house members.
-In~\cite{Rodden03} authors use a model of home architecture temporal
-evolution~\cite{Brand94} to analyse the relationships between ubiquitous
-technologies and home design and understand the interactions between home design
-and network usage. The study describes how the user network decisions are
-affected by the design of the house, e.g., location of the network router, while
-at the same time how the users confuse the limits of the house with the limits
-of their network, e.g.  users assume that encrypting their home network is not
-important since it is contained within the limits of the house.
-% In~\cite{rodden04,crabtree03} the authors
-% monitor the real time communications and information flows in a multi-member
-% household. The study concludes that communication 
-% activities have a location reference defined 
-% to the involved member as well as the house planning, while activities can be
-% synthesized as sequences into higher order activities. Additionally, using these
-% observations, they propose a framework which can model such interactions. 
-In~\cite{shehan07} authors analyse common management and configuration problems
-in home networks and project them in the respective design decisions of the
-network systems.  They present a weight of evidence that problems with home
-networking are not amenable to solution via a `thin veneer' of user interface
-technology layered atop the existing architecture.  Rather, they are
-\emph{structural}, emerging from the mismatch between the stable `end-to-end'
-nature of the Internet and the highly dynamic and evolving nature of domestic
-environments.  
-
-\todo{add reference to \cite{Mazurek2010} for access control requirements for
-  the house.}
-% Many empirical studies in recent years have explored the clear mismatch between
-% current networking technology and the needs of the domestic setting,  in both
-% the
-% UK~\cite{}
-% and the
-% US~\cite{sung07:_my_roomb_rambo,}.
-% These studies present a weight of evidence that problems with home networking
-% are not amenable to solution via a `thin veneer' of user interface technology
-% layered atop the existing architecture.  Rather, they are \emph{structural},
-% emerging from the mismatch between the stable `end-to-end' nature of the
-% Internet and the highly dynamic and evolving nature of domestic environments.  
-
-
 \section{Motivations}\label{s:evolution}
 
-\subsection{Home Network: Use cases}
+In this section we elaborate on the nature of the problems and opportunities
+inherent to home networks. We motivate motivate our thesis by presenting the
+findings of relevant ethnographic and social studies
+(Section~\ref{sec:homework:use_cases}) and set the requirements for our system
+(Section~\ref{s:revolution}). 
+
+\subsection{Home Network: Use cases} \label{sec:homework:use_cases}
+
+Many empirical studies in recent years have explored the clear mismatch between
+current networking technology and the needs of the domestic setting,  in both
+the
+UK~\mycite{tolmie07,rodden07,rodden04,rodden04,crabtree03}
+and the
+US~\mycite{shehan07,grinter05,sung07,chetty07,shehanpoole08}.
+These studies present a weight of evidence that problems with home networking
+are not amenable to solution via a `thin veneer' of user interface technology
+layered atop the existing architecture.  Rather, they are \emph{structural},
+emerging from the mismatch between the stable `end-to-end' nature of
+the Internet and the highly dynamic and evolving nature of domestic
+environments.  
 
 Home networks use the same protocols, architectures, and tools once developed for the
 Internet in the 1970s.  Inherent to the Internet's `end-to-end' architecture
 is the notion that the core is simple and stable, providing only a semantically
-neutral transport service.  Its core protocols were designed for a certain
+neutral transport service.  The core protocols were designed for a certain
 context of \emph{use} (assuming relatively trustworthy endpoints), made
 assumptions about \emph{users} (skilled network and systems administrators both
 using connected hosts and running the network core), and tried to accomplish a
@@ -266,7 +65,7 @@ set of \emph{goals} (e.g.,~scalability to millions of nodes) that simply do not
 apply in a home network. 
 
 In fact, the home network is quite different in nature to both core and
-enterprise networks.  Existing studies~\cite{tolmie07,shehan07,shehanpoole08}
+enterprise networks.  Existing studies~\mycite{tolmie07,shehan07,shehanpoole08}
 suggest domestic networks tend to be relatively small in size with between 5 and
 20 devices connected at a time.  The infrastructure is predominately
 cooperatively self-managed by residents who are seldom expert in networking
@@ -278,48 +77,53 @@ they are often owned and controlled by different household members.
 
 To illustrate the situation we are addressing, consider the following three
 example scenarios, drawn from  situations that emerged from fieldwork 
-reported in more detail elsewhere~\cite{wmust2011,Chetty10}: 
- 
-\textbf{Negotiating acceptable use}.  {\it William and Mary have a spare room
-  which they let to a lodger, Roberto.  They are not heavy network users and so,
-  although they have a wireless network installed, they pay only for the lowest
-  tier of service and they allow Roberto to make use of it.  The lowest tier of
-  service comes under an acceptable use policy that applies a monthly bandwidth
-  cap.  Since Roberto arrived from Chile they have exceeded their monthly cap on
-  several occasions, causing them some inconvenience.  They presume it is
-  Roberto's network use causing this, but are unsure and do not want to cause
-  offence by accusing him without evidence.}
+reported in more detail elsewhere~\mycite{wmust2011,Chetty10}: 
 
-\textbf{Welcome visitors, unwelcome laptops}.  {\it Steve visits his friends
-  Mike and Elisabeth for the weekend and brings his laptop and smartphone.  Mike
-  has installed several wireless access points throughout his home and has
-  secured the network using MAC address filtering in addition to WPA2.  To
-  access the network, Steve must not only enter the WPA2 passphrase, but must
-  also obtain the MAC addresses of his devices for Mike to enter on each
-  wireless access point.  Steve apologizes for the trouble this would cause and,
-  rather than be a problem to his hosts, suggests he reads his email at a local
-  cafe.} 
+\begin{quote}
+\textbf{Negotiating acceptable use}.  William and Mary have a spare room which
+they let to a lodger, Roberto.  They are not heavy network users and so,
+although they have a wireless network installed, they pay only for the lowest
+tier of service and they allow Roberto to make use of it.  The lowest tier of
+service comes under an acceptable use policy that applies a monthly bandwidth
+cap.  Since Roberto arrived from Chile they have exceeded their monthly cap on
+several occasions, causing them some inconvenience.  They presume it is
+Roberto's network use causing this, but are unsure and do not want to cause
+offence by accusing him without evidence.
+\end{quote}
 
-\textbf{Sharing the medium socially efficient}.  {\it Richard is the teenage son
-  of Derek and has a great interest in Music, downloading a lot of music from the
-  Internet. Derek works some times in the night from home using the Terminal
-  Services provided by his employee. Commonly Tension is created between the
-  household member,  as Derek
-  blames Richard downloading activity for his poor performing remote desktop
-  application. } 
+\begin{quote}
+\textbf{Welcome visitors, unwelcome laptops}.  Steve visits his friends Mike and
+Elisabeth for the weekend and brings his laptop and smartphone.  Mike has
+installed several wireless access points throughout his home and has secured the
+network using MAC address filtering in addition to WPA2.  To access the network,
+Steve must not only enter the WPA2 passphrase, but must also obtain the MAC
+addresses of his devices for Mike to enter on each wireless access point.  Steve
+apologizes for the trouble this would cause and, rather than be a problem to his
+hosts, suggests he reads his email at a local cafe.
+\end{quote}
+
+\begin{quote}
+\textbf{Socially efficient network sharing}.  Richard, the teenage son of Derek
+exhibits a great interest in online Music services. Derek works some times from
+home, using the Terminal Services provided by his employee. Tension is created
+between the household member,  as Derek blames Richard downloading activity for
+his poor performing remote desktop application. 
+\end{quote}
 
 In such ways, simple domestic activities have deep implications for
 infrastructures that generate prohibitive technical overheads.  In the first
 scenario, the problem is simply that the network's behaviour is opaque and
 difficult for normal users to inspect; in the second, the problems arise from
 the need to control access to the network and the technology details exposed by
-current mechanisms for doing so.  
+current mechanisms for doing so; in the third, the problem arises from the
+inability of the resource allocation algorithm to capture the social aspect of
+the home setting.  
 
 Home networks enable provision of a wide range of services, e.g.,~file stores,
 printers, shared Internet access, music distribution.  The broad range of
 supported activities, often blending work and leisure, make network use very
 fluid.  In turn, this makes it very hard to express explicitly \emph{a priori}
-policies governing access control or resource management~\cite{tolmie07}.
+policies governing access control or resource management~\mycite{tolmie07}.
 Indeed, fluidity of use is such that access control and policy may not even be
 consistent, as network management is contingent on the household's immediate
 needs and routines.
@@ -350,10 +154,9 @@ heuristics we can understand, and offers a set of well understood practises that
 might be exploited in managing the infrastructure.  
 
 We exploit human understandings of the local network and the home to guide
-management of the supporting
-infrastructure~\cite{crabtree03} by focusing on the
-home router not only as the boundary point in an edge network but as a physical
-device which can be exploited as a point of management for the domestic
+management of the supporting infrastructure~\mycite{crabtree03} by focusing on
+the home router not only as the boundary point in an edge network but as a
+physical device which can be exploited as a point of management for the domestic
 infrastructure.  Within our router, we focus on flow management for three
 reasons: 
 
@@ -380,8 +183,8 @@ reasons:
 \begin{figure} 
   \centering 
   \includegraphics[trim=0.5cm 1cm 0.5cm 2.5cm, width=0.5\columnwidth]{architecture}
-  \caption{\label{f:architecture}Home router architecture.  \ovs
-    (\emph{ovs*}) and NOX manage the wireless interface.  Three NOX modules
+  \caption[Home router architecture]{\label{f:architecture}Home router architecture.  \ovs
+    and NOX manage the wireless interface.  Three NOX modules
     provide a web services control API, a DHCP server with custom address
     allocation and lease management, and a DNS interceptor, all logging to the
     Homework Database (\emph{hwdb}) (\S\ref{s:protocols}). 
@@ -394,37 +197,33 @@ platform.\footnote{An Atom 1.6GHz eeePC 1000H netbook with 2GB of RAM running
 home router, as shown in Figure~\ref{f:architecture}, consists of the \ovs \of
 implementation, a NOX controller exporting a web service interface to control
 custom modules that monitor and manage DHCP and DNS traffic, plus the Homework
-Database~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag} providing
+Database~\mycite{sventek11:_infor_plane_archit_suppor_home_networ_manag} providing
 an integrated network monitoring facility.  This gives us a setup very similar
 to a standard operator-provided home router where a single box acts as wireless
 access point, multiplexes a wired connection for upstream connectivity to the
 ISP, and may provide a small number of other wired interfaces. 
                                                                     
 We next describe the main software components upon which our router relies.
-Using this infrastructure, we provide a number of novel user interfaces, one of
+Using this infrastructure, a number of novel user interfaces was developed, one of
 which we describe briefly below; details of the others are available
-elsewhere~\cite{mortier11:_suppor_novel_home_networ_manag}.  Note that a key
+elsewhere~\mycite{mortier11:_suppor_novel_home_networ_manag}.  Note that a key
 aspect of our approach is to avoid requiring installation of additional
 software on client devices: doing so is infeasible in a home context where so
 many different types of device remain in use over extended periods of time.
 
 \subsection{\of, \ovs \& NOX} \label{s:openflow}
 
-We provide \of support using \ovs~\cite{openvswitch}, \of-enabled switching
-software that replaces the in-kernel Linux bridging functionality able to
-operate as a standard Ethernet switch as well as providing full support for the
-OpenFlow protocol.  We use the NOX~\cite{nox} controller as it provides a
-programmable platform abstracting OpenFlow interaction to events with associated
-callbacks, exporting APIs for C++ and Python.
-
-Our network control logic, discussed in Section~\ref{s:protocols}, is implemented
-using the NOX controller framework through five different modules. The
-C++ module {\it hwdb} synchronizes router state with the hwdb home database,
-presented in Section~\ref{s:hwdb}, the C++ module {\it homework\_dhcp}
-implements our custom DHCP server, the C++ module {\it homework\_routing}
-implements the forwarding logic of the design, the C++ module {\it homework\_dns}
-implements the DNS interception functionality and the Python module {\it
-  homework\_rpc} exposes the control API as a Web service. 
+We provide \of support using \ovs~\mycite{openvswitch} and employ the
+NOX~\mycite{nox} control platform, an event-driven programmable controller with
+C++ and Python module support, to develop our control logic.  Our control logic,
+discussed in Section~\ref{s:protocols}, is implemented in five distinct modules.
+The C++ module \textit{hwdb} synchronizes router state with the hwdb home
+database, presented in Section~\ref{s:hwdb}, the C++ module
+\textit{homework\_dhcp} implements our custom DHCP server, the C++ module
+\textit{homework\_routing} implements the forwarding logic of the design, the
+C++ module \textit{homework\_dns} implements our DNS filtering functionality and
+the Python module \textit{homework\_rpc} exposes the control API through a Web
+service. 
 
 \begin{table}
   \begin{tabular} {p{0.35\columnwidth}p{0.55\columnwidth}} 
@@ -440,7 +239,7 @@ implements the DNS interception functionality and the Python module {\it
     \url{deny-dns/<e>/<d>} & Deny access to domain \texttt{d} by client \texttt{e}\\ 
   \end{tabular} 
   \caption{\label{t:api}Web service API;
-    prefix all methods \texttt{https://.../ws.v1/}.  $<$\,$X$\,$>$ and $[X]$
+    prefix all methods \texttt{https://\ldots/ws.v1/}.  $<$\,$X$\,$>$ and $[X]$
     denote required and optional parameters.}
 \end{table}
 
@@ -448,16 +247,12 @@ Our router provides flow-level control and management of traffic via a single
 \of datapath managing the wireless interface of the platform.\footnote{Without
   loss of generality, our home router has only a single wired interface so the
   only home-facing interface is its wireless interface; other home-facing
-  interfaces would also become part of the \of datapath.} 
-  % We provide NOX
-  % modules that implement a custom DHCP server, control forwarding, control
-  % wireless association via filtering, and intercept DNS lookups.  
-Control of the router is provided via a simple web service (Table~\ref{t:api}).
-Traffic destined for the upstream connection is forwarded by the datapath for
-local processing via the kernel bridge, with Linux's \emph{iptables} IP
-Masquerading rules providing standard NAT functionality.\footnote{While NAT
-  functionality could be implemented within NOX, it seemed neither interesting
-  nor necessary to do so.}
+  interfaces would also become part of the \of datapath.} Control of the router
+is provided via a simple web service (Table~\ref{t:api}).  Traffic destined for
+the upstream connection is forwarded by the datapath for local processing via
+the kernel bridge, with Linux's \emph{iptables} IP Masquerading rules providing
+standard NAT functionality.\footnote{While NAT functionality could be
+  implemented within NOX, it seemed neither interesting nor necessary to do so.}
 
 %% Without loss of generality, the device we describe in this paper has
 %% only a single wired interface so the only home facing interface is its
@@ -471,49 +266,30 @@ Masquerading rules providing standard NAT functionality.\footnote{While NAT
 %%  a Flows table among others; provides the basic measurement
 %%  facility accessed by the many uis via rpc}
  
-In addition to \ovs and NOX we make use of the Homework Database,
-\emph{hwdb}, an active, ephemeral stream
-database~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag}.  The
+In addition to \ovs and NOX we make use of the Homework Database, \emph{hwdb},
+an active, ephemeral stream
+database~\mycite{sventek11:_infor_plane_archit_suppor_home_networ_manag}.  The
 ephemeral component consists of a fixed-size memory buffer into which arriving
 tuples (events) are stored and linked into tables.  The memory buffer is treated
 in a circular fashion, storing the most recently received events inserted by
 applications measuring some aspect of the system.  The primary ordering of
 events is time of occurrence.  
 
-The database is queried via a variant of CQL~\cite{arasu05:_cql} able to express
+The database is queried via a variant of CQL~\mycite{arasu05:_cql} able to express
 both temporal and relational operations on data, allowing applications such as
 our user interfaces to periodically query the ephemeral component for either raw
-events or information derived from them. 
-Applications need not be collocated on the router as \emph{hwdb} provides a
-lightweight, UDP-based RPC system that supports one-outstanding-packet semantics
-for each connection, fragmentation and reassembly of large buffers, optimization
-of ACKs for rapid request/response exchanges, and maintains liveness for
-long-running exchanges.  Monitoring applications request can execute temporal
-query on specific types of events.  \emph{hwdb} also provides notification
-functionality; applications may register interest in \emph{future} behaviour
-patterns and receive notification when such patterns occur in the
-database.  The work described in this paper makes use of three tables:
-\emph{Flows}, accounting traffic to each 5-tuple flow; \emph{Links}, monitoring
-link-layer performance; and \emph{Leases}, recording mappings assigned via DHCP.
-
-%% By default, there are three tables, Flows, Links, and Leases.  Table
-%% Flows stores the number of packets and bytes as observed (inserted) by
-%% an application that accumulates these counts for each 5-tuple flow per
-%% measurement interval (currently set to 1s in our deployments).  In a
-%% similar manner, table Links stores the average RSSI, the number of
-%% packets, the number of bytes, and the number of retransmissions
-%% observed for each wireless device identified by its MAC
-%% address.  Finally, table Leases stores any actions taken by the DHCP
-%% server (e.g., granting or revoking a lease) with the mappings between
-%% allocated IP addresses and host MAC addresses and names.  
-
-%% \mort{fix link para}
-
-%% We next describe details, implementation and evaluation of the two
-%% strategies by which we exploit the home network context.  First we
-%% consider the ways in which people may be more directly involved in
-%% infrastructure protocols.
-
+events or information derived from them.  Applications need not be collocated on
+the router as \emph{hwdb} provides a lightweight, UDP-based RPC system that
+supports one-outstanding-packet semantics for each connection, fragmentation and
+reassembly of large buffers, optimization of ACKs for rapid request/response
+exchanges, and maintains liveness for long-running exchanges.  Monitoring
+applications request can execute temporal query on specific types of events.
+\emph{hwdb} also provides notification functionality; applications may register
+interest in \emph{future} behaviour patterns and receive notification when such
+patterns occur in the database.  The work described in this paper makes use of
+three tables: \emph{Flows}, accounting traffic to each 5-tuple flow;
+\emph{Links}, monitoring link-layer performance; and \emph{Leases}, recording
+mappings assigned via DHCP.
 
 \subsection{The Guest Board} \label{s:guest-board}
 
@@ -522,19 +298,19 @@ link-layer performance; and \emph{Leases}, recording mappings assigned via DHCP.
 \begin{figure} 
   \centering 
   \includegraphics[width=0.9\columnwidth]{homework_guest_board}
-  \caption{\label{f:guest-board}The \emph{Guest Board} control panel, showing an
+  \caption[The \emph{Guest Board} control panel]{\label{f:guest-board}The \emph{Guest Board} control panel, showing an
     HTC device requesting connectivity.}
 \end{figure}
 
 This interface exploits people's everyday understanding of control panels in
 their homes, e.g.,~heating or alarm panels, to provide users with a central
-point of awareness and control for the network. We exploit this physical arrangement to
-provide a focal point for inhabitants to view current network status and to
-manage the network.  It provides a real time display of the current status of
-the network (Figure~\ref{f:guest-board}), showing devices in different zones
-based on the state of their connectivity.  The display dynamically maps key
-network characteristics of devices to features of their corresponding labels.
-Mappings in the current display are: 
+point of awareness and control for the network. This physical arrangement
+provides a focal point for inhabitants to view current network status and to
+manage the network.  The interface provides a real time display of the current
+status of the network (Figure~\ref{f:guest-board}), showing devices in different
+zones based on the state of their connectivity.  The display dynamically maps
+key network characteristics of devices to features of their corresponding
+labels.  Mappings in the current display are: 
 
 \begin{itemize}
 \item Wireless signal strength is mapped to device label transparency, so
@@ -549,7 +325,7 @@ Devices in range appear on the screen in real-time, initially in the leftmost
 panel indicating they are within range of the home router but not connected.
 The central panel in the control displays machines actively seeking to associate
 to the access point. This zone exploits the underlying strategy of placing
-people in the protocol discussed in Section~\ref{s:protocols}.  When devices
+people in the protocol, discussed in Section~\ref{s:protocols}.  When devices
 unknown to the network issue DHCP requests, the router's DHCP server informs the
 guest board and a corresponding label appears in this portion of the display.
 If a user wishes to give permission for the machine to join the network they
@@ -557,19 +333,6 @@ drag the label to the right panel; to deny access, they drag the label to the
 left panel. The guest board provides both a central control point and, by
 drawing directly upon network information collected within our router, a
 network-centric view of the infrastructure. 
-
-% The guest board provides both a central control point and, by drawing directly
-% upon network information collected within our router, a network-centric view of
-% the infrastructure.  The interface is implemented in HTML/CSS/Javascript
-% allowing it to be displayed on a range of devices, currently under trial with
-% users.  The router's measurement and control APIs described above are also being
-% used to build a wide range of other interfaces for use via smartphones, web
-% browsers, and custom display hardware.
-
-%% \mort{...it is just one of several interfaces we have built that use
-%%  the features of our home router, ranging from network artefacts
-%%  to phyiscally mediated access via usb key tokens; see uist2011
-%%  paper insub for details}
 
 \section{Putting People in the Protocol} \label{s:protocols}
 
@@ -598,7 +361,7 @@ the home context to other situations, e.g., small offices, hotels.
 
 \subsection{Address Management} \label{s:addresses}
 
-DHCP~\cite{rfc:2131} is a protocol that enables automatic host network
+DHCP~\mycite{rfc:2131} is a protocol that enables automatic host network
 configuration. It is based on a four way broadcast handshake that allows hosts
 to discover and negotiate with a server their connectivity parameters.  As part
 of our design we extend the functionality of the protocol to achieve two goals.
@@ -659,7 +422,7 @@ control over access to the wireless network itself, and to Internet services
 more generally. 
 
 \begin{figure} \centering \includegraphics[width=0.8\columnwidth]{eapol}
-  \caption{\label{f:association}802.11i handshake, part of the association
+  \caption[802.11i handshake]{\label{f:association}802.11i handshake, part of the association
     process.  Note that MIC (Message Integrity Code) is an alternate term for
     MAC, used in such contexts to avoid confusion with Media Access Control.}
   \end{figure}
@@ -699,41 +462,28 @@ to our home router.  We wait until the rekeying process begins and then decline
 to install the appropriate rule to allow rekeying to complete for the client in
 question.  This denies the client access even to link-layer connectivity, as
 they will simply revert to performing the four-way handshake required to obtain
-the PTK.  This gives rise to a clear trade-off between security and performance:
+the PTK\@.  This gives rise to a clear trade-off between security and performance:
 the shorter the rekeying interval, the quicker we can evict a malicious client
 but the greater the performance impact on compliant clients.  
 
 \begin{figure} 
   \centering 
-  \includegraphics[width=0.5\columnwidth]{rekeying}
+  \includegraphics[width=0.5\columnwidth]{Chapter2/Chapter2Figs/rekeying}
   \caption{\label{f:rekeying}Affect on TCP throughput from rekeying every 30s
     for Linux 2.6.35 using a Broadcom card with the \emph{athk9} module; and
     Windows 7 using a proprietary Intel driver and card.} 
 \end{figure}
 
 \begin{figure*} \centering
-  % \includegraphics[width=0.49\columnwidth]{switching-delay}
- \subfigure[homework switching latency up to 10k concurrent flows]{
-  \includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/latency-test}\label{f:homework:performance-latency-small}}
-%   \includegraphics[width=0.49\columnwidth]{throughput}
- \subfigure[homework packet throughput up to 10k concurrent flows]{
-   \includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/throughput-test}
-   \label{f:homework:performance-throughput-small}
- }
- \subfigure[homework switching latency up to 50k concurrent flows]{
-  \includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/latency-large-test}
-   \label{f:homework:performance-latency}
-}
- \subfigure[homework packet throughput up to 50k concurrent flows]{
-   \includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/throughput-large-test}
-   \label{f:homework:performance-throughput}
- } 
-  \caption{\label{f:performance}Switching performance of \ovs component
+ \subfigure[homework switching latency up to 10k concurrent flows]{\includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/latency-test}\label{f:homework:performance-latency-small}}
+ \subfigure[homework packet throughput up to 10k concurrent flows]{\includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/throughput-test}\label{f:homework:performance-throughput-small}}
+ \subfigure[homework switching latency up to 50k concurrent flows]{\includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/latency-large-test}\label{f:homework:performance-latency}}
+ \subfigure[homework packet throughput up to 50k concurrent flows]{\includegraphics[width=0.45\columnwidth]{Chapter2/Chapter2Figs/throughput-large-test}\label{f:homework:performance-throughput}} 
+ \caption[Switching performance of home router]{\label{f:performance}Switching performance of \ovs component
     of our home router showing increasing median per-packet latency
-    (Figure~\ref{f:homework:performance-latency},
-    \ref{f:homework:performance-latency-small}) and
-    decreasing median packet throughput (Figure~\ref{f:homework:performance-throughput},
-    \ref{f:homework:performance-throughput-small}) with the number of flows.  The upper set
+    (Figure~\ref{f:homework:performance-latency},~\ref{f:homework:performance-latency-small}) and
+    decreasing median packet throughput
+    (Figure~\ref{f:homework:performance-throughput},~\ref{f:homework:performance-throughput-small}) with the number of flows.  The upper set
     of graphs
     (Figure~\ref{f:homework:performance-throughput},\ref{f:homework:performance-latency}) extends the $x$-axis from 10,000 to 500,000.}
 \end{figure*}
@@ -779,7 +529,7 @@ by any other installed flow, which is handled as follows:
 
 \textbf{Non-IP traffic}.  The controller acts as a proxy ARP server, responding
 to ARP requests from clients.  Misbehaving devices are blacklisted via a rule
-that drops their EAPOL~\cite{rfc:3748} traffic thus preventing session keys
+that drops their EAPOL~\mycite{rfc:3748} traffic thus preventing session keys
 negotiation.
 % implementing the WPA security association with the access point, so dropping
 % it, prevents association.  
@@ -794,7 +544,7 @@ pass all the following tests:
 \begin{itemize}
     \item its source MAC address is permitted; 
     \item its source IP address is in 10.2.x.y/16; and
-    \item its source IP address matches that allocated by DHCP.  For valid
+    \item its source IP address matches that allocated by DHCP\@.  For valid
       traffic destined to the Internet, a flow is inserted that forwards packets
       upstream via the bridge and IP masquerading.  
 \end{itemize} 
@@ -825,7 +575,7 @@ employ a PC, functioning as a data generator and receiver, connected directly
 over a 1~Gbps full-duplex Ethernet link to our home route configured to forward all
 received packets back to the incoming port. 
 % During the experiment, the
-% measurement PC uses the pktgen~\cite{pktgen} kernel module to generate 1 Gbps 
+% measurement PC uses the pktgen~\mycite{pktgen} kernel module to generate 1 Gbps 
 % UDP traffic from a single IP address targeting variable
 % number of destination hosts, thus introducing an equivalent number of network
 % flows in the network, and measures the processing delay of the router, to
@@ -834,8 +584,8 @@ Each test runs for two minutes, a sufficient period to oberve the network
 performance behaviour, generating packets at line rate from a single
 source to $N$ destinations each in its own 10.2.*.*/30 subnet, creating equally
 $N$ unique network flows.  As these are stress tests we use large packets
-(1500B) for the latency tests and minimal packets (70B) \footnote{The 30B extra
-  overhead is due to \emph{pktgen}~\cite{olsson05:_linux_packet_gener}, the
+(1500B) for the latency tests and minimal packets (70B)\footnote{The 30B extra
+  overhead is due to \emph{pktgen}~\mycite{olsson05:_linux_packet_gener}, the
   traffic generation tool used.} for the throughput tests, selecting
 destinations at random on a per-packet basis.  Results are presented as the
 median of 5 independent runs with error bars giving the min and max values. 
@@ -883,7 +633,7 @@ rely on broadcast/multicast behaviours; and support for IPv6.
   throughput]{\includegraphics[width=0.49\columnwidth]{Chapter2/Chapter2Figs/stack-throughput-latency}\label{f:homework:stack-throughput}}
   \subfigure[Packet
   latency]{\includegraphics[width=0.49\columnwidth]{Chapter2/Chapter2Figs/stack-throughput-throughput}\label{f:homework:stack-latency}}
-  \caption{\label{f:stack-throughput}Switching performance of Linux network
+  \caption[Switching performance of Linux network]{\label{f:stack-throughput}Switching performance of Linux network
     stack under our address allocation policy. Throughput
     (Figure~\ref{f:homework:stack-throughput}) shows a
     small linear decrease while switching delay
@@ -1012,23 +762,10 @@ Addition of IPv6 support affects the network layer only, requiring consideration
 of routing, translation between network and link layers, and address
 allocation.  Deployment of IPv6 has minimal impact on routing, limited to the
 need to support 128~bit addresses and removal, in many cases, of the need to
-perform NAT.  \footnote{Some operators may still prefer to use NAT as part of a
-  legacy of address management and operations.}  Similarly, supporting
+perform NAT~\footnote{Some operators may still prefer to use NAT as part of a
+  legacy of address management and operations.}.  Similarly, supporting
 translation to lower layer addresses equates to supporting ICMPv6 Neighbour
 Solicitation messages which perform equivalent function to ARP.
-
-%% During recent years a handful of ISPs started to provide IPv6
-%% connectivity to clients and, since the exhaustion of IPv4 addresses
-%% space, many more ISPs anounced their intetion to run production dual
-%% stack networks. In order to address this trend as part of our design
-%% we consider also an IPv6 scenario.  
-%%                                     The addition of IPv6 support in
-%% our design affects only the network layer of the protocol stack and
-%% thus requires from us to reconsider three functionalities: routing, address
-%% allocation and address translation to link layer. For the routing
-%% process, the deployment of the IPv6 protocol has minimal impact to the
-%% design (change of the length of the address) and in fact it reduces
-%% complexity as it removes the nececity for NAT.
 
 Address allocation is slightly more complex but still straightforward.  IPv6
 provides two address allocation mechanisms: \emph{stateless} and
@@ -1042,34 +779,6 @@ and may have arbitrary prefix length.  This would enable our router to function
 in much the same manner as currently, although it would need to support the
 ICMPv6 Router Advertisement message to support router discoverability by hosts. 
 
-%% For the address allocation functionality, the introduction of the IPv6
-%% protocol requires to change the functionality of the DHCP server. IPv6
-%% provides 2 methods of address allocation in networks. The first
-%% mechanism, called stateless address alocation, allows to a host to
-%% self negotiate with the router, using ICMPv6 Router solicitation and
-%% advertisment packets, the detail of the network and generate its IP
-%% address using the subnet netmask and its MAC address.  Unfortunately,
-%% this setup requires from the router to advertise a 64 bit long
-%% netmask, resulting in all hosts being under the same network as,
-%% according to current deployment plans, each ISP client is entitled to
-%% a /64 prefix. The second mechanism, called stateful address
-%% allocation, is build around the DHCPv6 protocol and is pretty similar
-%% to the current DHCP mechanism implemented as part of our design. The
-%% addresses are allocated from a central entity and can have arbitrary
-%% prefix length. Additionally, since the DHCPv6 protocol doesn't aim to
-%% configure routing for hosts, the router in required to implement
-%% support for Router Advertsment message in order to allow hosts to
-%% discover the router of the network.
-
-%% Finally, in order to translate IPv6 addresses to lower layer
-%% addresses, we need to enable on the router the ability to reply to
-%% ICMPv6 Neighbour Solicitation message, similarly as in the case of ARP
-%% packets.
-
-%% While the implementation limitations noted above prevent a full
-%% working implementation, we tested the basic functionality required by
-%% our approach as follows.  
-
 In order to test the functionality of our approach, we set up a simple hardcoded
 version of our design. Specifically, we allocate a public IPv6 /64 prefix to our
 home router. The router uses the ISC DHCPv6 server implementation, configured to
@@ -1079,219 +788,169 @@ setup, we test MacOSX, Windows and Linux IPv6 network stacks and verified
 correct network configuration and Internet connectivity. 
 
 
-\section{User-centric resource allocation} \label{s:qos}
+\section{Putting people in resource allocation policy} \label{s:qos}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.95\columnwidth]{isp_plan}
-  \caption{\label{fig:isp_plan} The path for each network packet of 
-    the home network to the Internet. ISP network can be split in 3 parts:
-  The {\it Aggregation Network}, the {\it Distribution Network}\/ and the {\it
-    Egress Network}.}
+  \caption[ISP network architecture]{\label{fig:isp_plan} ISP network architecture is logically divided in 3
+    zones: The {\it Aggregation Network}, the {\it Distribution Network}\/ and
+    the {\it Egress Network}.}
 \end{figure}
 
-As we have discussed in Section~\ref{sec:intro:net_evolution}, network
-application evolution has increased both the per-host resource requirements, as
-well as, the complexity of the resource allocation mechanism. Effectively,
-developing network architectures that can provide global application-specific
-network performance guarantees is a difficult task. The network community uses
-two common practices to tackle the resource allocation problem: network resource
-over-provision and application-aware traffic engineering.  Resource
+As we have discussed in Section~\ref{sec:intro:net_evolution}, providing strong
+performance guarantees in large production networks using commodity technologies
+exhibits poor scalability. There are two primary approaches, followed by the network
+community, to scale resource allocation policies: \emph{network resource
+  over-provision} and \emph{application-aware traffic engineering}.  Resource
 over-provision increases available resources, in order to remove performance
-bottlenecks.  Application-aware network engineering extends the network policy
-to  manage efficiently traffic from specific applications, e.g.~in an enterprise
-network VoIP devices are connected to a separate high-priority VLAN\@. In
-broadband networks these approaches have limited applicability. On one hand,
-resource over-provision cost is non-scalable on the edges of the broadband
-network~\footnote{optical link installation costs varies between \$50-\$200 per
-  foot, while fibers installation in municipal areas has an annual cost of
-  \$1.91 per foot~\cite{backhaul-cost}. Upgrading such links also has a
-  significant network equipment upgrade cost.}, while, on the other hand,
-application-aware network engineering raises legal issues for Internet
-providers~\cite{hahn06}. In this section, we propose an architectural extension
-in the last-mile of the ISP, which enables homeowner to propagate
-per-application resource requirements. Using this mechanism, we scale the ISP
-resource allocation policy, while users can improve their network experience and
-understand performance limitations.  In the rest of this section, we present the
-architecture of current broadband networks and discuss the inherent limitations
-in resource allocation (Section~\ref{s:qos:motivation}), we present a highly
-efficient network architecture for user-driven resource allocation
-(Section~\ref{s:qos:architecture}) and evaluate the impact of our approach on
-the performance of various traffic types (Section~\ref{s:qos:eval}).
+bottlenecks, while Application-aware network engineering extends the network
+policy to  manage efficiently application traffic, e.g.~VoIP traffic is serviced
+by a separate high-priority VLAN\@. Nonetheless, the applicability of these
+approaches in broadband networks is limited. On the one hand, resource
+over-provision faces a non-scalable deployment cost on the edges of the
+network~\footnote{Optical link installation costs vary between \$50-\$200 per
+  foot, while fiber installation in municipal areas has an annual cost of \$1.91
+  per foot~\mycite{backhaul-cost}. Such upgrades preclude a significant upgrade
+  cost for equipment.}, while, on the other hand, application-aware network
+engineering raises legal issues for Internet providers~\mycite{hahn06}. In this
+section, we propose an architectural extension in the last-mile of the ISP,
+enabling homeowners to define per-application resource requirements.  The
+architecture improves the ISP resource allocation policy, as well as, the user
+experience.  For the rest of this section, we discuss the architecture of
+current broadband networks and their  inherent limitations in resource allocation
+(Section~\ref{s:qos:motivation}), present the architecture of our
+system (Section~\ref{s:qos:architecture}) and evaluate its impact on specific
+applications classes (Section~\ref{s:qos:eval}).
 
 \subsection{ISP resource allocation} \label{s:qos:motivation}
 
-%This problem can be traced back
-%to two main observations. Firstly, network performance has a multidimensional
-%definition. Performance requirements may include limits over the  throughput and
-%latency of a flow and are highly application-specific.  
-%Secondly, home network traffic is highly asymmetric.
-%Upload traffic volumes on average are significantly lower than download volumes.
-%This is due, in part, to the properties of modern home network links, but also
-%due to the nature of modern network applications that function in a
-%client-server mode.  In order to control sufficiently resource allocation a
-%system should consider independently both directions of the traffic. This is not
-%thought possible for homeowners, as their network control is limited within the
-%home network. 
-% Download traffic, for example, is controlled by the
-% home owner only on the last section of the path and thus we cannot develop a
-% sufficient policy enforcing system that has traffic control solely within the
-% home network limits.
+In order to motivate the reader on the benefits of our architecture, we firstly
+present the architecture of current broadband network and identify their
+performance bottleneck. Figure~\ref{fig:isp_plan} presents a generic model for
+the network architecture for a residential broadband ISP\@. Although, exact
+architecture details remain undisclosed, there is a high level design pattern,
+organising the ISP network in three domains: the \textit{aggregation network},
+the \textit{distribution network} and the \textit{egress network}. The
+aggregation network contains the digital subscriber line access multiplexer
+(DSLAM), translating DSL packets to Ethernet frames, the Broadband Remote Access
+Server (BRAS), an authenticating and policy enforcing network device, and a
+series of aggregation switches, multiplexing traffic between the BRAS and the
+distribution network.  Traffic from the aggregation network routes through the
+distribution network towards either the egress network or towards a local
+aggregation switch. The distribution network consists of a small number of large
+routers interconnected using high capacity links.  ISP typically employ network
+tunnelling technologies, like MPLS, in the distribution network to
+minimize forwarding state.  The egress network of the ISP consist of large
+routers, hosted in Internet Exchange Points (IXP) and connecting the ISP with
+peering ASes.
 
-In order to better introduce the reader to our system, we present in
-Figure~\ref{fig:isp_plan} a visualisation of a broadband ISP network
-architecture.  Although, exact network architecture remains undisclosed by ISPs,
-there is a high level design pattern. In this figure we present the network
-devices traversed by a packet sent from the home network to the Internet.  
-The ISP network organisation can be separated in four sections: the {\it home
-  network}, {\it aggregation network}, {\it distribution network} and {\it
-  egress network}. The aggregation network contains the digital subscriber line
-access multiplexer (DSLAM), translating DSL packets to Ethernet format between
-the last mile,  the Broadband Remote Access Server (BRAS), an authenticating and
-policy enforcing network device, and a series of aggregation switches,
-multiplexing the traffic from the various BRAS onto the distribution network.
-Traffic from the aggregate network is routed through the distribution network
-towards either the egress network of the ISP or towards a local aggregation
-switch. The distribution network consists of a small number of large routers
-interconnected using high capacity links.  ISP typically employ network
-tunnelling technologies, like MPLS, in the distribution network, in an effort to
-minimize forwarding state in devices.  The egress network of the ISP consist of
-large routers, hosted in IXP networks and connecting the ISP with peering ASes.
+A number of research papers have identified a significant bottleneck in the
+last-mile of the network~\mycite{Dischinger:2007bg,Akella2003}: the link between
+the DSLAM and the aggregation network. This bottleneck can be explained by the
+high oversubscription ratio of such links, which commonly varies between 10:1
+and 50:1~\mycite{canada-subscription}, depending on population density of an area
+and market dynamics~\mycite{sky-oversubscription}.  
 
-In the broadband network architecture, a number of research papers have
-identified a significant bottleneck in the last-mile of the
-network~\cite{Dischinger:2007bg,Akella2003}: the link between the DSLAM and the
-aggregation network. This bottleneck can be explained by the high
-oversubscription ratio of such links, which commonly varies 
-between 10:1 and 50:1~\cite{canada-subscription}, depending on the
-number of users connected to the DSLAM and market
-dynamics~\cite{sky-oversubscription}.  
-
-Our network design aims to bridge a fundamental communication gap between the
-ISP and homeowner. Users perceive network traffic as an ensemble of flows
-belonging to a specific application and each application has a specific
-prioritisation within the house context and the user-computer interaction,
+Our systems aims to bridge a fundamental communication gap between the ISP and
+homeowners. Users perceive network traffic as an ensemble of flows belonging to
+a specific application and priority within the home social context,
 e.g.~Skype VoIP traffic has a higher priority than web browsing traffic and
 parents' teleworking traffic is more important than kids' entertainment traffic.
-ISPs, on the other hand, manage the traffic of a specific household as a packet
-aggregate with a specific source IP address and resource allocation mechanisms
-are implemented as monthly or daily traffic caps for the specific IP
-address~\cite{virgin-caps,bt-caps}.  Network caps  rate-limit heavy-hitting
-households and provide long-term fairness between broadband users. Nonetheless,
-this approach is not sufficient for a class of Internet applications, like
-remote desktop and VoIP, for which performance is not tightly coupled with the
-available bandwidth. We believe that there is an incentive
-for the ISP and homeowner entities to establish a collaborative resource control
-framework. Homeowner can annotate high priority flows within their traffic
-aggregate and thus improve user experience. ISPs can increase user-friendliness
-of their network policy and offload some of the complexity of their resource
-allocation mechanism to the end-users. 
-% In addition, a sufficient
-% resource mechanism requires the enforcement of the resource allocation policy
-% both in the home network and within the ISP network. The bottleneck link of the
-% network path is beyond the control of the homeowner and, since home traffic is
-% highly asymmetric, the allocation policy cannot be implemented through control
-% of a single traffic direction. 
+ISPs view household traffic as a packet aggregate with a specific IP address, on
+which resource allocation mechanisms apply monthly or daily traffic
+caps~\mycite{virgin-caps,bt-caps}.  Network caps rate-limit heavy-hitting
+households and provide long-term fairness between users. This approach degrades
+severely the short-term performance for latency-bound applications, such as
+remote desktop and VoIP\@. Effectively, there is an incentive for ISPs and
+homeowners to collaborate and control more efficiently the traffic resources
+within the user cap.  Homeowners can annotate high priority flows within their
+traffic aggregate and thus improve their experience. ISPs can increase
+user-friendliness of their network policy and offload some of the resource
+allocation complexity to end-users. 
 
-Our architecture establishes a communication channel between the household and
-the ISP and enables user-driven dynamic resource control on the bottleneck
-link towards the aggregation network. More specifically, the ISP virtualises
-switch resources over the last-mile and delegates control over a subset of the
-available resources to a homeowner-managed \of controller.  The household
-controller, in real time, uses the \of protocol to assign traffic to the
-appropriate priority queues.  While the proposed solution cannot always
-guarantee end-to-end resource allocation, it provides a sufficient mechanism to
-handle in a user-friendly manner congestion on the edge-network and scale the
-configuration complexity. 
+Our design virtualises network control and resources in the last-mile and
+delegates control to a homeowner-managed \of controller.  The household
+controller uses the \of protocol to assign traffic flows to appropriate priority
+queues.  While the proposed solution cannot always guarantee end-to-end resource
+allocation, it provides a sufficient mechanism to handle in a user-friendly
+manner edge-network congestion and scale the configuration complexity. 
 
+\subsection{Architecture Design} \label{s:qos:architecture}
 
-% Application priority policy  is
-% express by the homeowner through a simple interface, that exposes application
-% bandwidth consumption. 
+Congested in the last-mile requires resource control both in the home network
+and within the ISP network. Home traffic is asymmetric and  the network
+bottleneck lies beyond the control of the homeowner, thus requiring control on
+both traffic directions.  Our architecture consists of three subsystems: a
+data-collection daemon on the end-systems of the home network, a FlowVisor
+instance in the ISP network, translating user flow prioritisation into
+forwarding policy, and a policy enforcing daemon on the home network router. 
 
-% The
-% architecture of the proposed system is described in Section~\ref{sec:qos_arch},
-% while, in Section~\ref{sec:qos_eval}, we present a number of simple experiment
-% to investigate the behaviour of the proposed system with various types of
-% competing traffic.
-
-\subsection{User - ISP communication} ~\label{s:qos:architecture}
-
-Our architecture consists of three distinct subsystems: a data-collection daemon
-on the end-systems of the home network, a policy enforcing daemon on the home
-network router and an \of controller trnaslating user performance requirements
-into ISP control policy.
-
-\paragraph*{End-system}
+\paragraph*{Data collection on End-systems}
 
 In order to map network flows to applications, we develop a light cross-platform
-daemon recording the content of the end-host connection table.
-Information are collected from the connection table of the network
-stack and stored in the HWDB database. The daemon accesses the connection table
-entries using the {\it netfilter-conntrack} library~\cite{netfilter} in Linux systems,
-the {\it Windows Filtering Platform}~\cite{win-wfp} in Windows systems and the
-{\it sysctl} \/for Darwin/MacOSX system. 
-% These libraries expose similar APIs and
-% allow applications to register callbacks in the kernel network stack, which is
-% triggered on every connection table change. 
-In order to match each network tuple
-with an applications, we use the {\tt lsof} command in unix-like
-systems and the {\tt netstat -p} command in Windows.
+daemon recording the content of the end-host connection table.  The daemon
+collects mappings between flow tuples and applications names.  Information are
+collected from the connection table of the OS and stored in the HWDB database.
+The daemon accesses the connection table entries using the
+\textit{netfilter-conntrack} library~\mycite{netfilter} in Linux systems, the
+\textit{Windows Filtering Platform}~\mycite{win-wfp} in Windows systems and the
+\textit{sysctl} for Darwin/MacOSX system.  In order to match each network tuple
+with an applications, we use the \texttt{lsof} command in Unix-like systems and
+the \texttt{netstat -p} command in Windows.
 
-\paragraph*{ISP infrastructure}
+
+\paragraph*{ISP policy translation}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.7\columnwidth]{queue_design}
-  \caption{User-driven network resource allocation architecture. 
-    \label{fig:queue_design} Contrl over the downlink between the backhaul
-    network and the DSLAM is exposed through a 
-    virtual slice to the homeowner through a FlowVisor instance.  The switch
-    allocates three queue primitives per-household: A {\it low latency,
+  \caption[User-driven QoS architecture]{User-driven network resource allocation architecture. 
+    \label{fig:queue_design} A virtual control slice of the downlink between the backhaul
+    network and the DSLAM is exposed to each homeowner.  The switch
+    uses three queues per-household: A {\it low latency,
       high priority} \/queue, a {\it medium priority} \/queue and a {\it default}
     \/queue.}
 \end{figure}
 
-We present the proposed edge network architecture of the ISP network in
-Figure~\ref{fig:queue_design}.  Our design relies on an \of-based control
-mechanism on the the first layer of aggregation switches.  The switch control
-plane is virtualised using the FlowVisor controller~\cite{flowvisor-osdi}. Each
-home router is running an \of controller which connects with the FlowVisor service
-and exercises control over the home Internet traffic. Specifically, the ISP
-virtualises the \of forwarding table and exposes only a subset of the entries to
-each user.  The FlowVisor instance propagates {\tt pkt\_in} messages to the home
-controller with a source or destination IP address equal to the home public IP
-address, and discards {\it flow\_mod} messages without an IP address equal to
-the household address in the
-source or destination address. 
-Such FlowVisor configuration enforces a strong security mechanism;
-home controllers cannot control or eavesdrop traffic from other households. 
+Figure~\ref{fig:queue_design} presents the network architecture of our system.
+The resource mechanism exercises control on the home router and the first layer
+of aggregation switches.  The ISP exposes an \of control abstraction, which
+virtualises switch resources on the aggregation switches using
+FlowVisor~\mycite{flowvisor-osdi}, while each home router runs an \of controller,
+controlling the home Internet traffic.  The FlowVisor is configured to provide a
+clean separation between household control domains, in order to mitigate control
+or eavesdropping attacks between households. \texttt{pkt\_in} messages are
+propagated only to the respective home controller, based on IP addresses, and
+the home controller can only view and insert flows containing the home network
+public IP\@.   In the household the resource control mechanism augments the
+control logic, presented in the previous section. In order to minimize
+forwarding state in the ISP network, the control abstraction on the aggregation
+switches is used to control only the incoming Internet traffic, while the
+outgoing traffic can be effectively controlled on the local router. 
 
-At the aggregation switch and the home router we setup three priority queues for
-each household (The home router queues handle the upstream traffic of the
-household, while the aggregation switch queues handle the downstream traffic of
-the household): A {\it low latency, high priority}~(LLHP) queue, a {\it medium
-  priority}~(MP) queue and a default queue.  The LLHP queue has the highest
-priority between the household queues and uses a leaky bucket mechanism to rate
-limit traffic to the minimum guaranteed bandwidth per-household. This queue can
-be used by low-bandwidth low-latency applications. The HP queue doesn't enforce
-any rate limit, but it has a priority which is between the LLHP and the default
-queue.  HP queue can be used by latency-tolerant high-priority applications.
-Finally, the default queue is used to handle all other traffic types.  The
-household queue
-hierarchies are multiplexed towards the output port using an Round-Robin
-scheduler with 
-equal priority for each household.  Large scale queue hierarchies are currently supported by
-service provider grade network equipment (e.g.~Cisco ASR 9000 router provide
-500k queues per line card~\cite{cisco-asr-qos}) and ISPs use this functionality
-to implement their capping policy. By default, all network flows are forwarded
-to the default queue and the home \of controller at run-time can assign flows to
-higher priority queues based on the user policy.  This resource
-allocation mechanism is constrained per-household by the number of flows that the
-FlowVisor exposes to each home.  This network design can be extended to evolve
-further the ISP broadband economical model; Users can enhance network
-performance by purchasing additional flow table entries and increase minimum
-guaranteed bandwidth on the edge. 
+At the aggregation switch and the home router we setup three traffic shaping
+queues for each household. A \textit{low latency, high priority}~(LLHP) queue, a
+\textit{medium priority}~(MP) queue and a default queue.  The LLHP queue has the
+highest priority between the household queues and rate limits traffic to the
+minimum guaranteed bandwidth per-household~(e.g.~for 1GbE uplink with a sharing
+ratio of 1:100, the LLHP queue will limit traffic to 10Mbps), providing strong
+low-bandwidth and low-latency guarantees. The MP queue doesn't enforce any rate
+limit, but it has a priority which is between the LLHP and the default queue.
+MP queue can be used by latency-tolerant high-priority applications.  Finally,
+the default queue is used to handle all other traffic types.  The household
+queue hierarchies are multiplexed towards the output port using a Round-Robin
+scheduler with equal priority for each household. Such large scale queue
+hierarchies are currently supported by service provider network equipment
+(e.g.~Cisco ASR 9000 routers provide 500000 queues per line
+card~\mycite{cisco-asr-qos}) and ISPs use this functionality to implement their
+capping policy. By default, all network flows are forwarded to the default queue
+and the home \of controller at run-time assigns flows dynamically to higher
+priority queues.  The enhanced control provided by this network architecture
+provides some interesting building blocks to enable novel economical models for
+residential broadband customers. For example, users can enhance network
+performance by purchasing additional flow table entries or increasing their
+minimum guaranteed bandwidth on the edge.
 
 Because our system design provides extensive forwarding control to end-users, we
 fortify the design with a set of mechanisms to reduce the ability of end-users
@@ -1300,55 +959,51 @@ entries to each household, ensures fair utilisation of the forwarding resources
 in the aggregate switch. Secondly, the FlowVisor instance rate limits \of
 control channel interactions per household to mitigate DoS attacks. Finally, the
 Flowvisor instance discards flows that may create loops in the network,
-e.g.~{\tt flow\_mod} messages with an Output action  that forwards packet to the
-incoming port. 
+e.g.~flow rules which forwards packet to the incoming port. 
 
-\paragraph*{Home Router}
+\paragraph*{Home \of controller}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\columnwidth]{homework_intf_qos}
-  \caption{\label{fig:homework_intf_qos} Performance mechanism  user control.
+  \caption[QoS user interface]{\label{fig:homework_intf_qos} QoS user interface.
     The user is able to view the network utilisation per application, as well as
     express application prioritisation.}
 \end{figure}
 
-In our design, the home router is the rendez-vous point between the
-policies of the two network. In order to support the state requirements of this
-functionality we create in the hwdb database three tables: {\it Application
-  tuple}, {\it Application timeseries} and {\it Application priorities}.
-Application tuple table stores mappings between applications and 
-network tuples. This table is populated with data from the end-hosts, while the
-router installs a monitoring hook in order to receive new flow arrivals.
-Application timeserries table stores per-application network utilization
-information. The table is populated with data from the router using the
-\texttt{flow\_stats} message of the \of protocol, while the data are used by the web
-visualisation in order to inform users for the per-application network resource 
-consumption. 
-Finally, the Application priority table stores the application prioritisation
-policy of the user. This table is populated with data through the web interface
-of the system and the controller uses it to map new flows to  appropriate
-queues.
+The home router is the rendez-vous point between the policies of the two
+entities, in our design. In the home setting, the router is responsible to store
+traffic statistics, record the user application priority and, at run-time, map
+application flows to the appropriate queue.  We use three tables in HWDB to
+store relevant information; namely \texttt{Application tuple},
+\texttt{Application timeseries} and \texttt{Application priority} tables.  The
+\texttt{Application tuple} table stores mappings between applications and flow
+tuples, populated with data from the end-host data-collection daemons.  The
+\texttt{Application timeserries} table stores per-application network
+utilization information, populated with data from the router using \of
+\texttt{flow\_stats} message.  Finally, the \texttt{Application priority} table
+stores the application prioritisation policy of the user. 
 
-We expose the resource management mechanism through a user-friendly web
-interface depicted in Figure~\ref{fig:homework_intf_qos}.  Through this
-interface the user can view the aggregate and time serries resource consumption
-per application and configure application priority policy. Additionally, the
-interface notifies the user when the policy over-utilizes the LLHP queue.
-Specifically, we use the packet loss counter of the \of~{\tt queue\_stats}
-message to trigger notifications during high packet loss incidents.  Through
-this interface we try to address the issues raised by the work
-in~\cite{Chetty10}. 
+We expose resource control of our system to home member through a web interface,
+presented in Figure~\ref{fig:homework_intf_qos}.  Through this interface the
+user can inspect per-application, aggregate and timeserries resource consumption,
+retrieved from the \texttt{Application timeseries} table, and configure
+application prioritisation, stored in the \texttt{Application priority}.
+Additionally, the interface notifies the user when the policy over-utilizes the
+LLHP queue.  Specifically, we use the packet loss counter of the \of~{\tt
+  queue\_stats} message to trigger notifications during high packet loss
+incidents.  Through this interface we try to address the issues raised
+by~\mycite{Chetty10}. 
 
 During operation, the proposed design extends the forwarding logic described
-earlier. Specifically, for each network flow, once the controller has verified
-that the flow is in accordance with the policy and destined to a non-local IP
-address, the controller maps the flow to an application and to a priority queue,
-through the HWDB database. The controller sends a {\tt flow\_mod} message with an
-{\tt enqueue} action to assign the flow to the appropriate queue. In addition,
-if the application priority is not the default, then the controller will also
-send a {\tt flow\_mod} packet to the FlowVisor instance, to setup the incoming
-direction of the flow. 
+earlier. Specifically, for each network flow destined to a non-local host, once
+the controller verifies policy compatibility, it maps the flow to an
+application, using the \texttt{Application tuple} table data,  and to a priority
+queue, using the \texttt{Application priority} table. The controller sends a
+{\tt flow\_mod} message with an {\tt enqueue} action to assign the flow to the
+appropriate queue. In addition, if the application priority is not the default,
+then the controller will also send a {\tt flow\_mod} packet to the FlowVisor
+instance, to setup the incoming direction of the flow. 
 % In order to ensure that there is an
 % application mapping for the flow, in case of an incoming connection the switch
 % will establish only the incoming direction if the flow on the local switch and
@@ -1356,39 +1011,98 @@ direction of the flow.
 % we will have ensured that the end-host daemon will have inserted the appropriate
 % information. 
 
+
 \subsection{Evaluation} \label{s:qos:eval}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{queue_eval_setup}
-  \caption{\label{fig:queue_eval_setup} Experimental setup to evaluate the
-    proposed resource management system.}
+  \includegraphics[width=0.6\columnwidth]{queue_eval_setup}
+  \caption{\label{fig:queue_eval_setup} QoS mechanism evaluation topology.}
 \end{figure}
 
-We evaluate the proposed architecture using a lab testbed, depicted in
-Figure~\ref{fig:queue_eval_setup}. {\it Home1} and {\it Home2} emulate the
-networking activity of an ensemble of Home Connections. We focus the
-analysis on the behaviour of Home2, that emulates a single connection in the
-vicinity of an ensemble of Home connections, emulated by node Home1. 
-{\it Server1} and {\it Server2} instances run a number of listening daemon that
-generate traffic, based on traffic requests, from the Home instances and
-simulates Internet wide Services. Fιnally, {\it Switch1} and {\it  Switch2}
-emulate the switches that control the backhaul link. Steady state TCP is
-generated using the iperf tool~\cite{iperf}. We also utilize pttcp tool, in
-order to simulate stochastic models of short lived TCP flows. 
+\begin{table}
+  \begin{tabular} {|l|c|l|c|}
+    \hline
+    Web traffic & & Gaming traffic & \\
+    \textbf{Parameter} & \textbf{Distribution} & \textbf{Parameter} & \textbf{Distribution} \\
+    \hline
+    objects per page    & Pareto(2.43, 3.0)       & inter-packet gap & lognormal(79.34, 0.25)\\
+    inter-request delay & Pareto(1.5, 0.75)       & packet size      & Constant(0.05) \\
+    inter-object delay  & Weinbull(1.46, 0.382)   & &                 \\
+    object size         & lognormal(1.318, 9.357) & &   \\
+    \hline
+  \end{tabular} 
+  \caption{\label{t:homework:performance-web-model}Model parameters for HTTP~\mycite{Barford1998} and
+    gaming~\mycite{Lang2004} traffic generation.}
+\end{table}
 
+
+In this section, we evaluate the impact of our architecture on
+performance-sensitive applications.  Figure~\ref{fig:queue_eval_setup} presents
+the topology we employ for our evaluation.  \textit{Home1} and \textit{Home2}
+emulate household Internet traffic,  \textit{Server1} and \textit{Server2}
+emulate Internet services,  \textit{Switch1} emulates the last-mile of the ISP
+network and \textit{Switch2} emulate the Internet path between the aggregation
+layer of the ISP and the Internet services. In detail, Home1 emulates a single
+household running a resource critical application towards Server1, while Home2
+emulates an ensemble of 9 households, generating bursty HTTP requests towards a
+web service on Server2, using the web model in
+Table~\ref{t:homework:performance-web-model}.  Switch1 provides asymmetric
+Internet links with 4 Mbps downlink capacity and  512 Kbps uplink capacity to
+each household and  connects them to the ISP distribution network through a 4
+Mbps symmetric link, thus providing a downstream subscription ratio $1:10$.
+Switch2 propagates traffic between Switch1, Server1 and Server2 adding 10~msec
+of one-way latency to each direction. Each node in the  topology runs on a
+different host equipped with a quad core Intel CPU (Core 2 Quad Q6600), 4 Gbytes
+RAM and a quad-port 1GbE Intel card. Switch1 and Switch2 use \ovs to implement
+fast packet forwarding functionality.
+
+Using the aforementioned topology, we evaluate the impact of our architecture on
+two popular applications, VoIP and Gaming. Without loss of generality, the
+selected applications provide a representative set in terms of  latency and
+throughput requirements.  We emulate VoIP traffic, using a constant rate 250
+Kbps TCP
+flow~\footnote{\url{https://support.skype.com/en/faq/FA1417/how-much-bandwidth-does-skype-need}},
+while for gaming traffic we use a UDP probe based on the model presented in
+Table~\ref{t:homework:performance-web-model}. We conduct the measurement for 300
+seconds, initializing the network without any traffic prioritisation, and enable
+our architecture after 150 seconds of execution, assigning the HTTP application
+on the default queue and the VoIP and Gaming applications on the LLHP queue.
+Figures~\ref{f:homework:performance-qos-gaming} and~\ref{f:homework:performance-qos-voip} presents the results of the experiment for
+the gaming and VoIP applications respectively. More specifically, we present the
+per-packet latency for gaming and the instantaneous application-perceived
+throughput for VoIP, along with the instantaneous aggregate throughput of all
+HTTP flows. For the gaming application, we observe that packets face significant
+latencies (200-500 msec), primarily due to  queueing delays, when they
+coexisting in a congested link with HTTP flows and the network in not using any
+short-term resource control. The latency is effectively minimized when we enable
+our architecture, without significant performance limitation for HTTP traffic.
+Similarly, VoIP traffic experiences significant throughput variations (200-350
+Kbps) which are eliminated when the flow is assigned to the LLHP queue.  The
+results verify that the proposed short-term resource control mechanism can
+improve significantly the user experience and effectively improve the network
+performance for applications with strict resource requirements, while
+introducing minimal impact on co-existing application performance. 
+
+\begin{figure*} \centering
+ \subfigure[Gaming]{\includegraphics[width=0.49\columnwidth]{Chapter2/Chapter2Figs/homenet-prio-gaming}\label{f:homework:performance-qos-gaming}}
+ \subfigure[VoIP]{\includegraphics[width=0.49\columnwidth]{Chapter2/Chapter2Figs/homenet-prio-voip}\label{f:homework:performance-qos-voip}}
+ \caption[QoS mechanism Latency and throughput evaluation]{\label{f:homework:performance-qos} Latency and throughput performance
+  of the QoS architecture. The QoS mechanism is enabled after 150 seconds of
+  execution, reducing significantly packet latency and providing accurate
+  throughput bounds.}
+\end{figure*}
 
 \section{Summary} \label{s:conclusion}
 
 This chapter has drawn upon previous user studies to reflect on the distinct
 nature of home networks and the implications for domestic network
-infrastructures.  Two particular user needs that arose from home network user studies were
-for richer visibility into and greater control over the home wireless network, as
-well as, the home
-as part of the everyday management of the home by inhabitants.  We  considered
-how to exploit the nature of the home network to shape how it is presented and
-opened to user control and ultimately provide scalable management through a
-novel control plane architecture.  
+infrastructures.  Three particular user needs that arose from home network user
+studies were for richer visibility into and greater control over the home
+wireless network, as well as, the home as part of the everyday management of the
+home by inhabitants.  We  considered how to exploit the nature of the home
+network to shape how it is presented and opened to user control and ultimately
+provide scalable management through a novel control plane architecture.  
 
 We use the \ovs and NOX platforms to provide flow-based management of the home
 network.  As part of this flow-based management, we exploit the social
@@ -1405,243 +1119,150 @@ while on the other hand, it suggests that existing presumptions could usefully
 be re-examined to see if they still apply in a network context.  In the next
 chapter we explore application of SDN technologies in connectivity scalability. 
 
-% Our exploration suggests that, just as with other edge networks, existing
-% presumptions could usefully be re-examined to see if they still apply in this
-% context.  
-
-% \section{Conclusions} \label{s:conclusion}
+% \section{Technological and Social aspects of home networking} \label{s:elephant}
 % 
-% This paper has drawn upon previous user studies to reflect on the distinctive
-% nature of home networks and the implications for domestic network
-% infrastructures.  Two particular user needs that arose from these studies were
-% for richer visibility into and greater control over the home wireless network,
-% as part of the everyday management of the home by inhabitants.  We  considered
-% how to exploit the nature of the home network to shape how it is presented and
-% opened to user control.  
+% The growth in the number of IP-enabled devices over the last decade  has
+% expanded the use-cases for in-home wired and wireless networking; from Internet
+% connection sharing to local media sharing, gaming, and other applications.  Home
+% network functionality, unlike other network environments, contains a strong
+% social aspect, which establishes a dynamic relationship between the technology
+% and the social organisation of the setting, exhibiting some unique properties.
+% In this Section, we summarize finding of relevant studies and elaborate on the
+% characteristics of home network environments, both from a social and an
+% engineering perspective.  More specifically, in Section~\ref{s:home_measurement}
+% we present the distinct technical characteristics of home network technologies,
+% while in Section~\ref{s:home_social} we focus on the social characteristics of
+% home networking, using findings from relevant ethnographic studies. 
 % 
-% Simply put, the home is different to standard networking environments, and
-% many of the presumptions made in such networks do not hold.  Specifically,
-% home networks are smaller in size, the equipment is physically accessible and
-% access is often shared among inhabitants, and the policies involved are
-% flexible and often dynamically negotiated.  Exploiting this understanding
-% allows us to move away from traditional views of network infrastructure, which
-% must be tolerant of scale, physically distributed, and impose their policies
-% on users. 
+% \subsection{Home Networking as a system} \label{s:home_measurement}
 % 
-% We use the \ovs and NOX platforms to provide flow-based management of
-% the home network.  As part of this flow-based management, we exploit the
-% social conventions in the home to manage introduction of devices  to the
-% network, and their subsequent access to each other and Internet hosted
-% services.  This required modification of three standard protocols, DHCP, EAPOL
-% and DNS, albeit in their behaviour only \emph{not} their wire formats, due to
-% the need to retain compatibility with legacy deployed stacks.
-%                                                          
-% Our exploration suggests that, just as with other edge networks, existing
-% presumptions could usefully be re-examined to see if they still apply in this
-% context.  \emph{Do we wish to maintain net neutrality in the home?}
-% Inhabitants do not appear to see network traffic as equal, often desiring
-% imbalance in performance received by different forms of traffic.  \emph{Must
-% the end-to-end argument apply?} Householders understand and exploit the
-% physical nature of their home and use trust boundaries to manage access; we
-% have exploited these resources to explicitly manage the network.  \emph{Should
-% communication infrastructures remain separate from the devices that use them?}
-% In the home setting this separation proves problematic as people, ranging from
-% the home tinkerer to the DIY expert, wish to interact directly with the
-% network as they do with other parts of their homes' physical infrastructures.
-% Our exploration suggests use of a range of displays and devices existing not
-% as clients exploiting the infrastructure but as extensions of the
-% infrastructure making it more available and controllable.
+% Home networks are highly heterogeneous edge networks, typically
+% Internet-connected via a single broadband link, where non-expert network
+% operators provide a wide range of services to a small set of users.
+% While we focus on home networks, we note that many environments, e.g.,~small
+% offices, coffee shops, hotels, exhibit similar characteristics and thus may
+% benefit from similar approaches. Such capabilities are likely to be infeasible
+% in more traditional settings, e.g.,~backbone and enterprise networks.  In this
+% section we use existing studies to present the technical characteristics of
+% modern home network. 
+% % More specifically, we present the type of devices
+% % connected to a home network, the properties of the local and Internet traffic
+% % and the properties of local and Internet connectivity. 
 % 
-% Inability to understand and control network infrastructure has made it
-% difficult for people to understand and live with it in their homes.  We have
-% developed a home router that both captures information about people's use of
-% the network and provides a point of interaction to control the network.  Our
-% initial developments have explored the extent to which residents may be
-% involved in some of the protocols controlling the network; other protocols
-% suitable for modification are under consideration.
-
-%\section{Related Work} \label{s:related}
+% % Home network measurement studies have focused both on the local network
+% % properties as well as the nature of the Internet traffic. Local network analysis
+% % provides useful insight on the way devices interact within the house and the
+% % possible performance limitations. Such measurement studies focused mainly on
+% % developing active or passive measurement tools, that runs on end-hosts in the
+% % network and collect data. 
+% Home networks commonly provide local device connectivity through wired and
+% wireless Ethernet, both supported by modern PCs. Wired network adapters
+% predominantly support the 802.3ab (1 Gbps full-duplex) standard and wireless
+% network adapters support predominantly 802.11a/g (54 Mbps) standards, while
+% 802.11n (600 Mbps) support is slowly increasing.  Wired Ethernet connectivity
+% provides high data rates with negligible medium interferences, but fails in
+% supporting flexible spatial mobility within the household. In contrast, wireless
+% Ethernet connectivity supports extensive device mobility, but network
+% performance is susceptible to environmental parameters.  \mycite{homenetProfiler}
+% study the availability of wireless connectivity in home networks and report on
+% average good signal coverage~($<$ -80dBm), verifying a significant technological
+% improvement which overcomes connectivity problem highlighted by earlier
+% studies~\mycite{Yarvis05characterizationof}. In addition, the authors observe
+% significant wireless network overhearing,  with end-hosts  picking up 10
+% wireless networks on average, a third of which used overlapping channels.  The
+% accessibility of wireless networks beyond the physical home  limits highlights a
+% significant access control problem. The WPA encryption scheme, used
+% predominantly to mitigate this problem, ensures network data integrity but lucks
+% flexibility; pre-shared key knowledge provides full access to the home network.
 % 
-%Many authors have argued that home networks should be treated differently to
-%other IP-based networks.  For example, Calvert
-%\etal.~\cite{calvert07:_movin_towar_middl} make a case against application of
-%the end-to-end principle in home networking.  They argue that there are a
-%number of key aspects peculiar to the home environment that the standard
-%Internet protocols do not address.  They derive a series of requirements for a
-%home network architecture, and a design providing functions to fulfil these
-%requirements.  Many of the points they make, e.g., their ``smart middle''
-%design, resonate with our argument, and indeed, we believe our home router
-%meets the requirements and provides the functions they describe.
-%
-%%% \mort{no need to spend so much on interfaces- a sweeping ``but they
-%%%  don't go deep enough to be interesting'' should be enough}
-%Both before and after the general architectural arguments made above, a number
-%of authors have proposed novel user interfaces to aid the homeowner in managing
-%their network.  GesturePen~\cite{swindells02:_that} uses line-of-sight radio
-%interaction with purpose-built receiver tags to control network access;
-%Network-in-a-Box~\cite{balfanz04:_networ}, where infrared port alignment
-%provides a physical metaphor for access, plugging in to security mechanisms
-%such as EAP-TLS and RADIUS.  They also describe an interesting ``phone home''
-%service via the Windows Remote Access and IPSec policy mechanisms that enables
-%remote clients to connect back to appear as if inside the home network.
-%
-%ICEBox~\cite{yang07:_icebox} again concentrates on the problem of enabling the
-%homeowner to correctly configure new devices when they are brought onto the
-%network using a control panel approach similar to our Guest Board.  They note
-%that a future version might well subsume the home router.
-%Eden~\cite{yang10:_eden}, by several of the same authors, follows this up by
-%replacing the home router.  Their implementation allows per-flow traffic
-%control, but the paper lacks technical details.
-%%   makes use of the standard Linux \emph{tc} and
-%% \emph{iptables} facilities to allow the homeowner to exercise per-flow
-%% traffic control; they do not discuss technical specifics in any
-%% detail.
-%
-%All these approaches primarily address the interaction design problem, focusing
-%on user interface solutions to the problems of managing a home network.  Most
-%rely upon specialized hardware or software installation on client devices.  In
-%contrast, our home router does not require client modification as its protocol
-%modifications are fully backward compatible with existing stacks.  It thus
-%supports a very wide range of devices while making possible greater control of
-%connectivity.
-%
-%%% \mort{probably need to leave following refs in}
-%
-%% Addressing the problems of troubleshooting,
-%% Netprints~\cite{aggarwal09:_netpr} is a system for cooperative
-%% diagnosis of home network misconfigurations.  They take a black-box
-%% approach in that they do not predefine specific models, and they focus
-%% on application specific problems rather than the home network as a
-%% whole.  Client software scrapes labeled configuration information from
-%% devices, and computed feature vectors describing the more dynamic
-%% aspects of the system (e.g., observed traffic).  These data are
-%% collected in a central server and fed into a decision tree based
-%% learning system to perform subsequent diagnoses given observed data.,
-%% Kandula \etal.~\cite{kandula09:_detail} also proposed a system for
-%% diagnosis of problems, aimed specifically at small enterprise
-%% networks.
-%
-%Several authors have proposed solutions to the specific problem of lack of
-%visibility into what the network and connected devices are doing.  In this
-%context, HostView~\cite{joumblatt10:_hostv} uses a client daemon to log when
-%users experience network problems.
-%% also relies on client
-%% software but focuses more simply on generating labeled data by
-%% enabling the user to notify the system when some user-perceived
-%% problem occurred.  
-%Calvert \etal.~\cite{calvert10:_instr_home_networ} present requirements for a
-%general purpose ``always on'' local logging service, building a simple example
-%using \emph{tcpdump} running on a
-%NOXBox,\footnote{\url{http://www.noxrepo.org/manual/noxbox.html}} dumping
-%traffic into flat files.  Both focus on network monitoring as a tool for
-%troubleshooting.  Finally, in presenting the Homework Database, Sventek
-%\etal.~\cite{sventek11:_infor_plane_archit_suppor_home_networ_manag} describe
-%it as a component in their home network information plane.  Their system uses a
-%general-purpose policy engine to exercise control over the network by
-%configuration of the router derived from the interaction of monitored data and
-%policy.
-%
-%We claim that, in general, these monitoring systems do not take into account
-%the specific challenges and opportunities inherent in the home network context.
-%Our home router goes further in exploiting the home context via specific
-%modifications to the normal behaviour of key protocols, as well as implementing
-%a novel network control interface.
-%
-%This class of argument, that the generic Internet protocols are not appropriate
-%in a particular environment, has previously been made in the enterprise network
-%space.  Approaches such as Anemone~\cite{cooke06:_reclaim},
-%Ethane~\cite{casado07:_ethan} and Network Exception
-%Handlers~\cite{karagiannis08:_networ} have all proposed systems that address
-%the general problem of enterprise network management in different ways.  They
-%all make the argument that enterprise networks are basically different to the
-%traditional Internet, presenting different problems and permitting different
-%solutions.  This resonates strongly with our claims that home networks should
-%be treated differently, and in some ways with our approach of providing more
-%intelligent centralised control.  It should be noted however, that these
-%enterprise network solutions are no more applicable to home networks than
-%traditional Internet approaches were applicable in the enterprise!
-%
-%Finally, looking back to 1984 and some of the original discussions of IP
-%subnetting, Mogul~\cite{rfc:917} and Postel~\cite{rfc:925} discussed using
-%subnetting to hide site LAN interconnection from networks outside the site.
-%They introduce techniques such as ARP-based subnetting, ARP bridging, and
-%extension of ARP itself.  ARP bridging in particular is very similar in
-%practice to the approach we take, although we assign a subnet per-host rather
-%than per-LAN, and we manage address allocation and connectivity using protocols
-%unavailable at the time.
-
-%% \mort{add intserv, maybe diffserv refs - note different domain and
-%%  scale} 
-
-% \section{Conclusions} \label{s:concl}
-%  
-% This paper has drawn upon previous user studies to reflect on the distinctive
-% nature of home networks and the implications for domestic network
-% infrastructures.  Two particular user needs that arose from these studies were
-% for richer visibility into and greater control over the home wireless network,
-% as part of the everyday management of the home by inhabitants.  We  considered
-% how to exploit the nature of the home network to shape how it is presented and
-% opened to user control.  
+% Home networks use predominantly ADSL and cable technologies to provide Internet
+% connectivity, while fiber, 3G and satellite technologies are not uncommon. As a
+% result, Internet connectivity exhibits high variance in performance, depending
+% extensively on the medium and the ISP\@.  \mycite{Dischinger2007} present an early
+% broadband performance study, reporting significant performance variance and a
+% bottleneck on the last mile of the link.  \mycite{Sundaresan2011} contact a
+% similar studies, running though measurements probes on the home router, and
+% detect significant effects on network throughput and latency by ISP throttling
+% mechanisms, like PowerBoost~\mycite{powerboost}. Finally, \mycite{Kreibich10} verify
+% the bufferbloat problem in residential broadband ISPs.  The importance of
+% Internet performance for residential broadband networks is reflected on a
+% governmental level, where independent state authorities evaluate ISP service
+% quality~\mycite{fcc, ofcom}.  
 % 
-% Simply put, the home is different to standard networking environments, and
-% many of the presumptions made in such networks do not hold.  Specifically,
-% home networks are smaller in size, the equipment is physically accessible and
-% access is often shared among inhabitants, and the policies involved are
-% flexible and often dynamically negotiated.  Exploiting this understanding
-% allows us to move away from traditional views of network infrastructure, which
-% must be tolerant of scale, physically distributed, and impose their policies
-% on users. 
+% Home networks exhibit unique applications and traffic characteristics.
+% \mycite{Reggani12} contact an in-network passive measurement and study the host
+% network behaviour, under different network environments. The study concludes
+% that in the home network end-hosts exhibits a distinct network behaviour,
+% generating high volumes of filesystem and P2P applications, while a significant
+% portion of the traffic remains local.  Residential broadband Internet traffic
+% patterns exhibit significant temporal and spatial variability.  \mycite{Cho2006}
+% detect in 2005 significant volumes of P2P traffic in Japanese bradband ISPs.
+% More recently, \mycite{Maier2009} analyse traffic traces from a German ADSL
+% provider and detect a significant shift towards web applications.
+% \mycite{Erman2011} detect similar trends in US broadband traces, identifying more
+% that 70\% of the network traffic being HTTP and serving primarily online video
+% and one-click hosting services. 
 % 
-% We use the \ovs and NOX platforms to provide flow-based management of
-% the home network.  As part of this flow-based management, we exploit the
-% social conventions in the home to manage introduction of devices  to the
-% network, and their subsequent access to each other and Internet hosted
-% services.  This required modification of three standard protocols, DHCP, EAPOL
-% and DNS, albeit in their behaviour only \emph{not} their wire formats, due to
-% the need to retain compatibility with legacy deployed stacks.
-%                                                          
-% %%                                                          platofrm
-%                           
-% %% We draw upon these characteristics of the network and the social %%
-% conventions of the home to develop two distinct mechanisms, %% implemented
-% using the NOX and \ovs platforms as part of a %% redevelopment of the
-% home router.  The first exploits the social %% conventions of visiting to
-% manage the introduction of machines to the %% network.  This is reflected in a
-% modification to the DHCP protocol to %% put people explicitly inside the
-% protocol, allowing the homeowner to %% be prompted for advice and information.
-% The second exploits the home's %% physical arrangement to develop a physical
-% approach to access control %% based on commodity USB storage keys.  
+% In terms of device demographics, relevant studies identify an increase in the
+% number and heterogeneity of connected devices. \mycite{homenetProfiler} present a
+% user survey reporting that home networks host on average 7-8 devices. In
+% addition, the users report wide variability in connected devices
+% (e.g.~smartphones, tablets, game consoles, etc.), highlighting a strong openness
+% requirement in any modification in the network functionality.  Nonetheless,
+% \mycite{Hatonen10} test off-the-self home routers and unveil high variability in
+% the semantics of the NAT and DNS implementations.  Since such routers are widely
+% deployed in home networks, applications remain robust towards this variability.
+% % to consider this variability as acceptable. 
+% % widespread usage of such routing kit, the impact to home networking appears to be
+% % minimal and home network environment appears to be resilient to non-standard
+% % router implementations. 
 % 
-% Our exploration suggests that, just as with other edge networks, existing
-% presumptions could usefully be re-examined to see if they still apply in this
-% context.  \emph{Do we wish to maintain net neutrality in the home?}
-% Inhabitants do not appear to see network traffic as equal, often desiring
-% imbalance in performance received by different forms of traffic.  \emph{Must
-% the end-to-end argument apply?} Householders understand and exploit the
-% physical nature of their home and use trust boundaries to manage access; we
-% have exploited these resources to explicitly manage the network.  \emph{Should
-% communication infrastructures remain separate from the devices that use them?}
-% In the home setting this separation proves problematic as people, ranging from
-% the home tinkerer to the DIY expert, wish to interact directly with the
-% network as they do with other parts of their homes' physical infrastructures.
-% Our exploration suggests use of a range of displays and devices existing not
-% as clients exploiting the infrastructure but as extensions of the
-% infrastructure making it more available and controllable.
+% \subsection{Home Network as a social activity} \label{s:home_social}
 % 
-% Inability to understand and control network infrastructure has made it
-% difficult for people to understand and live with it in their homes.  We have
-% developed a home router that both captures information about people's use of
-% the network and provides a point of interaction to control the network.  Our
-% initial developments have explored the extent to which residents may be
-% involved in some of the protocols controlling the network; other protocols
-% suitable for modification are under consideration.  We are currently involved
-% in the deployment and study of use of our home router to better understand
-% relevant user needs and how we might more systematically exploit the data we
-% are collecting.  We are also exploring how to use this data in other areas
-% such as security and power management.  
-
-
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "../thesis"
-%%% End: 
+% Home networks technologies provide an excellent setting to study the
+% interactions of social behaviours and technology.  Studies in the field usually
+% engage in user interviews in order to understand how users perceive and interact
+% with network technologies. 
+% 
+% An important aspect in analysing the home network from a social aspect, requires
+% an in-depth understanding of the user perception of  home network technologies.
+% \mycite{shehanpoole08,grinter05} analyse user sketches presenting their network
+% technology understanding and highlight two important observations; user opacity
+% to the network increases inversely proportional to their user network experience
+% -- verifying the effectiveness of the network abstraction, and users identify
+% network devices using the social context of the home network.  Further,
+% \mycite{tolmie07} perform an empirical analysis of the home member interactions
+% with network technologies. Their finding point out that users appear reluctant
+% to optimize network configuration, while they experience tolerable performance.
+% Such tasks though can become more elegant if they have small duration and
+% consist of well-defined steps. Furthermore, interest conflicts, arising due to
+% resource sharing, are usually solved through negotiation between household
+% members. Furthermore, relevant studies have highlighted the importance of
+% accurate information of the utilization and state of the network for network
+% management. \mycite{Chetty10} analyse the effect of bandwidth utilization
+% visualisation in user experience, reporting improved user understanding of
+% network functionality and troubleshooting, but also raised privacy concerns. 
+% 
+% Home network configuration and management are influenced to a great extend by
+% the design of the house and the routines of the house members.  \mycite{Rodden03}
+% use the~\mycite{Brand94} model of home architecture temporal evolution, to analyse
+% the relationship between ubiquitous technologies and home design and understand
+% the interactions between home design and network usage. The study reports that
+% network decisions are severely affected by the design of the house, e.g.,
+% location of the network router, while at the same time, users confuse the limits
+% of the house with the limits of their network, e.g.~users declare wireless
+% encryption as irrelevant, since it is contained within the limits of the house.
+% % In~\mycite{rodden04,crabtree03} the authors monitor the real time communications
+% % and information flows in a multi-member household. The study concludes that
+% % communication activities have a location reference defined to the involved
+% % member as well as the house planning, while activities can be synthesized as
+% % sequences into higher order activities. Additionally, using these
+% % observations, they propose a framework which can model such interactions. 
+% In addition, \mycite{shehan07} analyse common management and configuration
+% problems in home networks and draw parallels with respective design decisions in
+% the network systems.  They present a weight of evidence, pointing out that
+% problems with current network technologies are not amenable to solution via a
+% `thin veneer' of user interface technology layered atop the existing
+% architecture.  Rather, they are \emph{structural}, emerging from the mismatch
+% between the stable `end-to-end' nature of the Internet and the highly dynamic
+% and evolving nature of domestic environments.  

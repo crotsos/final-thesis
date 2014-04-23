@@ -1770,7 +1770,7 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{184.33612704145497, 380.1800387686236}, {37.187965393066406, 15}}</string>
+			<string>{{163.31850268143546, 459.44642734652166}, {29.223421096801758, 15}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>Head</key>
@@ -1781,7 +1781,7 @@
 			<key>ID</key>
 			<integer>653</integer>
 			<key>Rotation</key>
-			<real>2.8785562515258789</real>
+			<real>4.2688441276550293</real>
 			<key>Shape</key>
 			<string>AdjustableArrow</string>
 			<key>ShapeData</key>
@@ -1910,7 +1910,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{152.3547614691598, 264.98840595893478}, {45.150516510009766, 15}}</string>
+			<string>{{130.51926042001509, 284.85646576837098}, {67.181182861328125, 15}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>Head</key>
@@ -1921,7 +1921,7 @@
 			<key>ID</key>
 			<integer>26</integer>
 			<key>Rotation</key>
-			<real>358.77462768554688</real>
+			<real>6.21624755859375</real>
 			<key>Shape</key>
 			<string>AdjustableArrow</string>
 			<key>ShapeData</key>
@@ -2050,7 +2050,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{222, 356.26803999999998}, {383, 84}}</string>
+			<string>{{193, 433}, {400, 100}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2093,27 +2093,25 @@
 				<key>Pad</key>
 				<integer>2</integer>
 				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\b\fs26 \cf0 bob.io.                
-\b0 86400 IN SOA ...
-\f1 \
+\f0\b\fs26 \cf0 bob.signpost.io.                
+\f1\b0 86400 IN SOA ...\
 \pard\pardeftab720
 
-\f0\b \cf0 bob.io
+\f0\b \cf0 bob.signpost.io
 \f1\b0 .                86400 IN DNSKEY   256 3 5 (X\'85X)\
 
-\f0\b desktop.bob.io.
-\f1\b0  86400 IN A 
-\i 1.1.1.1
-\i0 \
+\f0\b desktop.bob.signpost.io.
+\f1\b0  86400 IN A 1.1.1.1\
 
-\f0\b desktop.bob.io
-\f1\b0 . 86400 IN RRSIG A 5 3 86400 20030322173103 (\
-                                  20030220173103 2642 io. X\'85X)}</string>
+\f0\b desktop.bob.signpost.io
+\f1\b0 . 86400 IN RRSIG A 5 3 86400 \
+                                           20030322173103\
+                                           (20030220173103 2642 signpost.io. X\'85X)}</string>
 				<key>VerticalPad</key>
 				<integer>2</integer>
 			</dict>
@@ -2122,7 +2120,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{124.50003, 404}, {54, 20}}</string>
+			<string>{{95.000012741210952, 482.31206999999995}, {100, 20}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2165,12 +2163,12 @@
 				<key>Pad</key>
 				<integer>2</integer>
 				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 GillSansMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 ns.bob.io.}</string>
+\f0\fs26 \cf0 ns.bob.signpost.io.}</string>
 				<key>VerticalPad</key>
 				<integer>2</integer>
 			</dict>
@@ -2179,7 +2177,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{34.000045999999998, 404}, {58, 20}}</string>
+			<string>{{-8.9999865175781224, 482.31206999999995}, {103, 20}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -2222,12 +2220,12 @@
 				<key>Pad</key>
 				<integer>2</integer>
 				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 GillSansMT;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 ns.alice.io.}</string>
+\f0\fs26 \cf0 ns.alice.signpost.io.}</string>
 				<key>VerticalPad</key>
 				<integer>2</integer>
 			</dict>
@@ -2246,8 +2244,8 @@
 			<integer>635</integer>
 			<key>Points</key>
 			<array>
-				<string>{65.648488914206453, 378.16392303135467}</string>
-				<string>{114.59996844340694, 283.18175695945308}</string>
+				<string>{42.58406757041395, 455.93635338626081}</string>
+				<string>{94.737752662148395, 296.69694928486808}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2279,8 +2277,8 @@
 			<integer>634</integer>
 			<key>Points</key>
 			<array>
-				<string>{148.27412557852196, 373.86181756803853}</string>
-				<string>{122.83672260318015, 285.29210397820469}</string>
+				<string>{128.43064511925681, 451.88244069384763}</string>
+				<string>{100.52814183828848, 296.50380660975571}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2307,7 +2305,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{119.00002000000001, 372.68799000000001}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{98.000018000000011, 451.00006000000002}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2405,7 +2403,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{155.06241, 394.74207000000001}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{134.062408, 473.05414000000002}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2468,7 +2466,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{155.06241, 389.60681}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{134.062408, 467.91888}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2531,7 +2529,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{119.84229000000001, 380.63808999999998}, {32.676498000000002, 15.808097}}</string>
+					<string>{{98.842288000000011, 458.95015999999998}, {32.676498000000002, 15.808097}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2572,7 +2570,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{146.79477, 387.64684999999997}, {5.6050953999999997, 8.8001889999999996}}</string>
+					<string>{{125.794768, 465.95891999999998}, {5.6050953999999997, 8.8001889999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2659,7 +2657,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{119.84232, 380.63848999999999}, {5.6050953999999997, 8.8002234000000001}}</string>
+					<string>{{98.842318000000006, 458.95056}, {5.6050953999999997, 8.8002234000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2746,7 +2744,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{148.58314999999999, 388.15496999999999}, {3.9354884999999999, 8.2917585000000003}}</string>
+					<string>{{127.58314799999999, 466.46704}, {3.9354884999999999, 8.2917585000000003}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2842,7 +2840,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{121.63168, 381.14713}, {3.9354884999999999, 8.2918005000000008}}</string>
+					<string>{{100.63167800000001, 459.45920000000001}, {3.9354884999999999, 8.2918005000000008}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -2938,7 +2936,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{149.9545, 394.36020000000002}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{128.954498, 472.67227000000003}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3022,7 +3020,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.00203999999999, 387.35196000000002}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{102.002038, 465.66403000000003}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3106,7 +3104,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{133.03281999999999, 384.25191999999998}, {16.358242000000001, 9.9205884999999991}}</string>
+					<string>{{112.03281799999999, 462.56398999999999}, {16.358242000000001, 9.9205884999999991}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3167,9 +3165,9 @@
 					<integer>613</integer>
 					<key>Points</key>
 					<array>
-						<string>{146.09155000000001, 393.38260000000002}</string>
-						<string>{146.18365, 386.9393}</string>
-						<string>{149.39026000000001, 387.72890999999998}</string>
+						<string>{125.09154800000002, 471.69467000000003}</string>
+						<string>{125.18364800000001, 465.25137000000001}</string>
+						<string>{128.39025800000002, 466.04097999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -3224,9 +3222,9 @@
 					<integer>614</integer>
 					<key>Points</key>
 					<array>
-						<string>{141.73828, 392.22368999999998}</string>
-						<string>{141.8295, 385.78039999999999}</string>
-						<string>{145.03704999999999, 386.57042999999999}</string>
+						<string>{120.73827800000001, 470.53575999999998}</string>
+						<string>{120.829498, 464.09246999999999}</string>
+						<string>{124.037048, 464.88249999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -3281,9 +3279,9 @@
 					<integer>615</integer>
 					<key>Points</key>
 					<array>
-						<string>{137.38596000000001, 391.06418000000002}</string>
-						<string>{137.47717, 384.62081999999998}</string>
-						<string>{140.68472, 385.41091999999998}</string>
+						<string>{116.38595800000002, 469.37625000000003}</string>
+						<string>{116.47716800000001, 462.93288999999999}</string>
+						<string>{119.684718, 463.72298999999998}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -3338,9 +3336,9 @@
 					<integer>616</integer>
 					<key>Points</key>
 					<array>
-						<string>{133.03281000000001, 389.90523999999999}</string>
-						<string>{133.12396000000001, 383.46190999999999}</string>
-						<string>{136.33151000000001, 384.25200999999998}</string>
+						<string>{112.03280800000002, 468.21731}</string>
+						<string>{112.12395800000002, 461.77397999999999}</string>
+						<string>{115.33150800000001, 462.56407999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -3388,7 +3386,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{146.90582000000001, 388.04201999999998}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{125.90581800000001, 466.35408999999999}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3449,7 +3447,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{142.55260999999999, 386.88297}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{121.55260799999999, 465.19504000000001}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3510,7 +3508,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{138.19945999999999, 385.72366}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{117.19945799999999, 464.03573}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3571,7 +3569,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{133.84710999999999, 384.56506000000002}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{112.84710799999999, 462.87713000000002}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3632,7 +3630,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{146.09151, 386.93932999999998}, {3.2981820000000002, 7.2334341999999996}}</string>
+					<string>{{125.091508, 465.25139999999999}, {3.2981820000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3716,7 +3714,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{141.73831000000001, 385.78023999999999}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{120.73830800000002, 464.09231}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3800,7 +3798,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{137.38605000000001, 384.62088}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{116.38604800000002, 462.93295000000001}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3884,7 +3882,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{133.03283999999999, 383.46197999999998}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{112.032838, 461.77404999999999}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -3968,7 +3966,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{127.31195, 386.69348000000002}, {2.9289546, 1.5869287999999999}}</string>
+					<string>{{106.311948, 465.00555000000003}, {2.9289546, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4031,7 +4029,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{127.31097, 382.91318000000001}, {2.9292156999999999, 1.5869287999999999}}</string>
+					<string>{{106.310968, 461.22525000000002}, {2.9292156999999999, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4094,7 +4092,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{125.84766, 385.97185999999999}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{104.84765800000001, 464.28393}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4157,7 +4155,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{125.84766, 382.19150000000002}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{104.84765800000001, 460.50357000000002}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4220,7 +4218,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{120.59708000000001, 380.61953999999997}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{99.59707800000001, 458.93160999999998}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4283,7 +4281,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{119.00002000000001, 379.02199999999999}, {40.076205999999999, 18.477919}}</string>
+					<string>{{98.000018000000011, 457.33407}, {40.076205999999999, 18.477919}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4375,7 +4373,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{153.34262000000001, 380.30612000000002}, {30.657430999999999, 14.547941}}</string>
+					<string>{{132.34261800000002, 458.61819000000003}, {30.657430999999999, 14.547941}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4456,7 +4454,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{124.70023999999999, 372.68792999999999}, {59.299778000000003, 15.605651999999999}}</string>
+					<string>{{103.700238, 451}, {59.299778000000003, 15.605651999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4540,7 +4538,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{119.00002000000001, 372.68799000000001}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{98.000018000000011, 451.00006000000002}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4655,7 +4653,7 @@
 			<key>ID</key>
 			<integer>601</integer>
 			<key>Notes</key>
-			<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+			<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
@@ -4669,7 +4667,7 @@
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{27.000008000000001, 377.68799000000001}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{6.0000060000000062, 456.00006000000002}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4767,7 +4765,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{63.062393, 399.74207000000001}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{42.062391000000005, 478.05414000000002}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4830,7 +4828,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{63.062393, 394.60681}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{42.062391000000005, 472.91888}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4893,7 +4891,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{27.842285, 385.63808999999998}, {32.676498000000002, 15.808097}}</string>
+					<string>{{6.8422830000000054, 463.95015999999998}, {32.676498000000002, 15.808097}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -4934,7 +4932,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{54.794769000000002, 392.64684999999997}, {5.6050953999999997, 8.8001889999999996}}</string>
+					<string>{{33.794767000000007, 470.95891999999998}, {5.6050953999999997, 8.8001889999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5021,7 +5019,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{27.842316, 385.63848999999999}, {5.6050953999999997, 8.8002234000000001}}</string>
+					<string>{{6.8423140000000071, 463.95056}, {5.6050953999999997, 8.8002234000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5108,7 +5106,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{56.583137999999998, 393.15496999999999}, {3.9354884999999999, 8.2917585000000003}}</string>
+					<string>{{35.583136000000003, 471.46704}, {3.9354884999999999, 8.2917585000000003}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5204,7 +5202,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{29.631682999999999, 386.14713}, {3.9354884999999999, 8.2918005000000008}}</string>
+					<string>{{8.6316810000000039, 464.45920000000001}, {3.9354884999999999, 8.2918005000000008}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5300,7 +5298,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{57.954490999999997, 399.36020000000002}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{36.954489000000002, 477.67227000000003}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5384,7 +5382,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{31.002047000000001, 392.35196000000002}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{10.002045000000006, 470.66403000000003}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5468,7 +5466,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{41.032822000000003, 389.25191999999998}, {16.358242000000001, 9.9205884999999991}}</string>
+					<string>{{20.032820000000008, 467.56398999999999}, {16.358242000000001, 9.9205884999999991}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5529,9 +5527,9 @@
 					<integer>580</integer>
 					<key>Points</key>
 					<array>
-						<string>{54.091552999999998, 398.38260000000002}</string>
-						<string>{54.183647000000001, 391.9393}</string>
-						<string>{57.390259, 392.72890999999998}</string>
+						<string>{33.091551000000003, 476.69467000000003}</string>
+						<string>{33.183645000000006, 470.25137000000001}</string>
+						<string>{36.390257000000005, 471.04097999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -5586,9 +5584,9 @@
 					<integer>581</integer>
 					<key>Points</key>
 					<array>
-						<string>{49.738281000000001, 397.22368999999998}</string>
-						<string>{49.829483000000003, 390.78039999999999}</string>
-						<string>{53.037033000000001, 391.57042999999999}</string>
+						<string>{28.738279000000006, 475.53575999999998}</string>
+						<string>{28.829481000000008, 469.09246999999999}</string>
+						<string>{32.037031000000006, 469.88249999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -5643,9 +5641,9 @@
 					<integer>582</integer>
 					<key>Points</key>
 					<array>
-						<string>{45.385962999999997, 396.06418000000002}</string>
-						<string>{45.477173000000001, 389.62081999999998}</string>
-						<string>{48.684722999999998, 390.41091999999998}</string>
+						<string>{24.385961000000002, 474.37625000000003}</string>
+						<string>{24.477171000000006, 467.93288999999999}</string>
+						<string>{27.684721000000003, 468.72298999999998}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -5700,9 +5698,9 @@
 					<integer>583</integer>
 					<key>Points</key>
 					<array>
-						<string>{41.032814000000002, 394.90523999999999}</string>
-						<string>{41.123961999999999, 388.46190999999999}</string>
-						<string>{44.331511999999996, 389.25200999999998}</string>
+						<string>{20.032812000000007, 473.21731}</string>
+						<string>{20.123960000000004, 466.77397999999999}</string>
+						<string>{23.331510000000002, 467.56407999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -5750,7 +5748,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{54.905822999999998, 393.04201999999998}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{33.905821000000003, 471.35408999999999}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5811,7 +5809,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{50.552596999999999, 391.88297}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{29.552595000000004, 470.19504000000001}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5872,7 +5870,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{46.199447999999997, 390.72366}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{25.199446000000002, 469.03573}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5933,7 +5931,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{41.847107000000001, 389.56506000000002}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{20.847105000000006, 467.87713000000002}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -5994,7 +5992,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{54.091507, 391.93932999999998}, {3.2981820000000002, 7.2334341999999996}}</string>
+					<string>{{33.091505000000005, 470.25139999999999}, {3.2981820000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6078,7 +6076,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{49.738312000000001, 390.78023999999999}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{28.738310000000006, 469.09231}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6162,7 +6160,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{45.386046999999998, 389.62088}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{24.386045000000003, 467.93295000000001}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6246,7 +6244,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{41.032822000000003, 388.46197999999998}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{20.032820000000008, 466.77404999999999}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6330,7 +6328,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{35.311934999999998, 391.69348000000002}, {2.9289546, 1.5869287999999999}}</string>
+					<string>{{14.311933000000002, 470.00555000000003}, {2.9289546, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6393,7 +6391,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{35.310974000000002, 387.91318000000001}, {2.9292156999999999, 1.5869287999999999}}</string>
+					<string>{{14.310972000000007, 466.22525000000002}, {2.9292156999999999, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6456,7 +6454,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{33.847641000000003, 390.97185999999999}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{12.84763900000001, 469.28393}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6519,7 +6517,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{33.847641000000003, 387.19150000000002}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{12.84763900000001, 465.50357000000002}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6582,7 +6580,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{28.597061, 385.61953999999997}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{7.5970590000000051, 463.93160999999998}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6645,7 +6643,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{26.999998000000001, 384.02199999999999}, {40.076205999999999, 18.477919}}</string>
+					<string>{{5.9999960000000065, 462.33407}, {40.076205999999999, 18.477919}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6737,7 +6735,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{61.342609000000003, 385.30612000000002}, {30.657430999999999, 14.547941}}</string>
+					<string>{{40.342607000000008, 463.61819000000003}, {30.657430999999999, 14.547941}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6818,7 +6816,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{32.700240999999998, 377.68792999999999}, {59.299778000000003, 15.605651999999999}}</string>
+					<string>{{11.700239000000003, 456}, {59.299778000000003, 15.605651999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -6902,7 +6900,7 @@
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{27.000008000000001, 377.68799000000001}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{6.0000060000000062, 456.00006000000002}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7017,7 +7015,7 @@
 			<key>ID</key>
 			<integer>568</integer>
 			<key>Notes</key>
-			<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+			<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
@@ -7026,7 +7024,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{198, 186.13401985168457}, {361, 164}}</string>
+			<string>{{198, 218.63403716613769}, {378, 196}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -7069,37 +7067,44 @@
 				<key>Pad</key>
 				<integer>2</integer>
 				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f0\b\fs26 \cf0 io.               
-\b0 86400 IN SOA ...\
-
-\b bob.io.        
-\b0 86400 IN NS ns.bob.io.\
-
-\b ns.bob.io.
-\b0     86400 IN A 128.232.1.1
-\b \
-ds.alice.io.
-\f1\b0  86400 IN DS 60485 5 1 (X\'85X)\
-
-\f0\b ds.bob.io
-\f1\b0 .  86400 IN DS 60485 5 1 (Y\'85Y)\
+\deftab720
 \pard\pardeftab720
 
-\f0\b \cf0 ds.alice.io
-\f1\b0 . 86400 IN RRSIG DS 5 3 86400 20030322173103 (\
-                                  20030220173103 2642 io. X\'85X)\
+\f0\b\fs26 \cf0 signpost.io.               
+\f1\b0 86400 IN SOA ...
+\f0 \
 
-\f0\b ds.bob.io
-\f1\b0 .  86400 IN RRSIG DS 5 3 86400 20030322173103 (\
-                                  20030220173103 2642 io. X\'85X)\
+\b bob.signpost.io.        
+\f1\b0 86400 IN NS ns.bob.signpost.io.
+\f0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\b io
-\f1\b0 .               86400 IN DNSKEY 256 3 5 (X\'85X)}</string>
+\b \cf0 ns.bob.signpost.io.
+\b0    
+\f1 86400 IN A 128.232.1.1
+\f0\b \
+ds.alice.signpost.io.
+\f1\b0   86400 IN DS 60485 5 1 (X\'85X)\
+
+\f0\b ds.bob.signpost.io
+\f1\b0 .   86400 IN DS 60485 5 1 (Y\'85Y)\
+\pard\pardeftab720
+
+\f0\b \cf0 ds.alice.signpost.io
+\f1\b0 .  86400 IN RRSIG DS 5 3 86400 \
+                                     20030322173103\
+                                     (20030220173103 2642 signpost.io. X\'85X)\
+
+\f0\b ds.bob.signpost.io
+\f1\b0 .   86400 IN RRSIG DS 5 3 86400 \
+                                     20030322173103\
+                                     (20030220173103 2642 signpost.io. X\'85X)\
+
+\f0\b signpost.io
+\f1\b0 .                86400 IN DNSKEY 256 3 5 (X\'85X)}</string>
 				<key>VerticalPad</key>
 				<integer>2</integer>
 			</dict>
@@ -7108,7 +7113,7 @@ ds.alice.io.
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{44.000022999999999, 261.26803999999998}, {31, 20}}</string>
+			<string>{{65.999967594238285, 246}, {78, 20}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -7151,12 +7156,14 @@ ds.alice.io.
 				<key>Pad</key>
 				<integer>2</integer>
 				<key>Text</key>
-				<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
-\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 GillSansMT;}
+				<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+\cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 GillSansMT;\f1\fnil\fcharset0 HelveticaNeue;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 ns.io.}</string>
+\f0\fs26 \cf0 ns.signpost
+\f1 .
+\f0 io.}</string>
 				<key>VerticalPad</key>
 				<integer>2</integer>
 			</dict>
@@ -7170,7 +7177,7 @@ ds.alice.io.
 			<array>
 				<dict>
 					<key>Bounds</key>
-					<string>{{86.999984999999995, 261.26807000000002}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{65.999983, 272.80411999999995}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7268,7 +7275,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.06236, 283.32213999999999}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{102.062358, 294.85818999999992}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7331,7 +7338,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{123.06236, 278.18689000000001}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{102.062358, 289.72293999999994}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7394,7 +7401,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{87.842254999999994, 269.21816999999999}, {32.676498000000002, 15.808097}}</string>
+					<string>{{66.842252999999999, 280.75421999999992}, {32.676498000000002, 15.808097}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7435,7 +7442,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{114.79474, 276.22692999999998}, {5.6050953999999997, 8.8001889999999996}}</string>
+					<string>{{93.794738000000009, 287.76297999999991}, {5.6050953999999997, 8.8001889999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7522,7 +7529,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{87.842285000000004, 269.21857}, {5.6050953999999997, 8.8002234000000001}}</string>
+					<string>{{66.842283000000009, 280.75461999999993}, {5.6050953999999997, 8.8002234000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7609,7 +7616,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{116.58311, 276.73505}, {3.9354884999999999, 8.2917585000000003}}</string>
+					<string>{{95.58310800000001, 288.27109999999993}, {3.9354884999999999, 8.2917585000000003}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7705,7 +7712,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{89.631653, 269.72719999999998}, {3.9354884999999999, 8.2918005000000008}}</string>
+					<string>{{68.631651000000005, 281.26324999999991}, {3.9354884999999999, 8.2918005000000008}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7801,7 +7808,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{117.95447, 282.94027999999997}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{96.954468000000006, 294.4763299999999}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7885,7 +7892,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{91.002014000000003, 275.93203999999997}, {2.5645120000000001, 0.90985172999999997}}</string>
+					<string>{{70.002012000000008, 287.4680899999999}, {2.5645120000000001, 0.90985172999999997}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -7969,7 +7976,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{101.03279000000001, 272.83199999999999}, {16.358242000000001, 9.9205884999999991}}</string>
+					<string>{{80.032788000000011, 284.36804999999993}, {16.358242000000001, 9.9205884999999991}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8030,9 +8037,9 @@ ds.alice.io.
 					<integer>545</integer>
 					<key>Points</key>
 					<array>
-						<string>{114.09152, 281.96267999999998}</string>
-						<string>{114.18362, 275.51938000000001}</string>
-						<string>{117.39023, 276.30898999999999}</string>
+						<string>{93.091518000000008, 293.49872999999991}</string>
+						<string>{93.18361800000001, 287.05542999999994}</string>
+						<string>{96.390228000000008, 287.84503999999993}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -8087,9 +8094,9 @@ ds.alice.io.
 					<integer>546</integer>
 					<key>Points</key>
 					<array>
-						<string>{109.73824999999999, 280.80376999999999}</string>
-						<string>{109.82944999999999, 274.36047000000002}</string>
-						<string>{113.03700000000001, 275.15051}</string>
+						<string>{88.738247999999999, 292.33981999999992}</string>
+						<string>{88.829447999999999, 285.89651999999995}</string>
+						<string>{92.036998000000011, 286.68655999999993}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -8144,9 +8151,9 @@ ds.alice.io.
 					<integer>547</integer>
 					<key>Points</key>
 					<array>
-						<string>{105.38593, 279.64425999999997}</string>
-						<string>{105.47714000000001, 273.20089999999999}</string>
-						<string>{108.68469, 273.99099999999999}</string>
+						<string>{84.385928000000007, 291.18030999999991}</string>
+						<string>{84.477138000000011, 284.73694999999992}</string>
+						<string>{87.684688000000008, 285.52704999999992}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -8201,9 +8208,9 @@ ds.alice.io.
 					<integer>548</integer>
 					<key>Points</key>
 					<array>
-						<string>{101.03278, 278.48532}</string>
-						<string>{101.12393, 272.04199}</string>
-						<string>{104.33148, 272.83208999999999}</string>
+						<string>{80.032778000000008, 290.02136999999993}</string>
+						<string>{80.123928000000006, 283.57803999999993}</string>
+						<string>{83.331478000000004, 284.36813999999993}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -8251,7 +8258,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{114.90579, 276.62209999999999}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{93.905788000000001, 288.15814999999992}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8312,7 +8319,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{110.55257, 275.46303999999998}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{89.552568000000008, 286.99908999999991}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8373,7 +8380,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{106.19942, 274.30374}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{85.199418000000009, 285.83978999999994}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8434,7 +8441,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{101.84708000000001, 273.14514000000003}, {1.5312645, 5.1397919999999999}}</string>
+					<string>{{80.84707800000001, 284.68118999999996}, {1.5312645, 5.1397919999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8495,7 +8502,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{114.09148, 275.51940999999999}, {3.2981820000000002, 7.2334341999999996}}</string>
+					<string>{{93.091478000000009, 287.05545999999993}, {3.2981820000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8579,7 +8586,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{109.73828, 274.36032}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{88.738278000000008, 285.89636999999993}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8663,7 +8670,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{105.38602, 273.20096000000001}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{84.386018000000007, 284.73700999999994}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8747,7 +8754,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{101.03279000000001, 272.04205000000002}, {3.2991393000000002, 7.2334341999999996}}</string>
+					<string>{{80.032788000000011, 283.57809999999995}, {3.2991393000000002, 7.2334341999999996}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8831,7 +8838,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{95.311904999999996, 275.27355999999997}, {2.9289546, 1.5869287999999999}}</string>
+					<string>{{74.311903000000001, 286.80960999999991}, {2.9289546, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8894,7 +8901,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{95.310944000000006, 271.49326000000002}, {2.9292156999999999, 1.5869287999999999}}</string>
+					<string>{{74.310942000000011, 283.02930999999995}, {2.9292156999999999, 1.5869287999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -8957,7 +8964,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{93.847610000000003, 274.55194}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{72.847608000000008, 286.08798999999993}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9020,7 +9027,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{93.847610000000003, 270.77157999999997}, {5.8572965000000003, 3.1736266999999998}}</string>
+					<string>{{72.847608000000008, 282.3076299999999}, {5.8572965000000003, 3.1736266999999998}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9083,7 +9090,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{88.597031000000001, 269.19961999999998}, {2.0493600000000001, 1.1106997000000001}}</string>
+					<string>{{67.597029000000006, 280.73566999999991}, {2.0493600000000001, 1.1106997000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9146,7 +9153,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{86.999968999999993, 267.60208}, {40.076205999999999, 18.477919}}</string>
+					<string>{{65.999966999999998, 279.13812999999993}, {40.076205999999999, 18.477919}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9238,7 +9245,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{121.34258, 268.88619999999997}, {30.657430999999999, 14.547941}}</string>
+					<string>{{100.342578, 280.42224999999991}, {30.657430999999999, 14.547941}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9319,7 +9326,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{92.700194999999994, 261.26801}, {59.299778000000003, 15.605651999999999}}</string>
+					<string>{{71.700192999999999, 272.80405999999994}, {59.299778000000003, 15.605651999999999}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9403,7 +9410,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{86.999984999999995, 261.26807000000002}, {65.000022999999999, 24.812021000000001}}</string>
+					<string>{{65.999983, 272.80411999999995}, {65.000022999999999, 24.812021000000001}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
@@ -9518,7 +9525,7 @@ ds.alice.io.
 			<key>ID</key>
 			<integer>533</integer>
 			<key>Notes</key>
-			<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+			<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
@@ -9527,7 +9534,7 @@ ds.alice.io.
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{222, 166.86598000000001}, {40, 40}}</string>
+			<string>{{222, 179}, {40, 40}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>ID</key>
@@ -9623,8 +9630,8 @@ ds.alice.io.
 					<integer>640</integer>
 					<key>Points</key>
 					<array>
-						<string>{291.6387200168171, 137.73195999999999}</string>
-						<string>{309.3597290770108, 112}</string>
+						<string>{313.48690195491088, 137.73195999999999}</string>
+						<string>{326.95745938547992, 112}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -9646,7 +9653,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{245.75194999999999, 137.73195999999999}, {78, 20}}</string>
+					<string>{{243.75194999999999, 137.73195999999999}, {129, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -9689,12 +9696,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 tablet.bob.io.}</string>
+\f0\fs26 \cf0 tablet.signpost.bob.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -9713,8 +9720,8 @@ ds.alice.io.
 					<integer>642</integer>
 					<key>Points</key>
 					<array>
-						<string>{185.56374815960288, 137.73195999999999}</string>
-						<string>{161.9307908650203, 112}</string>
+						<string>{192.60100446092665, 157.66016739746095}</string>
+						<string>{163.40107381791165, 112}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -9736,7 +9743,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{152.24803, 137.73195999999999}, {85, 20}}</string>
+					<string>{{130.49606, 157.66016739746092}, {137, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -9779,12 +9786,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 phone.alice.io.}</string>
+\f0\fs26 \cf0 phone.signpost.alice.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -9803,8 +9810,8 @@ ds.alice.io.
 					<integer>644</integer>
 					<key>Points</key>
 					<array>
-						<string>{112.50589399342513, 137.73195999999999}</string>
-						<string>{141.4847101161107, 112}</string>
+						<string>{128.67721556567173, 137.73195999999999}</string>
+						<string>{149.09068967277591, 112.00000000000001}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -9826,7 +9833,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{58.744095000000002, 137.73195999999999}, {85, 20}}</string>
+					<string>{{52.744095000000016, 137.73195999999999}, {136, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -9869,12 +9876,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 laptop.alice.io.}</string>
+\f0\fs26 \cf0 laptop.signpost.alice.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -9893,8 +9900,8 @@ ds.alice.io.
 					<integer>646</integer>
 					<key>Points</key>
 					<array>
-						<string>{365.08726880501115, 137.73195999999999}</string>
-						<string>{329.91515022467058, 112}</string>
+						<string>{390.15894905370271, 159}</string>
+						<string>{342.70318560610554, 112}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -9916,7 +9923,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{332.25592, 137.73195999999999}, {93, 20}}</string>
+					<string>{{328.25592, 159}, {144, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -9959,12 +9966,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 desktop.bob.io.}</string>
+\f0\fs26 \cf0 desktop.signpost.bob.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -9983,8 +9990,8 @@ ds.alice.io.
 					<integer>648</integer>
 					<key>Points</key>
 					<array>
-						<string>{294.24408, 94.981554563151349}</string>
-						<string>{243.74408, 78.871032083112425}</string>
+						<string>{299.93279351090462, 92}</string>
+						<string>{280.24602161744735, 86}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -10016,8 +10023,8 @@ ds.alice.io.
 					<integer>649</integer>
 					<key>Points</key>
 					<array>
-						<string>{175.74409000000003, 94.707358557906829}</string>
-						<string>{225.74408, 78.85379337624407}</string>
+						<string>{191.78272211276493, 92}</string>
+						<string>{212.65233997905671, 86}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -10039,7 +10046,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{129.74409, 92}, {46, 20}}</string>
+					<string>{{108.00002566894531, 92}, {98, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -10082,12 +10089,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 alice.io.}</string>
+\f0\fs26 \cf0 alice.signpost.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -10096,7 +10103,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{294.24408, 92}, {44, 20}}</string>
+					<string>{{285.24408, 92}, {95, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -10139,12 +10146,12 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 
-\f0\fs26 \cf0 bob.io.}</string>
+\f0\fs26 \cf0 bob.signpost.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -10153,7 +10160,7 @@ ds.alice.io.
 				</dict>
 				<dict>
 					<key>Bounds</key>
-					<string>{{225.74408, 66}, {18, 20}}</string>
+					<string>{{212.48815999999999, 66}, {69, 20}}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>FitText</key>
@@ -10196,12 +10203,13 @@ ds.alice.io.
 						<key>Pad</key>
 						<integer>2</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf390
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
 \cocoascreenfonts1{\fonttbl\f0\fnil\fcharset0 HelveticaNeue-Light;}
 {\colortbl;\red255\green255\blue255;}
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\deftab720
+\pard\pardeftab720
 
-\f0\fs26 \cf0 io.}</string>
+\f0\fs26 \cf0 signpost.io.}</string>
 						<key>VerticalPad</key>
 						<integer>2</integer>
 					</dict>
@@ -10260,7 +10268,7 @@ ds.alice.io.
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-09-12 13:00:01 +0000</string>
+	<string>2014-03-27 14:06:08 +0000</string>
 	<key>Modifier</key>
 	<string>Haris Rotsos</string>
 	<key>NotesVisible</key>
@@ -10355,7 +10363,7 @@ ds.alice.io.
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{81, 4}, {558, 735}}</string>
+		<string>{{-9, 12}, {558, 735}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>

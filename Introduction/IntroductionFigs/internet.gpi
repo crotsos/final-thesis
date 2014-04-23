@@ -1,5 +1,5 @@
 set key on
-set key left top reverse
+set key left top reverse font ",24"
 
 set style data histograms
 set style histogram rowstacked
@@ -7,19 +7,27 @@ set boxwidth 0.5 relative
 set style fill solid noborder 0.5
 set datafile separator " "
 
-set xlabel "year"
-set ylabel "Data (EB/month)"
+set xlabel "year" font ",24"
+set ylabel "Data (ZB/month)" font ",24"
 
 # set y2tics 10 nomirror
 # set y2range [0:60]
 # set y2label "% of total Internet traffic"
 
+
+set yrange [0:90000];
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt'
+
+set ytics ("0"  0, "20" 20000, "40" 40000, "60" 60000, "80" 80000, "100" 100000)  font ",24";
+set xtics font ",24";
+
 plot 'Introduction/IntroductionFigs/fixed_traffic.data.bk' \
-  using 2 t "Data" lt 4 axes x1y1, \
-  '' using 3:xticlabels(1) t "File Sharing" lt 1 axes x1y1, \
-  '' using 4:xticlabels(1) t "Video" lt 2 axes x1y1, \
-  '' using 5:xticlabels(1) t "VoIP" lt 5 axes x1y1, \
-  '' using 6:xticlabels(1) t "Game" lt 6 axes x1y1;
+  using 2 t "Data" ls 6 axes x1y1, \
+  '' using 3:xticlabels(1) t "File Sharing" ls 1, \
+  '' using 4:xticlabels(1) t "Video" ls 2, \
+  '' using 5:xticlabels(1) t "VoIP" ls 3, \
+  '' using 6:xticlabels(1) t "Game" ls 4;
 #  , \
 #  '' using ($8*100):xticlabels(1) w lines t "" lt 4  lw 4 axes x1y2, \
 #  '' using ($9*100):xticlabels(1) w lines t "" lt 1  lw 4 axes x1y2, \

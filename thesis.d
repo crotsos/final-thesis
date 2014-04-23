@@ -8,7 +8,6 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texl
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/infwarerr.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty)
-thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/generic/path/path.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amssymb.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/eucal.sty)
@@ -40,15 +39,18 @@ thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texl
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/setspace/setspace.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/subfigure/subfigure.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/tocbibind/tocbibind.sty)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/tools/array.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/tools/xspace.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,/usr/local/texlive/2013/texmf-dist/tex/latex/url/url.sty)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Abstract/abstract.tex)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Acknowledgement/acknowledgement.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Background/background.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Chapter1/chapter1.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Chapter2/chapter2.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Chapter3/chapter3.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Classes/CUEDthesisPSnPDF.cls)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Conclusions/conclusions.tex)
+thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Dedication/dedication.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Introduction/introduction.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Macros/MacroFile1.tex)
 thesis.aux thesis.aux.make thesis.d thesis.pdf: $(call path-norm,Macros/cmd.tex)
@@ -116,9 +118,18 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/sdnsi
 -include Chapter1/Chapter1Figs/switch-media-delay.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/switch-media-delay.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/switch-media-delay.pdf)
+-include Chapter1/Chapter1Figs/2hosts-cumm.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/2hosts-cumm.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/2hosts-cumm.pdf)
 -include Chapter1/Chapter1Figs/sdnsim-topology-double.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/sdnsim-topology-double.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/sdnsim-topology-double.pdf)
+-include Chapter1/Chapter1Figs/hierarchy-topology.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/hierarchy-topology.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/hierarchy-topology.pdf)
+-include Chapter1/Chapter1Figs/sdnsim-use-case.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter1/Chapter1Figs/sdnsim-use-case.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter1/Chapter1Figs/sdnsim-use-case.pdf)
 -include Chapter2/Chapter2Figs/architecture.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter2/Chapter2Figs/architecture.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/architecture.pdf)
@@ -155,6 +166,12 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/homew
 -include Chapter2/Chapter2Figs/queue_eval_setup.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter2/Chapter2Figs/queue_eval_setup.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/queue_eval_setup.pdf)
+-include Chapter2/Chapter2Figs/homenet-prio-gaming.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter2/Chapter2Figs/homenet-prio-gaming.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/homenet-prio-gaming.pdf)
+-include Chapter2/Chapter2Figs/homenet-prio-voip.pdf.gpi.d
+thesis.d: $$(call graphics-source,Chapter2/Chapter2Figs/homenet-prio-voip.pdf)
+thesis.pdf thesis._graphics: $$(call graphics-target,Chapter2/Chapter2Figs/homenet-prio-voip.pdf)
 -include Chapter3/Chapter3Figs/sp-illustration.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/sp-illustration.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/sp-illustration.pdf)
@@ -176,5 +193,5 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/nat-p
 -include Chapter3/Chapter3Figs/measurement_topology.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/measurement_topology.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/measurement_topology.pdf)
-thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/references.bib)
-thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/rfc.bib)
+thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/references-bk.bib)
+thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/rfc-bk.bib)

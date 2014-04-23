@@ -1,11 +1,14 @@
-set ylabel  'throughtput (bits/sec)'
-set y2label  'gaming latency (msec)'
-set xlabel 'time of day'
+set ylabel  'HTTP throughput (Kb/s)' font ",26"
+set y2label 'gaming latency (msec)' font ",26"
+set y2tics
+set xlabel 'time of day (sec)' font ",26"
 
-# set style line 1 lc rgb '#00004d' lt 1 lw 3
-set style line 2 lc rgb '#004d00' lt 2 lw 2
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
+
+set key font ",26";
 
 plot \
-  './latency-gaming.data' using 1:4 title 'gaming' axis x1y2 with points \
-  lc rgb "#00004d" pt 3 ps 1,\
-  './throughput-gaming.data' using 1:2 title 'bursty web' with lines lt 2;
+  'Chapter2/Chapter2Figs/latency-gaming.data' using 1:($4*1000) \
+  title 'gaming (latency)' axis x1y2 with points ls 1 pt 3 ps 1,\
+  'Chapter2/Chapter2Figs/throughput-gaming.data' using 1:($2*8/1024) \
+  title 'HTTP (throughput)' with lines ls 2 lw 3;

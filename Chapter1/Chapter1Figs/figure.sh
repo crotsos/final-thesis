@@ -184,67 +184,6 @@ plot "Chapter1/Chapter1Figs/interaction_test/nec-interaction-test.txt" \
 EOF
 
 gnuplot << EOF
-set terminal ${type}cairo fontscale $fontscale font "Gill Sans,9" rounded size 5,1.5
-set output 'Chapter1/Chapter1Figs/pkt_in_delay.$type';
-set logscale xy;
-set xrange [0.5 : 500];
-set xtics ("2000" 0.5, "1000" 1, "666" 1.5, "400" 2.5, "200" 5, \
-  "100" 10, "40" 25, "20" 50, "13" 75, "10" 100, "4" 250, "2" 500, \
-  "1.3" 750, "1" 1000) rotate by -90;
-set xlabel  'packet rate (packets/sec)';
-set ylabel  'pkt_in delay(msec)';
-set key outside; 
-plot \
- 'Chapter1/Chapter1Figs/pkt_in_out/nec-1500-pkt-in.txt' \
-  using (\$1/1000):3:2:4 title 'switch1' with errorlines lt 1, \
- 'Chapter1/Chapter1Figs/pkt_in_out/hp-1500-pkt-in.txt' \
-  using (\$1/1000):3:2:4 title 'switch2' with errorlines lt 2,\
-  'Chapter1/Chapter1Figs/pkt_in_out/openvswitch-1500-pkt-in.txt' \
-  using (\$1/1000):3:2:4 title 'ovs' with errorlines lt 4;
-
-#'Chapter1/Chapter1Figs/pkt_in_out/openvswitch-150-pkt-in.txt' \
-#  using (\$1/1000):3:2:4 title 'ovs - small' with errorlines lt 2,\
-#\
-#  'Chapter1/Chapter1Figs/pkt_in_out/hp-150-pkt-in.txt' \
-#  using (\$1/1000):3:2:4 title 'sw2 - small' with errorlines lt 4,\
-#\
-#  'Chapter1/Chapter1Figs/pkt_in_out/nec-150-pkt-in.txt' \
-#  using (\$1/1000):3:2:4 title 'sw1 - small' with errorlines lw 10 
-EOF
-
-gnuplot << EOF
-set terminal ${type}cairo fontscale $fontscale font "Gill Sans,9" rounded size 5,1.5
-set output 'Chapter1/Chapter1Figs/pkt_out_delay.$type';
-set logscale x;
-set xrange [0.5 : 500];
-set xtics (0.5, 1, 1.5, 2.5, 5, 10, 25, 50,75, 100, 250, 500, 750, 1000) rotate by -90;
-set xlabel  'interpacket gap(msec)';
-set xtics ("2000" 0.5, "1000" 1, "666" 1.5, "400" 2.5, "200" 5, \
-  "100" 10, "40" 25, "20" 50, "13" 75, "10" 100, "4" 250, "2" 500, \
-  "1.3" 750, "1" 1000) rotate by -90;
-set xlabel  'packet rate (packets/sec)';
-set ylabel  'pkt_out delay(msec)';
-set key outside; 
-plot \
- 'Chapter1/Chapter1Figs/pkt_in_out/nec-150-pkt-out.txt' \
-  using (\$1/1000):3:2:4 title 'switch1' with errorlines lt 1, \
- 'Chapter1/Chapter1Figs/pkt_in_out/hp-150-pkt-out.txt' \
-  using (\$1/1000):3:2:4 title 'switch2' with errorlines lt 2,\
-  'Chapter1/Chapter1Figs/pkt_in_out/openvswitch-150-pkt-out.txt' \
-  using (\$1/1000):3:2:4 title 'ovs' with errorlines lt 4;
-
-# 'Chapter1/Chapter1Figs/pkt_in_out/openvswitch-1500-pkt-out.txt' \
-#   using (\$1/1000):3:2:4 title 'ovs - large' with errorlines lt 1,\
-#      \
-#   'Chapter1/Chapter1Figs/pkt_in_out/hp-1500-pkt-out.txt' \
-#   using (\$1/1000):3:2:4 title 'sw2 - large' with errorlines lt 3,\
-#      \
-#   'Chapter1/Chapter1Figs/pkt_in_out/nec-1500-pkt-out.txt' \
-#   using (\$1/1000):3:2:4 title 'sw1 - large' with errorlines lt 5,
-
-EOF
-
-gnuplot << EOF
 set terminal ${type}cairo fontscale $fontscale font "Gill Sans,11" rounded size 5,1.5;
 set output 'Chapter1/Chapter1Figs/timer_precision.$type';
 set xlabel  'relative delay since first packet (sec)';

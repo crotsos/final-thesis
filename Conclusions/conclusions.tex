@@ -9,171 +9,205 @@ and noting areas in which further work is required.
 \section{Summary}
 
 This dissertation has addressed issues of control plane performance scalability
-using the Software Design Networking paradigm.
-Chapter~\ref{s:introduction:introduction} began by motivating the significant
-bottleneck of current network technologies on the control plane. We
-argued that control plane performance has multiple aspects (e.g. responsiveness,
-usability, security), which have variable importance and depend highly on the
-deployment environment. It was concluded that an effective control plane
-architecture must take under consideration such requirements, as well as, the
-properties of the environment during the design of efficient control plane
-architectures. 
+using the SDN paradigm.  Chapter~\ref{s:introduction:introduction} began by
+motivating the requirement to scale the functionality of existing network
+protocols and technologies in order to support the design limitation which are
+highlighted by increased adoption of networks.  We argued that control plane
+performance is multi-dimensional (e.g.~resource control, management,
+connectivity), which have variable importance for application and depend highly
+on the deployment environment. We claimed that speciailized control plane
+architectures can mitigate network bottlenecks, introduced by protocol design,
+while ensuring backwards compatibility and high performance, by addressing the
+requirement and opportunities of the deployed environment. 
 
 Chapter~\ref{ch:background} then considered background and related work to the
-problem of network control performance scalability. We provided a bottom-up design discussion on
-available network control mechanisms. We, initially, elaborated on the
-architecture of current network devices and presented a generic design model of the
-integration between the control and data plane in a single devices. Furthermore,
-we reviewed the current production-level network control protocols and
-mechanisms for the data link and network layers and it was argued that their
-ability for responsive and user friendly control is reduced, especially as
-data-plane rates increase exponentially. Furthermore, we presented a series of
-experimental approaches which combat a series of network control limitation and
+problem of network control. We provided a bottom-up design discussion on
+available network control mechanisms. We elaborated on the architecture of
+current network devices and presented a generic design model of the integration
+between the control and data plane in a single device in order to highlight the
+physical limitations in  network performance. Furthermore, we reviewed
+the current production-level network control protocols and mechanisms for the
+data link and network layers and it was argued that their ability for responsive
+flexible and user friendly control is reduced. Furthermore, we surveyed a
+series of experimental approaches which address network control limitation and
 provide flexible, distributed and evolvable control.  Namely we present Active
-Network, Devolved Control of ATM Network and Software Defined Networking. In
+Network, Devolved Control of ATM Networks and Software Defined Networking. In
 order to highlight the opportunities provided by these mechanisms, we concluded
 this chapter with an extensive presentation of novel control applications build
 on top of the SDN paradigm. 
 
-The bulk of the contribution of this dissertation was reported in the following
-three chapters. Chapter~\ref{sec:sdn_scalability} analysed the elementary
-scalability of the SDN paradigm. In this chapter, we presented two measurement
-platforms, enabling SDN experimenters to evaluate the performance of SDN
-architectures. More specifically, we presented \oflops, a high-precision
-hardware-accelerated \of switch measurement platforms which enables
-experimenters to understand the performance behaviour of \of-enabled devices,
-and \sdnsim, a lightweight high-precision network simulation and emulation
-framework. Using \oflops, we develop and run a series of tests characterising the
-elementary functionalities of the \of protocol and detect significant variance
-between switch protocol implementations which can affect significantly the 
-performance of an \of-based control architecture. Motivated by the variability
-between the implementations  of the \of protocol, we have developed the \sdnsim
-platform. The \sdnsim platform provides a high precision experimentation
+The bulk of the experimental contribution of this dissertation was reported in
+the following three chapters. Chapter~\ref{sec:sdn_scalability} analysed the
+elementary scalability of the SDN paradigm. In this chapter, we presented two
+measurement platforms, enabling network experimenters to evaluate the
+performance of SDN architectures. \oflops is a high-precision
+hardware-accelerated \of switch measurement platform which enables experimenters
+to understand the performance behaviour of \of-enabled devices, and \sdnsim, a
+lightweight high-precision network simulation and emulation framework. Using
+\oflops, we develop and run a series of tests characterising the elementary
+functionalities of the \of protocol and detect significant variance between
+switch protocol implementations. \sdnsim is a high precision experimentation
 environment, which allows users to implement their control logic and traffic
-models and evaluate the performance of the system using specific switch
-performance profiles. Using \sdnsim, we replicate the functionality of a small-size 
-datacenter networks and evaluate the effectiveness of distributed hierarchical
-control-plane architectures, finding minimal impact in the data-plane
-performance.  
+models and evaluate the performance of an SDN architecture. The platform
+provides the ability to simulate, using the \ns{3} platform, or emulate, using
+the Xen virtualisation platform, a experimental definition.  The platform
+provides enhanced realism on the performance characteristics of the network
+control plane, while through our evaluation we highlighted the scalability of
+experimentation.  Using \sdnsim, we replicate the functionality of a small-scale
+datacenter network and highlighted the effectiveness of control centralisation.
 
+Chapter~\ref{sec:homework} elaborated the problem of management scalability in
+modern home networks. Using ethnographic and measurement studies of the home
+setting, we identified significant mismatches between the user-requirement and
+user-understanding of network functionality and the existing technologies.
+Motivated by this observation, we redesign the home router, implementing a
+series of control modifications which enhance user control and bridge the user
+perception with the underlying network functionality. The proposed architecture
+is extended with a collaborative resource control mechanism which integrates
+users application-level requirements with the ISP policy, in an effort to
+develop a user-friendly control scheme for the last-mile bottleneck in
+residential broadband networks. We presented the development of a strawman
+implementation of our system and verified that the architectures incurs minimal
+impact on network functionality, the protocol modifications remain
+backwards compatible with a number of popular devices, OSes and applications and
+that the resource control mechanism improves the support for latency and
+bandwidth sensitive applications in congested residential networks. 
 
-% considered control timescale traffic engineering,
-% .e. dealing with connections, concentrating on the TCP and RTP protocols. It
-% began by demonstrating that current approaches to congestion control in TCP can
-% fail in extreme cases to ensure that all users achieve reasonable goodput
-% through the network. It also showed that even if such failure does not occur,
-% TCP allocates resource in a highly variable and potentially unfair manner.
-% To alleviate these problems, admission control and specifically implicit ad-
-% mission control was proposed. The potential impact of this was discussed,
-% followed by design considerations for such a system. Implementation of such a
-% system in the Linux operating system was then presented, demonstrating the
-% feasibility of this approach. Simulation work reporting an implementa- tion of
-% implicit admission control based on measured traffic statistics in the NS
-% simulator followed, and showed that implicit admission control for TCP
-% substantially improves the performance of the network at times of overload.
-% Finally, implementation of an RTP-ECN-proxy demonstrated the feasibility of an
-% alternative to admission control. The presented mechanisms were shown to improve
-% the performance of the network for users, and the controllability of traffic
-% within the network for operators.
-Chapter~\ref{sec:homework} elaborated on the problem of management scalability
-in modern home networks. More specifically, using ethnographic and measurement
-studies of the home setting, we identified a significant mismatch between the
-user requirement and understanding of network functionality and the existing
-technologies. Motivated by this observations, we redesign the home router,
-implementing a series of protocol modifications which enhance user control and
-bridge the user network perception with the underlying functionality.
-Additionally, we extended our proposed architecture and presented a distributed
-resource control mechanism which integrates users application-level requirements
-with the ISP policy, in an effort to develop a user-friendly control scheme for
-the last-mile bottleneck in current residential broadband networks. We presented
-the development of a strawman implementation of our system and verified that the
-architectures incurs minimal impact on network functionality, while the protocol
-modifications remain backwards compatible with a number of popular devices,
-OSes and applications. In addition, our QoS mechanism was able to provide better
-support for latency sensitive application in the presence of bursty traffic. 
+Chapter~\ref{sec:signpost} discussed Internet-scale naming and connectivity
+scalability.  Through the work of this chapter, we aimed to develop a
+decentralised and Internet-wide federated network between the devices of a user.
+We motivated our effort by presenting the limitations of existing approaches in
+terms of usability and privacy and argued that an evolved control plane for
+end-hosts can address such limitations and support all required functionality.
+We proposed the \signpost architecture providing secure, continuous and
+decentralised inter-device connectivity. \signpost reuses existing connectivity
+mechanisms to provide ad-hoc end-to-end path between devices. The system
+provides a global naming structure and uses the DNS protocol to establish a
+global control channel through which \signpost automates distributed evaluation
+and configuration of connection establishing mechanisms.  We presented a
+strawman implementation  of the \signpost architecture and its integration with
+the \openvpn, TOR, SSH, Privoxy, NAT punching and DNS-SD mechanisms.  Using the
+\signpost strawman implementation, we characterised the low impact of the
+architecture to network functionality and its backwards compatibility with
+existing applications. 
 
-Chapter~\ref{sec:signpost} discussed Internet-scale connectivity scalability.
-Through the work of this chapter, we aimed to develop a decentralised and
-Internet-wide Personal Cloud between the devices of users. In this chapter we
-described the limitations of existing Cloud platforms in terms of usability and
-privacy and argued that an evolved control plane for end-hosts can address such
-limitations and support all required functionality.  We proposed the \signpost
-architecture, an evolved control plane for end-user devices providing secure,
-continuous and decentralised inter-device connectivity. \signpost enables local
-device controllers to establish a global control channel, test and negotiate
-connectivity capabilities between devices and establish ad-hoc secure end-to-end
-data plane paths between devices using off-the-self connection establishing
-mechanisms. Furthermore, we presented an implementation effort of the \signpost
-architecture, enabling support for \openvpn, TOR, SSH, Privoxy, NAT punching and
-DNS-SD functionality. Using the \signpost strawman implementation, we verified 
-the low impact of the architecture to network functionality and its
-backwards compatibility with existing applications. 
+\section{Summary of Contributions}
 
-% Chapter~\ref{sec:homework} discussed issues related to management timescale traffic engineer-
-% ing, i.e. dealing with aggregates of traffic between ISPs. It described current
-% mechanisms within the Internet for performing this and discussed the relation
-% with data timescale traffic engineering. It then looked in more detail at inter-
-% AS traffic engineering using the BGP protocol, and proposed the price path at-
-% tribute as a mechanism that improves the facility for management timescale
-% traffic engineering. Design considerations for the price path attribute were
-% then detailed and implementation within a BGP simulator described. Finally,
-% results of simulations using this simulator were presented and discussed.
-% Chapter~\ref{sec:signpost} presented the case for evolving from the state of the current In-
-% ternet toward that presented in this dissertation. It began by describing the
-% requirements users and operators have for Internet traffic engineering, and the
-% state of the art of their implementation. Having previously demonstrated the
-% benefits of the mechanisms presented in Chapters 3 and 4, arguments for and
-% against the deployment process were presented. The deployment pro- cess itself
-% was shown to be desirable; this was followed by a discussion of user and
-% operator perceptions of service provision and a concrete example of the services
-% that deployment of these mechanisms would allow. Finally, con- sequences from
-% the point of view of the network and associated economic structures were
-% presented.
+The dissertation makes the following three contributions:
+
+\paragraph{Control plane scalability} 
+In this thesis we present the first scalability characterisation of \of
+implementations. We highlighted the significant performance diversity between
+implementations which can affect the performance and the correctness of control
+architectures.  Furthermore, we developed \sdnsim, an experimentation platform
+for SDN architectures, providing the ability to emulate and simulate network
+experiments. \sdnsim provides high fidelity on replicating the control channel
+of the network and provides intuitive control between fidelity and scalability. 
+Using \sdnsim we evaluate the performance of a hierarchical control architecture
+in a small-scale datacenter.
+
+\paragraph{Management scalability}
+
+This thesis presented a novel control architecture establishing scalable
+management for home network. We presented a flow-based controller, which exploit
+the social conventions in the home to manage introduction of devices  to the
+network, and their subsequent access to each other and Internet hosted services.
+Additionally, we proposed a modification in the control architecture of the ISP
+network, which enables users to express and enforce their resource requirements
+in a user-friendly manner. We provided strong evidence on the scalability,
+backwards compatibility and effectiveness of our solution.  
+
+\paragraph{Connectivity and naming scalability}
+
+This thesis analysed the significant limitation introduced by the current
+Internet architecture on the connectivity ability between the devices of users.
+In order to mitigate these limitations we presented \signpost, a decentralised
+control architecture providing global names for user devices and continuous
+connectivity between them. We presented the flexibility of \signpost to
+encapsulate a wide range of connection establishing mechanism and provided
+strong evidence on its backward-compatibility with existing applications and its
+performance scalability. 
 
 \section{Future Work}
   
-This section notes areas where further work is required, and future directions
-related work could take. The first such area, and one which applies on the
-results of Chapter~\ref{sec:sdn_scalability} is the definition of a distributed
-scalable network control framework. Hierarchical control, as presented through
-the evaluation experiment using the \sdnsim, has low impact on network
-performance, but a complete architectural design requires further exploration of
-mechanisms providing strong guarantees on control plane responsiveness. A series
-of approaches have been proposed in the field, e.g. nicira edge-based control
-architecture~\cite{koponen12}, provide a performable approach to reduce core
-network control load, but we believe that a more dynamic mechanism is required
-by network operators in order to control more the trade-offs between traffic
-control and performance. Nonetheless, we believe that the \sdnsim platforms
-provides a sufficient framework to evaluate the impact of such control
-distribution mechanisms.
+The experimental results and the practical solutions presented in the thesis
+provide fruitful seeds to cultivate a wider research agenda on control plane
+evolvability.
 
-Additionally, a number of areas for further work arise from the work in
-Chapter~\ref{sec:homework}. A first research effort is to evaluate the
-scalability of the control scheme. The control logic is capable to handle
-multiple switches, but there is still reasonable complexity to integrate other
-network control protocol with the router design, in order to introduce
-our control architecture in larger network settings. In addition, the novel control
-architecture of our router provide novel opportunities to augment home network
-functionality . Network design can be extended to enable seamless mobility to
-home network users when connecting to remote wifi networks and the user can
-carry his network configurations to the new network. On the other hand,
-interesting opportunities arise if we extend the homework QoS model throughout the ISP
-network. In parallel, a interested economical model can be developed to reuse
-network resources  which remain unutilized by the homeowner for a period of
-time, e.g. exchange high priority traffic for specific timeslots with
-neighbours. 
+\subsection{Distributed network control}
 
-Finally, a number of pieces of work arise from Chapter~\ref{sec:signpost}.  The
-\signpost design at the moment is limited in  its policy expressiveness, which
+One the first use cases of the SDN paradigm was the centralisation of control in
+order to improve policy effectiveness and ease network management.  Nonetheless this
+vision has evolved and refocuses on the development of distributed control
+architectures. Control distribution is motivated by two observations.  Firstly,
+load and latency of the control channel increases proportionally to the size of the
+network, while reliability guarantees relax. Secondly,
+defining one global control policy which is able to encapsulate multiple policy
+aspects (e.g.~security, performance, access control) exhibits significant
+complexity. Applications have shifted to a multi-controller paradigm using
+either centralised proxies~\cite{flowvisor-osdi} or separating the network
+in domains and use distribute algorithms to synchronise state between
+controllers~\cite{Koponen10}. 
+
+The work presented in Chapter~\ref{sec:sdn_scalability} provide a scalable
+control experimentation platform, a powerful tool to understand further the
+impact of  distributed design patterns on the performance of a network.
+Hierarchical control, as presented through the evaluation experiment using the
+\sdnsim, has low impact on network performance, but a complete architectural
+design requires further evaluation of mechanisms with strong control plane
+responsiveness and reliability guarantees. 
+
+\subsection{User-centric networking}
+
+As we have discussed in Chapter~\ref{sec:homework}, current network technologies
+exhibit a significant mismatch with the user requirements. The outcomes from the
+previous two chapter have provided strong evidence on the ability of networks to
+reconsider control and augment it with meaningful user input. Rather than
+relegating users to an artifact of the application layer, accommodating users
+and their relationships at all layers of the system can improve user
+satisfaction and network functionality. We consider two main extensions on the
+work of the thesis, towards this goal. 
+
+Firstly, a number of areas arise from the work in Chapter~\ref{sec:homework}.
+The presented control architecture provides novel opportunities to augment home
+network functionality and exploit the wider social context of the home setting.
+In the local network, home guests can inject their configuration in the local
+network policy and improve their experience. This approach is not limited in
+the local network and can expand to wider contexts. For example, neighbours can
+negotiate  resource control by taking advantage of the social context in a
+neighbourhood. Users can coordinate socially to share unutilized resources on
+the last mile of the residential connection,  e.g.~exchange high priority
+traffic for specific timeslots with neighbours.
+
+Secondly, a number of pieces of work arise from Chapter~\ref{sec:signpost}.  The
+\signpost design at the moment is limited in its policy expressiveness, which
 though is sufficient to address our motivations.  Nonetheless, the
 authentication primitives can provide a scalable and global mechanism to develop
 novel network policy frameworks and address a series of problems stemming from
 the inability of the network layer to authenticate network end-points.
 Furthermore, the hierarchical structure of the \signpost architecture can be
 used to reflect higher level social relationship and increase the in-network
-flexibility. For example, the devices of a user who is a member of the University
-of Cambridge can connect through the \signpost architecture with the university
-network control plane,  when a device is connected to the university network. 
-At run-time the device \signpost daemon can negotiate with the university
-\signpost controller the device network requirements and reflect them in the
-University network control. 
+flexibility. Bigraph theory provides a sufficient framework to model and scale
+the complexity of such control designs. 
+
+% For example, the devices of a user who is a member of the University
+% of Cambridge can connect through the \signpost architecture with the university
+% network control plane,  when a device is connected to the university network. 
+% At run-time the device \signpost daemon can negotiate with the university
+% \signpost controller the device network requirements and reflect them in the
+% University network control.
+
+\section{Conclusion}
+
+In summary, this dissertation has argued that network technologies exhibit
+significant limitation to scale their functionality and support the multiple
+aspects of network performance. We identified these limitations on the
+unforeseen functional requirements occurring  by the wide adoption of network
+technologies. In order to address these limitations, we content that network
+control must be redesign and specialized in order to fit the requirements and
+the take advantage the properties of the deployment environment. This
+dissertation has presented and evaluated mechanisms to control plane
+functionality, management and connectivity scalability. 
+
+
+

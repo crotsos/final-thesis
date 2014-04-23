@@ -776,9 +776,9 @@ GUNZIP		?= gunzip	# GZipped EPS
 # == Beamer Enlarged Output ==
 PSNUP		?= psnup
 # == Viewing Stuff ==
-VIEW_POSTSCRIPT	?= gv
-VIEW_PDF	?= xpdf
-VIEW_GRAPHICS	?= display
+VIEW_POSTSCRIPT	?= open
+VIEW_PDF	?= open
+VIEW_GRAPHICS	?= open
 
 # Xindy glossaries
 XINDYLANG	?= english

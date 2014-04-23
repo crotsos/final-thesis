@@ -1,10 +1,16 @@
-set xlabel  'relative delay since first packet (sec)' font ",16";
-set ylabel  'timestamp error (nsec)' font ",16";
-set key left Left reverse inside font ",16";
-set xtics font ",16";
-set ytics font ",16";
+set xlabel  'execution time (sec)' font ",20";
+set ylabel  'drift (msec)' font ",20";
+set key left Left reverse inside font ",20";
+
+set yrange [-1e6:6e6]
+set ytics  ("0" 0, "1" 1e6, "2" 2e6, "3" 3e6, "4" 4e6, "5" 5e6, "6" 6e6) font ",20";
+set xtics font ",20";
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt'
 
 plot '< gzcat Chapter1/Chapter1Figs/timer_precision/comparison_dag_pcap.txt.gz' \
-  using ($2/1000000000):($2-$3) every 1000 title 'pcap' with lines lt 3,\
+  using ($2/1000000000):($2-$3) every 1000 title 'PCAP' \
+  with lines ls 1 lw 5,\
   '< gzcat Chapter1/Chapter1Figs/timer_precision/comparison_dag_netfpga.txt.gz' \
-  using ($2/1000000000):($2-$3) every 1000 title 'netfpga oflops' with lines lt 2;
+  using ($2/1000000000):($2-$3) every 1000 title 'netfpga oflops' \
+  with lines ls 2 lw 5;
