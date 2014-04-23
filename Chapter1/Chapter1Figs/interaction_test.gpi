@@ -1,0 +1,27 @@
+set size 1,0.5;
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
+
+set ylabel "insertion delay (usec)" font ",20";
+set xlabel "flow statistics polling rate (requests/sec)" font ",20";
+set xtics ("2" 1, "1" 2, "0.33" 3, "0.25" 4, "0" 5) font ",20"
+set xrange [5.25:0.75];
+set logscale y;
+set key outside font ",20"; 
+set yrange [10:90000];
+
+plot "Chapter1/Chapter1Figs/interaction_test/nec-interaction-test.txt" \
+  using 5:($3/1000):($2/1000):($4/1000) \
+  title 'switch1' with errorlines ls 1 lw 3,\
+  "Chapter1/Chapter1Figs/interaction_test/hp-interaction-test.txt" \
+  using 5:($3/1000):($2/1000):($4/1000) \
+  title 'switch2' with errorlines ls 2 lw 3,\
+  "Chapter1/Chapter1Figs/interaction_test/quantas-interaction-test.txt" \
+  using 5:($3/1000):($2/1000):($4/1000) \
+  title 'switch3' with errorlines ls 3 lw 3,\
+  "Chapter1/Chapter1Figs/interaction_test/netfpga-interaction-test.txt" \
+  using 5:($3/1000):($2/1000):($4/1000) \
+  title 'netfpga' with errorlines ls 4 lw 3,\
+  "Chapter1/Chapter1Figs/interaction_test/openvswitch-interaction-test.txt" \
+  using 5:($3/1000):($2/1000):($4/1000) \
+  title 'ovs' with errorlines ls 5 lw 3;

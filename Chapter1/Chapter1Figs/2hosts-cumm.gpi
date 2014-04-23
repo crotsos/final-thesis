@@ -1,0 +1,17 @@
+set xlabel 'Flow Completion Time' font ",20"
+set ylabel 'Cummulative Distribution' font ",20"
+
+set logscale x
+set xrange [10:1000000]
+
+set xtics ("10ms" 10, "100ms" 100, "1s" 1000, "10s" 10000, "100s" 100000, "" 1000000)
+
+set key right bottom box Right font ",20"
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
+
+plot \
+  'Chapter1/Chapter1Figs/2hosts/real-client-exponential.cummulative' \
+  using 1:($2/698) title 'Real' ls 1 lw 3 with lines, \
+ 'Chapter1/Chapter1Figs/2hosts/dimos-client-5x-exponential.cummulative' \
+  using 1:($2/1327) title 'SDNSIM' ls 2 lw 3 with lines;

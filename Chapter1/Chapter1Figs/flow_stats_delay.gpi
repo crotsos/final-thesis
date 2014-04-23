@@ -1,0 +1,27 @@
+set size 1,0.5;
+
+set key outside font ",20";
+set ylabel  'flow stat delay (msec)' font ",20";
+set yrange [1:100000];
+set logscale y;
+set xlabel  'flow statistics polling rate (requests/sec)' font ",20";
+set xrange [0.75:4.25];
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
+
+plot '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/nec-exact-flow-stats-stat.txt'\
+  using 16:($5/1000):($4/1000):($6/1000) \
+  title 'switch1' with errorlines ls 1 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/hp-exact-flow-stats-stat.txt' \
+  using 16:($5/1000):($4/1000):($6/1000) \
+  title 'switch2' with errorlines ls 2 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/quantas-exact-flow-stats-stat.txt' \
+  using 16:($5/1000):($4/1000):($6/1000) \
+  title 'switch3' with errorlines ls 3 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/netfpga-exact-flow-stats-stat.txt' \
+  using 16:($5/1000):($4/1000):($6/1000) \
+  title 'netfpga' with errorlines ls 4 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/openvswitch-exact-flow-stats-stat.txt' \
+  using 16:($5/1000):($4/1000):($6/1000) \
+  title 'ovs' with errorlines ls 5 lw 3;
+

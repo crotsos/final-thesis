@@ -1,0 +1,25 @@
+set size 1,0.5;
+
+load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
+
+set key outside font ",20";
+set ylabel  'flow stat delay (msec)' font ",20";
+set xlabel  'flow statistics polling rate (requests/sec)' font ",20";
+set yrange [1:100];
+set xrange [0.75:4.25];
+
+set ytics 0,20,100;
+
+plot '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/nec-exact-flow-stats-stat.txt' \
+  using 16:14:13:15 \
+  title 'switch1' with errorlines ls 1 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/hp-exact-flow-stats-stat.txt' \
+  using 16:14:13:15 \
+  title 'switch2' with errorlines ls 2 lw 3,\
+ '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/netfpga-exact-flow-stats-stat.txt' \
+  using 16:14:13:15 \
+  title 'netfpga' with errorlines ls 4 lw 3,\
+  '< grep "0001024 0001024 " Chapter1/Chapter1Figs/flow_stats/openvswitch-exact-flow-stats-stat.txt' \
+  using 16:14:13:15 \
+  title 'ovs' with errorlines ls 5 lw 3;
+
