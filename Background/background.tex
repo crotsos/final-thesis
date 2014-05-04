@@ -115,7 +115,7 @@ capacity of the communication bus between the coprocessor and the ASIC, the
 design of the interface between the two entities, and the processing capabilities
 of the switch CPU\@.  For a ToR switch, the vendors usually provide a PCIe
 communication bus, supporting capacities on the order of a few Gigabytes, while
-CPUs are usually constrained (Section~\ref{sec:oflops:switch} provides details
+CPUs are usually constrained (Section~\ref{sec:oflops-switches} provides details
 on some off-the-self ToR switches).
 
 ToR switches are simple switch devices and provide low to medium forwarding
@@ -584,7 +584,7 @@ software plane of the device. An \of agent runs on the switch co-processor,
 translating \of operations into an ASIC configuration.  
 
 The protocol defines a number of message types for controlling datapath resources.
-\of messages can be grouped into two categories: \emphf{forwarding control} and
+\of messages can be grouped into two categories: \emph{forwarding control} and
 \emph{switch configuration}. The rest of the section presents further details on
 available \of messages, and discusses the evolution of the protocol.  We focus
 our protocol presentation on version 1.0 of the protocol.  ONF has released
