@@ -779,13 +779,13 @@ and may have arbitrary prefix length.  This would enable our router to function
 in much the same manner as currently, although it would need to support the
 ICMPv6 Router Advertisement message to support router discoverability by hosts. 
 
-In order to test the functionality of our approach, we set up a simple hardcoded
-version of our design. Specifically, we allocate a public IPv6 /64 prefix to our
-home router. The router uses the ISC DHCPv6 server implementation, configured to
-allocate addresses from a /120 subnet.  Additionally on the router we run the
-RADVD daemon to reply appropriately to ICMPv6 messages.  Using this network
-setup, we test MacOSX, Windows and Linux IPv6 network stacks and verified
-correct network configuration and Internet connectivity. 
+In order to test the functionality, we set up a simple hardcoded version of our
+design. Specifically, we allocate a public IPv6 /64 prefix to our home router.
+The router uses the ISC DHCPv6 server implementation, configured to allocate
+addresses from a /120 subnet.  Additionally, on the router we run the RADVD
+daemon to reply appropriately to ICMPv6 messages.  Using this network setup, we
+tested MacOSX, Windows and Linux IPv6 network stacks and verified correct network
+configuration and Internet connectivity. 
 
 
 \section{Putting people in resource allocation policy} \label{s:qos}
@@ -800,11 +800,11 @@ correct network configuration and Internet connectivity.
 
 As we have discussed in Section~\ref{sec:intro:net_evolution}, providing strong
 performance guarantees in large production networks using commodity technologies
-exhibits poor scalability. There are two primary approaches, followed by the network
+exhibits poor scalability. There are two primary approaches followed by the network
 community, to scale resource allocation policies: \emph{network resource
-  over-provision} and \emph{application-aware traffic engineering}.  Resource
-over-provision increases available resources, in order to remove performance
-bottlenecks, while Application-aware network engineering extends the network
+  over-provision}; and \emph{application-aware traffic engineering}.  Resource
+over-provision increases available resources thus removing performance
+bottlenecks. Application-aware network engineering extends the network
 policy to  manage efficiently application traffic, e.g.~VoIP traffic is serviced
 by a separate high-priority VLAN\@. Nonetheless, the applicability of these
 approaches in broadband networks is limited. On the one hand, resource
@@ -819,30 +819,30 @@ enabling homeowners to define per-application resource requirements.  The
 architecture improves the ISP resource allocation policy, as well as, the user
 experience.  For the rest of this section, we discuss the architecture of
 current broadband networks and their  inherent limitations in resource allocation
-(Section~\ref{s:qos:motivation}), present the architecture of our
-system (Section~\ref{s:qos:architecture}) and evaluate its impact on specific
+(Section~\ref{s:qos:motivation}), we present the architecture of our
+system (Section~\ref{s:qos:architecture}), and we evaluate its impact on specific
 applications classes (Section~\ref{s:qos:eval}).
 
 \subsection{ISP resource allocation} \label{s:qos:motivation}
 
 In order to motivate the reader on the benefits of our architecture, we firstly
-present the architecture of current broadband network and identify their
+present the architecture of current broadband networks and identify their
 performance bottleneck. Figure~\ref{fig:isp_plan} presents a generic model for
 the network architecture for a residential broadband ISP\@. Although, exact
 architecture details remain undisclosed, there is a high level design pattern,
-organising the ISP network in three domains: the \textit{aggregation network},
-the \textit{distribution network} and the \textit{egress network}. The
+organising the ISP network in three domains: the \textit{aggregation network};
+the \textit{distribution network}; and the \textit{egress network}. The
 aggregation network contains the digital subscriber line access multiplexer
-(DSLAM), translating DSL packets to Ethernet frames, the Broadband Remote Access
-Server (BRAS), an authenticating and policy enforcing network device, and a
-series of aggregation switches, multiplexing traffic between the BRAS and the
-distribution network.  Traffic from the aggregation network routes through the
-distribution network towards either the egress network or towards a local
-aggregation switch. The distribution network consists of a small number of large
-routers interconnected using high capacity links.  ISP typically employ network
-tunnelling technologies, like MPLS, in the distribution network to
-minimize forwarding state.  The egress network of the ISP consist of large
-routers, hosted in Internet Exchange Points (IXP) and connecting the ISP with
+(DSLAM) which translates DSL packets to Ethernet frames, the Broadband Remote
+Access Server (BRAS), an authenticating and policy enforcing network device,
+and a series of aggregation switches which multiplex traffic between the BRAS and
+the distribution network.  Traffic from the aggregation network routes through
+the distribution network towards either the egress network or towards a local
+aggregation switch. The distribution network consists of a small number of
+large routers interconnected using high capacity links.  ISPs typically employ
+network tunnelling technologies, like MPLS, in the distribution network to
+minimize forwarding state.  The egress network of an ISP consists of large
+routers, hosted in Internet Exchange Points (IXP), which connect the ISP with
 peering ASes.
 
 A number of research papers have identified a significant bottleneck in the
@@ -852,9 +852,9 @@ high oversubscription ratio of such links, which commonly varies between 10:1
 and 50:1~\mycite{canada-subscription}, depending on population density of an area
 and market dynamics~\mycite{sky-oversubscription}.  
 
-Our systems aims to bridge a fundamental communication gap between the ISP and
+Our system aims to bridge a fundamental communication gap between the ISP and
 homeowners. Users perceive network traffic as an ensemble of flows belonging to
-a specific application and priority within the home social context,
+a specific application and priority class within the home social context,
 e.g.~Skype VoIP traffic has a higher priority than web browsing traffic and
 parents' teleworking traffic is more important than kids' entertainment traffic.
 ISPs view household traffic as a packet aggregate with a specific IP address, on
@@ -866,7 +866,7 @@ remote desktop and VoIP\@. Effectively, there is an incentive for ISPs and
 homeowners to collaborate and control more efficiently the traffic resources
 within the user cap.  Homeowners can annotate high priority flows within their
 traffic aggregate and thus improve their experience. ISPs can increase
-user-friendliness of their network policy and offload some of the resource
+the user-friendliness of their network policy and offload some of the resource
 allocation complexity to end-users. 
 
 Our design virtualises network control and resources in the last-mile and
@@ -874,29 +874,29 @@ delegates control to a homeowner-managed \of controller.  The household
 controller uses the \of protocol to assign traffic flows to appropriate priority
 queues.  While the proposed solution cannot always guarantee end-to-end resource
 allocation, it provides a sufficient mechanism to handle in a user-friendly
-manner edge-network congestion and scale the configuration complexity. 
+manner edge-network congestion, and scale the configuration complexity. 
 
 \subsection{Architecture Design} \label{s:qos:architecture}
 
-Congested in the last-mile requires resource control both in the home network
+Congestion in the last-mile requires resource control both in the home network
 and within the ISP network. Home traffic is asymmetric and  the network
 bottleneck lies beyond the control of the homeowner, thus requiring control on
 both traffic directions.  Our architecture consists of three subsystems: a
 data-collection daemon on the end-systems of the home network, a FlowVisor
-instance in the ISP network, translating user flow prioritisation into
+instance in the ISP network translating user flow prioritisation into
 forwarding policy, and a policy enforcing daemon on the home network router. 
 
 \paragraph*{Data collection on End-systems}
 
-In order to map network flows to applications, we develop a light cross-platform
+In order to map network flows to applications, we developed a light cross-platform
 daemon recording the content of the end-host connection table.  The daemon
-collects mappings between flow tuples and applications names.  Information are
+collects mappings between flow tuples and applications names.  Information is
 collected from the connection table of the OS and stored in the HWDB database.
 The daemon accesses the connection table entries using the
 \textit{netfilter-conntrack} library~\mycite{netfilter} in Linux systems, the
 \textit{Windows Filtering Platform}~\mycite{win-wfp} in Windows systems and the
 \textit{sysctl} for Darwin/MacOSX system.  In order to match each network tuple
-with an applications, we use the \texttt{lsof} command in Unix-like systems and
+with an application, we use the \texttt{lsof} command in Unix-like systems and
 the \texttt{netstat -p} command in Windows.
 
 
@@ -914,22 +914,22 @@ the \texttt{netstat -p} command in Windows.
 \end{figure}
 
 Figure~\ref{fig:queue_design} presents the network architecture of our system.
-The resource mechanism exercises control on the home router and the first layer
-of aggregation switches.  The ISP exposes an \of control abstraction, which
+The resource mechanism exercises control on the home router and on the first layer
+of aggregation switches.  The ISP exposes an \of control abstraction which
 virtualises switch resources on the aggregation switches using
-FlowVisor~\mycite{flowvisor-osdi}, while each home router runs an \of controller,
-controlling the home Internet traffic.  The FlowVisor is configured to provide a
-clean separation between household control domains, in order to mitigate control
-or eavesdropping attacks between households. \texttt{pkt\_in} messages are
-propagated only to the respective home controller, based on IP addresses, and
-the home controller can only view and insert flows containing the home network
-public IP\@.   In the household the resource control mechanism augments the
-control logic, presented in the previous section. In order to minimize
-forwarding state in the ISP network, the control abstraction on the aggregation
-switches is used to control only the incoming Internet traffic, while the
-outgoing traffic can be effectively controlled on the local router. 
+FlowVisor~\mycite{flowvisor-osdi}, while each home router runs an \of
+controller, controlling the home Internet traffic.  The FlowVisor is configured
+to provide a clean separation between household control domains in order to
+mitigate control or eavesdropping attacks between households. \texttt{pkt\_in}
+messages are propagated only to the respective home controller based on IP
+addresses, and the home controller can only view and insert flows containing
+public IP of the home network\@.   In the household, the resource control mechanism
+augments the control logic, presented in the previous section. In order to
+minimize forwarding state in the ISP network, the control abstraction on the
+aggregation switches is used to control only the incoming Internet traffic,
+while the outgoing traffic can be effectively controlled on the local router. 
 
-At the aggregation switch and the home router we setup three traffic shaping
+At the aggregation switch and the home router, we setup three traffic shaping
 queues for each household. A \textit{low latency, high priority}~(LLHP) queue, a
 \textit{medium priority}~(MP) queue and a default queue.  The LLHP queue has the
 highest priority between the household queues and rate limits traffic to the
@@ -946,10 +946,10 @@ hierarchies are currently supported by service provider network equipment
 card~\mycite{cisco-asr-qos}) and ISPs use this functionality to implement their
 capping policy. By default, all network flows are forwarded to the default queue
 and the home \of controller at run-time assigns flows dynamically to higher
-priority queues.  The enhanced control provided by this network architecture
+priority queues.  The enhanced control of our network architecture
 provides some interesting building blocks to enable novel economical models for
 residential broadband customers. For example, users can enhance network
-performance by purchasing additional flow table entries or increasing their
+performance by purchasing additional flow table entries or by increasing their
 minimum guaranteed bandwidth on the edge.
 
 Because our system design provides extensive forwarding control to end-users, we
@@ -959,7 +959,7 @@ entries to each household, ensures fair utilisation of the forwarding resources
 in the aggregate switch. Secondly, the FlowVisor instance rate limits \of
 control channel interactions per household to mitigate DoS attacks. Finally, the
 Flowvisor instance discards flows that may create loops in the network,
-e.g.~flow rules which forwards packet to the incoming port. 
+e.g.~flow rules that forwards packet to the incoming port. 
 
 \paragraph*{Home \of controller}
 
@@ -971,28 +971,28 @@ e.g.~flow rules which forwards packet to the incoming port.
     express application prioritisation.}
 \end{figure}
 
-The home router is the rendez-vous point between the policies of the two
-entities, in our design. In the home setting, the router is responsible to store
-traffic statistics, record the user application priority and, at run-time, map
+In our design, the home router is the rendez-vous point between the policies of the two
+entities. In the home setting, the router is responsible to store
+traffic statistics, record the user application priority, and at run-time map
 application flows to the appropriate queue.  We use three tables in HWDB to
 store relevant information; namely \texttt{Application tuple},
 \texttt{Application timeseries} and \texttt{Application priority} tables.  The
 \texttt{Application tuple} table stores mappings between applications and flow
-tuples, populated with data from the end-host data-collection daemons.  The
+tuples populated with data from the end-host data-collection daemons.  The
 \texttt{Application timeserries} table stores per-application network
-utilization information, populated with data from the router using \of
+utilization information populated with data from the router using \of
 \texttt{flow\_stats} message.  Finally, the \texttt{Application priority} table
-stores the application prioritisation policy of the user. 
+stores the user's application prioritisation policy. 
 
-We expose resource control of our system to home member through a web interface,
+We expose resource control of our system to home members through a web interface,
 presented in Figure~\ref{fig:homework_intf_qos}.  Through this interface the
 user can inspect per-application, aggregate and timeserries resource consumption,
 retrieved from the \texttt{Application timeseries} table, and configure
-application prioritisation, stored in the \texttt{Application priority}.
+application prioritisation stored in the \texttt{Application priority}.
 Additionally, the interface notifies the user when the policy over-utilizes the
 LLHP queue.  Specifically, we use the packet loss counter of the \of~{\tt
   queue\_stats} message to trigger notifications during high packet loss
-incidents.  Through this interface we try to address the issues raised
+incidents.  Through this interface, we try to address the issues raised
 by~\mycite{Chetty10}. 
 
 During operation, the proposed design extends the forwarding logic described
@@ -1003,14 +1003,7 @@ queue, using the \texttt{Application priority} table. The controller sends a
 {\tt flow\_mod} message with an {\tt enqueue} action to assign the flow to the
 appropriate queue. In addition, if the application priority is not the default,
 then the controller will also send a {\tt flow\_mod} packet to the FlowVisor
-instance, to setup the incoming direction of the flow. 
-% In order to ensure that there is an
-% application mapping for the flow, in case of an incoming connection the switch
-% will establish only the incoming direction if the flow on the local switch and
-% will assign queue only when the outgoing direction of the flow is used. This way
-% we will have ensured that the end-host daemon will have inserted the appropriate
-% information. 
-
+instance to setup the incoming direction of the flow. 
 
 \subsection{Evaluation} \label{s:qos:eval}
 
@@ -1042,47 +1035,49 @@ performance-sensitive applications.  Figure~\ref{fig:queue_eval_setup} presents
 the topology we employ for our evaluation.  \textit{Home1} and \textit{Home2}
 emulate household Internet traffic,  \textit{Server1} and \textit{Server2}
 emulate Internet services,  \textit{Switch1} emulates the last-mile of the ISP
-network and \textit{Switch2} emulate the Internet path between the aggregation
+network and \textit{Switch2} emulates the Internet path between the aggregation
 layer of the ISP and the Internet services. In detail, Home1 emulates a single
 household running a resource critical application towards Server1, while Home2
-emulates an ensemble of 9 households, generating bursty HTTP requests towards a
+emulates an ensemble of nine households generating bursty HTTP requests towards a
 web service on Server2, using the web model in
 Table~\ref{t:homework:performance-web-model}.  Switch1 provides asymmetric
 Internet links with 4 Mbps downlink capacity and  512 Kbps uplink capacity to
 each household and  connects them to the ISP distribution network through a 4
 Mbps symmetric link, thus providing a downstream subscription ratio $1:10$.
-Switch2 propagates traffic between Switch1, Server1 and Server2 adding 10~msec
+Switch2 propagates traffic between Switch1, Server1 and Server2, adding 10~msec
 of one-way latency to each direction. Each node in the  topology runs on a
 different host equipped with a quad core Intel CPU (Core 2 Quad Q6600), 4 Gbytes
 RAM and a quad-port 1GbE Intel card. Switch1 and Switch2 use \ovs to implement
 fast packet forwarding functionality.
 
-Using the aforementioned topology, we evaluate the impact of our architecture on
-two popular applications, VoIP and Gaming. Without loss of generality, the
+Using the aforementioned topology, we evaluate the impact of our architecture
+on two popular applications, VoIP and Gaming. Without loss of generality, the
 selected applications provide a representative set in terms of  latency and
 throughput requirements.  We emulate VoIP traffic, using a constant rate 250
 Kbps TCP
 flow~\footnote{\url{https://support.skype.com/en/faq/FA1417/how-much-bandwidth-does-skype-need}},
 while for gaming traffic we use a UDP probe based on the model presented in
-Table~\ref{t:homework:performance-web-model}. We conduct the measurement for 300
-seconds, initializing the network without any traffic prioritisation, and enable
-our architecture after 150 seconds of execution, assigning the HTTP application
-on the default queue and the VoIP and Gaming applications on the LLHP queue.
-Figures~\ref{f:homework:performance-qos-gaming} and~\ref{f:homework:performance-qos-voip} presents the results of the experiment for
-the gaming and VoIP applications respectively. More specifically, we present the
-per-packet latency for gaming and the instantaneous application-perceived
-throughput for VoIP, along with the instantaneous aggregate throughput of all
-HTTP flows. For the gaming application, we observe that packets face significant
-latencies (200-500 msec), primarily due to  queueing delays, when they
-coexisting in a congested link with HTTP flows and the network in not using any
-short-term resource control. The latency is effectively minimized when we enable
-our architecture, without significant performance limitation for HTTP traffic.
-Similarly, VoIP traffic experiences significant throughput variations (200-350
-Kbps) which are eliminated when the flow is assigned to the LLHP queue.  The
-results verify that the proposed short-term resource control mechanism can
-improve significantly the user experience and effectively improve the network
-performance for applications with strict resource requirements, while
-introducing minimal impact on co-existing application performance. 
+Table~\ref{t:homework:performance-web-model}. We conduct the measurement for
+300 seconds, initializing the network without any traffic prioritisation, and
+we enable our architecture after 150 seconds of execution, assigning the HTTP
+application on the default queue and the VoIP and Gaming applications on the
+LLHP queue. Figures~\ref{f:homework:performance-qos-gaming}
+and~\ref{f:homework:performance-qos-voip} present the results of the experiment
+for the gaming and VoIP applications respectively. More specifically, we
+present the per-packet latency for gaming and the instantaneous
+application-perceived throughput for VoIP, along with the instantaneous
+aggregate throughput of all HTTP flows. For the gaming application, we observe
+that packets face significant latencies (200-500 msec), primarily due to
+queueing delays when they coexisting in a congested link with HTTP flows and
+the network is not using any short-term resource control. The latency is
+effectively minimized when we enable our architecture without significant
+performance limitation for HTTP traffic. Similarly, VoIP traffic experiences
+significant throughput variations (200-350 Kbps) which are eliminated when the
+flow is assigned to the LLHP queue.  The results verify that the proposed
+short-term resource control mechanism can significantly improve user
+experience and effectively improve network performance for applications
+with strict resource requirements, while introducing minimal impact on
+co-existing application performance. 
 
 \begin{figure*} \centering
  \subfigure[Gaming]{\includegraphics[width=0.49\columnwidth]{Chapter2/Chapter2Figs/homenet-prio-gaming}\label{f:homework:performance-qos-gaming}}
@@ -1099,19 +1094,19 @@ This chapter has drawn upon previous user studies to reflect on the distinct
 nature of home networks and the implications for domestic network
 infrastructures.  Three particular user needs that arose from home network user
 studies were for richer visibility into and greater control over the home
-wireless network, as well as, the home as part of the everyday management of the
+wireless network, as well as the home as part of the everyday management of the
 home by inhabitants.  We  considered how to exploit the nature of the home
-network to shape how it is presented and opened to user control and ultimately
-provide scalable management through a novel control plane architecture.  
+network in order to shape how it is presented and opened to user control and ultimately
+to provide scalable management through a novel control plane architecture.  
 
-We use the \ovs and NOX platforms to provide flow-based management of the home
-network.  As part of this flow-based management, we exploit the social
+We used the \ovs and NOX platforms to provide flow-based management of the home
+network.  As part of this flow-based management, we exploited the social
 conventions in the home to manage introduction of devices  to the network, and
 their subsequent access to each other and Internet hosted services.  This
 required modification of three standard protocols, DHCP, EAPOL and DNS, albeit
-in their behaviour only \emph{not} their wire formats, due to the need to retain
+in their behaviour but \emph{not} their wire formats, due to the need to retain
 compatibility with legacy deployed stacks. In addition, in our exploration we
-present a simple mechanism enabling home user to guide the ISP resource
+presented a simple mechanism enabling home user to guide the ISP resource
 allocation mechanism in order to fulfil application requirements.  Our
 exploration, on one hand, provides strong evidence that appropriate design of
 the control plane architecture can transform and scale the management effort,
