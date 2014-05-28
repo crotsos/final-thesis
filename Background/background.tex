@@ -75,15 +75,17 @@ which consists of the following components:
     uses a memory module, integrated or external to the ASIC, which contains 
     the forwarding policy.  Memory modules have a trade-off
     between cost and access speed and between memory cost and memory management
-    complexity\footnote{CAM/TCAM lookup: $<$ 10 clock cycles, SRAM: 2-3 nsec,
-      DRAM: 20-35
-      nsec,~\url{http://people.ee.duke.edu/~sorin/prior-courses/ece152-spring2009/lectures/6.2.2-memory.pdf}}.
-    Finally, the \emph{output arbiter} module is responsible for applying modifications
-    to the packet and forwarding it to the appropriate output queue.
-    The processing pipeline may contain additional modules
-    which extend functionality, providing
-    access control list (ACL) virtual network queues and flow statistics
-    monitoring.
+    complexity\footnote{A 32-bit TCAM lookup pcore running on a Virtex-5 FPGA~\cite{virtex5}
+    with 550 MHz clock rate requires 1 clock cycle for a lookup, translating into a 2 ns
+    delay. A DDR3-2400 SDRAM memory module operating at 1200 MHz and requiring
+    9 clock cycles per data access has a 9 ns lookup latency, while a PC133
+    SDRAM operating at 133 MHz DRAM and requiring 3 clock cycles per data
+    access has a 20 ns lookup latency.}.
+    Finally, the \emph{output arbiter} module is responsible for applying
+    modifications to the packet and forwarding it to the appropriate output
+    queue. The processing pipeline may contain additional modules which extend
+    functionality, providing access control list (ACL) virtual network queues
+    and flow statistics monitoring.
 
   \item \emph{ASIC-CPU interconnection}: The management CPU is connected to the ASIC
     over a PCI or PCI-express channel. The interconnection provides an
@@ -372,7 +374,7 @@ significant concerns on network security and resource controllability.
 \begin{figure}
   \begin{center}
 \includegraphics[width=0.7\textwidth]{Background/BackgroundFigs/tempest_arch}
-\caption{Tempest switch architecture~\mycite{UCAM-CL-TR-450}}
+\caption{Tempest switch architecture~\mycite{Merwe98}}
 \label{fig:background:tempest_arch}
 \end{center}
 \end{figure}
@@ -684,8 +686,8 @@ transport layer field match to improve flow table capacity.
     \hline
     Language & Controller \\
     \hline
-    Python & NOX~\mycite{nox}, POX~\mycite{pox}, Pyretic~\mycite{Monsanto13} \\
-    C++ & NOX~\mycite{nox} \\
+    Python & NOX~\mycite{gude08}, POX~\mycite{pox}, Pyretic~\mycite{Monsanto13} \\
+    C++ & NOX~\mycite{gude08} \\
     JAVA & Maestro~\mycite{cai2011}, Floodlight~\mycite{floodlight} \\
     Haskell & Nettle~\mycite{nettle} \\
     C & Mul~\mycite{mul} \\
@@ -779,7 +781,7 @@ dynamically distribute user requests between servers.  SDN can integrate the
 indirection functionality in the network fabric. \mycite{Wang11}~present an
 in-network proactive load balancing framework which uses the range of the \of
 wildcard matching to distribute client load between servers.
-\mycite{Handigol09,Handigol10} follow a reactive approach to the problem. For
+\mycite{handigol09,Handigol10} follow a reactive approach to the problem. For
 each new client, their Plug-and-Serve controller chooses on-the-fly a
 destination server, based on an allocation algorithm and the overall system
 load.
@@ -906,7 +908,7 @@ topologies in a single host and experiment with network functionality.  Mininet
 has been used in the Stanford Computer Science department to introduce students
 to recent research efforts~\mycite{cs244}. 
 
-\section{Conclusions}
+\section{Summary}
 
 In this section we provided an in-depth analysis of available network control
 mechanisms.  We started the discussion by presenting a generic architectural

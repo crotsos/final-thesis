@@ -28,15 +28,14 @@ simulations and emulations.  Using \sdnsim, developers are able to import
 \oflops switch profiles into their experiment and test the performance of their
 SDN design.
 
-In this Chapter, we present the motivations (Section~\ref{sec:oflops-intro}) and
-the design overview of \oflops (Section~\ref{sec:oflops-design}).
-We select a number of off-the-self \of switches
-(Section~\ref{sec:oflops-switches}) and assess the elementary protocol interaction performance
-(Section~\ref{sec:oflops-result}). Furthermore, we discuss some of
-limitations in network experimentation and present \sdnsim 
-(Section~\ref{sec:sdnsim-intro}) and its architecture
-(Section~\ref{sec:experimentation}). Finally, we assess the performance of
-\sdnsim, along with a measurement study of control
+In this Chapter, we present the motivations (Section~\ref{sec:oflops-intro})
+and the design overview of \oflops (Section~\ref{sec:oflops-design}). We select
+a number of off-the-self \of switches (Section~\ref{sec:oflops-switches}) and
+assess the elementary protocol interaction performance
+(Section~\ref{sec:oflops-result}). Furthermore, we discuss some of limitations
+in network experimentation and present \sdnsim (Section~\ref{sec:sdnsim-intro})
+and its architecture (Section~\ref{sec:experimentation}). Finally, we assess
+the performance of \sdnsim, along with a measurement study of control
 scalability over the fat-tree topology (Section~\ref{sec:sdnsim-precision}),
 and conclude our work (Section~\ref{sec:modeling:summary}). 
 
@@ -97,7 +96,7 @@ characterization is non-trivial, as most OpenFlow-enabled devices provide rich
 functionality but do not disclose implementation details. In order to understand
 the performance impact of an experiment, multiple input measurement channels
 must be monitored concurrently, such as data and control channels. Furthermore,
-current controller frameworks, like~\mycitet{Gude08,floodlight}, are designed for
+current controller frameworks, like~\mycitet{gude08,floodlight}, are designed for
 production networks and incur significant measurement noise. Such controllers
 employ asynchronous processing libraries and multi-thread execution models, to
 maximize the aggregate control channel processing throughput, and provide
@@ -143,7 +142,7 @@ multiple packet generation and capturing mechanisms.  Packet generation
 functionality is supported through three mechanisms:
 userspace~(Figure~\ref{fig:oflops_design_userspace}); kernel-space using the
 pktgen kernel module
-module~\mycite{pktgen}~(Figure~\ref{fig:oflops_design_kernel}); and
+module~\mycite{olsson05}~(Figure~\ref{fig:oflops_design_kernel}); and
 hardware-accelerated through a modified version of the NetFPGA Stanford Packet
 Generator~\mycite{Covington09}~(Figure~\ref{fig:oflops_design_netfpga}).
 \oflops supports both the PCAP library and the modified NetFPGA design for
@@ -592,7 +591,7 @@ An advanced feature of \of is its ability to provide network
 control applications with, for example, flow arrival notifications from the network,
 while simultaneously providing fine-grain control of the forwarding process.
 This permits applications to adapt in real time to the requirements and load of
-the network~\mycite{plug_n_serv,Yap09}. Using \oflops measurement
+the network~\mycite{handigol09,Yap09}. Using \oflops measurement
 instrumentation, we developed a test scenario of dynamic network control, in order
 to understand the behaviour of the switch control and data plane.  In this
 scenario, we emulated the simultaneous querying of traffic statistics and
@@ -942,7 +941,7 @@ and an evaluation the time scalability of the distributed \ns{3} backend
 
 We benchmark our controller library's performance through a simple baseline
 comparison against two existing \of controllers, NOX and Maestro.
-NOX~\mycite{nox} is one of the first and most mature open-source \of controllers;
+NOX~\mycite{gude08} is one of the first and most mature open-source \of controllers;
 in its original form it provides programmability through a set of C++ and Python
 modules.  In our evaluation we compared it against both the master branch and the
 {\it destiny-fast} \/branch, an optimised version that sacrifices Python
@@ -1274,3 +1273,4 @@ Furthermore, we used \sdnsim to investigate the impact of hierarchical distribut
 control architectures on the performance of the data plane of the network.  In
 the next chapter, we explore applications of the SDN paradigm to scale network
 management. 
+

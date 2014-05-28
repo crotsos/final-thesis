@@ -214,7 +214,7 @@ many different types of device remain in use over extended periods of time.
 \subsection{\of, \ovs \& NOX} \label{s:openflow}
 
 We provide \of support using \ovs~\mycite{openvswitch} and employ the
-NOX~\mycite{nox} control platform, an event-driven programmable controller with
+NOX~\mycite{gude08} control platform, an event-driven programmable controller with
 C++ and Python module support, to develop our control logic.  Our control logic,
 discussed in Section~\ref{s:protocols}, is implemented in five distinct modules.
 The C++ module \textit{hwdb} synchronizes router state with the hwdb home
@@ -585,7 +585,7 @@ performance behaviour, generating packets at line rate from a single
 source to $N$ destinations each in its own 10.2.*.*/30 subnet, creating equally
 $N$ unique network flows.  As these are stress tests we use large packets
 (1500B) for the latency tests and minimal packets (70B)\footnote{The 30B extra
-  overhead is due to \emph{pktgen}~\mycite{olsson05:_linux_packet_gener}, the
+  overhead is due to \emph{pktgen}~\mycite{olsson05}, the
   traffic generation tool used.} for the throughput tests, selecting
 destinations at random on a per-packet basis.  Results are presented as the
 median of 5 independent runs with error bars giving the min and max values. 

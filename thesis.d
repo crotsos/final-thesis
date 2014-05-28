@@ -193,5 +193,4 @@ thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/nat-p
 -include Chapter3/Chapter3Figs/measurement_topology.pdf.gpi.d
 thesis.d: $$(call graphics-source,Chapter3/Chapter3Figs/measurement_topology.pdf)
 thesis.pdf thesis._graphics: $$(call graphics-target,Chapter3/Chapter3Figs/measurement_topology.pdf)
-thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/references-bk.bib)
-thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/rfc-bk.bib)
+thesis.bbl thesis.aux thesis.aux.make: $(call path-norm,./References/thesis.bib)

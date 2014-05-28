@@ -8,17 +8,18 @@ and noting areas in which further work is required.
 
 \section{Summary}
 
-This dissertation has addressed issues of control plane performance scalability
-using the SDN paradigm.  Chapter~\ref{s:introduction:introduction} began by
+This dissertation has addressed issues of network performance scalability using
+the SDN paradigm.  Chapter~\ref{s:introduction:introduction} began by
 motivating the requirement to scale the functionality of existing network
 protocols and technologies in order to support the design limitation which are
 highlighted by the increase in network technology adoption.  We argued that
-network performance is multi-dimensional (e.g.~resource control,
-management, connectivity), and depends on the applications and the deployment
-environment. We claimed that specialized control plane architectures can
-mitigate network bottlenecks introduced by protocol design, while ensuring
-backwards compatibility and high performance by addressing the requirements and
-opportunities of the deployed environment. 
+network performance is multi-dimensional (e.g.~resource control, management,
+connectivity), and depends on the applications and the deployment environment.
+We claimed that specialized control plane architectures can mitigate network
+bottlenecks introduced by protocol design, while ensuring backwards
+compatibility and high performance. Effective control plane evolution must
+address the requirements and exploit the inherent opportunities of the deployed
+environment. 
 
 Chapter~\ref{ch:background} then considered background and related work to the
 problem of network control. We provided a bottom-up design discussion on
@@ -27,10 +28,10 @@ current network devices and presented a generic design model of the integration
 between the control and data plane in a single device in order to highlight the
 physical limitations in  network performance. Furthermore, we reviewed
 the current production-level network control protocols and mechanisms for the
-data link and network layers and it was argued that their ability for responsive
-flexible and user friendly control is reduced. Furthermore, we surveyed a
+data link and network layers and it was argued that their ability for responsive,
+flexible, and user friendly control is reduced. Furthermore, we surveyed a
 series of experimental approaches which address network control limitations and
-provide flexible, distributed and evolvable control.  Namely we present Active
+provide flexible, distributed and evolvable control.  Namely we presented Active
 Network, Devolved Control of ATM Networks and Software Defined Networking. In
 order to highlight the opportunities provided by these mechanisms, we concluded
 this chapter with an extensive presentation of novel control applications build
@@ -91,7 +92,7 @@ strawman implementation  of \signpost and its integration with
 architecture on network functionality and its backwards compatibility with
 existing applications. 
 
-\section{Summary of Contributions}
+\section{Contributions}
 
 The dissertation makes the following three contributions:
 
@@ -191,17 +192,17 @@ relationship and increase the in-network flexibility. Such a control
 architecture can take advantage of recent theory frameworks, like Bigraphs, to
 scale the respective complexity. 
 
-\section{Conclusion}
-
-In summary, this dissertation has argued that network technologies exhibit
-significant limitation in scaling their functionality and support of the multiple
-aspects of network performance. We identified these limitations as due to the
-unforeseen functional requirements that occurred  by the wide adoption of network
-technologies. In order to address these limitations, we contend that network
-control must be redesigned and specialized in order to fit the requirements and
-take advantage of the properties of the deployment environment. This
-dissertation has presented and evaluated mechanisms to control plane
-functionality, management and connectivity scalability. 
+% \section{Conclusion}
+% 
+% In summary, this dissertation has argued that network technologies exhibit
+% significant limitation in scaling their functionality and support of the multiple
+% aspects of network performance. We identified these limitations as due to the
+% unforeseen functional requirements that occurred  by the wide adoption of network
+% technologies. In order to address these limitations, we contend that network
+% control must be redesigned and specialized in order to fit the requirements and
+% take advantage of the properties of the deployment environment. This
+% dissertation has presented and evaluated mechanisms to control plane
+% functionality, management and connectivity scalability. 
 
 
 
