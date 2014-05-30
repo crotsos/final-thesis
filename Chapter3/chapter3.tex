@@ -17,7 +17,7 @@ We argue that end-devices require an adaptable network control architecture, in
 order to overcome  connectivity limitations and control their data and
 resources.  The network community provides an abundance of free and open
 mechanisms, which can be reused dynamically to provide inter-device
-connectivity.  We introduce \signpost, a network control plane for end-devices,
+connectivity.  We introduce \signpost~\cite{Rotsos14}, a network control plane for end-devices,
 capable of delivering continuous and secure connectivity between user devices.
 \signpost uses existing network testing approaches to detect network
 environment conditions and configures existing software packages to establish
@@ -265,7 +265,7 @@ architecture:
  \end{itemize}
 
 
-\section{Finding your way with \signpost}\label{sec:sp-signpost}
+\section{Finding Your Way With \signpost}\label{sec:sp-signpost}
 
 \signpost is a decentralised naming and connectivity framework with
 user-controlled security.  The system provides an Internet-wide overlay network
@@ -363,66 +363,63 @@ detail the architecture of \signpost, using a bottom-up narrative.
 \subsection{Network Tactic} \label{sec:sp-tactics}
 
 \begin{table*}
-\centering \footnotesize
-\begin{tabular}{|l|c|c|c|c|c|c|p{1.5cm}| }
+\centering 
+{\scriptsize 
+\begin{tabular}{|l|c|c|c|c|c|c|c| }
   \hline
-  Tactic name & Purpose & Layer & Transport & Authenticate & Encrypt &
-  Anonymize & \signpost
-Support\\
+  Tactic name & { Purpose}  & { Protocol} & { Connectivity} & 
+  { Authenticate} & { Encrypt} &{ Anonymize} & { \signpost}\\
  %% & Comment & Source \\
 \hline
-Avahi       & Discover         & 7      & UDP         & No     & No     & No & Yes\\
+Avahi       & Discover       & UDP   & -       & No     & No     & No & Yes\\
  %% & Linux-based, bonjour-compatible system for local network resource discovery
  %% & \url{avahi.org/} \\
-Samba       & Discover         & 7      & UDP         & No     & No     & No & No \\
- %% & Windows local network resource discovery protocol, implemented in WINS & \\
-Bonjour     & Discover         & 7      & UDP         & No     & No     & No & Yes\\
+Bonjour     & Discover       & UDP   & -       & No     & No     & No & Yes\\
  %% & Used for local network resource discovery
  %% & \url{developer.apple.com/opensource/} \\
-Universal PnP & Discover         & 7      & UDP         & No     & No     & No & Yes\\
-dns2tcp     & Tunnel             & 7      & UDP         & No     & No     & No & No \\
+UPnP        & Discover    & UDP   & -     & No     & No     & No & No \\
+dns2tcp     & Tunnel        & DNS   & TCP   & No     & No     & No & No \\
  %% & IP over DNS & \url{www.hsc.fr/ressources/outils/dns2tcp/index.html.en} \\
-DNScat      & Tunnel            & 7      & UDP         & Yes    & No     & No & No \\
+DNScat      & Tunnel        & DNS   & UDP      & Yes    & No     & No & No \\
  %% & VPN with PPP & \url{tadek.pietraszek.org/projects/DNScat/} \\
-HTTP-Tunnel & Tunnel            & 7      & TCP         & No     & No     & No & No \\
+HTTP-Tunnel & Tunnel        & HTTP & TCP      & No     & No     & No & No \\
  %% & uses HTTP & \url{www.nocrew.org/software/httptunnel.html} \\
-iodine      & Tunnel            & 7      & UDP         & Yes    & No     & No & Yes\\
+iodine      & Tunnel        & DNS  & IP       & Yes    & No     & No & Yes\\
  %% & IP over DNS & \url{code.kryo.se/iodine/} \\
-NSTX        & Tunnel            & 7      & UDP         & No?    & No     & No & No\\
+NSTX        & Tunnel        & DNS  & IP       & Yes    & No     & No & No\\
  %% & IP over DNS. Deprecated. Recommends iodine 
  %% & \url{thomer.com/howtos/nstx.html} \\
-% IMAP        & Data transfer     & 7      & TCP         & Can be & Can be & No \\
- %% & & \\
-Proxytunnel & Tunnel            & 7      & TCP         & Can be & Can be & No & No\\
+Proxytunnel & Tunnel        & HTTP(S) & TCP      & Yes    & Yes & No & No\\
  %% & can use both HTTP and HTTPS & \url{proxytunnel.sourceforge.net/} \\
-ptunnel     & Tunnel            & 4      & ICMP        & Yes    & No     & No & No\\
-tuns        & Tunnel            & 7      & UDP         & Yes    & No     & No & No\\
+ptunnel     & Tunnel        & ICMP    & TCP      & Yes    & No  & No & No\\
+tuns        & Tunnel        & DNS     & TCP      & Yes    & No  & No & No\\
  %% & IP over DNS. Doesn't split IP packets, but sets size so small that OS does
  %%   fragmentation. Neat. Only uses CNAME for maximum compatibility with
  %%   infrastructure. Poor performance :( 
  %% & \url{www.loria.fr/~lnussbau/tuns.html} \\ 
-SSH         & Tunnel/Encrypt & 7      & TCP         & Yes    & Yes    & No & Yes\\
-IPSec       & Tunnel/Encrypt & 3 (4*) & IP          & Yes    & Yes    & No & No\\
+SSH         & Tunnel         & TCP     & TCP/IP      & Yes    & Yes & No & Yes\\
+IPSec       & Tunnel         & IP/UDP  & IP          & Yes    & Yes & No & No\\
  %% & In layer 4 when traversing NATS (over UDP or TCP) & \\
-OpenVPN     & Tunnel/Encrypt & 7      & UDP/TCP     & Yes    & Yes    & No & Yes\\
+OpenVPN     & Tunnel         & TCP/UDP & IP          & Yes    & Yes & No & Yes\\
  %% & & \url{openvpn.net/} \\
-libjingle   & Nat punch         & 7      & UDP/TCP     & Yes    & Yes & No & No\\
+libjingle   & Nat punch      & TCP/UDP & UDP/TCP     & Yes    & Yes & No & No\\
  %% & For punching holes. Negotiation over XMPP
  %% & \url{code.google.com/apis/talk/libjingle/index.html} \\
-privoxy     & Anonymize         & 7      & TCP         & No    & No   & Yes & Yes\\
-tor         & Anonymize         & 7      & TCP         & No     & Yes & Yes & Yes\\
+privoxy     & Anonymize      & HTTP    & HTTP/TCP    & No     & No  & Yes & Yes\\
+tor         & Anonymize      & TCP     & TCP         & No     & Yes & Yes & Yes\\
  %% & & \url{www.privoxy.org} \\
 % SMTP        & Data transfer     & 7      & TCP         & Can be & Can be & No \\
-stunnel     & Encrypt        & 7      & TCP         & Yes    & Yes    & No & No\\
-TCPCrypt    & Encrypt        & 4      & TCP         & No     & Yes    & No & No\\
+stunnel     & Encrypt        & SSL     & TCP         & Yes    & Yes    & No & No\\
+TCPCrypt    & Encrypt        & TCP     & TCP         & No     & Yes    & No & No\\
 \hline
 \end{tabular}
 \caption[List of available connection-establishing
-mechanisms.]{\label{tbl:signpost-tunnels}List of available connection
-  establishing mechanisms. The table presents for each mechanism, its primary
-  functionality, the layer providing connectivity and the protocol used to
-  establish connectivity and the support of the mechanism for Authentication,
-  Encryption, Anonymisation and \signpost integration.}
+mechanisms.]{\label{tbl:signpost-tunnels}List of available
+connection-establishing mechanisms. The table presents for each mechanism, its
+primary functionality, the protocol used to establish connectivity and the
+layer providing connectivity, and the support of the mechanism for
+Authentication, Encryption, Anonymization and \signpost integration.}
+}
 \end{table*}
 
 In order to provide end-to-end connectivity, \signpost uses available
@@ -691,7 +688,7 @@ appropriate network address, \signpost ensures a path towards that address.
         contains a DS RR with the hash of the DNSKEY RR for \fqsn{bob}  and a
         RRSIG RR signature of the DS RR signed with the DNSKEY of the
         \spsn{signpost.io} domain. \fqsn{bob} uses its DNSKEY to sign an A RR for
-        \fqsn{desktop.bob}}
+        \fqsn{desktop.bob}.}
   \label{fig:dnssec_hierarchy}
 \end{figure}
 
@@ -1014,8 +1011,8 @@ implementation supports  the following connection-establishing mechanisms:
 \centering
 \begin{tabular}{|l|>{\centering\arraybackslash}m{1.2cm}|>{\centering\arraybackslash}m{1.7cm}|>{\centering\arraybackslash}m{1.5cm}|>{\centering\arraybackslash}m{1.2cm}|>{\centering\arraybackslash}m{1.7cm}|>{\centering\arraybackslash}m{1.5cm}| }
   \hline
-  \multirow{2}{*}{Tactic name} & \multicolumn{3}{|c|}{Direct connectivity} &
-  \multicolumn{3}{|c|}{cloud-assisted connectivity} \\
+  \multirow{2}{*}{Tactic name} & \multicolumn{3}{|c|}{Direct Connectivity} &
+  \multicolumn{3}{|c|}{Cloud-assisted Connectivity} \\
 \cline{2-7}
 & setup (sec) & throughput (Mbps) & RTT (msec) & setup (sec) &
 throughput (Mbps) & RTT (msec) \\
@@ -1097,7 +1094,7 @@ RTT of such paths is equal to the minimum value between the Tactics forming the
 network path, while the setup latency is equal to the sum of the individual
 Tactics. 
 
-\subsection{Application compatibility} \label{sec:sp-compatibility}
+\subsection{Application Compatibility} \label{sec:sp-compatibility}
 
 In this section we evaluate the compatibility of \signpost with applications
 providing resource and information sharing. Our evaluation focuses on the

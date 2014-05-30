@@ -469,9 +469,10 @@ but the greater the performance impact on compliant clients.
 \begin{figure} 
   \centering 
   \includegraphics[width=0.5\columnwidth]{Chapter2/Chapter2Figs/rekeying}
-  \caption{\label{f:rekeying}Affect on TCP throughput from rekeying every 30s
-    for Linux 2.6.35 using a Broadcom card with the \emph{athk9} module; and
-    Windows 7 using a proprietary Intel driver and card.} 
+  \caption[Affect on TCP throughput from 802.11i rekeying]
+  {\label{f:rekeying}Affect on TCP throughput from 802.11i rekeying every 30s
+      for Linux 2.6.35 using a Broadcom card with the \emph{athk9} module; and
+      Windows 7 using a proprietary Intel driver and card.} 
 \end{figure}
 
 \begin{figure*} \centering
@@ -788,7 +789,7 @@ tested MacOSX, Windows and Linux IPv6 network stacks and verified correct networ
 configuration and Internet connectivity. 
 
 
-\section{Putting people in resource allocation policy} \label{s:qos}
+\section{Putting people in the Resource Allocation Policy}\label{s:qos}
 
 \begin{figure}
   \centering
@@ -1016,7 +1017,7 @@ instance to setup the incoming direction of the flow.
 \begin{table}
   \begin{tabular} {|l|c|l|c|}
     \hline
-    Web traffic & & Gaming traffic & \\
+    \multicolumn{2}{c}{Web traffic} & Gaming traffic & \\
     \textbf{Parameter} & \textbf{Distribution} & \textbf{Parameter} & \textbf{Distribution} \\
     \hline
     objects per page    & Pareto(2.43, 3.0)       & inter-packet gap & lognormal(79.34, 0.25)\\
@@ -1047,7 +1048,7 @@ Mbps symmetric link, thus providing a downstream subscription ratio $1:10$.
 Switch2 propagates traffic between Switch1, Server1 and Server2, adding 10~msec
 of one-way latency to each direction. Each node in the  topology runs on a
 different host equipped with a quad core Intel CPU (Core 2 Quad Q6600), 4 Gbytes
-RAM and a quad-port 1GbE Intel card. Switch1 and Switch2 use \ovs to implement
+RAM and a quad-port 1 GbE Intel card. Switch1 and Switch2 use \ovs to implement
 fast packet forwarding functionality.
 
 Using the aforementioned topology, we evaluate the impact of our architecture

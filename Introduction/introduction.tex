@@ -27,15 +27,6 @@ For the remainder of this chapter, we discuss the motivations of our work
 contributions (\S~\ref{sec:intro:contributions}) and  the outline of this thesis
 (\S~\ref{sec:intro:outline}).
 
-% In 2011, a third of the global population is Internet-connected through a wide
-% range of network technologies~\mycite{itufacts2011}, while Internet resources,
-% based on estimations, generate 3.4\% of the global GDP~\mycite{duRausas:2011un}.
-
-% Due to the increasing importance of network technologies, functional
-% requirements are constantly evolving and network infrastructures {\emph must} be
-% future-proof against increasing traffic rates and performance and security
-% policy complexity.
-
 \section{Motivation} \label{sec:intro:motivations}
 
 This section presents the motivations for our thesis. Specifically, motivated by
@@ -101,17 +92,17 @@ application resource requirements and network heterogeneity.
 
 \begin{table} 
   \centering 
-    \begin{tabular}{| p{5cm} | p{1.8cm} p{1.8cm} p{1cm} p{2.3cm} |} 
+    \begin{tabular}{| p{5cm} | p{1.8cm} p{1.8cm} p{1cm} p{2.6cm} |} 
       \hline
       Application                                & Throughput (Mbps) & Latency (sec) & Jitter (sec)  & Flow Number (median) \\ \hline
-      Web~\mycite{Akamai_4_seconds,Butkiewicz11} & -                 & 4            & -              & 10               \\
-      Video~\mycite{Finamore11}                  & 0.3 - 5           & -            & -              & 1                \\
-      Peer-to-peer~\mycite{Rasti07,pouwelse2004} & -                 & -            & -              & 30               \\ 
-      VoIP                                       & 0.1 - 1.5         & 0.5          & 0.1            & 1                 \\ 
-      Gaming~\mycite{armitage2006networking}     & 0.1               & 0.1          & 0.05           & 1                 \\
+      \textbf{Web}~\mycite{Akamai_4_seconds,Butkiewicz11} & -                 & 4            & -              & 10               \\
+      \textbf{Video}~\mycite{Finamore11}                  & 0.3 - 5           & -            & -              & 1                \\
+      \textbf{Peer-to-peer}~\mycite{Rasti07,pouwelse2004} & -                 & -            & -              & 30               \\ 
+      \textbf{VoIP}                                       & 0.1 - 1.5         & 0.5          & 0.1            & 1                 \\ 
+      \textbf{Gaming}~\mycite{armitage2006networking}     & 0.1               & 0.1          & 0.05           & 1                 \\
       \hline 
     \end{tabular} 
-  \caption{Network performance requirements for a set of popular traffic classes.} \label{tbl:application_requirement} 
+  \caption{Network performance requirements for popular traffic classes.}\label{tbl:application_requirement} 
 \end{table}
 
 % \todo{tail at
@@ -257,9 +248,9 @@ consequence of the design of current network protocols.
 \subparagraph{Network management scalability}
 
 Policy and configuration interfaces in current networks introduce a significant
-performance bottleneck.  \mycite{Mahajan02} pinpoint a significant portion of
+performance bottleneck.  \mycitet{Mahajan02} pinpoint a significant portion of
 global BGP routing errors to protocol misconfigurations, prompted to a great
-extent by the counter-intuitive configuration interface.  \mycite{Kim11} study
+extent by the counter-intuitive configuration interface.  \mycitet{Kim11} study
 the configuration evolution of two medium-sized campus networks and highlight
 the limitations of current configuration interfaces.  Device configuration
 files exhibit a continual size increase, containing frequently stale rules that
@@ -268,7 +259,7 @@ remain low-level and inexpressive. As a result, network policy updates
 translate into multiple device reconfigurations, while forwarding and security
 policies are merged by the device interface. The configuration bottleneck is
 equally important in environments with non-expert administrators, like the home
-network. \mycite{grinter05} conclude that the human understanding of network
+network. \mycitet{grinter05} conclude that the human understanding of network
 abstraction is limited and the complexity of control abstraction leads to
 under-optimized network configurations, especially  in terms of security and
 performance. 
@@ -340,11 +331,11 @@ That is, it must be careful to send well-formed datagrams, but must accept any
 datagram that it can interpret (e.g., not object to technical errors where the
 meaning is still clear).''~\mycite{RFC0791}}. In addition, their functionality
 and behaviour varies significantly between vendors, and remains inflexible and
-isolated from the control plane of the operating network. \mycite{Honda:2011ci}
+isolated from the control plane of the operating network. \mycitet{Honda:2011ci}
 present an Internet-wide robustness measurement study and report that obscure
 but semantically correct protocol behaviours are unsupported by a number of
 edge networks, primarily due to the functionality of such devices.
-Similarly,~\mycite{Hatonen10} study the operational semantics of a series of
+Similarly,~\mycitet{Hatonen10} study the operational semantics of a series of
 home network routers and highlight significant differences between commercial NAT
 implementations. 
 

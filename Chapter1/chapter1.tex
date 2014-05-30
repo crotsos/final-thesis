@@ -39,7 +39,7 @@ the performance of \sdnsim, along with a measurement study of control
 scalability over the fat-tree topology (Section~\ref{sec:sdnsim-precision}),
 and conclude our work (Section~\ref{sec:modeling:summary}). 
 
-\section{Network Control Micro-Benchmark} \label{sec:oflops-intro}
+\section{Network Control Micro-benchmark} \label{sec:oflops-intro}
 
 Despite the recent introduction of the SDN paradigm, the research community has
 already proposed many novel control architectures, presented
@@ -87,7 +87,7 @@ the NetFPGA \mycite{pam-accuracy}.
   (Figure~\ref{fig:oflops_design_netfpga}), 2) the kernel space {\tt pktgen}
   traffic generation module and the PCAP packet capturing
   module~(Figure~\ref{fig:oflops_design_kernel}), 3) a userspace packet capture
-  and generation library (Figure~\ref{fig:oflops_design_userspace})} 
+  and generation library (Figure~\ref{fig:oflops_design_userspace}).}
 \end{figure}
 
 Measuring \of switch implementations is a challenging task in terms of
@@ -154,17 +154,17 @@ guarantees.
   \begin{minipage}[b]{0.45\textwidth}
 \centering
  \includegraphics[width=0.99\textwidth]{Chapter1/Chapter1Figs/accuracy-topology} 
- \caption[\oflops precision evaluation topology]{Measurement topology to evaluate capturing mechanism precision.}
-\label{fig:timestamping_topology}
+ \caption{\oflops precision evaluation topology against a DAG card.} 
+ \label{fig:timestamping_topology}
 \end{minipage}
 \hspace{0.5cm}
   \begin{minipage}[b]{0.45\textwidth}
 \centering
  \includegraphics[width=0.99\textwidth]{Chapter1/Chapter1Figs/timer-precision} 
  \caption[Precision evaluation of PCAP and NetFPGA timestamps]{Timestamping
-   precision evaluation using a DAG card. PCAP timestamps
-   exhibit a significant drift in the order of microseconds, in comparison to
-   the NetFPGA hardware design}
+ precision evaluation using a DAG card. PCAP timestamps exhibit a significant
+ drift in the order of microseconds, in comparison to the NetFPGA hardware
+ design.}
 \label{fig:timestamping}
 \end{minipage}
 \end{figure}
@@ -208,7 +208,7 @@ switch, \ovs~\mycite{openvswitch}, an important implementation for production
 environments. Firstly, \ovs provides a replacement for the poor-performing Linux
 bridge~\mycite{bianco10}, a crucial functionality for virtualised operating
 systems.  Currently, the Xen platform uses \ovs to forward traffic between VMs
-in the Dum0, a configuration which is inherited by major Cloud providers, like
+in the Dom0, a configuration which is inherited by major Cloud providers, like
 Amazon and Rackspace.  Secondly, several hardware switch vendors use the \ovs
 codebase for the development of their own \of-enabled firmware. The \ovs development
 team has standardised a clean abstraction for the control of packet
@@ -442,9 +442,10 @@ order to accurately measure the flow insertion time.
   \centering
     \includegraphics[width=0.99\textwidth]{Chapter1/Chapter1Figs/flow_insertion_seq_diagram} 
     \label{fig:flow_mod_scenario}
-    \caption{Flow insertion and flow modification measurement scenario. The
-      experiment uses multiple information channels to estimate the delay in
-      modifying entries in the flow table.}
+    \caption[Flow insertion and flow modification measurement scenario] {Flow 
+    insertion and flow modification measurement scenario. The experiment uses
+    multiple information channels to estimate the delay in modifying entries in
+    the flow table.}
 \end{figure}
 
 \begin{figure}[ht]
@@ -454,7 +455,7 @@ order to accurately measure the flow insertion time.
     \subfigure[Switch1 (log-log scale)]
 	{\includegraphics[width=0.99\textwidth]{Chapter1/Chapter1Figs/switch1_mod_flow_exact_comparison}}
   \end{center}
-  \caption{Flow entry insertion delay: as reported using the
+  \caption[Flow entry insertion delay]{Flow entry insertion delay: as reported using the
     \texttt{barrier} notification and observed at the data
     plane.}
   \label{fig:flow_insertion_comparison}
@@ -496,8 +497,8 @@ as the number of insertions grows.
   \begin{center}
     \includegraphics[width=0.99\textwidth]{Chapter1/Chapter1Figs/flow_insertion_delay}
   \end{center}
-  \caption{Delay of flow insertion and flow modification, as observed
-    from the data plane (log-log scale).}
+  \caption[Delay of flow insertion and flow modification]{Delay of flow insertion 
+  and flow modification, as observed from the data plane (log-log scale).}
   \label{fig:flow_insertion_delay}
 \end{figure}
 
@@ -686,7 +687,7 @@ transforms the experiment definition into an \ns{3}~\mycite{Henderson2006}
 simulation, and \emph{Emulation}, emulates the experiment definition using 
 the Xen virtualization platform~\mycite{Barham2003}.
 
-\section{Network experimentation} \label{sec:experimentation}
+\section{Network Experimentation} \label{sec:experimentation}
 
 This section presents the design of the \sdnsim platform.  We
 present the \mirage library OS (Section~\ref{sec:mirage-intro}), a core building
@@ -706,8 +707,9 @@ Web Server & 0.172 \\
 OpenFlow switch & 0.164 \\
 OpenFlow controller & 0.168 \\
 \end{tabular}
-\caption{\label{t:codesize}Sizes of Mirage application images. Configuration and
-  data are compiled directly into the image.}
+\caption[Sizes of Mirage application images.]{\label{t:codesize}Sizes of Mirage
+application images. Configuration and data are compiled directly into the
+image.}
 \end{table}
 
 Mirage~\mycite{madhavapeddy2013} is a development framework for cloud services,
@@ -841,7 +843,7 @@ integration details between Mirage and each backend.  SNDSIM's main goal
 is network accuracy and the presentation focuses on the network and time
 subsystems.
 
-\subsubsection{Xen backend} \label{sec:sdnsim:xen-backend}
+\subsubsection{Xen Backend} \label{sec:sdnsim:xen-backend}
 
 \sdnsim uses the Xen virtualisation platform to emulate experimental
 definitions. Hosts are represented as Mirage VMs, while network links are
@@ -886,7 +888,7 @@ time event registration method to use the TDF parameter. Finally, time
 virtualisation is enforced on network resources by dividing link throughput
 values and multiplying link latency values with the TDF parameter. 
 
-\subsubsection{\ns{3} backend}
+\subsubsection{\ns{3} Backend}
 
 \sdnsim uses \ns{3}~\mycite{Henderson2006}, a discrete-time packet-driven network
 simulator. The core of the system consists
@@ -915,7 +917,6 @@ transformations we are able to provide a semantically accurate integration of
 simulated using the {\it PointToPoint} \/link model. This model simulates a PPP
 link over a lossless medium, a valid approximation of the full duplex
 non-shared medium of current wired Ethernet technologies.
-% \todo{add Tap bridge details}
 
 \sdnsim simulation backend use a distributed simulation engine for \ns{3} which provides
 conservative event execution parallelization. The simulation engine spawns a
@@ -937,7 +938,7 @@ performance comparison of the \mirage \of controller with other controllers
 and an evaluation the time scalability of the distributed \ns{3} backend
 (Section~\ref{sec:sdnsim-ns3-perf}).
 
-\subsection{\mirage Controller Emulation} \label{sec:of-controller-perf}
+\subsection{Controller Emulation Scalability} \label{sec:of-controller-perf}
 
 We benchmark our controller library's performance through a simple baseline
 comparison against two existing \of controllers, NOX and Maestro.
@@ -1006,10 +1007,10 @@ Maestro       &  13&9 &  2&8 &  9&8 & 2&4 \\
 \B Mirage Xen &  98&5 &  4&4 & 24&5 & 0&0 \\
 \hline
 \end{tabular}
-\caption{\label{tbl:controller}OpenFlow controller performance.}
+\caption{\label{tbl:controller}\of controller performance.}
 \end{table}
 
-\subsection{\mirage Switch Emulation} \label{sec:of-switch-perf}
+\subsection{Switch Emulation Scalability} \label{sec:of-switch-perf}
 
 We benchmarked our \mirage \of switch implementation through a baseline comparison
 with the \ovs kernel implementation.  We developed, using
@@ -1030,9 +1031,9 @@ rate.
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{Chapter1/Chapter1Figs/switch-media-delay}
-\caption[\of switch data pane evaluation]{\label{fig:switch}Min/max/median delay switching 100\,byte packets
-        when running the Mirage switch and \ovs kernel module as DomU
-        virtual machines.}
+\caption[\of switch data pane evaluation]{\label{fig:switch}Min/max/median
+delay switching 100\,byte packets when running the Mirage switch and \ovs
+kernel module as DomU virtual machines.}
 \end{figure}
 
 Figure~\ref{fig:switch} plots as error boxes the minimum, median and maximum of the
@@ -1061,9 +1062,11 @@ used a learning switch control application.
 \begin{figure}[t] 
   \centering
   \includegraphics[width=0.70\textwidth]{Chapter1/Chapter1Figs/2hosts-cumm} 
-  \caption{Flow completion time cummulative distribtuion for a real setup using
-      Switch4 and an \sdnsim emulation using a model switch. The \sdnsim emulation
-  can approximate with high accuracy the behaviour of the real system.} 
+  \caption[Flow completion time cumulative distribution using Switch4 and an
+  \sdnsim emulation model]{Flow completion time cumulative distribution for a
+  real setup using Switch4 and an \sdnsim emulation using a model switch. The
+  switch model can approximate with high accuracy the behaviour of the
+  real system.} 
   \label{fig:eval:switch-perf} 
 \end{figure}
 
@@ -1084,7 +1087,7 @@ overestimation. We attribute this behaviour to the high load that the reactive
 control scheme introduces to the communication channel between the co-processor
 of the switch and the ASIC, which skews the measured behaviour at run-time.
 
-\subsection{\ns{3} performance} \label{sec:sdnsim-ns3-perf}
+\subsection{\ns{3} Simulation Scalability} \label{sec:sdnsim-ns3-perf}
 
 \begin{figure}[ht]
 \subfigure[centralised topology]{\includegraphics[width=0.45\textwidth]{Chapter1/Chapter1Figs/sdnsim-topology-single}\label{fig:sdnsim-ns3-simulation-single}}
@@ -1092,7 +1095,7 @@ of the switch and the ASIC, which skews the measured behaviour at run-time.
 \caption[\ns{3} scalability evaluation topology]{Network topology to test the
 scalability of \ns{3}-based simulation. We simulated two topologies: a
 centralised topology~(Figure~\ref{fig:sdnsim-ns3-simulation-single}) and a
-distributed topology~(Figure~\ref{fig:sdnsim-ns3-simulation-double})}
+distributed topology~(Figure~\ref{fig:sdnsim-ns3-simulation-double}).}
 \label{fig:sdnsim-ns3-simulation}
 \end{figure}
 
@@ -1110,11 +1113,11 @@ Slowdown factor & 26 & 70 & 150 & 16 & 50 & 84 \\
 \hline 
 \end{tabular}
 \end{center}
-\caption[\sdnsim \ns{3} backend evaluation result]{Wall-clock delay to run a 30
-    second simulation time of the topology presented in
-    Figure~\ref{fig:sdnsim-ns3-simulation}, for a variable number of network
-    hosts. \sdnsim simulation of a network experiment using the \ns{3} backend
-scales linearly as the traffic is localised. }
+\caption[Wall-clock delay to run 30 seconds of simulation time.]{Wall-clock
+delay to run 30 seconds of simulation time of the experiment in
+Figure~\ref{fig:sdnsim-ns3-simulation}, with a varying number of network hosts.
+\sdnsim simulation using the \ns{3} backend scales
+linearly when the traffic is localised.}
 \label{tbl:sdnsim-ns3-simulation-results}
 \end{table}
 
@@ -1228,9 +1231,9 @@ duration of the flow increases.
   \begin{center}
     \includegraphics[width=0.80\textwidth]{Chapter1/Chapter1Figs/sdnsim-use-case}
   \end{center}
-  \caption[Hierarchical control evaluation result]{Comparison of TCP flow completion time for various flow sizes between
-    a centralised and decentralised control architecture in a Fat Tree
-    network topology.}
+  \caption[Hierarchical control evaluation using TCP flow completion
+  time]{Comparison of TCP flow completion time for various flow sizes between a
+  centralised and decentralised control architecture on a Fat-Tree topology.}
   \label{fig:sdnsim-use-case-result}
 \end{figure}
 

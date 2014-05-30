@@ -23,7 +23,7 @@ effective control.
 \begin{figure}
   \centering
 \includegraphics[width=0.6\textwidth]{Background/BackgroundFigs/switch_design}
-\caption{A generic switch design model}
+\caption{generic design model of hardware switches.}
 \label{fig:background:switch_design}
 \end{figure}
 
@@ -192,7 +192,7 @@ allocation mechanism over MPLS~\mycite{RFC3209} and
 such resource allocation.  Because resource policing in not supported by MPLS,
 autobandwidth monitors the bandwidth requirements for each circuit and
 reconfigures circuits in order to fulfil measured requirements.
-\mycite{Pathak2011} analyse an autobandwidth deployment on the MSN network and
+\mycitet{Pathak2011} analyse an autobandwidth deployment on the MSN network and
 highlight significant latency effects as a result of the autobandwidth
 functionality.
 
@@ -200,7 +200,6 @@ functionality.
 
 \subsection{Network Layer Control}
 
-\todo{check data-link, Link State and Active Network capitalization.}
 Control in the network layer is responsible for collectively constructing an optimal
 forwarding table between the routers of a network.  Routing protocols are generally
 categorized into three classes: \emph{Link State}; \emph{Distance Vector}; and
@@ -231,23 +230,24 @@ comparison to Link State protocols, but exhibit lower computational and memory
 requirements.
 
 Finally, Path Vector protocols evolve Distance Vector protocols to support
-inter-domain routing. Path Vector routing discloses minimal information in terms
-of the forwarding policy of an Autonomous System (AS), advertising only supported network paths, As
-a result, Path Vector protocols do not define a routing algorithm.  The BGP
-protocol~\mycite{RFC1265} is currently the predominant Path Vector routing
-implementation.  As Internet increases in size, BGP deployment has experienced
-significant scalability problems and motivated some of the network control
-frameworks presented in Section~\ref{sec:background:netcontrol}.  A significant
-scalability problem in BGP is the impact of path updates in the functionality of
-routers in large ASes. Path updates are handed by the iBGP protocol using a
-full-mess dissemination approach, which incurs significant router load and
-memory usage. A widely used approach in addressing this problem uses Route
-Reflectors (RR)~\mycite{RFC4456} hosts, which form a hierarchical update
-dissemination mechanism and reduce forwarding information on each router. A
-further improvement on iBGP scalability was developed by~\mycite{Caesar2005} as
-part of the Routing Control Platform~(RCP), proposing control centralisation
-similar to the SDN paradigm. RCP basically proposed the centralisation of
-the BGP routing table calculation within an AS.
+inter-domain routing. Path Vector routing discloses minimal information in
+terms of the forwarding policy of an Autonomous System (AS), advertising only
+supported network paths, As a result, Path Vector protocols do not define a
+routing algorithm.  The BGP protocol~\mycite{RFC1265} is currently the
+predominant Path Vector routing implementation.  As Internet increases in size,
+BGP deployment has experienced significant scalability problems and motivated
+some of the network control frameworks presented in
+Section~\ref{sec:background:netcontrol}.  A significant scalability problem in
+BGP is the impact of path updates in the functionality of routers in large
+ASes. Path updates are handed by the iBGP protocol using a full-mess
+dissemination approach, which incurs significant router load and memory usage.
+A widely used approach in addressing this problem uses Route Reflectors
+(RR)~\mycite{RFC4456} hosts, which form a hierarchical update dissemination
+mechanism and reduce forwarding information on each router. A further
+improvement on iBGP scalability was developed by~\mycitet{Caesar2005} as part of
+the Routing Control Platform~(RCP), proposing control centralisation similar to
+the SDN paradigm. RCP basically proposed the centralisation of the BGP routing
+table calculation within an AS.
 
 Due to their distributed nature, routing protocols provide long-term routing
 resilience, while their mathematical foundations are provably correct.
@@ -259,10 +259,10 @@ Internet was severely affected by a BGP misconfiguration in the Pakistani
 national ISP in an effort to control traffic from the YouTube
 service~\mycite{bgp_config_error}.  In addition, routing inconsistencies during
 routing changes can significantly impact network performance.
-\mycite{Watson2003} evaluate that OSPF functionality in a regional ISP exhibits
+\mycitet{Watson2003} evaluate that OSPF functionality in a regional ISP exhibits
 high routing churn, even during periods with low control plane activity, while
 the latency in convergence after a network change is, on average, on the order of
-seconds. Similar results have been observed in BGP\@.  \mycite{Kushman2007}
+seconds. Similar results have been observed in BGP\@.  \mycitet{Kushman2007}
 highlight a strong correlation of BGP instability and VoIP
 performance. Modern high speed networks require higher flexibility and
 responsiveness in the control abstraction. 
@@ -278,7 +278,7 @@ Control of ATM Networks (DCAN) and Software Defined Networking (SDN).
 
 The network research community has highlighted the ``inevolvability'' of network
 functionality, often termed \textit{protocol ossification}, since the early
-90's.  \mycite{OMalley1992} challenged the generality of the OSI network model
+90's.  \mycitet{OMalley1992} challenged the generality of the OSI network model
 and suggested synthesizable protocol parsers, which can incorporate variable
 numbers of layers in forwarding devices.  Motivated by these observations, DARPA
 funded the \emph{Active Network} project~\mycite{darpa_active_net} to develop
@@ -374,7 +374,7 @@ significant concerns on network security and resource controllability.
 \begin{figure}
   \begin{center}
 \includegraphics[width=0.7\textwidth]{Background/BackgroundFigs/tempest_arch}
-\caption{Tempest switch architecture~\mycite{Merwe98}}
+\caption{Tempest switch architecture~\mycite{Merwe98}.}
 \label{fig:background:tempest_arch}
 \end{center}
 \end{figure}
@@ -387,7 +387,7 @@ DCAN tried primarily to simplify the control plane of ATM devices, in order to
 support network multi-functionality. Similar efforts were developed by IETF
 through the General Switch Management Protocol (GSMP)~\mycite{RFC3292}.
 
-\mycite{Rooney1998} presented Tempest, a novel ATM switch architecture, which
+\mycitet{Rooney1998} presented Tempest, a novel ATM switch architecture, which
 enabled clean separation of the control and forwarding plane of an ATM
 switch. Similar to the SDN approach,  the control plane was centralised in a
 single programmable entity, which could implement intelligent and dynamic
@@ -446,7 +446,7 @@ rate forwarding and efficient resource control.  Nonetheless, its strong
 reliance on the ATM technology made the approach less relevant for the modern
 Ethernet-dominated networks~\mycite{Crosby2002}. 
 
-\subsection{SDN}\label{sec:background:sdn} 
+\subsection{Software Defined Networking}\label{sec:background:sdn} 
 
 SDN~\mycite{sdn}, the most recent network control paradigm, provides a pragmatic
 approach to control evolvability. SDN employs  a clean separation between the
@@ -469,55 +469,58 @@ interoperability within the network. The SDN architecture establishes
 centralised and unified management, supporting high control reactivity.  The \of
 protocol is currently the pre-dominant implementation of the SDN paradigm.
 
-\subsubsection*{\of protocol} 
+\subsubsection*{\of Protocol} 
 
 \begin{figure}
   \begin{center}
 \includegraphics[width=0.5\textwidth]{Background/BackgroundFigs/openflow-schema}
-\caption{A schematic representation of a basic \of setup}
+\caption[An elementary \of setup]{An elementary \of setup, consisting of a
+switch and a controller. \of implementations have further created the need to
+define further abstractions for control application development, as well as for
+the integration of protocol support on production silicons.}
 \label{fig:background:openflow-schema}
 \end{center}
 \end{figure}
 \begin{table}
-  \begin{minipage} []{0.49\textwidth} 
-    \begin{tabular}{|p{4cm}  | p{2cm} |} 
+  %\begin{minipage} []{0.49\textwidth} 
+    \begin{tabular}{|p{4cm}  | p{2cm} |p{0.1cm}|p{4cm}  | p{2cm} |} 
       \hline
-      Field & \of Version \\ 
+      Field & \of Version & & Field & OpenFlow Version \\ 
       \hline
       Src \& Dst MAC addr. & 1.0~\footnote{Since version 1.1 the protocol
-        permits masked mac address matching} \\ \hline
-      input port & 1.0 \\ \hline
-      VLAN ID & 1.0 \\ \hline 
-      VLAN PCP & 1.0 \\ \hline
-      MPLS label & 1.1 \\ \hline
-      MPLS class & 1.1 \\ \hline 
-      IPv4 src/dst addr. & 1.0 \\ \hline
-      IPv4 proto & 1.0 \\ \hline
-      ARP opcode & 1.0 \\ \hline 
-      ARP src/dst IPv4 address & 1.0 \\ \hline 
-      ARP src/dst MAC address & 1.2 \\ \hline 
+        permits masked mac address matching} & & input port & 1.0 \\ \hline
+      VLAN ID & 1.0 & &VLAN PCP & 1.0 \\ \hline
+      IPv4 src/dst addr. & 1.0 & & IPv4 ToS & 1.0 \\ \hline
+      ICMPv4 Type \& Code & 1.0 & & TCP/UDP/SCTP src/dst port & 1.0 \\ \hline
+      MPLS label & 1.1 & & Metadata & 1.1 \\ \hline
+      MPLS class & 1.1 & & IPv6 src/dst addr. & 1.2 \\ \hline 
+      IPv4 proto & 1.0 & & IPv6 flow label & 1.2 \\ \hline
+      ARP opcode & 1.0 & & ICMPv6 type \& code & 1.2 \\ \hline 
+      ARP src/dst IPv4 address & 1.0 & & ICMPv6 Network Discovery target address & 1.2 \\ \hline 
+      ARP src/dst MAC address & 1.2 & & ICMPv6 Network Discovery src/dst MAC address & 1.2 \\ \hline 
     \end{tabular}
-  \end{minipage}
-  \begin{minipage} []{0.49\textwidth} 
-    \begin{tabular}{|p{4cm}  | p{2cm} |} 
-      \hline
-      Field & OpenFlow Version \\  \hline
-      IPv4 ToS & 1.0 \\ \hline 
-      ICMPv4 Type \& Code & 1.0 \\ \hline
-      TCP/UDP/SCTP src/dst port & 1.0 \\ \hline
-      Metadata & 1.1 \\ \hline
-      IPv6 src/dst addr. & 1.2 \\ \hline
-      IPv6 flow label & 1.2 \\ \hline
-      ICMPv6 type \& code & 1.2 \\ \hline
-      ICMPv6 Network Discovery target address & 1.2 \\ \hline
-      ICMPv6 Network Discovery src/dst MAC address & 1.2 \\ \hline
-    \end{tabular}
-  \end{minipage}
+%%  \end{minipage}
+%%  \begin{minipage} []{0.49\textwidth} 
+%%    \begin{tabular}{} 
+%%      \hline
+%%      Field & OpenFlow Version \\  \hline
+%%      IPv4 ToS & 1.0 \\ \hline 
+%%      ICMPv4 Type \& Code & 1.0 \\ \hline
+%%      TCP/UDP/SCTP src/dst port & 1.0 \\ \hline
+%%      Metadata & 1.1 \\ \hline
+%%      IPv6 src/dst addr. & 1.2 \\ \hline
+%%      IPv6 flow label & 1.2 \\ \hline
+%%      ICMPv6 type \& code & 1.2 \\ \hline
+%%      ICMPv6 Network Discovery target address & 1.2 \\ \hline
+%%      ICMPv6 Network Discovery src/dst MAC address & 1.2 \\ \hline
+%%    \end{tabular}
+%%  \end{minipage}
     \caption{\of tuple fields} \label{tbl:background:openflow_tupple}
 \end{table}
   \begin{table}
-  \begin{minipage} [b]{0.49\textwidth} 
-    \begin{tabular}{| p{4cm} | p{6cm}  | p{1.5cm} |} 
+  \centering
+  %\begin{minipage} [b]{0.49\textwidth} 
+    \begin{tabular}{| p{4cm} | p{6cm}  | p{1.8cm} |} 
       \hline
       Field & Operation & OpenFlow Version \\ \hline
       OUTPUT & output packet to a port & 1.0 \\ \hline
@@ -540,7 +543,7 @@ protocol is currently the pre-dominant implementation of the SDN paradigm.
       (PUSH,POP)\_PBB & remove/add a PBB service tag & 1.3 \\ \hline
 
     \end{tabular}
-  \end{minipage}
+  %\end{minipage}
   \caption{\of packet actions} \label{tbl:background:openflow_actions}
 \end{table}
 
@@ -622,16 +625,15 @@ the controller when a flow entry is removed from the flow table.
 
 \paragraph{Switch configuration} 
 
-Apart from the control of the flow table, the \of protocol provides switch
-configuration capabilities. A controller can use the {\tt
-  switch\_config\_req/switch\_config\_resp} message types, to discover the
-switch operational support of \of functionality.  In addition, the protocol
-provides capabilities for controlling port states with the {\tt port\_mod} message
-type. The switch is also able to notify the controller when a port changes its
-state (e.g.~link is detected to be inactive in the physical layer) with the {\tt
-  port\_status} message. In recent revisions of the protocol, the steering
-committee has introduced the capability for controlling per port traffic shaping
-queues. 
+In addition to flow table control, the protocol provides switch configuration
+capabilities. A \of controller can use the \texttt{switch\_config\_req
+/switch\_config\_resp} message types, to discover the switch operational
+support of \of functionality.  In addition, the protocol provides capabilities
+for controlling port states with the {\tt port\_mod} message type. The switch
+is also able to notify the controller when a port changes its state (e.g.~link
+is detected to be inactive in the physical layer) with the {\tt port\_status}
+message. In recent revisions of the protocol, the steering committee has
+introduced the capability for controlling per port traffic shaping queues. 
 
 \paragraph{Protocol evolution} 
 
@@ -678,7 +680,7 @@ differentiate support between devices, and only optimize a subset of the
 functionality. For example, a firewall device can support only network and
 transport layer field match to improve flow table capacity. 
 
-\section{SDN applications} \label{sec:background:ofapp}
+\section{SDN Applications} \label{sec:background:ofapp}
 
 \begin{table}
   \center
@@ -739,7 +741,7 @@ the network abstraction.  The introduction of the SDN abstraction in the
 datacenter provides novel opportunities to extend the virtualisation abstraction
 in network resources. 
 
-\mycite{flowvisor-ccr} presented \flv, an early network virtualisation approach
+\mycitet{flowvisor-ccr} presented \flv, an early network virtualisation approach
 based on \of.  \flv is an \of proxy between switches and controllers,
 and manages to transform control over a set of switches into a single big
 virtual switch abstraction.  \flv employs a simple network topology discovery
@@ -749,7 +751,7 @@ partition the \of tuple, delegate network control to different controllers and,
 effectively, allow multiple tenants to exercise network control for their own
 network subnet over the same network infrastructure.  \flv quickly
 transformed into a network product by BigSwitch. Furthermore,
-\mycite{Corin12}~developed a topology virtualisation extension for \flv.
+\mycitet{Corin12}~developed a topology virtualisation extension for \flv.
 FlowN~\mycite{Drutskoy13} follows a different approach and integrates
 virtualisation into the  programming framework.  The framework uses VLAN tags to
 multiplex data plane traffic and synchronizes controller states through an SQL
@@ -765,10 +767,10 @@ SDN provides fast  prototyping for secure network applications and
 unprecedented control reactivity to threat detection frameworks.
 Ethane~\mycite{casado07:_ethan}, an  early attempt to define the SDN
 abstraction, established a policy expression language to control interactions
-between user identities and network services.  \mycite{Ballard10} focus on the
+between user identities and network services.  \mycitet{Ballard10} focus on the
 problem of effective network monitoring and present OpenSAFE, a policy
 expression language for efficient traffic interception and inspection.  Finally,
-\mycite{Porras12} present FortNOX, an security extension  for network
+\mycitet{Porras12} present FortNOX, an security extension  for network
 virtualisation applications. FortNOX enables users to assign priorities and
 roles to control applications and resolve automatically policy inconsistencies. 
  
@@ -778,10 +780,10 @@ The high popularity of network services with a global scope has introduced a
 requirement for novel indirection mechanisms, with high responsiveness and
 resilience. Current approaches employ proprietary load balancing devices, which
 dynamically distribute user requests between servers.  SDN can integrate the
-indirection functionality in the network fabric. \mycite{Wang11}~present an
+indirection functionality in the network fabric. \mycitet{Wang11}~present an
 in-network proactive load balancing framework which uses the range of the \of
 wildcard matching to distribute client load between servers.
-\mycite{handigol09,Handigol10} follow a reactive approach to the problem. For
+\mycitet{handigol09,Handigol10} follow a reactive approach to the problem. For
 each new client, their Plug-and-Serve controller chooses on-the-fly a
 destination server, based on an allocation algorithm and the overall system
 load.
@@ -789,20 +791,20 @@ load.
 \subsection{Inter-domain and Intra-domain Routing}
 
 The SDN community has developed a series of applications to improve the
-performance of existing control plane protocols.  \mycite{Rothenberg12} present
+performance of existing control plane protocols.  \mycitet{Rothenberg12} present
 an integration of the 
 % Quagga~
 \mycite{quagga} routing framework with the \of protocol, in an effort to
 revisit Route Reflectors in BGP routing~\mycite{RFC4456}. Similarly,
-\mycite{Kotronis12} revisits the problem of BGP routing instabilities and
+\mycitet{Kotronis12} revisit the problem of BGP routing instabilities and
 proposes a framework for \of-based BGP calculation offloading to third parties.
 
 The SDN has also motivated explorations on forwarding state compressibility.
-\mycite{Sarrar12} present a library which exposes an \of-based FIB abstraction
+\mycitet{Sarrar12} present a library which exposes an \of-based FIB abstraction
 for routing applications.  The library at run-time analyses the FIB table and
 traffic pattern, and calculates the minimum set of flow entries which can
 server a specific subset of the traffic on the fast-path of the network.
-\mycite{Yu10} present DIFANE, a valiant routing framework achieving significant
+\mycitet{Yu10} present DIFANE, a valiant routing framework achieving significant
 FIB table compressibility.  The proposed mechanism uses \of to
 partition effectively the network IP space and aggregate subsets of the FIB on
 each network device. 
@@ -816,17 +818,17 @@ through its development API, which at run time was transparently distributed
 across the network. 
 
 The SDN paradigm has found significant applications in the formalisation of the
-network management. \mycite{Foster11} present Frenetic, a declarative
+network management. \mycitet{Foster11} present Frenetic, a declarative
 programming language for network control policies, providing inherent support for
 significant network control programming requirements, like race conditions.
-\mycite{Monsanto12a} developed NetCore, a policy expression language providing
+\mycitet{Monsanto12a} developed NetCore, a policy expression language providing
 dynamic policy adaptation to traffic and topology changes and automatic
-optimization of the forwarding state. \mycite{Guha13} introduced verifiability to
-the NetCore language, while \mycite{Monsanto13} proposed an extension which
+optimization of the forwarding state. \mycitet{Guha13} introduced verifiability to
+the NetCore language, while \mycitet{Monsanto13} proposed an extension which
 provides seamless integration between control applications. Such control
 abstraction has also been discussed in the context of network upgradability.
-\mycite{Reitblatt12} present a verifiable framework which ensured network
-operability during updates. Finally, \mycite{Voellmy12} present a declarative
+\mycitet{Reitblatt12} present a verifiable framework which ensured network
+operability during updates. Finally, \mycitet{Voellmy12} present a declarative
 policy language exposing a functional reactive programming model and providing
 flexible development.
 
@@ -838,7 +840,7 @@ contribute approximately 20\% of the total power consumption of a data-center.
 Unlike CPUs, which can reduce power consumption when idle, network cards exhibit
 a constant high power consumption, due to continuous physical layer frame
 synchronisation. As a result the most efficient mechanism to reduce network
-power consumption is to shutdown the interfaces.  \mycite{Heller10} present a
+power consumption is to shutdown the interfaces.  \mycitet{Heller10} present a
 power-aware control plane architecture, built on top of the \of abstraction. The
 application takes advantage of link redundancy and turns off interfaces when
 network utilisation is low. 
@@ -846,62 +848,62 @@ network utilisation is low.
 \subsection{Network Debugging and Measurement Applications}
 
 The SDN paradigm provides novel mechanisms for
-network troubleshooting and debugging. \mycite{Wundsam11} present OFRewind, a mechanism
+network troubleshooting and debugging. \mycitet{Wundsam11} present OFRewind, a mechanism
 for intercepting and recording network policy inconsistencies for debugging purposes.
-\mycite{Handigol12b}~present NDB, a control plane debugger which replicates the
+\mycitet{Handigol12b}~present NDB, a control plane debugger which replicates the
 GDB abstraction for \of applications. NDB enables developers to register data
 plane breakpoint conditions and receive rich state information when these
 conditions are met.  Finally, a number of applications have been proposed to
 enable control plane monitoring in order to detect potential network
-misconfigurations.  \mycite{Khurshid12} present an \of proxy service which
+misconfigurations.  \mycitet{Khurshid12} present an \of proxy service which
 detects flow modifications that create forwarding policy inconsistencies.
-\mycite{Canini12} present a model-checking mechanism which uses symbolic
+\mycitet{Canini12} present a model-checking mechanism which uses symbolic
 execution to detect flow modifications that create significant inconsistencies
 in data plane forwarding.  Recent efforts in remote network debugging have
-introduced \of-based solutions for home networks.  \mycite{Calvert10} propose a
+introduced \of-based solutions for home networks.  \mycitet{Calvert10} propose a
 network controller providing precise home network logging, in an effort to
 enable ISPs to troubleshoot connectivity problems. 
 
 \subsection{Resource Control Applications}
 
 SDN reactivity enables fine-level resource control, and a number of applications
-have been developed for datacenter environments.  \mycite{Al-Fares10} presented
+have been developed for datacenter environments.  \mycitet{Al-Fares10} presented
 Hedera, a novel datacenter control architecture, providing better network
-utilisation in comparison to the ECMP~\mycite{RFC2992} network load-balancing
+utilisation in comparison to the ECMP~\mycitet{RFC2992} network load-balancing
 mechanism. Hedera uses \of statistics to discover progressively
 network-limited flows and reroute them over underutilised network paths.
-\mycite{Benson11} presented a network load distribution mechanism designed to
-exhibit fairness towards short-lived flows. \mycite{Even12} employ \of as a
+\mycitet{Benson11} presented a network load distribution mechanism designed to
+exhibit fairness towards short-lived flows. \mycitet{Even12} employ \of as a
 network embedding mechanism for datacenter job assignments and to provide strong
 resource guarantees.
 
 Resource control has also been proposed in the context of home networks.
-\mycite{Yiakoumis11} propose home network virtualisation in an effort to improve
+\mycitet{Yiakoumis11} propose home network virtualisation in an effort to improve
 resource allocation on the edges, and enable core infrastructure sharing between
-ISPs.  Furthermore, \mycite{Yiakoumis12} evolve this idea and introduce a simple
+ISPs.  Furthermore, \mycitet{Yiakoumis12} evolve this idea and introduce a simple
 user interface which can translate user resource requirement into ISP-wide
 network policies. 
 
-\subsection{Mobility Applications}
+\subsection{Network Mobility Applications}
 
 The SDN paradigm provides novel control capabilities in mobile networks.
-\mycite{Huang10} present PhoneNet, a mobile application development framework
+\mycitet{Huang10} present PhoneNet, a mobile application development framework
 which provides the ability for dynamic multicast groups setup.
-\mycite{Yap09,Yap10} present OpenRoads, a network control plane for wireless
+\mycitet{Yap09,Yap10} present OpenRoads, a network control plane for wireless
 networks, enabling seamless Access Point~(AP) hand-overs and network
-virtualisation.  Finally, \mycite{Li12} discuss SDN applicability for
+virtualisation.  Finally, \mycitet{Li12} discuss SDN applicability for
 cellular networks.
 
-\subsection{Network Simulation}
+\subsection{Network Experimentation}
 
 Currently, a number of large-scale shared experimentation infrastructures provide
 \of support. The GENI testbed~\mycite{geni} funded by the NSF, and the Ofelia
 testbed~\mycite{ofelia} funded by the EU, FP7 framework provide network and
-computing resources for running large-scale experiments for free.  \mycite{Erickson11}
+computing resources for running large-scale experiments for free.  \mycitet{Erickson11}
 present Virtue, a large-scale Xen-based emulation framework which uses the \of
 protocol to enable scalable user experimentation with network topologies, and VM
 placements in a multi-tenant data center environment. Similarly,
-Mininet~\mycite{Lantz10,Handigol12}  provides a scalable platform  for \of
+Mininet~\mycitet{Handigol12}  provides a scalable platform  for \of
 experimentation and reproducibility. Mininet uses the LXC~\mycite{lxc} Linux
 user-space virtualisation framework and network namespaces to run large scale
 topologies in a single host and experiment with network functionality.  Mininet
