@@ -6,7 +6,7 @@ set xrange [10:1000000]
 
 set xtics ("10ms" 10, "100ms" 100, "1s" 1000, "10s" 10000, "100s" 100000, "" 1000000)
 
-set key right bottom box Right font ",20"
+set key right bottom Right font ",20"
 
 load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
 

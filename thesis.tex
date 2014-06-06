@@ -14,7 +14,6 @@
 \usepackage{listings}
 \usepackage{multirow}
 \usepackage{pifont}
-\usepackage{multirow}
 \usepackage{array}
 \usepackage[]{natbib}
 
@@ -34,13 +33,13 @@
 
 \ifpdf
   \author{\href{mailto:Charalampos.Rotsos@cl.cam.ac.uk}{Charalampos Rotsos}}
-  \collegeordept{\href{http://www.cl.cam.ac.uk}{Computer Laboratory}}
+  \collegeordept{\href{http://www.chu.cam.ac.uk}{Churchill College}}
   \university{\href{http://www.cam.ac.uk}{University of Cambridge}}
 % insert below the file name that contains the crest in-place of 'UnivShield'
   \crest{\includegraphics[width=30mm]{UnivShield}}
 \else
   \author{Charalampos Rotsos}
-  \collegeordept{Computer Laboratory}
+  \collegeordept{Churchill College}
   \university{University of Cambridge}
 % insert below the file name that contains the crest in-place of 'UnivShield'
   \crest{\includegraphics[bb = 0 0 292 336, width=30mm]{UnivShield}}
@@ -51,7 +50,7 @@
 %
 %\renewcommand{\submittedtext}{change the default text here if needed}
 \degree{Doctor of Philosophy}
-\degreedate{Yet to be decided}
+\degreedate{June 2014}
 
 % turn of those nasty overfull and underfull hboxes
 \hbadness=10000
@@ -69,20 +68,33 @@
 
 %\language{english}
 
-% A page with the abstract on including title and author etc may be
-% required to be handed in separately. If this is not so, then comment
-% the below 3 lines (between '\begin{abstractseparte}' and 
-% 'end{abstractseparate}'), normally like a declaration ... needs some more
-% work, mind as environment abstracts creates a new page!
-\begin{abstractseparate}
-  \input{Abstract/abstract}
-\end{abstractseparate}
-
 % Using the watermark package which is in StyleFiles/
 % and to remove DRAFT COPY ONLY appearing on the top of all pages comment out below line
 %\watermark{DRAFT COPY ONLY}
 
 \maketitle
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+% A page with the abstract on including title and author etc may be
+% required to be handed in separately. If this is not so, then comment
+% the below 3 lines (between '\begin{abstractseparte}' and 
+% 'end{abstractseparate}'), normally like a declaration ... needs some more
+% work, mind as environment abstracts creates a new page!
+% \begin{abstractseparate}
+\pagenumbering{roman}
+% skip number in the abstract
+\thispagestyle{empty}
+\input{Abstract/abstract}
+\newpage
+% \end{abstractseparate}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
 
 %set the number of sectioning levels that get number and appear in the contents
 \setcounter{secnumdepth}{3}
@@ -90,26 +102,33 @@
 
 
 \frontmatter % book mode only
-\pagenumbering{roman}
-\include{Dedication/dedication}
+\include{Abstract/declaration}
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
+% \include{Dedication/dedication}
 \include{Acknowledgement/acknowledgement}
-\include{Abstract/abstract}
+% \include{Abstract/abstract}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+
 
 \tableofcontents
 \listoffigures
 \listoftables
-\printnomenclature  %% Print the nomenclature
-\addcontentsline{toc}{chapter}{Nomenclature}
 
 \newpage
-\listoftodos
+\thispagestyle{empty}
+\mbox{}
 \newpage
-
 
 \mainmatter % book mode only
-
-
-% \Chapter{My List of publications}
+\printnomenclature  %% Print the nomenclature 
 \include{myrefs}
 
 \include{Introduction/introduction}

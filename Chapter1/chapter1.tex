@@ -1,6 +1,6 @@
 \chapter{SDN Control Plane Scalability} \label{sec:sdn_scalability} 
 
-This thesis contends that control plane applications can scale aspects of
+This dissertation contends that control plane applications can scale aspects of
 computer network functionality. In our exploration we extensively employ the SDN
 design paradigm and the \of abstraction, primarily due to two core
 functional properties.  Firstly, the clean separation of the network control
@@ -18,13 +18,13 @@ This chapter presents an extensive scalability analysis of available SDN
 technologies. Our exploration provides an in-depth analysis of the limitations
 of existing implementation efforts and their impact on data plane performance.
 The work focuses on implementations of version 1.0 of the \of protocol, the
-predominant production-level protocol SDN instantiation.  We present two
+predominant production-level protocol instantiation of SDN.  We present two
 measurement platforms: \oflops and \sdnsim.  \oflops is a high precision \of
 switch micro-benchmark platform. Using \oflops, we implement a set of benchmark
 tests and characterise the performance of elementary protocol interactions.
 \sdnsim is a macro-benchmark \of platform, which extends the Mirage
 framework~\mycite{madhavapeddy2013} to support large scale \of-based network
-simulations and emulations.  Using \sdnsim, developers are able to import
+simulations and emulations.  Using \sdnsim, experimenters can import
 \oflops switch profiles into their experiment and test the performance of their
 SDN design.
 
@@ -35,9 +35,10 @@ assess the elementary protocol interaction performance
 (Section~\ref{sec:oflops-result}). Furthermore, we discuss some of limitations
 in network experimentation and present \sdnsim (Section~\ref{sec:sdnsim-intro})
 and its architecture (Section~\ref{sec:experimentation}). Finally, we assess
-the performance of \sdnsim, along with a measurement study of control
-scalability over the fat-tree topology (Section~\ref{sec:sdnsim-precision}),
-and conclude our work (Section~\ref{sec:modeling:summary}). 
+the performance scalability and fidelity of \sdnsim
+(Section~\ref{sec:sdnsim-precision}), along with a measurement study of control
+scalability over the fat-tree topology (Section~\ref{sec:rdsf-eval}), and
+conclude our work (Section~\ref{sec:modeling:summary}). 
 
 \section{Network Control Micro-benchmark} \label{sec:oflops-intro}
 
@@ -47,7 +48,7 @@ extensively in Section~\ref{sec:background:ofapp}. These architectures address
 significant problems of modern networking, but their deployment in production
 environments is not straightforward.  Computer networks have become a vital asset
 for modern enterprises.  High availability and performance are critical and any
-control plane modification must ensure these requirements, requiring extensive
+control plane modification must fulfil these criteria, requiring extensive
 testing and performance characterisation.  \mycitet{Weissmann:va} present the
 deployment experience of the first \of network in the Computer
 Science department of Stanford University, and report significant performance and
@@ -91,8 +92,8 @@ the NetFPGA \mycite{pam-accuracy}.
 \end{figure}
 
 Measuring \of switch implementations is a challenging task in terms of
-rhe characterization of accuracy, noise suppression and precision.  Performance
-characterization is non-trivial, as most OpenFlow-enabled devices provide rich
+the characterization of accuracy, noise suppression and precision.  Performance
+characterization is non-trivial, as most \of-enabled devices provide rich
 functionality but do not disclose implementation details. In order to understand
 the performance impact of an experiment, multiple input measurement channels
 must be monitored concurrently, such as data and control channels. Furthermore,
@@ -111,17 +112,17 @@ precision in software is subject to unobserved parameters, like OS scheduling
 and clock drift. The result of these challenges is that meaningful, controlled,
 repeatable performance tests are non-trivial in an \of environment.
 
-\oflops has a low overhead abstraction, enabling interaction with
-an \of-enabled device over multiple data channels.  The platform provides a
+\oflops has a low overhead abstraction, enabling interaction with an
+\of-enabled device over multiple data channels.  The platform provides a
 programming API, allowing control of multiple information sources: data and
-control channels, and SNMP\@.  \oflops follows an event-driven
-architecture. Interactions over each channel are transformed into semantically
-meaningful events and the developer can register callbacks to handle them
-programatically.  \oflops is implemented in C, and experiments are compiled as
-shared libraries, loaded at run-time using a simple configuration interface.  A
-schematic of the platform is presented in Figure~\ref{fig:oflops_design}.
-\mycitet{oflops-manual}~provides further details regarding the \oflops programming
-model.
+control channels, and SNMP\@, following an event-driven architecture.
+Interactions over each channel are transformed into semantically meaningful
+events and the experimenter can register callbacks to handle them programatically.
+\oflops is implemented in C, and experiments are compiled as shared libraries,
+loaded at run-time using a simple configuration interface.  A schematic of the
+platform is presented in Figure~\ref{fig:oflops_design}, while
+\mycitet{oflops-manual}~provides further details regarding the \oflops
+programming model.
 
 The platform is implemented as a multi-threaded application and takes
 advantage of modern multicore environments. To reduce latency, our design
@@ -175,8 +176,8 @@ card~\mycite{dag_card}. For the measurement, we use a 100 Mbps CBR probe of
 small packets (90 bytes) for a two minute period. The probe is duplicated, using an optical
 wiretap with negligible delay, and sent simultaneously to \oflops and to the DAG
 card. In Figure~\ref{fig:timestamping}, we plot per-packet drift between each
-OFLOPS timestamping mechanism and the DAG card. From the figure, we note that
-the PCAP timestamps drift by 6 milliseconds after 2 minutes, while the NetFPGA
+\oflops timestamping mechanism and the DAG card. From the figure, we note that
+the PCAP timestamps drift by 6 ms after 2 minutes, while the NetFPGA
 timestamping mechanism exhibits lower drift on the order of microseconds.
 
 
@@ -197,7 +198,7 @@ provided a representative but not exhaustive sample of available \of-enabled
 ToR-type switching hardware, during that time. Finally, we also include in our
 measurement a recent \of switch which provides production support up
 to version 1.1 of the protocol (firmware was released in December
-2014).  Switch4 uses the \ovs codebase for its implementation. 
+2013).  Switch4 uses the \ovs codebase for its implementation. 
 Table~\ref{tbl:switch_list} provides details regarding the CPU and the size of
 the flow table for each switch. In addition, the switching fabric in the vendor
 hardware specification reports similar non-blocking capacity and packet
@@ -210,12 +211,12 @@ bridge~\mycite{bianco10}, a crucial functionality for virtualised operating
 systems.  Currently, the Xen platform uses \ovs to forward traffic between VMs
 in the Dom0, a configuration which is inherited by major Cloud providers, like
 Amazon and Rackspace.  Secondly, several hardware switch vendors use the \ovs
-codebase for the development of their own \of-enabled firmware. The \ovs development
+codebase for the development of their own \of-enabled firmwares. The \ovs development
 team has standardised a clean abstraction for the control of packet
 forwarding elements (similar to Linux HAL), which allows code reuse by any
 forwarding entity. Thus, the mature software implementation of the \of protocol
 is ported to commercial hardware, making certain implementation bugs less likely
-to (re)appear.  We study \ovs in our performance and scalability study of
+to (re)appear.  We preclude \ovs in our performance and scalability study of
 hardware switches. Finally, in our comparison we include the \of switch design
 for the NetFPGA platform~\mycite{openflow-netfpga}. This implementation is based
 on the original \of reference implementation~\mycite{of-reference-impl}, extending
@@ -233,7 +234,7 @@ it with a hardware forwarding design.
     \hline  
     Switch3 & PowerPC 828MHz & 2048 mixed flows \\
     \hline  
-    Switch3 & MIPS 1.1 SoC  & 2048 mixed flows \\
+    Switch4 & MIPS 1.1 SoC  & 2048 mixed flows \\
     \hline  
     \ovs & Xeon 3.6GHz & 1M mixed flows \\
     \hline  
@@ -250,7 +251,7 @@ Xeon server equipped with a NetFPGA card.  For all of the experiments we utilize
 the NetFPGA-based packet generating and capturing mechanism. 1 GbE control and
 data channels are connected directly to the tested switches. We measured the
 processing delay incurred by the NetFPGA-based hardware design to be a
-near-constant $900$ nsec.
+near-constant $900$ ns.
 
 \section{Switch Evaluation}\label{sec:oflops-result}
 
@@ -266,7 +267,7 @@ protocol interactions.  These tests target:
   \item The \of packet processing actions~(Section~\ref{sec:results-packets})
   \item The packet interception and packet injection functionality of the
         protocol~(Section~\ref{sec:results-pktin})
-  \item The update rate of the flow table along with its impact on the data
+  \item The update rate of the flow table and its impact on the data
         plane,~(Section~\ref{sec:results-rate})
   \item The monitoring capabilities provided by
         \of~(Section~\ref{sec:results-monitoring})
@@ -341,7 +342,7 @@ We observe significant differences in the performance of the hardware switches
 due in part to the way their firmware implements packet modifications. Switch1
 and Switch2, with their production-grade implementations, handle all
 modifications in hardware; this explains their low packet processing delay of
-between 2 and 4 microseconds. On the other hand, Switch2 and Switch3 each run
+between 2 and 4 $\mu$s. On the other hand, Switch2 and Switch3 each run
 experimental firmware that provided, at the time, only partial hardware support
 for \of actions. Switch2 uses the switch CPU to perform some of the available
 field modifications, resulting in processing delay and variance two orders of
@@ -357,11 +358,9 @@ We conducted a further series of experiments with variable numbers of packet
 modifications in the flow action list. We observed, that the combined processing
 time of a set of packet modifications is equal to the highest processing time
 across all individual actions in the set (e.g.~Switch2 required approximately
-300~msec per packet to modify both IP source addresses and IP ToS field).
+300~ms per packet to modify both IP source addresses and IP ToS field).
 Furthermore, we noticed that Switch1, Switch4 and \ovs have a limit of 7
 actions, which exposes limits enclosed in the implementation.
-
-\todo{msec or ms}
 
 \subsection{Traffic Interception and Injection}\label{sec:results-pktin}
 
@@ -400,12 +399,12 @@ For hardware switches, we noticed at high packet rates that packet
 transmissions were rate-limited using the advertised window of the control plane
 TCP connection. In terms of traffic interception, we observed diverse behaviours
 between hardware switches at high packet rates. For Switch1, latency becomes
-note-worthy beyond 400 packets/sec, resulting in a median latency of 1 ms,
-while the switch can process up to 500 packets/sec, with median latency of 10
+note-worthy beyond 400 packets/second, resulting in a median latency of 1 ms,
+while the switch can process up to 500 packets/second, with median latency of 10
 ms. For Switch2, latency is significantly lower, with a median value of
 800~$\mu$s and reaches 10 seconds only when the probe rate is 2,000
-packets/sec. Switch4 exhibits a constant delay, between 9 and 17 ms, but the
-packet rate is limited to 50 packets/sec.  \ovs, has a high but stable latency,
+packets/second. Switch4 exhibits a constant delay, between 9 and 17 ms, but the
+packet rate is limited to 50 packets/second.  \ovs, has a high but stable latency,
 between 1 and 10 ms, for any tested data rate. 
 
 \subsection{Flow Table Update Rate}\label{sec:results-rate}
@@ -420,7 +419,7 @@ has been reported in the range of a few hundreds of
 microseconds~\mycite{shaikh-igp}.
 
 \of has a mechanism for defining barriers between sets of commands: the
-\texttt{barrier} command. According to the OpenFlow
+\texttt{barrier} command. According to the \of
 specification~\mycite{openflow-spec}, the \texttt{barrier} command is a way of being
 notified that a set of \of operations has been completed. Furthermore, the switch
 has to complete the set of operations issued prior to the \texttt{barrier}
@@ -434,7 +433,7 @@ them. For \ovs, and Switch1, Figure~\ref{fig:flow_insertion_comparison} shows th
 time to install a set of entries in the flow table. Switch2 and Switch3 are not
 reported, as this \of message is not supported by the firmware.  For this
 experiment, \oflops worked on a stream of packets of 100 bytes at a constant
-rate of 100 Kpackets/sec (10Mbps) that targeted the newly installed flows in a
+rate of 100 Kpackets/second (10 Mbps) that targeted the newly installed flows in a
 round-robin manner. The probe achieved sufficiently low inter-packet periods in
 order to accurately measure the flow insertion time.
 
@@ -464,9 +463,9 @@ order to accurately measure the flow insertion time.
 
 Figure~\ref{fig:flow_mod_scenario} presents the measurement scenario,
 while~\ref{fig:flow_insertion_comparison} presents three different measured
-latencies.  The first, {\it barrier notification}, is derived by measuring the
+latencies.  The first, {\it barrier reply} is derived by measuring the
 time elapsed between when the \textbf{first insertion command} is sent by the \oflops
-controller and the time the \texttt{barrier} notification is received by the
+controller and the time the \texttt{barrier} reply is received by the
 PC\@. The second, {\it transmission delay}, is the time elapsed between when the first and
 last flow insertion commands are sent out from the PC running \oflops.  The
 third, {\it first packet}, is the time elapsed between when the \textbf{first insertion
@@ -480,10 +479,10 @@ From Figure~\ref{fig:flow_insertion_comparison}, we observe that even though the
 \textit{transmission delay} in sending flow insertion commands increases
 proportionally to the flow number, this time is negligible when compared with
 data plane measurements (\textit{first packet}). Notably, the \textit{barrier
-  notification} measurements are almost constant, increasing only as the
+  reply} measurements are almost constant, increasing only as the
 transmission delay increases (difficult to discern on the log-log plot) and,
 critically, this operation returns before any \textit{first packet} measurement.
-This implies that the way the \textit{barrier notification} is implemented does
+This implies that the way the \textit{barrier reply} is implemented does
 not reflect the time when the hardware flow-table has been updated.
 
 These results demonstrate how \oflops computes per-flow overheads. We
@@ -529,11 +528,11 @@ rather depend on the type of insertion entry and implementation.
 
 \subsection{Flow Monitoring}\label{sec:results-monitoring}
 
-The use of OpenFlow as a monitoring platform has already been suggested for the
+The use of \of as a monitoring platform has already been suggested for the
 applications of traffic matrix computation~\mycite{opentm-pam,tm-presto} and
 identifying large traffic aggregates~\mycite{openflow-measurement-hotice}. To
-obtain direct information about the state of the traffic received by an OpenFlow
-switch, the OpenFlow protocol provides a mechanism to query traffic statistics,
+obtain direct information about the state of the traffic received by an \of
+switch, the \of protocol provides a mechanism to query traffic statistics,
 either on a per-flow basis or across aggregates matching multiple flows and
 supports packet and byte counters. 
 
@@ -599,10 +598,10 @@ scenario, we emulated the simultaneous querying of traffic statistics and
 modification of the flow table.  More specifically, we extended
 Section~\ref{sec:results-rate} by showing how the mechanisms of traffic
 statistics extraction and table manipulation interact. Specifically, we
-initialized the flow table with 1,024 exact match flows and measured the delay to
+initialized the flow table with 1024 exact match flows and measured the delay to
 update a subset of 100 flows.  Simultaneously, the measurement module polls the
 switch for full table statistics at a constant rate. The experiment uses a
-constant rate 10~Mbps packet probe to monitor the data path, and polls every 10
+constant rate 10 Mbps packet probe to monitor the data path, and polls every 10
 seconds for SNMP CPU values.
 
 \begin{figure}[t]
@@ -659,8 +658,8 @@ scalability, the research community builds and maintains a series of shared
 testbeds, which multiplex experimental deployments in shared infrastructure
 using virtualisation~\mycite{planetlab,ofelia}.  Shared testbeds fulfil the
 requirements for a wide range of experiments, but the resource sharing
-techniques limit measurement precision, as they introduce noise which is not
-always detectable and removable. 
+techniques limit measurement precision~\mycite{Kim11b}, as they introduce noise which is not
+always detectable and removable.
 
 Network simulation replaces network functionality with simplified
 models~\mycite{Varga2008,issariyakul2012}.  Simulation platforms set out to
@@ -679,13 +678,13 @@ present \sdnsim\footnote{\sdnsim is under the GPL licence and can be downloaded
   from \url{http://github.com/crotsos/sdnsim/}}, a network experimentation
 framework which bridges the two aforementioned approaches. The framework is
 written in OCaml, a high performance functional language, and extends the
-functionality of the Mirage\footnote{\mirageurl} library OS\@.  Developers can
+functionality of the Mirage\footnote{\mirageurl} library OS\@.  Experimenters can
 describe network functionality over the \mirage OS systems API, and, during
 compilation, transform the experimental definition into a concrete experiment
 realisation. \sdnsim provides two experimentation options: \emph{Simulation},
 transforms the experiment definition into an \ns{3}~\mycite{Henderson2006}
 simulation, and \emph{Emulation}, emulates the experiment definition using 
-the Xen virtualization platform~\mycite{Barham2003}.
+the Xen virtualisation platform~\mycite{Barham2003}.
 
 \section{Network Experimentation} \label{sec:experimentation}
 
@@ -704,8 +703,8 @@ the \ns{3} and Xen platform (Section~\ref{sec:sdnsim-design}).
 \hline
 DNS & 0.184 \\
 Web Server & 0.172 \\
-OpenFlow switch & 0.164 \\
-OpenFlow controller & 0.168 \\
+\of switch & 0.164 \\
+\of controller & 0.168 \\
 \end{tabular}
 \caption[Sizes of Mirage application images.]{\label{t:codesize}Sizes of Mirage
 application images. Configuration and data are compiled directly into the
@@ -715,14 +714,13 @@ image.}
 Mirage~\mycite{madhavapeddy2013} is a development framework for cloud services,
 supporting the transformation of applications in single purpose appliances,
 compile-time specialised into stand-alone Xen-compliant kernels.  \sdnsim
-exposes the Mirage abstraction to develop host functionality for 
-two core reasons: the low memory footprint
-of Mirage applications; and its clean and simplified design.
-Mirage revisits the idea of library OS; functionality is separated
-into logical modules and linked to an appliance only if the code expresses an
-explicit dependency.  As a result, Mirage by design results in compact OS images
-with very low memory requirements.  Table~\ref{t:codesize} presents the
-compiled image size for a set of Mirage applications.
+re-uses the Mirage abstraction and code to develop host functionality for two core
+reasons: the low memory footprint of Mirage applications; and its clean and
+simplified design. Mirage revisits the idea of library OS; functionality is
+separated into logical modules and linked to an appliance only if the code
+expresses an explicit dependency.  As a result, Mirage by design results in
+compact OS images with very low memory requirements.  Table~\ref{t:codesize}
+presents the compiled image size for a set of Mirage applications.
 
 Mirage OS exposes a simple systems programming API, implemented by two core
 modules: \textit{Net} and \textit{OS}.  The OS module provides thread
@@ -732,8 +730,10 @@ interface of the core Mirage API is sufficiently generic to enable development
 of complex distributed services, while the OS architecture is sufficiently
 simple and portable over a wide range of platforms.  Specifically, a Mirage
 application can compile into a Xen image, a Linux application or a NodeJS
-executable.  Currently, the platform is being ported to the FreeBSD kernel 
-and the BareMetal OS~\mycite{baremetalOS}, a high performance assembly-code OS.
+executable.  Currently, the platform is being ported to the FreeBSD kernel and
+the BareMetal OS~\mycite{baremetalOS}, a high performance assembly-code OS.
+Furthermore, Table~\ref{t:facilities} presents the wide range of network
+protocols readily available in Mirage.
 
 \subsection{\sdnsim Architecture} \label{sec:sdnsim-design}
 
@@ -769,41 +769,41 @@ captionpos=b,
 </topology>
 \end{lstlisting}
 
-From the developer perspective, \sdnsim is an alternative build system for
-\mirage applications. Developers implement host functionality as \mirage
+From the experimenter perspective, \sdnsim is an alternative build system for
+\mirage applications. Experimenters implement host functionality as \mirage
 applications and describe network topology using an XML-based configuration
-file. \sdnsim is responsible for compiling the Mirage applications and deploying the
-experiment, according to the configuration file. 
+file. \sdnsim is responsible for compiling the Mirage applications and
+deploying the experiment, according to the configuration file. 
 
 Listing~\ref{lst:sdnsim-conf} presents an \sdnsim configuration file for a
 client (host1) - server (host2) architecture.  A minimal experimental
 configuration consists of the name of the main OCaml module containing the host
 code (topology@module), the target experimentation environment
-(topology@backend) and the experiment duration (topology@duration).  Optionally,
-the emulation backend supports a slowdown parameter (topology@slowdown) which
-controls a time dilation mechanism, presented in detail in
-Section~\ref{sec:sdnsim:xen-backend}.  Hosts are defined using a \texttt{host}
-XML entity, containing a host name (node@name), its main function (node@main)
-and a variable number of children \texttt{param} entities (node/param) for host
-initialisation.  Network link definitions use a
+(topology@backend) and the experiment duration (topology@duration).
+Optionally, the emulation backend supports a slowdown parameter
+(topology@slowdown) which controls a time dilation mechanism, presented in
+detail in Section~\ref{sec:sdnsim:xen-backend}.  Hosts are defined using a
+\texttt{host} XML entity, containing a host name (node@name), its main function
+(node@main) and a variable number of children \texttt{param} entities
+(node/param) for host initialisation.  Network link definitions use a
 \texttt{link} XML entity, containing the name of the interconnected hosts
 (link@src, link@dst), the device queue size (link@queue\_size), the link
-propagation properties (link@rate, link@delay) and logging 
-(link@pcap).  Finally, experiments can import external network interfaces, 
-allowing interaction with external applications.  Links with
-external hosts are defined using a \texttt{link\_ext} XML entity, which has the
-same parameters as the \texttt{link} entity, except from the \texttt{src} and
-\texttt{dst} attributes.  These attributes are replaced by the host
-(link\_ext@host) and dev (link\_ext@dev) attributes, which map a host device to
-a TUN/TAP network device. In addition, the optional IP (link\_ext@ip) attribute
-defines the address and netmask of the TUN/TAP device. 
+propagation properties (link@rate, link@delay) and logging (link@pcap).
+Finally, experiments can import external network interfaces, allowing
+interaction with external applications.  Links with external hosts are defined
+using a \texttt{link\_ext} XML entity, which has the same parameters as the
+\texttt{link} entity, except from the \texttt{src} and \texttt{dst} attributes.
+These attributes are replaced by the host (link\_ext@host) and dev
+(link\_ext@dev) attributes, which map the network device of a host in the
+experiment to a TUN/TAP network device. In addition, the optional IP
+(link\_ext@ip) attribute defines the address and netmask of the TUN/TAP device. 
 
 \begin{table}
 \centering
 \begin{tabular}{r|p{0.6\columnwidth}}
 \emph{Subsystem} & \emph{Implemented Protocols} \\
 \hline 
-Network     & Ethernet, ARP, DHCP, IPv4, ICMP, UDP, TCP, OpenFlow\\ 
+Network     & Ethernet, ARP, DHCP, IPv4, ICMP, UDP, TCP, \of\\ 
 Storage     & Simple key-value, FAT-32, Append B-Tree, Memcache \\
 Application & DNS, SSH, HTTP, XMPP, SMTP  \\ 
 Formats     & JSON, XML, CSS, S-Expressions\\
@@ -823,25 +823,24 @@ Formats     & JSON, XML, CSS, S-Expressions\\
 \end{figure}
 
 
-Figure~\ref{fig:sdnsim-arch} presents the host architecture in \sdnsim. Host
-functionality is separated in three layers.  The top layer contains the
-application logic of the host. This layer is defined by the developer, and
-encodes the end-host network functionality of the experiment. \sdnsim uses all
-application libraries of the \mirage platform, enumerated in
-Table~\ref{t:facilities}, and thus provides high traffic realism.  Furthermore,
-we extended the ocaml-openflow library to incorporate switch and controller
-performance models and implement the pttcp~\mycite{pttcp} traffic generator
-functionality in OCaml, to support stochastic traffic models.  The middle layer
-of the host architecture contains the core Mirage libraries and provides OS
-functionality to the application layer. Finally, the lower layer of the host
-architecture, provides integration between the Mirage OS and the execution
-backend.  Currently, \sdnsim has two execution backends: the
-\textit{\ns{3}} simulation platform  and the \textit{Xen} virtualisation
-platform. These two execution environments are highly heterogeneous and employ
-different execution models. For the rest of this section, we present the
-integration details between Mirage and each backend.  SNDSIM's main goal
-is network accuracy and the presentation focuses on the network and time
-subsystems.
+Figure~\ref{fig:sdnsim-arch} presents the host architecture in of \sdnsim
+nodes. Host functionality is separated in three layers.  The top layer contains
+the application logic of the host. This layer is defined by the experimenter,
+and encodes the end-host network functionality. \sdnsim uses all application
+libraries of the \mirage platform, enumerated in Table~\ref{t:facilities}, and
+thus provides high traffic realism.  Furthermore, we extended the
+ocaml-openflow library to incorporate switch and controller performance models
+and implement the pttcp~\mycite{pttcp} traffic generator functionality in
+OCaml, to support stochastic traffic models.  The middle layer of the host
+architecture contains the core Mirage libraries and provides OS functionality
+to the application layer. Finally, the lower layer of the host architecture,
+provides integration between the Mirage OS and the execution backend.
+Currently, \sdnsim has two experimentation backends: the \textit{\ns{3}}
+simulation platform  and the \textit{Xen} virtualisation platform. These two
+execution environments are highly heterogeneous and employ different execution
+models. For the rest of this section, we present the integration details
+between Mirage and each experimentation backend.  SNDSIM's main goal is network
+accuracy and the presentation focuses on the network and time subsystems.
 
 \subsubsection{Xen Backend} \label{sec:sdnsim:xen-backend}
 
@@ -851,25 +850,28 @@ realised using virtual interfaces (VIF) bridged in Dom0. \sdnsim replicate
 network link properties using the resource control primitive (e.g.~throughput)
 of the XEN VIF implementation.
 
-Experiment setup uses the Xen Management API (XAPI)~\mycite{xapi}.
-XAPI provides an API to control programmatically the
-creation of VM instances and VIFs. Specifically, the execution pipeline for an
-emulated experiment is the following: host definitions are compiled in VM
-images, equivalent VM configuration are created on Xen and network links are
-translated into equivalent VIF and bridge setups. Once all configurations are
-completed, created VMs are booted and executed for the duration of the experiment.
+Experiment setup uses the Xen Management API (XAPI)~\mycite{xapi}, which
+provides an API to control programmatically the creation of VM instances and
+VIFs. Specifically, the execution pipeline for an emulated experiment is the
+following: host definitions are compiled in VM images, equivalent VM
+configuration are created on Xen and network links are translated into
+equivalent VIF and bridge setups. Once all configurations are completed,
+created VMs are booted and experimentation scenario is executed for a
+predefined duration.
 
 As discussed in the previous section, a core limitation of experimental
-emulation is computation resource scalability. In order to address this problem,  
-\sdnsim modifies the Mirage core libraries to support time
-dilation functionality.  Specifically, when the resources of the execution host
-are insufficient, the experimenter can use a time dilation factor (TDF) to trade
-time for resource scalability. For example, a TDF value of 2 means that 1 second
-of emulation time requires 2 seconds of real time to execute, doubling
-effectively the experimental perceived CPU and network resources. Similar
-approaches have been proposed in the domain of experimental emulation, in an
-effort to scale the complexity of large topologies.  \mycite{Gupta2011} present a
-series of modifications in the Xen hypervisor, providing time virtualisation.
+emulation is computation resource scalability. In order to address this
+problem,  \sdnsim modifies the Mirage core libraries to support time dilation
+functionality.  Specifically, when the resources of the execution host are
+insufficient, the experimenter can use a time dilation factor (TDF) to trade
+time for resource scalability. Time dilation slows down time progression
+synchronously across the emulated nodes, thus increasing the available resource
+in a time unit. For example, a TDF value of 2 means that 1 second of emulation
+time requires 2 seconds of real time to execute, doubling effectively the
+experimental perceived CPU and network resources. Similar approaches have been
+proposed in the domain of experimental emulation, in an effort to scale the
+complexity of large topologies.  \mycite{Gupta2011} present a series of
+modifications in the Xen hypervisor, providing time virtualisation.
 
 The clean design of the \mirage OS provides easy modification of the time
 subsystem. \mirage thread functionality relies on OCaml Lwt language extension,
@@ -919,7 +921,7 @@ link over a lossless medium, a valid approximation of the full duplex
 non-shared medium of current wired Ethernet technologies.
 
 \sdnsim simulation backend use a distributed simulation engine for \ns{3} which provides
-conservative event execution parallelization. The simulation engine spawns a
+conservative event execution parallelisation. The simulation engine spawns a
 different process for each host of the simulation and an MPI-based
 synchronisation algorithm establishes conservative clock synchronisation and
 distributed event execution~\mycite{Pelkey:2011ua}. 
@@ -931,7 +933,7 @@ In this section, we evaluate \sdnsim performance and precision
 using small scale micro-benchmarks that target the \of protocol functionality
 and the \ns{3} backend scalability.  \mycitet{madhavapeddy2013} present an
 exhaustive performance analysis of the \mirage platform, providing evidence on
-the scalability of the Xen backend. In detail, this section presents a
+the data plane scalability of the Xen backend. In detail, this section presents a
 performance comparison of the \mirage \of controller with other controllers
 (Section~\ref{sec:of-controller-perf}) and the \mirage \of switch
 (Section~\ref{sec:of-switch-perf}) with the \ovs software switch,
@@ -940,27 +942,27 @@ and an evaluation the time scalability of the distributed \ns{3} backend
 
 \subsection{Controller Emulation Scalability} \label{sec:of-controller-perf}
 
-We benchmark our controller library's performance through a simple baseline
-comparison against two existing \of controllers, NOX and Maestro.
-NOX~\mycite{gude08} is one of the first and most mature open-source \of controllers;
-in its original form it provides programmability through a set of C++ and Python
-modules.  In our evaluation we compared it against both the master branch and the
-{\it destiny-fast} \/branch, an optimised version that sacrifices Python
-integration for better performance.  Maestro~\mycite{cai2011} is a Java-based
-controller designed to provide service fairness between multiple \of control
-channels.  We compared these controllers against our Xen-based \mirage \of
-controller application.
+We benchmark our controller library's performance scalability through a
+baseline comparison against two existing \of controllers, NOX and Maestro.
+NOX~\mycite{gude08} is one of the first and most mature open-source \of
+controllers; in its original form it provides programmability through a set of
+C++ and Python modules.  In our evaluation we compared it against both the
+master branch and the {\it destiny-fast} \/branch, an optimised version that
+sacrifices Python integration for better performance.  Maestro~\mycite{cai2011}
+is a Java-based controller designed to provide service fairness between
+multiple \of control channels.  We compared these controllers against our
+Xen-based \mirage \of controller application.
 
-Our benchmark setup uses the {\it Cbench}~\mycite{cbench} measurement tool. Cbench
-emulates multiple switches which simultaneously generates {\tt pkt\_in}
+Our benchmark setup uses the {\it Cbench}~\mycite{cbench} measurement tool.
+Cbench emulates multiple switches which simultaneously generates {\tt pkt\_in}
 messages.  The program measures the processing throughput of each controller.
 It provides two modes of operation, both measured in terms of {\tt pkt\_in}
-requests processed per second: {\it latency}, where only a single {\tt
-  pkt\_in} message is allowed in flight from each switch; and {\it
-  throughput}, where each emulated switch maintains a full 64 kB buffer of
-outgoing messages. The first measures the throughput of the controller when
-serving connected switches fairly, while the second measures absolute throughput
-when servicing requests from switches.
+requests processed per second: {\it latency}, where only a single {\tt pkt\_in}
+message is allowed in flight from each switch; and {\it throughput}, where each
+emulated switch maintains a full 64 kB buffer of outgoing messages. The first
+measures the throughput of the controller when serving connected switches
+fairly, while the second measures absolute throughput when servicing requests
+from switches.
 
 We emulated 16 switches concurrently connected to the controller, each serving
 100 distinct MAC addresses. We ran our experiments on a 16-core AMD server
@@ -972,22 +974,23 @@ measured the per-second rate of successful interactions.
 Table~\ref{tbl:controller} reports the average and standard deviation of
 requests serviced per second.
 
-Unsurprisingly, due to mature, highly optimised code, {\emph NOX fast} shows the
-highest performance for both experiments. However, the controller exhibits
+Unsurprisingly, due to mature, highly optimised code, {\emph NOX fast} shows
+the highest performance for both experiments. However, the controller exhibits
 extreme short-term unfairness in the throughput test.  {\emph NOX} provides
 greater fairness in the throughput test, at the cost of significantly reduced
 performance. Maestro performs as well as NOX for throughput but significantly
 worse for latency, probably due to the overheads of the Java VM\@.  Finally,
 \mirage throughput is somewhat reduced from NOX fast, but substantially better
-than both NOX and Maestro. In addition, the \mirage controller achieves the best
-product of performance and fairness among all tested controllers in the
+than both NOX and Maestro. In addition, the \mirage controller achieves the
+best product of performance and fairness among all tested controllers in the
 throughput test.  Comparing latency, \mirage performs much better than Maestro,
 but suffers somewhat in comparison to NOX\@. From the comparison results, we
 conclude that the \mirage controller performance is comparable to the
 performance of existing controlling platforms and our emulation environment can
 reproduce controller deployments realistically. The \sdnsim time dilation
 mechanism can improve further the throughput of the system in the emulated time
-domain.
+domain, providing sufficient computational headroom to emulate a wide range of
+existing controllers.
 
 \begin{table}
 \newcommand\T{\rule{0pt}{2.6ex}}
@@ -1004,7 +1007,7 @@ domain.
 \T NOX fast   & 122&6 & \quad{} 44&8 & 27&4 & \quad{} 1&4 \\
 NOX           &  13&6 &  1&2 & 26&9 & 5&6 \\
 Maestro       &  13&9 &  2&8 &  9&8 & 2&4 \\
-\B Mirage Xen &  98&5 &  4&4 & 24&5 & 0&0 \\
+\B SDNSIM     &  98&5 &  4&4 & 24&5 & 0&0 \\
 \hline
 \end{tabular}
 \caption{\label{tbl:controller}\of controller performance.}
@@ -1050,7 +1053,7 @@ hardware switch (approximately 0.5-1 $\mu$s). This performance difference can
 be bridged easily using the time dilation functionality with TDF=100.
 
 Furthermore, using the results from the evaluation of Switch4 (Section~\ref{sec:oflops-result}),
-we configured our switch model to evaluate the switch modeling functionality of \sdnsim.
+we configured our switch model to evaluate the switch modelling functionality of \sdnsim.
 We set-up a simple topology with two hosts, a \textit{data sink}, and a \textit{data generation} host,
 interconnected through an \of switch. The data sink host generates flow
 requests to the data generation host following an exponential distribution with
@@ -1139,29 +1142,13 @@ of network events; as we increase the number of host and, consequently, the
 number of packets, the execution time increases.  Additionally, from the
 comparison between the centralised and distributed topology, we note that the
 performance of the simulation improves when network events are localized, as the
-simulation can be parallelized. In the distributed topology, network events are
+simulation can be parallelised. In the distributed topology, network events are
 distributed between the two switches and execute independently, achieving
 near-linear scaling. The scaling properties of the \sdnsim simulation backend
 matches datacenter traffic experimentation, where application run
 independently and networks employ multipath topologies~\mycite{Kandula09}. 
 
 \section{Hierarchical Distributed Control}\label{sec:rdsf-eval}
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c| l |} \hline
-  Parameter & value \\ \hline
-  packet\_in processing delay & 10 $\mu$sec \\ \hline
-  flow\_mod insertion delay & 120 $\mu$sec \\ \hline
-  link propagation delay & 0.5 $\mu$sec \\ \hline
-  switch processing delay & 10 $\mu$sec \\ \hline
-  link capacity & 100 MbE \\ \hline
-  Request arrival rate (per host) & 62 retrievals/sec \\ \hline
-\end{tabular}
-\end{center}
-\label{tbl:sdnsim_experiment_parameters}
-\caption{Hierarchical control simulation parameters.}
-\end{table}
 
 \begin{figure}[h]
   \begin{center}
@@ -1173,59 +1160,102 @@ independently and networks employ multipath topologies~\mycite{Kandula09}.
 
 As we have discussed earlier in Section~\ref{sec:background:ofapp}, the \of
 abstraction can be used both for reactive and proactive control.  The two
-approaches represent the two extremes of the control spectrum: proactive control
-pre-computes forwarding policy and thus reduces control plane latency; while
-reactive control enables unprecedented fine levels of network control at the cost
-of latency and scalability.  In this section we present a use case for \sdnsim,
-evaluating the impact of distributed reactive control in network performance. 
+approaches represent the two extremes of the control spectrum: proactive
+control pre-computes forwarding policy and thus reduces control plane latency;
+while reactive control enables unprecedented fine levels of network control at
+the cost of latency and scalability.  In this section we present a use case for
+\sdnsim, evaluating the impact of distributed reactive control in network
+performance. 
 
-The experimental design revisits the hierarchical design pattern and implements
-an application for network control. Specifically, a global controller was
-connected to all network devices and maintains a global view of the network,
-while local controllers were connected to a subset of the devices and were able to
-exercise local forwarding policy in order to improve control responsiveness when
-necessary. A \flv instance on each network device multiplex switch control
-channels between local and global controllers, and can dynamically switch between
-the two controllers.  During periods with high control plane load, the
-architecture can switch control to the local controllers in order to improve
-latency.  Our experiment simulates the control architecture and evaluates the
-impact of multi-level control schemes on the performance of the data plane. 
+The experimental design revisits the hierarchical design pattern on network
+control distribution. Specifically, a global controller connects to all network
+devices and maintains a global view of the network, while local controllers
+connect to a subset of the devices and exercise local forwarding policy in
+order to improve control responsiveness when necessary. A \flv instance on each
+network device multiplex switch control channels between local and global
+controllers, and can dynamically delegate control between the two controllers.
+During periods with high control plane load, the architecture can switch
+control to the local controllers in order to improve latency and reduce the
+load on the central controller.  Our experimental scenario simulates this control
+architecture and evaluates the impact of multi-level control on 
+data plane performance.
 
 The experiment, presented in Figure~\ref{fig:sdnsim-use-case-topology}, uses a
-FatTree~\mycite{Al-Fares08} Clos topology with 4 pods and replicates the network
-behaviour of a database application. Specifically,  the hosts in the first three
-pods act as clients, while the hosts of the fourth pod act as database servers.
-Each client selects uniformly at random a server  and generates a 10 byte
-request, which is fulfilled by the server. The request size is selected
-uniformly at random from the values of 4 KB, 8 KB, 16 KB, 32 KB and 64 KB\@, while
-request arrivals follow a Poisson model. The control architecture of the network
-replicates the control logic presented by~\mycitet{Al-Fares08}.  Every second the
-controller polls for flow-level statistics, calculates link loads, and
-redistributes flows between redundant network paths. In addition, the controller
-distributes new flow between redundant paths, with probabilities proportional to
-the path load ratio. Furthermore, in the simulation we encoded the parameters
-presented in Table~\ref{tbl:sdnsim_experiment_parameters}.
+FatTree Clos topology with 4 pods and replicates the network behaviour of a
+database application. Specifically,  the hosts in the first three pods act as
+clients, while the hosts of the fourth pod act as database servers. Each client
+selects uniformly at random a server  and generates a 10 byte request, which is
+fulfilled by the server. The request size is selected uniformly at random from
+the values of 4 KB, 8 KB, 16 KB, 32 KB and 64 KB\@, while request arrivals
+follow a Poisson model. The control architecture of the network replicates the
+control logic presented by~\mycitet{Al-Fares08}.  Every second the controller
+polls for flow-level statistics, calculates link loads, and redistributes flows
+between redundant network paths. In addition, the controller distributes new
+flow between redundant paths, with probabilities proportional to the path load
+ratio. The experiment tries to recreate with high fidelity the impact of SDN
+control in network functionality. In order to achieve this, we use a switch
+model based on  the performance characteristics of Switch4. Nonetheless, the
+measured performance characteristics of Switch4 cannot accommodate the flow
+arrival rate exhibited by the employed traffic model. For example, the switch
+requires approximately 1 ms to install a flow in the flow table and the
+employed arrival rate of 250 flows per second would create a queue with
+utilization $\rho>1$. As a result, we improve the performance of the employed
+model by an order of magnitude in order to support the experimental event
+rates. Our experimental definition incorporates additional experimental
+parameter regarding the controller performance characteristics and processing
+and propagation delays, presented in
+Table~\ref{tbl:sdnsim_experiment_parameters}.
 
-Using the previous experimental setup, we evaluated local and global control.
-Local control uses only local controllers and defines the forwarding policy 
-using the traffic matrix of a single switch. In this setup we assume that the local
-controller has minimum latency to access the switch and minimizes the control
-channel latency and load. Global control uses only the global controller and
-setups flows across over all switches using the traffic matrix from all hosts.
+\begin{table}
+\begin{center}
+\begin{tabular}{|c| l |} \hline
+  Parameter & value \\ \hline
+  packet\_in processing delay & 10 $\mu$sec \\ \hline
+  flow\_mod insertion delay & 120 $\mu$sec \\ \hline
+  link propagation delay & 0.5 $\mu$sec \\ \hline
+  switch processing delay & 10 $\mu$sec \\ \hline
+  link capacity & 100 Mbps \\ \hline
+  Request arrival rate (per host) & 62 retrievals/sec \\ \hline
+  Network device queue size & 100 packets \\ \hline
+\end{tabular}
+\end{center}
+\label{tbl:sdnsim_experiment_parameters}
+\caption{Hierarchical control simulation parameters.}
+\end{table}
+
+Using the previous experimental setup, we evaluated the impact of distributed
+and centralised control. Distributed control uses only local controllers and
+defines the forwarding policy using the traffic matrix of a single switch. In
+this setup we assume that a local controller has minimum latency to access
+the switch and minimizes the control channel latency and load. Global control
+uses only the global controller and setups end-to-end paths on a per-flow basis
+using the network-wide traffic matrix.
+
+We evaluate the effect of each control scheme on data plane performance using
+the flow completion time metric, as proposed by relevant
+research~\mycite{Dukkipati2006}. Figure~\ref{fig:sdnsim-use-case-result}
+presents the median, 10$^{th}$ and 90$^{th}$ quantiles of the completion time
+distribution for each flow size and for each control scheme. From the results
+we note two important observation. Firstly, the results point out the
+significant non-linear increase in flow completion time between short (4 KB and
+8 KB) and long flows (16 KB, 32 KB and 64 KB). This result is a direct
+consequence of the TCP slow start behaviour, as discussed
+by~\citet{Dukkipati10}. Mirage uses an initial TCP window size of 5840 bytes,
+sufficient to transmit all flow bytes within the slow start phase for short
+flows. Longer flows increase their window slower and thus increase the
+probability to experience transient queueing latencies. Secondly, the
+centralised policy improves resource utilisation across the network and thus
+reduces the effect of network queueing delays. Although the distributed
+approach exhibits lower control channel propagation delay, the suboptimal
+forwarding policy of the system increase the flow completion time, especially
+for long-lived TCP connections. More specifically, distributed control
+increases the median completion time by 2 ms in comparison to centralised
+control, while for 4 KB flows the delay increase is limited to 200 $\mu$s.
+Distributed control can reduce the impact of control channel latency during
+high flow arrival rates, incurs a significant non-negligible data plane
+performance degradation.
 
 
-In order to evaluate the effect of each control scheme, we used the flow
-completion delay, a popular network performance metric~\mycite{Dukkipati2006}. 
-Figure~\ref{fig:sdnsim-use-case-result} presents the median, 10th and 90th
-quantile of completion for each flow size. From the results we noted that the
-centralised policy provides higher performance in comparison to the local
-control scheme. Regardless of the low delay of the control channel in the local
-approach, the suboptimal forwarding policy of the system results in significant
-latency in the completion time of a flow, especially for long-lived TCP
-connections. The increased delay is due to packet queueing delays and recovery
-from packet losses.  Interestingly, the latency increase is proportional to size
-of the flow. The suboptimal policy is expected to affect more packets as the
-duration of the flow increases. 
 
 \begin{figure}[h]
   \begin{center}
@@ -1240,17 +1270,12 @@ duration of the flow increases.
 
 \section{Summary} \label{sec:modeling:summary}
 
-
-% \section{\oflops Conclusions}\label{sec:conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \todo{Add some notes on \sdnsim}
-
-This chapter discussed the scalability capabilities of the predominant SDN
+This chapter discussed the scalability of the predominant SDN
 implementation, the \of protocol.  We presented \oflops, a tool that tests the
-capabilities and performance of OpenFlow-enabled software and hardware switches.
+capabilities and performance of \of-enabled software and hardware switches.
 \oflops combines advanced hardware instrumentation, for accuracy and
 performance, and provides an extensible software framework. We used \oflops to
-evaluate five different \of switch implementations, in terms of \of
+evaluate six different \of switch implementations, in terms of \of
 protocol support as well as performance.  In our performance evaluation, we
 benchmarked the packet processing, traffic interception and injection, flow table
 modification and traffic statistics export functionalities of the switches.  We
@@ -1261,13 +1286,13 @@ found that the \texttt{barrier} reply message is not correctly implemented,
 making it difficult to predict when flow operations will be seen by the data
 plane.  Finally, we found that the monitoring capabilities of existing hardware
 switches have limitations in their ability to sustain high rates of requests.
-Furthermore, at high rates, monitoring operations impact other OpenFlow commands.
+Furthermore, at high rates, monitoring operations impact other \of commands.
 
 In addition, in this chapter we presented the \sdnsim platform, an experimentation
 framework for large-scale high-precision experimentation with control plane
 architectures. \sdnsim used the \mirage abstraction and application libraries to enable
-developers to program the functionality of their network. An \sdnsim experiment
-definition can seamlessly translate at compile into a simulation over the \ns{3}
+experimenters to program the functionality of their network. An \sdnsim experiment
+definition can seamlessly translate at compile time into a simulation over the \ns{3}
 simulation platform, or a high precision emulation over the Xen virtualisation
 framework. We conducted a number of micro-benchmarks and evaluated that the
 software provided emulation performance comparable to software \of controller and

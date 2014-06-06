@@ -3,13 +3,13 @@ set size 1,0.5;
 load 'gnuplot-colorbrewer/qualitative/Dark2.plt';
 set key reverse inside font ",20";
 set xlabel 'data rate (Mbps)' font ",20";
-set ylabel 'delay (usec)' font ",20";
+set ylabel 'delay ({/Symbol m}ssec)' font ",20";
 
 plot "Chapter1/Chapter1Figs/ocaml-switch/mirage-perf.txt" \
-  using 1:6:5:7 title 'Mirage' with errorbars ls 1 lw 3,\
+  using 1:6:5:7 title 'SDNSIM switch' with errorbars ls 1 lw 3,\
   "Chapter1/Chapter1Figs/ocaml-switch/mirage-perf.txt" \
   using 1:6 title '' with lines ls 1 lw 3, \
-  "Chapter1/Chapter1Figs/ocaml-switch/ovs-perf.txt" using 1:6:5:7 title 'ovs' \
+  "Chapter1/Chapter1Figs/ocaml-switch/ovs-perf.txt" using 1:6:5:7 title 'Open vSwitch' \
   with errorbars ls 2 lw 3,\
   "Chapter1/Chapter1Figs/ocaml-switch/ovs-perf.txt" using 1:6 title '' with line \
   ls 2 lw 3;

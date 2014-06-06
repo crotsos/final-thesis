@@ -13,17 +13,17 @@ schemes (Section~\ref{sec:background:netcontrol}). Finally, we focus on the SDN
 paradigm and present some of its applications in a series of current network
 problems (Section~\ref{sec:background:ofapp}).
 
-\section{Forwarding Devices} \label{sec:background:forwarding}
+\section{Forwarding Devices and Control} \label{sec:background:forwarding}
 
-In this section we focus on Ethernet networks and provide a high-level design
+This section focuses on Ethernet networks and provides a high-level design
 overview of a common forwarding device, the \emph{switch}. Using this model we
-highlight the physical limits of network control and motivate a discussion on
-effective control. 
+highlight the physical limits of network performance in the control and data
+plane and motivate our discussion on control effectiveness.
 
 \begin{figure}
   \centering
 \includegraphics[width=0.6\textwidth]{Background/BackgroundFigs/switch_design}
-\caption{generic design model of hardware switches.}
+\caption{Generic design model of hardware switches.}
 \label{fig:background:switch_design}
 \end{figure}
 
@@ -36,56 +36,57 @@ distribution switch provides high 10 or 40 GbE port density and a range of
 traffic management applications.  We use the Top-of-Rack~(ToR) switch type to
 elaborate on the architecture of modern hardware switches.  ToR switches are
 used in datacenter and enterprise networks to multiplex traffic between
-edge and distribution network layers. Forwarding functionality is
-implemented  using Application-Specific Integrated Circuit~(ASIC) silicon,
+the edge and distribution network layers. Forwarding functionality is
+implemented  using Application-Specific Integrated Circuit~(ASIC) silicons,
 providing multi-GbE line-rate non-blocking traffic forwarding.
-Figure~\ref{fig:background:switch_design} presents the ToR architecture
+Figure~\ref{fig:background:switch_design} presents a model for ToR switch architectures
 which consists of the following components:
 
 \begin{itemize}
   \item \emph{Co-processor/Management CPU}: Switch devices use a programmable
-    CPU to fulfil control plane computation requirements. The CPU hosts a
-    minimal operating system, responsible for translating the device configuration into
-    appropriate ASIC manipulations at run-time. Vendors usually employ low-power CPUs, like SoC
-    PowerPC and ARM processors. The CPU is equipped with runtime
-    (Boot Flash and RAM) and persistent (e.g.~SD cards) memory modules. In general,
-    switch CPUs provide sufficient computation resources to run the switch
-    control-plane functionality, but they cannot accommodate intensive processing
-    tasks. The OS provides elementary remote control services, like telnet and SSH,
-    command line/web interfaces and SNMP access to the switch state. 
+      CPU to fulfil control plane computation requirements. The CPU hosts a
+      minimal operating system, responsible for translating the device
+      configuration into appropriate ASIC manipulations at run-time. Vendors
+      usually employ low-power CPUs, like SoC PowerPC and ARM processors. The
+      CPU is equipped with runtime (Boot Flash and RAM) and persistent (e.g.~SD
+      cards) memory modules. In general, switch CPUs provide sufficient
+      computation resources to run the switch control-plane functionality, but
+      they cannot accommodate intensive processing tasks. The switch OS usually
+      provides elementary remote control services, like telnet and SSH, command
+      line/web interfaces and SNMP access to the switch state. 
  
-  \item \emph{Switch ASIC}: The switch ASIC~\mycite{hp-asic,broadcom-asic,intel-asic}
-    implements in hardware the data plane functionality. The capabilities of
-    an ASIC are variable, depending on the vendor and the cost, and define the data
-    plane performance limits of the device.  ASICs have an expensive
-    development cycle, consisting of long design and
-    testing periods, and require significant human labour and material resource
-    requirements. As a result, innovation has a high latency before
-    reaching production, and the design details remain undisclosed.  
+  \item \emph{Switch ASIC}: The switch
+      ASIC~\mycite{hp-asic,broadcom-asic,intel-asic} implements in hardware the
+      data plane functionality. The capabilities of an ASIC are variable,
+      depending on the vendor and the cost, and define the data plane
+      performance limits of the device.  ASICs have an expensive development
+      cycle, consisting of long design and testing periods, and require
+      significant human labour and material resources requirements. As a result,
+      ASIC innovation has a high latency before reaching production, while the design
+      details remain undisclosed.  
 
-    The ASIC packet processing pipeline commonly contains four modules.  The
-    \emph{input arbiter} module multiplexes and synchronizes packets from the
+    The ASIC packet processing pipeline commonly consists of four stages.  The
+    \emph{input arbiter} stage multiplexes and synchronizes packets from the
     Ethernet ports to the main processing pipeline of the silicon. The arbiter
-    ensures non pre-emptive packet processing, by bridging the mismatch
-    between the silicon processing clock rate and the link rate. The pipeline also 
-    contains also a \emph{protocol parsing} module and a
-    \emph{memory lookup} module. The protocol parser extracts significant packet
-    fields from network packets, used by the memory lookup module
-    to define packet processing and forwarding.  The lookup module
-    uses a memory module, integrated or external to the ASIC, which contains 
-    the forwarding policy.  Memory modules have a trade-off
-    between cost and access speed and between memory cost and memory management
-    complexity\footnote{A 32-bit TCAM lookup pcore running on a Virtex-5 FPGA~\cite{virtex5}
-    with 550 MHz clock rate requires 1 clock cycle for a lookup, translating into a 2 ns
-    delay. A DDR3-2400 SDRAM memory module operating at 1200 MHz and requiring
-    9 clock cycles per data access has a 9 ns lookup latency, while a PC133
-    SDRAM operating at 133 MHz DRAM and requiring 3 clock cycles per data
-    access has a 20 ns lookup latency.}.
-    Finally, the \emph{output arbiter} module is responsible for applying
-    modifications to the packet and forwarding it to the appropriate output
-    queue. The processing pipeline may contain additional modules which extend
-    functionality, providing access control list (ACL) virtual network queues
-    and flow statistics monitoring.
+    ensures non pre-emptive packet processing, by bridging the mismatch between
+    the silicon processing clock rate and the link rate. The pipeline also
+    contains a \emph{protocol parsing} stage and a \emph{memory lookup} stage.
+    The protocol parser extracts significant packet fields from network
+    packets, used by the memory lookup module to define packet processing and
+    forwarding.  The lookup stage uses a memory module, integrated or external
+    to the ASIC, which contains the forwarding policy.  Memory modules exhibit 
+    trade-offs between cost and access speed and  memory cost and memory
+    management complexity\footnote{A 32-bit TCAM lookup pcore running on a
+        Virtex-5 FPGA~\mycite{virtex5} with 550 MHz clock rate requires 1 clock
+        cycle for a lookup, translating into a 2 ns delay. A DDR3-2400 SDRAM
+        memory module operating at 1200 MHz and requiring 9 clock cycles per
+        data access has a 9 ns lookup latency, while a PC133 SDRAM operating at
+        133 MHz and requiring 3 clock cycles per data access has a 20 ns
+    lookup latency.}. Finally, the \emph{output arbiter} module is responsible for
+    applying modifications to the packet and forwarding it to the appropriate
+    output queue. The processing pipeline may contain additional modules which
+    extend functionality, providing access control list (ACL), virtual network
+    queues, and flow statistics monitoring.
 
   \item \emph{ASIC-CPU interconnection}: The management CPU is connected to the ASIC
     over a PCI or PCI-express channel. The interconnection provides an
@@ -116,17 +117,17 @@ capacity.  In terms of control plane performance, the primary limitations are th
 capacity of the communication bus between the coprocessor and the ASIC, the
 design of the interface between the two entities, and the processing capabilities
 of the switch CPU\@.  For a ToR switch, the vendors usually provide a PCIe
-communication bus, supporting capacities on the order of a few Gigabytes, while
-CPUs are usually constrained (Section~\ref{sec:oflops-switches} provides details
+communication bus, supporting capacities on the order of a few Gbps, while
+CPUs have limited processing capabilities (Section~\ref{sec:oflops-switches} provides details
 on some off-the-self ToR switches).
 
 ToR switches are simple switch devices and provide low to medium forwarding
-capacity. Vendors provide network devices that support higher link capacities and
-enhanced functionalities that have more complex architectures. Multi-chassis
-switches and routers, used in the core of large networks, cannot fit their
-processing pipeline requirements in a single ASIC\@.  Packet processing is
-distributed between multiple silicons, interconnected using complex CLOS
-crossbar fabrics with non-blocking Terabit backplane
+capacity. Vendors provide network devices that support higher link capacities
+and enhanced functionalities that have more complex architectures.
+Multi-chassis switches and routers, used in the core of large networks, cannot
+fit their processing pipeline requirements in a single ASIC\@.  Packet
+processing is distributed between multiple silicons, interconnected using
+complex CLOS crossbar fabrics with non-blocking Terabit backplane
 capacities~\mycite{juniper_t_series}. Network control in such devices exhibits
 similar high complexity, and uses distributed forwarding tables and cache
 coherent protocols to ensure state consistency~\mycite{cisco_cef}. In such
@@ -189,7 +190,7 @@ creation is automated through the Label Distribution Protocol
 and setup labels across the network. The IETF defines an RSVP resource
 allocation mechanism over MPLS~\mycite{RFC3209} and
 \textit{Autobandwidth}~\mycite{osborne02}, an automatic mechanism to enforce
-such resource allocation.  Because resource policing in not supported by MPLS,
+such resource allocation.  Because MPLS does not support resource policing,
 autobandwidth monitors the bandwidth requirements for each circuit and
 reconfigures circuits in order to fulfil measured requirements.
 \mycitet{Pathak2011} analyse an autobandwidth deployment on the MSN network and
@@ -457,7 +458,7 @@ defined protocol establishes the integration between the two entities.
 The SDN paradigm is motivated by relevant earlier attempts in network
 programmability(Active Network and DCAN), but follows an evolutionary approach.
 The paradigm is motivated by two key observations.  Firstly, the evolution of
-computer networks has collapsed the layers of the OSI and TCP/IP model.
+computer networks has collapsed the layers of the OSI and TCP/IP models.
 Production networks use network devices (e.g.~firewall, NAT, layer-5 switches)
 which operate on multiple layers of the network and engage extensively in layer
 violation.  The SDN paradigm provides a unifying cross-layer control model which
@@ -466,23 +467,23 @@ complexity has increased, network devices still expose stand-alone,
 decentralised and inflexible configuration mechanisms (e.g.~remote logic, CLI
 interfaces), and employ proprietary control protocols, which reduce device
 interoperability within the network. The SDN architecture establishes
-centralised and unified management, supporting high control reactivity.  The \of
+centralised and unified management, supporting reactive control.  The \of
 protocol is currently the pre-dominant implementation of the SDN paradigm.
 
 \subsubsection*{\of Protocol} 
 
 \begin{figure}
   \begin{center}
-\includegraphics[width=0.5\textwidth]{Background/BackgroundFigs/openflow-schema}
+\includegraphics[width=0.40\textwidth]{Background/BackgroundFigs/openflow-schema}
 \caption[An elementary \of setup]{An elementary \of setup, consisting of a
-switch and a controller. \of implementations have further created the need to
-define further abstractions for control application development, as well as for
-the integration of protocol support on production silicons.}
+switch and a controller.  implementating \of has motivated the definition of
+additional abstractions for control application and silicon adaption 
+agents.}
 \label{fig:background:openflow-schema}
 \end{center}
 \end{figure}
 \begin{table}
-  %\begin{minipage} []{0.49\textwidth} 
+\begin{minipage} []{0.99\textwidth} 
     \begin{tabular}{|p{4cm}  | p{2cm} |p{0.1cm}|p{4cm}  | p{2cm} |} 
       \hline
       Field & \of Version & & Field & OpenFlow Version \\ 
@@ -514,12 +515,12 @@ the integration of protocol support on production silicons.}
 %%      ICMPv6 Network Discovery target address & 1.2 \\ \hline
 %%      ICMPv6 Network Discovery src/dst MAC address & 1.2 \\ \hline
 %%    \end{tabular}
-%%  \end{minipage}
+\end{minipage}
     \caption{\of tuple fields} \label{tbl:background:openflow_tupple}
 \end{table}
   \begin{table}
   \centering
-  %\begin{minipage} [b]{0.49\textwidth} 
+  \begin{minipage} [b]{0.99\textwidth} 
     \begin{tabular}{| p{4cm} | p{6cm}  | p{1.8cm} |} 
       \hline
       Field & Operation & OpenFlow Version \\ \hline
@@ -543,7 +544,7 @@ the integration of protocol support on production silicons.}
       (PUSH,POP)\_PBB & remove/add a PBB service tag & 1.3 \\ \hline
 
     \end{tabular}
-  %\end{minipage}
+  \end{minipage}
   \caption{\of packet actions} \label{tbl:background:openflow_actions}
 \end{table}
 
@@ -555,26 +556,27 @@ to network control. It is readily available in a series of production
 devices as well as in large enterprise
 networks~\mycite{google_of,Kobayashi:vn}.
 
-Figure~\ref{fig:background:openflow-schema} presents an elementary \of topology,
-consisting of two entities: the \textit{controller} and the \textit{switch}. The
-two entities communicate over a TCP \textit{control channel}.  The \of controller
-executes the network control logic and disseminates it to switches over
-the control channel. The controller is usually divided into two layers. A controller
-framework encapsulates the low level \of logic and exposes a higher
-level abstraction to the developer.  Table~\ref{tbl:controller} presents a
-complete list of available \of frameworks.  The network control is
-implemented in modules running over the controller framework. 
+Figure~\ref{fig:background:openflow-schema} presents an elementary \of setup,
+consisting of two entities: the \textit{controller} and the \textit{switch}.
+The two entities communicate over a TCP \textit{control channel}.  The \of
+controller executes the network control logic and disseminates it to switches
+over the control channel. The controller is usually divided into two layers. A
+\textit{controller framework} encapsulates the low level \of logic and exposes
+a higher level abstraction to the developer.  Table~\ref{tbl:controller}
+presents a complete list of available \of frameworks.  Network control is
+implemented in \textit{control applications}, running over the controller
+framework. 
 
 
 The \of switch, also called \textit{datapath}, abstracts the control of a
 forwarding device. It consists of a set of \textit{flow tables}
 and a set of \textit{ports}. The flow table is a memory module containing flow
-entries which encode the active network policy. The data of a flow entry can be
-decomposed into three structures: the flow tuple; the flow statistics; and the flow
+entries which encode the active network policy. The data of a flow entry comprises of
+three structures: the flow tuple; the flow statistics; and the flow
 action list.  The tuple defines packet matches using header fields to group packets into
 flows.  The fields of the tuple have evolved over the years and
-Table~\ref{tbl:background:openflow_tupple} presents the match tuple fields
-in each protocol version. Each tuple is associated with a field mask and permits
+Table~\ref{tbl:background:openflow_tupple} presents the tuple fields
+supported in each protocol version. Each tuple is associated with a field mask and permits
 wildcard matching.  Flow statistics store packet and byte counters for each
 flow. The action list contains the list of actions applied to each matched
 packet.  We present in Table~\ref{tbl:background:openflow_actions} the packet
@@ -599,29 +601,30 @@ production systems support version 1.0.
 
 \paragraph{Forwarding control}
 
-\of has two main control modes: \emph{reactive} and \emph{proactive}
-control. In reactive control, the switch forwards every unmatched packet to the
-controller, which is then responsible for responding with an appropriate modification in the
-flow table. The protocol defines the {\tt pkt\_in} message to encapsulate the
-header of a data plane packet when forwarded to the controller, and the {\tt
-  flow\_mod} message to manipulate the flow table. The reactive control
-approach provides fine control over the traffic dynamics, but introduces
-significant load on the control plane. In proactive control, the controller is
-responsible for pre-installing all required flows in the flow table and avoiding any
-packet handling exceptions. The \of protocol provides the
-\texttt{flow\_stats\_req/flow\_stats\_resp},
+\of has two main control modes: \emph{reactive} and \emph{proactive} control.
+In reactive control, the switch forwards every unmatched packet to the
+controller, which is then responsible for responding with an appropriate
+modification in the flow table. The protocol defines the {\tt pkt\_in} message
+to encapsulate the header of a data plane packet when forwarded to the
+controller, and the {\tt flow\_mod} message to manipulate the flow table. The
+reactive control approach provides fine control over the traffic dynamics, but
+introduces significant load on the control plane. In proactive control, the
+controller is responsible for pre-installing all required flows in the flow
+table and avoiding any packet handling exceptions. The \of protocol provides
+the \texttt{flow\_stats\_req/flow\_stats\_resp},
 \texttt{port\_stats\_req/port\_stats\_resp} and
-\texttt{aggr\_stats\_req/aggr\_stats\_resp} controller messages to poll for flow
-and port statistics and infer network resource allocation. In order to ensure
-operational atomicity, the protocol provides the
+\texttt{aggr\_stats\_req/aggr\_stats\_resp} controller messages to poll for
+flow and port statistics and infer network resource utilisation. In order to
+ensure operational atomicity, the protocol provides the
 \texttt{barrier\_req/barrier\_reply} message to synchronise message execution
 between the controller and the switch. A {\tt barrier\_reply} is send by a
 switch as a response to a {\tt barrier\_req} from the controller, when all
-previous operations are processed.  Finally, the \of protocol provides two
-additional message types to enhance control capabilities: the {\tt pkt\_out} and
-the {\tt flow\_removed}. The {\tt pkt\_out} message enables the controller to
-inject traffic in the data plane and the {\tt flow\_removed} message can notify
-the controller when a flow entry is removed from the flow table.
+previously sent operations are processed.  Finally, the \of protocol provides
+two additional message types to enhance control capabilities: the {\tt
+pkt\_out} and the {\tt flow\_removed}. The {\tt pkt\_out} message enables the
+controller to inject traffic in the data plane and the {\tt flow\_removed}
+message can notify the controller when a flow entry is removed from the flow
+table, due to timer expirartion or explicit removal by the user.
 
 \paragraph{Switch configuration} 
 
@@ -637,8 +640,8 @@ introduced the capability for controlling per port traffic shaping queues.
 
 \paragraph{Protocol evolution} 
 
-Since the specification of the version 1.0 of the protocol, the \of steering
-committee has produced 3 non-backwardly compatible protocol revisions. This
+Since the specification of version 1.0 of the protocol, the \of steering
+committee has produced 3 non-backwardly compatible revisions. This
 protocol evolution is driven both by the osmosis between the hardware and
 software community and the introduction of new deployment use-cases. 
 
@@ -663,7 +666,7 @@ protocol introduces MPLS support.
 Version 1.2 of the protocol extends data plane protocol support. This revision
 introduces support for IPv6 and Provider Bridge Network (PBB - Mac-in-Mac)
 traffic. In addition, the protocol uses a flexible type-length-format (TLV) for
-flow tuple definitions.  Finally, the protocol defines a model for efficient
+flow tuple definitions.  Finally, it defines a model for efficient
 multi-controller switch connectivity, in an effort to improve control channel 
 resilience.
 
@@ -675,7 +678,7 @@ parallel control channels to the controller, in order to parallelise {\tt
 fragmentation.  
 
 Because the protocol complexity has increased significantly in recent
-versions of the protocol, the vision for future \of functionality is to
+versions, the vision for future \of functionality is to
 differentiate support between devices, and only optimize a subset of the
 functionality. For example, a firewall device can support only network and
 transport layer field match to improve flow table capacity. 
@@ -734,7 +737,7 @@ applications which address these problems.
 
 The introduction of OS virtualisation and the subsequent rise of the cloud
 computing paradigm, has created new opportunities for ICT to reduce
-infrastructure costs and provide a high level of resilience to applications.
+infrastructure costs and provide unprecedented application resilience.
 Although OS virtualisation platforms, like Xen, provide high precision resource
 allocation and performance isolation, there is still a significant mismatch in
 the network abstraction.  The introduction of the SDN abstraction in the
@@ -743,7 +746,7 @@ in network resources.
 
 \mycitet{flowvisor-ccr} presented \flv, an early network virtualisation approach
 based on \of.  \flv is an \of proxy between switches and controllers,
-and manages to transform control over a set of switches into a single big
+which transforms control over a set of switches into a single big
 virtual switch abstraction.  \flv employs a simple network topology discovery
 and resource control mechanism, while appropriate message processing allows to
 translate the view between the two abstractions.  The administrator can
@@ -772,8 +775,8 @@ problem of effective network monitoring and present OpenSAFE, a policy
 expression language for efficient traffic interception and inspection.  Finally,
 \mycitet{Porras12} present FortNOX, an security extension  for network
 virtualisation applications. FortNOX enables users to assign priorities and
-roles to control applications and resolve automatically policy inconsistencies. 
- 
+roles to control applications and automates policy inconsistency resolution.
+
 \subsection{Load Balancing Applications}
 
 The high popularity of network services with a global scope has introduced a
@@ -788,7 +791,7 @@ each new client, their Plug-and-Serve controller chooses on-the-fly a
 destination server, based on an allocation algorithm and the overall system
 load.
 
-\subsection{Inter-domain and Intra-domain Routing}
+\subsection{Inter-domain and Intra-domain Routing Applications}
 
 The SDN community has developed a series of applications to improve the
 performance of existing control plane protocols.  \mycitet{Rothenberg12} present
@@ -800,10 +803,10 @@ revisit Route Reflectors in BGP routing~\mycite{RFC4456}. Similarly,
 proposes a framework for \of-based BGP calculation offloading to third parties.
 
 The SDN has also motivated explorations on forwarding state compressibility.
-\mycitet{Sarrar12} present a library which exposes an \of-based FIB abstraction
-for routing applications.  The library at run-time analyses the FIB table and
+\mycitet{Sarrar12} present a programming library for routing applications 
+which exposes an FIB abstraction.  The library at run-time analyses the FIB table and
 traffic pattern, and calculates the minimum set of flow entries which can
-server a specific subset of the traffic on the fast-path of the network.
+serve a specific subset of the traffic on the fast-path of the network.
 \mycitet{Yu10} present DIFANE, a valiant routing framework achieving significant
 FIB table compressibility.  The proposed mechanism uses \of to
 partition effectively the network IP space and aggregate subsets of the FIB on
@@ -817,8 +820,8 @@ framework~\mycite{Koponen10}. Onix provides a centralised control abstraction
 through its development API, which at run time was transparently distributed
 across the network. 
 
-The SDN paradigm has found significant applications in the formalisation of the
-network management. \mycitet{Foster11} present Frenetic, a declarative
+The SDN paradigm has found significant applications in the formalisation of 
+network management. \mycitet{Foster11} presented Frenetic, a declarative
 programming language for network control policies, providing inherent support for
 significant network control programming requirements, like race conditions.
 \mycitet{Monsanto12a} developed NetCore, a policy expression language providing
@@ -829,14 +832,14 @@ provides seamless integration between control applications. Such control
 abstraction has also been discussed in the context of network upgradability.
 \mycitet{Reitblatt12} present a verifiable framework which ensured network
 operability during updates. Finally, \mycitet{Voellmy12} present a declarative
-policy language exposing a functional reactive programming model and providing
-flexible development.
+policy language exposing a functional reactive programming model  and providing
+flexible interface development.
 
 \subsection{Energy Control Applications}
 
 In recent years, energy consumption has become an important measure of
 the efficiency of a system's architecture. Currently the network is estimated to
-contribute approximately 20\% of the total power consumption of a data-center.
+contribute approximately 20\% of the total power consumption of a datacenter.
 Unlike CPUs, which can reduce power consumption when idle, network cards exhibit
 a constant high power consumption, due to continuous physical layer frame
 synchronisation. As a result the most efficient mechanism to reduce network
@@ -851,7 +854,7 @@ The SDN paradigm provides novel mechanisms for
 network troubleshooting and debugging. \mycitet{Wundsam11} present OFRewind, a mechanism
 for intercepting and recording network policy inconsistencies for debugging purposes.
 \mycitet{Handigol12b}~present NDB, a control plane debugger which replicates the
-GDB abstraction for \of applications. NDB enables developers to register data
+GDB abstraction in \of applications. NDB enables developers to register data
 plane breakpoint conditions and receive rich state information when these
 conditions are met.  Finally, a number of applications have been proposed to
 enable control plane monitoring in order to detect potential network
@@ -859,17 +862,17 @@ misconfigurations.  \mycitet{Khurshid12} present an \of proxy service which
 detects flow modifications that create forwarding policy inconsistencies.
 \mycitet{Canini12} present a model-checking mechanism which uses symbolic
 execution to detect flow modifications that create significant inconsistencies
-in data plane forwarding.  Recent efforts in remote network debugging have
+in data plane forwarding policy.  Recent efforts in remote network debugging have
 introduced \of-based solutions for home networks.  \mycitet{Calvert10} propose a
 network controller providing precise home network logging, in an effort to
-enable ISPs to troubleshoot connectivity problems. 
+enable ISPs to troubleshoot home broadband connectivity problems. 
 
 \subsection{Resource Control Applications}
 
 SDN reactivity enables fine-level resource control, and a number of applications
 have been developed for datacenter environments.  \mycitet{Al-Fares10} presented
 Hedera, a novel datacenter control architecture, providing better network
-utilisation in comparison to the ECMP~\mycitet{RFC2992} network load-balancing
+utilisation in comparison to the ECMP~\mycite{RFC2992} network load-balancing
 mechanism. Hedera uses \of statistics to discover progressively
 network-limited flows and reroute them over underutilised network paths.
 \mycitet{Benson11} presented a network load distribution mechanism designed to
@@ -899,9 +902,9 @@ cellular networks.
 Currently, a number of large-scale shared experimentation infrastructures provide
 \of support. The GENI testbed~\mycite{geni} funded by the NSF, and the Ofelia
 testbed~\mycite{ofelia} funded by the EU, FP7 framework provide network and
-computing resources for running large-scale experiments for free.  \mycitet{Erickson11}
-present Virtue, a large-scale Xen-based emulation framework which uses the \of
-protocol to enable scalable user experimentation with network topologies, and VM
+computing resources for running cost-free large-scale experiments.  \mycitet{Erickson11}
+present Virtue, a large-scale Xen-based emulation framework which uses \of
+to enable scalable user experimentation with network topologies, and VM
 placements in a multi-tenant data center environment. Similarly,
 Mininet~\mycitet{Handigol12}  provides a scalable platform  for \of
 experimentation and reproducibility. Mininet uses the LXC~\mycite{lxc} Linux

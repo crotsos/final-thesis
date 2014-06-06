@@ -937,7 +937,7 @@ FUNCTION {misc}
   format.issn output
   format.url output
 %   new.block
-%   note output
+  note output
   fin.entry
   empty.misc.check
 }

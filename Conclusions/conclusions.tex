@@ -24,12 +24,12 @@ environment.
 Chapter~\ref{ch:background} then considered background and related work to the
 problem of network control. We provided a bottom-up design discussion on
 available network control mechanisms. We elaborated on the architecture of
-current network devices and presented a generic design model of the integration
+current network devices and presented a generic architecture model of the integration
 between the control and data plane in a single device in order to highlight the
 physical limitations in  network performance. Furthermore, we reviewed
 the current production-level network control protocols and mechanisms for the
 data link and network layers and it was argued that their ability for responsive,
-flexible, and user friendly control is reduced. Furthermore, we surveyed a
+flexible, and user friendly control is limited. Furthermore, we surveyed a
 series of experimental approaches which address network control limitations and
 provide flexible, distributed and evolvable control.  Namely we presented Active
 Network, Devolved Control of ATM Networks and Software Defined Networking. In
@@ -42,20 +42,21 @@ the following three chapters. Chapter~\ref{sec:sdn_scalability} analysed the
 elementary scalability of the SDN paradigm. In this chapter, we presented two
 measurement platforms, enabling network experimenters to evaluate the
 performance of SDN architectures. \oflops is a high-precision
-hardware-accelerated \of switch measurement platform which enables experimenters
-to understand the performance behaviour of \of-enabled devices, and \sdnsim, a
-lightweight high-precision network simulation and emulation framework. Using
-\oflops, we developed and ran a series of tests characterising the elementary
-functionalities of the \of protocol and detected significant variance between
-switch protocol implementations. \sdnsim is a high precision experimentation
-environment, which allows users to implement their control logic and traffic
-models and evaluate the performance of an SDN architecture. The platform
-provides the ability to simulate, using the \ns{3} platform, or emulate, using
-the Xen virtualisation platform, a experimental definition.  The platform
-provides enhanced realism on the performance characteristics of the network
-control plane, while through our evaluation we highlighted the scalability of
-experimentation.  Using \sdnsim, we replicated the functionality of a small-scale
-datacenter network and highlighted the effectiveness of control centralisation.
+hardware-accelerated \of switch measurement platform which enables
+experimenters to understand the performance behaviour of \of-enabled devices,
+and \sdnsim, a lightweight high-precision network simulation and emulation
+framework. Using \oflops, we developed and ran a series of tests characterising
+the elementary functionalities of the \of protocol and detected significant
+variance between switch protocol implementations. \sdnsim is a high precision
+experimentation environment, which allows users to implement their control
+logic and traffic models and evaluate the performance of an SDN architecture.
+The platform provides the ability to simulate, using the \ns{3} platform, or
+emulate, using the Xen virtualisation platform, a experimental definition.  The
+platform provides enhanced realism on the performance characteristics of the
+network control plane, while through our evaluation we highlighted the achieved
+experimental scalability. Using \sdnsim, we replicated the functionality of a
+small-scale datacenter network and evaluated the effectiveness of control
+centralisation.
 
 Chapter~\ref{sec:homework} elaborated on the problem of management scalability in
 modern home networks. Using ethnographic and measurement studies of the home
